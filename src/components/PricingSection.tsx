@@ -27,7 +27,7 @@ const PLANS = [
     name: "Sistema",
     tagline: "Para quem quer automatizar e vender mais",
     from: "A partir de",
-    price: "R$ 2.490",
+    price: "R$ 2.390",
     period: "pagamento único",
     featured: true,
     badge: "Mais escolhido",
