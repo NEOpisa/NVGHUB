@@ -1,7 +1,17 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function createTransport() {
+  return nodemailer.createTransport({
+    host: "smtp.hostinger.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
 
 export async function POST(req: Request) {
   try {
@@ -14,8 +24,10 @@ export async function POST(req: Request) {
       );
     }
 
-    await resend.emails.send({
-      from: "NEOVANGUARD Site <onboarding@resend.dev>",
+    const transporter = createTransport();
+
+    await transporter.sendMail({
+      from: `"NEOVANGUARD Site" <${process.env.SMTP_USER}>`,
       to: "comercial@neovanguard.com.br",
       replyTo: email,
       subject: `Novo contato pelo site — ${nome}`,
