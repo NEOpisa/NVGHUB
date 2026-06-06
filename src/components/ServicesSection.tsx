@@ -5,9 +5,6 @@ import { useReveal } from "@/hooks/useReveal";
 import { useRef } from "react";
 
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
-function waLink(msg: string) {
-  return `${WA}?text=${encodeURIComponent(msg)}`;
-}
 
 const SERVICES = [
   {
@@ -15,28 +12,24 @@ const SERVICES = [
     title: "Site Profissional",
     desc: "Landing page ou site institucional com design responsivo, otimizado para SEO local e carregamento rápido. Feito para converter visitante em cliente.",
     outcome: "No ar em até 16 dias úteis",
-    wa: "Olá! Tenho interesse no serviço de Site Profissional da NeoVanguard. Pode me dar mais informações?",
   },
   {
     icon: <LayersIcon />,
     title: "Sistema para Negócio",
     desc: "Cardápio digital, agendamento online ou catálogo interativo. Automatiza o que toma tempo da sua equipe e melhora a experiência do cliente.",
     outcome: "Painel de controle incluso",
-    wa: "Olá! Tenho interesse em Sistema para Negócios da NeoVanguard. Pode me dar mais informações?",
   },
   {
     icon: <SearchIcon />,
     title: "SEO & Presença Digital",
     desc: "Otimização para aparecer no Google local, Google Meu Negócio configurado e estratégia de palavras-chave para o seu segmento.",
     outcome: "Resultado em 30–60 dias",
-    wa: "Olá! Tenho interesse em SEO e Presença Digital da NeoVanguard. Pode me dar mais informações?",
   },
   {
     icon: <ShieldIcon />,
     title: "Manutenção & Suporte",
     desc: "Suporte real via WhatsApp, atualizações de conteúdo, monitoramento de uptime e correções sem burocracia. Você chama, a gente responde.",
     outcome: "Resposta em até 3h úteis",
-    wa: "Olá! Tenho interesse em Manutenção e Suporte da NeoVanguard. Pode me dar mais informações?",
   },
 ];
 
@@ -72,7 +65,7 @@ export default function ServicesSection() {
                 {svc.outcome}
               </div>
               <a
-                href={waLink(svc.wa)}
+                href={WA}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary"

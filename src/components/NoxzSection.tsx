@@ -5,7 +5,6 @@ import { useReveal } from "@/hooks/useReveal";
 
 const CARDS = [
   {
-    avatar: "NOXZ",
     name: "O que é o Noxz?",
     text: "O Plano Noxz é a metodologia de execução da NVG que funde as competências do time em um ecossistema focado em Segurança Extrema, Velocidade e Eficácia Cirúrgica. Em vez de atuações isoladas, o projeto é tratado de ponta a ponta por uma força-tarefa síncrona.",
   },
@@ -45,11 +44,6 @@ export default function NoxzSection() {
         <div className="noxz-grid" ref={gridRef}>
           {CARDS.map((card) => (
             <article key={card.name} className="noxz-card">
-              {card.avatar && (
-                <div className="noxz-avatar" aria-hidden="true">
-                  {card.avatar}
-                </div>
-              )}
               <div className="noxz-name">{card.name}</div>
               <p className="noxz-area">{card.text}</p>
             </article>
