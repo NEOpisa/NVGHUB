@@ -23,16 +23,16 @@ export default function ContatoSection() {
     if (!form.nome || !form.email || !form.mensagem) return;
     setStatus("loading");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("https://formsubmit.co/ajax/comercial@neovanguard.com.br", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          access_key: "b674ea3c-0570-4881-8137-1e7713dfebe5",
-          subject: `Novo contato pelo site — ${form.nome}`,
-          from_name: form.nome,
           name: form.nome,
           email: form.email,
           message: form.mensagem,
+          _subject: `Novo contato pelo site — ${form.nome}`,
+          _replyto: form.email,
+          _captcha: "false",
         }),
       });
       setStatus(res.ok ? "ok" : "err");
