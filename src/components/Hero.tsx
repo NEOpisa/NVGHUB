@@ -43,7 +43,7 @@ export default function Hero() {
             <WhatsAppIcon />
             Falar pelo WhatsApp
           </a>
-          <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-primary">
+          <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
             <InstagramIcon />
             Instagram
           </a>

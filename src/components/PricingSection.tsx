@@ -58,7 +58,7 @@ const PLANS = [
       "Suporte contínuo no plano",
     ],
     cta: "Entrar na lista de espera",
-    href: "#servicos",
+    href: WA,
   },
 ];
 

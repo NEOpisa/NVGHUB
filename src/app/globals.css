@@ -365,88 +365,6 @@ html {
 }
 .diff-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
 
-/* ── Portfólio ── */
-#portfolio {
-  background: var(--bg-2); padding: 100px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px; margin-top: 52px;
-}
-.portfolio-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: border-color 250ms, box-shadow 250ms, transform 250ms var(--ease-out);
-}
-.portfolio-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 0 0 1px var(--accent-border), 0 12px 48px rgba(124,58,237,0.12);
-  transform: translateY(-3px);
-}
-.portfolio-thumb {
-  height: 152px; background: var(--accent-subtle);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-}
-.portfolio-thumb-text {
-  font-family: var(--font-display); font-weight: 800;
-  font-size: 18px; color: var(--accent-light);
-  letter-spacing: -0.02em; z-index: 1; padding: 0 16px; text-align: center;
-}
-.portfolio-thumb-glow {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(124,58,237,0.22) 0%, transparent 70%);
-}
-.portfolio-body { padding: 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.portfolio-tag {
-  display: inline-flex; align-items: center;
-  border-radius: 999px; background: var(--accent-subtle);
-  border: 1px solid var(--accent-border); color: var(--accent-light);
-  padding: 3px 12px; font-size: 11px; font-weight: 600;
-  letter-spacing: 0.05em; text-transform: uppercase; width: fit-content;
-}
-.portfolio-title {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: 17px; color: var(--text-primary);
-}
-.portfolio-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; flex: 1; }
-.portfolio-result {
-  margin-top: 6px; font-size: 13px; color: var(--accent-light);
-  font-weight: 600; display: flex; align-items: center; gap: 6px;
-}
-
-/* ── Depoimentos ── */
-#depoimentos { background: var(--bg); padding: 100px 0; }
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 20px; margin-top: 52px;
-}
-.testimonial-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 30px 26px;
-  display: flex; flex-direction: column; gap: 18px;
-  transition: border-color 250ms, box-shadow 250ms, transform 250ms var(--ease-out);
-}
-.testimonial-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 0 0 1px var(--accent-border), 0 8px 36px rgba(124,58,237,0.08);
-  transform: translateY(-2px);
-}
-.testimonial-stars { color: #f59e0b; font-size: 13px; letter-spacing: 3px; }
-.testimonial-text { font-size: 15px; color: var(--text-secondary); line-height: 1.75; flex: 1; }
-.testimonial-author { border-top: 1px solid var(--border); padding-top: 18px; }
-.testimonial-name {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: 15px; color: var(--text-primary);
-}
-.testimonial-role { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-
 /* ── Preços ── */
 #precos {
   background: var(--bg-2); padding: 100px 0;
@@ -548,14 +466,6 @@ html {
   border-color: var(--border-hover);
   box-shadow: 0 0 0 1px var(--accent-border), 0 8px 36px rgba(124,58,237,0.08);
   transform: translateY(-2px);
-}
-.noxz-avatar {
-  width: 84px; height: 54px; border-radius: var(--radius);
-  background: var(--accent-subtle); border: 1px solid var(--accent-border);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-weight: 700;
-  font-size: 16px; color: var(--accent-light);
-  letter-spacing: 0.1em;
 }
 .noxz-name {
   font-family: var(--font-display); font-weight: 700;
@@ -660,6 +570,7 @@ footer {
   .contact-wrap { grid-template-columns: 1fr; gap: 44px; }
   .hero-brand-logo { height: 200px; }
   .services-grid { grid-template-columns: 1fr; }
+  .nav-desktop { display: none !important; }
 }
 @media (max-width: 480px) {
   .cta-row { flex-direction: column; align-items: stretch; }

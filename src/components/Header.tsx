@@ -7,7 +7,6 @@ const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
 const NAV_LINKS = [
   { label: "Serviços", href: "#servicos" },
-  { label: "Portfólio", href: "#portfolio" },
   { label: "Preços", href: "#precos" },
   { label: "Noxz", href: "#noxz" },
   { label: "Contato", href: "#contato" },
@@ -60,7 +59,7 @@ export default function Header() {
       </a>
 
       {/* Desktop nav */}
-      <nav aria-label="Navegação principal" style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+      <nav aria-label="Navegação principal" style={{ display: "flex", alignItems: "center", gap: "32px" }} className="nav-desktop">
         {NAV_LINKS.map(({ label, href }) => (
           <a
             key={href}

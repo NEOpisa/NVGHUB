@@ -118,7 +118,7 @@ export default function ContatoSection() {
             <button
               className="form-submit"
               type="submit"
-              disabled={status === "loading" || status === "ok"}
+              disabled={status === "loading" || status === "ok" || status === "err"}
             >
               {status === "loading" ? "Enviando..." : "Enviar mensagem"}
             </button>
