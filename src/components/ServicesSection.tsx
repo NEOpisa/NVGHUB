@@ -117,16 +117,15 @@ function WaitlistForm() {
     if (!email) return;
     setStatus("loading");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("https://formsubmit.co/ajax/comercial@neovanguard.com.br", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          access_key: "b674ea3c-0570-4881-8137-1e7713dfebe5",
-          subject: "Nova inscrição na lista de espera — SaaS",
-          from_name: "Lista de Espera SaaS",
-          name: "Lista de Espera",
+          name: "Lista de Espera SaaS",
           email,
           message: `${email} se inscreveu na lista de espera do SaaS NEOVANGUARD.`,
+          _subject: "Nova inscrição na lista de espera — SaaS",
+          _captcha: "false",
         }),
       });
       setStatus(res.ok ? "ok" : "idle");
