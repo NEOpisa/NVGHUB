@@ -7,8 +7,9 @@ import { LOGO_B64 } from "@/lib/logo";
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
 const NAV_LINKS = [
-  { label: "Planos", href: "#precos" },
   { label: "Serviços", href: "#servicos" },
+  { label: "Orçamento", href: "#orcamento" },
+  { label: "Planos", href: "#precos" },
   { label: "Contato", href: "#contato" },
 ];
 
@@ -20,6 +21,12 @@ export default function Header() {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setNoxzOpen(true);
+    window.addEventListener("open-noxz", handler);
+    return () => window.removeEventListener("open-noxz", handler);
   }, []);
 
   return (
