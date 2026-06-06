@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useReveal } from "@/hooks/useReveal";
 
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
@@ -40,7 +40,22 @@ const SERVICES = [
 
 export default function ServicesSection() {
   const headerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
   useReveal(headerRef);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const cardW = el.firstElementChild
+        ? (el.firstElementChild as HTMLElement).offsetWidth + 20
+        : 300;
+      setActiveIdx(Math.round(el.scrollLeft / cardW));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <section id="servicos" aria-label="Nossos serviços">
@@ -57,7 +72,7 @@ export default function ServicesSection() {
 
         {/* Horizontal scroll */}
         <div className="services-scroll-wrap">
-          <div className="services-scroll">
+          <div className="services-scroll" ref={scrollRef}>
             {SERVICES.map((svc) => (
               <article key={svc.title} className="service-card">
                 <div className="service-icon" aria-hidden="true">{svc.icon}</div>
@@ -80,7 +95,12 @@ export default function ServicesSection() {
               </article>
             ))}
           </div>
-          <div className="services-scroll-hint">← arraste para ver mais →</div>
+          {/* dots */}
+          <div className="services-scroll-dots" aria-hidden="true">
+            {SERVICES.map((_, i) => (
+              <span key={i} className={`services-scroll-dot${i === activeIdx ? " active" : ""}`} />
+            ))}
+          </div>
         </div>
 
         {/* Botão orçamento */}
