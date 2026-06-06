@@ -327,7 +327,10 @@ html {
 }
 .services-scroll::-webkit-scrollbar { display: none; }
 .services-scroll .service-card {
-  min-width: clamp(260px, 76vw, 300px);
+  min-width: 220px;
+  max-width: 220px;
+  min-height: 380px;
+  padding: 26px 20px;
   flex-shrink: 0;
   scroll-snap-align: start;
 }
