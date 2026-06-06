@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import NoxzModal from "@/components/NoxzSection";
+import { LOGO_B64 } from "@/lib/logo";
 
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
@@ -45,7 +46,7 @@ export default function Header() {
         {/* Wordmark */}
         <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — página inicial">
           <img
-            src="/logo.png"
+            src={LOGO_B64}
             alt=""
             aria-hidden
             className="nav-logo"

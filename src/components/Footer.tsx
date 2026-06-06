@@ -1,3 +1,5 @@
+import { LOGO_B64 } from "@/lib/logo";
+
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 const IG = "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2J0NW5kMw==";
 
@@ -6,7 +8,7 @@ export default function Footer() {
     <footer>
       <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — voltar ao topo">
         <img
-          src="/logo.png"
+          src={LOGO_B64}
           alt=""
           aria-hidden
           className="nav-logo"
