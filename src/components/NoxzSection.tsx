@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { useReveal } from "@/hooks/useReveal";
+import { useEffect } from "react";
 
 const CARDS = [
   {
@@ -22,26 +21,50 @@ const CARDS = [
   },
 ];
 
-export default function NoxzSection() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  useReveal(headerRef);
-  useReveal(gridRef, 80);
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function NoxzModal({ isOpen, onClose }: Props) {
+  useEffect(() => {
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   return (
-    <section id="noxz" aria-label="Noxz — Metodologia de Execução NEOVANGUARD">
-      <div className="inner">
-        <div ref={headerRef}>
+    <div className="noxz-modal-overlay" onClick={onClose}>
+      <div className="noxz-modal" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="noxz-modal-close"
+          onClick={onClose}
+          aria-label="Fechar"
+        >
+          ✕
+        </button>
+
+        <div className="noxz-modal-header">
           <span className="section-eyebrow">Metodologia</span>
-          <h2 className="section-heading">
+          <h2 className="section-heading" style={{ marginTop: "12px" }}>
             <span className="text-gradient">Plano Noxz</span>
           </h2>
           <p className="section-sub">
-            Uma metodologia de execução síncrona e implacável — projetada para entregar com velocidade e segurança extrema.
+            Uma metodologia de execução síncrona e implacável — projetada para
+            entregar com velocidade e segurança extrema.
           </p>
         </div>
 
-        <div className="noxz-grid" ref={gridRef}>
+        <div className="noxz-modal-grid">
           {CARDS.map((card) => (
             <article key={card.name} className="noxz-card">
               <div className="noxz-name">{card.name}</div>
@@ -50,6 +73,6 @@ export default function NoxzSection() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

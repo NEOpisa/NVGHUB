@@ -38,13 +38,13 @@ export default function Hero() {
             <WhatsAppIcon />
             Falar pelo WhatsApp
           </a>
+          <a href="#precos" className="btn-ghost">
+            Ver planos e preços
+            <ArrowRightIcon />
+          </a>
           <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
             <InstagramIcon />
             Instagram
-          </a>
-          <a href="#servicos" className="btn-ghost">
-            Ver serviços
-            <ArrowRightIcon />
           </a>
         </div>
 
