@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 
 function createTransport() {
   return nodemailer.createTransport({
-    host: "smtp.hostinger.com",
-    port: 465,
-    secure: true,
+    host: process.env.SMTP_HOST ?? "smtp.hostinger.com",
+    port: Number(process.env.SMTP_PORT ?? 587),
+    secure: false,
+    requireTLS: true,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -25,6 +26,7 @@ export async function POST(req: Request) {
     }
 
     const transporter = createTransport();
+    await transporter.verify();
 
     await transporter.sendMail({
       from: `"NEOVANGUARD Site" <${process.env.SMTP_USER}>`,
@@ -48,7 +50,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("[contato]", err);
+    console.error("[contato] erro SMTP:", err);
     return NextResponse.json(
       { error: "Falha ao enviar. Tente pelo WhatsApp." },
       { status: 500 }
