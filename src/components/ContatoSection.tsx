@@ -23,10 +23,17 @@ export default function ContatoSection() {
     if (!form.nome || !form.email || !form.mensagem) return;
     setStatus("loading");
     try {
-      const res = await fetch("/api/contato", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: "b674ea3c-0570-4881-8137-1e7713dfebe5",
+          subject: `Novo contato pelo site — ${form.nome}`,
+          from_name: form.nome,
+          name: form.nome,
+          email: form.email,
+          message: form.mensagem,
+        }),
       });
       setStatus(res.ok ? "ok" : "err");
     } catch {
