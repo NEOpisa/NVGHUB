@@ -1,3 +1,5 @@
+import { LOGO_B64 } from "@/lib/logo";
+
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 const IG = "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2J0NW5kMw==";
 
@@ -10,7 +12,7 @@ export default function Hero() {
       <div className="hero-content">
         <div className="hero-brand">
           <img
-            src="/logo.png"
+            src={LOGO_B64}
             alt="Logotipo NEOVANGUARD"
             className="hero-brand-logo"
           />
