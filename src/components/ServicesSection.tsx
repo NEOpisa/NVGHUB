@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { useRef } from "react";
 
-const WA_NUMBER = "5511999999999";
+const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 function waLink(msg: string) {
-  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  return `${WA}?text=${encodeURIComponent(msg)}`;
 }
 
 const SERVICES = [
