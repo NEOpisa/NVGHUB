@@ -6,10 +6,10 @@ import { useReveal } from "@/hooks/useReveal";
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
 const OPCOES = [
-  { id: "site",       label: "Site Profissional",       desc: "Landing page ou site institucional responsivo",        price: 890  },
-  { id: "sistema",    label: "Sistema para Negócio",     desc: "Cardápio, agendamento ou catálogo + painel de controle", price: 1000 },
-  { id: "seo",        label: "SEO & Presença Digital",   desc: "Google Meu Negócio + palavras-chave locais",           price: 490  },
-  { id: "manutencao", label: "Manutenção Mensal",        desc: "Atualizações de conteúdo + suporte via WhatsApp",      price: 190  },
+  { id: "site",       label: "Site Profissional",        desc: "Landing page responsiva, SEO básico + 5 meses de suporte",     price: 890  },
+  { id: "sistema",    label: "+ Sistema para Negócio",   desc: "Cardápio, agendamento ou catálogo com painel de controle",     price: 1000 },
+  { id: "seo",        label: "+ SEO Avançado",           desc: "Google Meu Negócio configurado + estratégia de palavras-chave", price: 390  },
+  { id: "manutencao", label: "+ Manutenção Mensal",      desc: "Suporte contínuo após o período incluso nos planos",           price: 290  },
 ];
 
 export default function OrcamentoSection() {
