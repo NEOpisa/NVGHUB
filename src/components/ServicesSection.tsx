@@ -114,10 +114,11 @@ function WaitlistForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus("ok");
   };
 
   if (status === "ok") {
-    return <p className="saas-waitlist-msg show">✓ Você entrou na lista!</p>;
+    return <p className="saas-waitlist-msg show">Em construção. Tente pelo WhatsApp.</p>;
   }
 
   return (

@@ -20,6 +20,7 @@ export default function ContatoSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus("err");
   };
 
   return (
@@ -110,7 +111,7 @@ export default function ContatoSection() {
             )}
             {status === "err" && (
               <div className="form-message error">
-                Algo deu errado. Tente pelo WhatsApp.
+                Em construção. Tente pelo WhatsApp.
               </div>
             )}
 
