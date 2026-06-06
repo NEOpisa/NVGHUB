@@ -72,12 +72,12 @@ export default function PricingSection() {
     <section id="precos" aria-label="Planos e preços">
       <div className="inner">
         <div ref={headerRef}>
-          <span className="section-eyebrow">Planos</span>
+          <span className="section-eyebrow">Planos & Preços</span>
           <h2 className="section-heading">
-            Sem <span className="text-accent-nvg">enrolação</span>
+            Escolha o plano <span className="text-accent-nvg">certo pra você</span>
           </h2>
           <p className="section-sub">
-            Preços transparentes, sem letra miúda. Escolha o plano certo pro seu momento.
+            Preços transparentes, sem letra miúda. Entrega em até 16 dias úteis — ou você não paga.
           </p>
         </div>
 
