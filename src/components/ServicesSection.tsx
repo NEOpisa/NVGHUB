@@ -112,26 +112,8 @@ function WaitlistForm() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "ok">("idle");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-    setStatus("loading");
-    try {
-      const res = await fetch("https://formsubmit.co/ajax/comercial@neovanguard.com.br", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name: "Lista de Espera SaaS",
-          email,
-          message: `${email} se inscreveu na lista de espera do SaaS NEOVANGUARD.`,
-          _subject: "Nova inscrição na lista de espera — SaaS",
-          _captcha: "false",
-        }),
-      });
-      setStatus(res.ok ? "ok" : "idle");
-    } catch {
-      setStatus("idle");
-    }
   };
 
   if (status === "ok") {

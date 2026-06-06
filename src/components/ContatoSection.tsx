@@ -18,27 +18,8 @@ export default function ContatoSection() {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.nome || !form.email || !form.mensagem) return;
-    setStatus("loading");
-    try {
-      const res = await fetch("https://formsubmit.co/ajax/comercial@neovanguard.com.br", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name: form.nome,
-          email: form.email,
-          message: form.mensagem,
-          _subject: `Novo contato pelo site — ${form.nome}`,
-          _replyto: form.email,
-          _captcha: "false",
-        }),
-      });
-      setStatus(res.ok ? "ok" : "err");
-    } catch {
-      setStatus("err");
-    }
   };
 
   return (
