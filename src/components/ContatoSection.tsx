@@ -22,8 +22,16 @@ export default function ContatoSection() {
     e.preventDefault();
     if (!form.nome || !form.email || !form.mensagem) return;
     setStatus("loading");
-    await new Promise((r) => setTimeout(r, 900));
-    setStatus("ok");
+    try {
+      const res = await fetch("/api/contato", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      setStatus(res.ok ? "ok" : "err");
+    } catch {
+      setStatus("err");
+    }
   };
 
   return (
