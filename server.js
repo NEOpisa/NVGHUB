@@ -1,9 +1,9 @@
 const http = require("http");
-const fs = require("fs");
+const fs   = require("fs");
 const path = require("path");
 
 const PORT = process.env.PORT || 3000;
-const OUT = path.join(__dirname, "out");
+const OUT  = path.join(__dirname, "out");
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -20,16 +20,43 @@ const MIME = {
   ".txt":  "text/plain",
 };
 
+// Inline CSS into index.html at startup so no external CSS request is needed
+function buildIndexHtml() {
+  let html = fs.readFileSync(path.join(OUT, "index.html"), "utf8");
+  const match = html.match(/href="(\/_next\/static\/css\/[^"]+\.css)"/);
+  if (match) {
+    const cssFile = path.join(OUT, match[1]);
+    if (fs.existsSync(cssFile)) {
+      const css = fs.readFileSync(cssFile, "utf8");
+      html = html.replace(
+        new RegExp(`<link rel="stylesheet" [^>]*href="${match[1].replace(/\//g, '\\/')}"[^>]*/>`),
+        `<style>${css}</style>`
+      );
+    }
+  }
+  return html;
+}
+
+const INDEX_HTML = buildIndexHtml();
+
 http.createServer((req, res) => {
   let url = decodeURIComponent(req.url.split("?")[0]);
-  if (url === "/") url = "/index.html";
+
+  // Serve inlined index.html for root and unknown routes
+  if (url === "/" || url === "/index.html") {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache");
+    res.end(INDEX_HTML);
+    return;
+  }
 
   let file = path.join(OUT, url);
-
   if (!fs.existsSync(file)) file = file + ".html";
   if (!fs.existsSync(file)) {
-    file = path.join(OUT, "404.html");
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.statusCode = 404;
+    res.end(INDEX_HTML);
+    return;
   }
 
   const ext  = path.extname(file);
