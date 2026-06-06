@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 const IG = "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2J0NW5kMw==";
 
@@ -7,12 +5,10 @@ export default function Footer() {
   return (
     <footer>
       <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — voltar ao topo">
-        <Image
+        <img
           src="/logo.png"
           alt=""
           aria-hidden
-          width={120}
-          height={120}
           className="nav-logo"
         />
         <span className="wordmark-text">

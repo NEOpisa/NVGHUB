@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 const IG = "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2J0NW5kMw==";
 
@@ -11,13 +9,10 @@ export default function Hero() {
 
       <div className="hero-content">
         <div className="hero-brand">
-          <Image
+          <img
             src="/logo.png"
             alt="Logotipo NEOVANGUARD"
             className="hero-brand-logo"
-            width={800}
-            height={800}
-            priority
           />
           <div className="hero-brand-line" aria-hidden="true" />
         </div>

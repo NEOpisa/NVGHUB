@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
@@ -43,14 +42,11 @@ export default function Header() {
     >
       {/* Wordmark */}
       <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — página inicial">
-        <Image
+        <img
           src="/logo.png"
           alt=""
           aria-hidden
-          width={120}
-          height={120}
           className="nav-logo"
-          priority
         />
         <span className="wordmark-text">
           N<span className="accent-letters">E</span>OVANGUAR
