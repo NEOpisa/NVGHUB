@@ -13,10 +13,7 @@ export default function Hero() {
         <div className="hero-copy">
           <div className="hero-eyebrow-row">
             <span className="badge">
-              <span className="badge-dot" aria-hidden="true" />
-              N<span className="accent-letters">E</span>OVANGUAR
-              <span className="accent-letters">D</span> Soluções Digitais
-            </span>
+              <span className="badge-dot" aria-hidden="true" />Neovanguard • Soluções Digitais</span>
           </div>
 
           <h1 className="hero-h1">
