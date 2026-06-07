@@ -67,6 +67,7 @@ export default function Hero() {
       </div>
     </section>
   );
+ }
 }
 
 function WhatsAppIcon() {
