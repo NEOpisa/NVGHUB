@@ -501,7 +501,6 @@ html {
   margin-top: 52px;
   gap: 20px;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: 1fr;
 }
 .services-bento .service-card { min-height: 0; }
 .services-bento > :nth-child(1) { grid-column: span 7; }
@@ -509,13 +508,16 @@ html {
 .services-bento > :nth-child(3) { grid-column: span 4; }
 .services-bento > :nth-child(4) { grid-column: span 4; }
 .services-bento > :nth-child(5) { grid-column: span 4; }
+.service-card-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px;
+}
 .service-tag {
-  position: absolute; top: 24px; right: 24px;
-  display: inline-flex; align-items: center;
+  display: inline-flex; align-items: center; flex-shrink: 0;
   background: var(--accent-subtle); color: var(--accent-light);
   border: 1px solid var(--accent-border); border-radius: 999px;
-  padding: 4px 12px; font-size: 10.5px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 12px; margin-top: 4px; font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
 }
 .service-card--featured {
   background:
