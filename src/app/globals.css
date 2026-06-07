@@ -300,8 +300,14 @@ html {
 .hero-glow-veil {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(ellipse 50% 60% at 78% 38%, rgba(124,58,237,0.16) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 50% at 12% 82%, rgba(159,110,249,0.08) 0%, transparent 65%);
+    radial-gradient(ellipse 56% 66% at 78% 36%, rgba(124,58,237,0.24) 0%, transparent 65%),
+    radial-gradient(ellipse 46% 56% at 12% 84%, rgba(232,121,249,0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 38% 42% at 50% 0%, rgba(159,110,249,0.12) 0%, transparent 70%);
+  animation: hero-glow-breathe 9s ease-in-out infinite;
+}
+@keyframes hero-glow-breathe {
+  0%, 100% { opacity: 0.8; }
+  50%       { opacity: 1; }
 }
 .hero-grid {
   position: relative; z-index: 2;
@@ -322,12 +328,20 @@ html {
   display: flex; align-items: center; gap: 14px;
 }
 .hero-wordmark-mini {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 12px;
 }
-.hero-wordmark-mini img { height: 22px; width: auto; }
+.hero-wordmark-mini img {
+  height: 44px; width: auto;
+  filter: drop-shadow(0 0 18px var(--accent-glow));
+  animation: wordmark-glow-pulse 4.5s ease-in-out infinite;
+}
+@keyframes wordmark-glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 14px var(--accent-glow)); }
+  50%       { filter: drop-shadow(0 0 26px var(--accent-glow)); }
+}
 .hero-wordmark-mini span {
-  font-family: var(--font-mono); font-weight: 700; font-size: 11px;
-  letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-secondary);
 }
 .hero-h1 {
   font-family: var(--font-display); font-weight: 800;
@@ -335,7 +349,15 @@ html {
   line-height: 1.04; letter-spacing: -0.035em;
   color: var(--text-primary); max-width: 16ch;
 }
-.hero-h1 .text-gradient { display: inline; }
+.hero-h1 .text-gradient {
+  display: inline;
+  background-size: 200% auto;
+  animation: text-gradient-shimmer 7s ease-in-out infinite;
+}
+@keyframes text-gradient-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
 .hero-sub {
   font-size: clamp(1rem, 1.1vw + 0.5rem, 1.125rem);
   line-height: 1.7; color: var(--text-secondary); max-width: 50ch;
