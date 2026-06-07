@@ -14,12 +14,9 @@ export default function Hero() {
           <div className="hero-eyebrow-row">
             <span className="badge">
               <span className="badge-dot" aria-hidden="true" />
-              Soluções Digitais
+              N<span className="accent-letters">E</span>OVANGUAR
+          <span className="accent-letters">D</span> Soluções Digitais
             </span>
-            <span className="hero-wordmark-mini" aria-hidden="true">
-              <span>NeoVanguard</span>
-            </span>
-          </div>
 
           <h1 className="hero-h1">
             Tudo o que seu negócio precisa no digital,{" "}
