@@ -14,10 +14,9 @@ export default function Hero() {
           <div className="hero-eyebrow-row">
             <span className="badge">
               <span className="badge-dot" aria-hidden="true" />
-              Agência Digital · Brasil
+              Soluções Digitais
             </span>
             <span className="hero-wordmark-mini" aria-hidden="true">
-              <img src={LOGO_B64} alt="" />
               <span>NeoVanguard</span>
             </span>
           </div>
@@ -28,8 +27,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-sub">
-            Sites, sistemas, SEO e suporte — operados como um único ecossistema,
-            não como serviços avulsos. Entrega em até <strong>16 dias úteis</strong>,
+            Sites, sistemas, SEO e suporte — operados como um único ecossistema. Entrega em até <strong>16 dias úteis</strong>,
             suporte real, sem contrato mínimo.
           </p>
 
