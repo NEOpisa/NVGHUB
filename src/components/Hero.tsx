@@ -1,4 +1,5 @@
 import { LOGO_B64 } from "@/lib/logo";
+import EcosystemGraphic from "@/components/EcosystemGraphic";
 
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 const IG = "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2J0NW5kMw==";
@@ -6,61 +7,63 @@ const IG = "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2
 export default function Hero() {
   return (
     <section id="hero" aria-label="Apresentação da NEOVANGUARD">
-      <div className="hero-dot-grid" aria-hidden="true" />
-      <div className="hero-aurora" aria-hidden="true" />
+      <div className="hero-glow-veil" aria-hidden="true" />
 
-      <div className="hero-content">
-        <div className="hero-brand">
-          <img
-            src={LOGO_B64}
-            alt="Logotipo NEOVANGUARD"
-            className="hero-brand-logo"
-          />
-          <div className="hero-brand-line" aria-hidden="true" />
-        </div>
-
-        <span className="badge">
-          <span className="badge-dot" aria-hidden="true" />
-          Agência Digital · Brasil
-        </span>
-
-        <h1 className="hero-h1">
-          Sua presença digital feita por quem{" "}
-          <span className="text-gradient">entende de resultado</span>
-        </h1>
-
-        <p className="hero-sub">
-          Sites, sistemas e presença digital para pequenos negócios locais.
-          Entrega em até <strong>16 dias úteis</strong>, suporte real, sem
-          contrato mínimo.
-        </p>
-
-        <div className="cta-row">
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary">
-            <WhatsAppIcon />
-            Falar pelo WhatsApp
-          </a>
-          <a href="#precos" className="btn-ghost">
-            Ver planos e preços
-            <ArrowRightIcon />
-          </a>
-          <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-            <InstagramIcon />
-            Instagram
-          </a>
-        </div>
-
-        <div className="trust-signals">
-          {[
-            "Entrega em até 16 dias úteis",
-            "Sem contrato mínimo",
-            "Suporte via WhatsApp",
-          ].map((t) => (
-            <span key={t} className="trust-item">
-              <CheckIcon />
-              {t}
+      <div className="inner hero-grid">
+        <div className="hero-copy">
+          <div className="hero-eyebrow-row">
+            <span className="badge">
+              <span className="badge-dot" aria-hidden="true" />
+              Agência Digital · Brasil
             </span>
-          ))}
+            <span className="hero-wordmark-mini" aria-hidden="true">
+              <img src={LOGO_B64} alt="" />
+              <span>NeoVanguard</span>
+            </span>
+          </div>
+
+          <h1 className="hero-h1">
+            Tudo o que seu negócio precisa no digital,{" "}
+            <span className="text-gradient">conectado em um só lugar</span>
+          </h1>
+
+          <p className="hero-sub">
+            Sites, sistemas, SEO e suporte — operados como um único ecossistema,
+            não como serviços avulsos. Entrega em até <strong>16 dias úteis</strong>,
+            suporte real, sem contrato mínimo.
+          </p>
+
+          <div className="cta-row">
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <WhatsAppIcon />
+              Falar pelo WhatsApp
+            </a>
+            <a href="#precos" className="btn-ghost">
+              Ver planos e preços
+              <ArrowRightIcon />
+            </a>
+            <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+              <InstagramIcon />
+              Instagram
+            </a>
+          </div>
+
+          <div className="trust-signals">
+            {[
+              "Entrega em até 16 dias úteis",
+              "Sem contrato mínimo",
+              "Suporte via WhatsApp",
+            ].map((t) => (
+              <span key={t} className="trust-item">
+                <CheckIcon />
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="hero-visual" aria-hidden="true">
+          <EcosystemGraphic />
         </div>
       </div>
 

@@ -11,30 +11,33 @@ const SERVICES = [
     title: "Site Profissional",
     desc: "Landing page ou site institucional com design responsivo, otimizado para SEO local e carregamento rápido. Feito para converter visitante em cliente.",
     outcome: "No ar em até 16 dias úteis",
+    tag: "Mais procurado",
+    featured: true,
   },
   {
     icon: <LayersIcon />,
     title: "Sistema para Negócio",
-    desc: "Cardápio digital, agendamento online ou catálogo interativo. Automatiza o que toma tempo da sua equipe e melhora a experiência do cliente.",
+    desc: "Cardápio digital, agendamento online ou catálogo interativo com painel de controle.",
     outcome: "Painel de controle incluso",
   },
   {
     icon: <SearchIcon />,
     title: "SEO & Presença Digital",
-    desc: "Otimização para aparecer no Google local, Google Meu Negócio configurado e estratégia de palavras-chave para o seu segmento.",
+    desc: "Apareça no Google local com Google Meu Negócio configurado e palavras-chave do seu segmento.",
     outcome: "Resultado em 30–60 dias",
   },
   {
     icon: <ShieldIcon />,
     title: "Manutenção & Suporte",
-    desc: "Suporte real via WhatsApp, atualizações de conteúdo, monitoramento de uptime e correções sem burocracia. Você chama, a gente responde.",
+    desc: "Suporte real via WhatsApp, atualizações e monitoramento. Você chama, a gente resolve.",
     outcome: "Resposta em até 3h úteis",
   },
   {
     icon: <ScreenIcon />,
-    title: "SaaS (em breve)",
-    desc: "Plataforma pronta para clínicas e restaurantes. Sem desenvolvimento customizado — ative, configure e use no mesmo dia.",
+    title: "SaaS para o seu segmento",
+    desc: "Plataforma pronta para clínicas e restaurantes — sem desenvolvimento customizado.",
     outcome: "Em lançamento",
+    soon: true,
   },
 ];
 
@@ -70,11 +73,44 @@ export default function ServicesSection() {
           </p>
         </header>
 
-        {/* Horizontal scroll */}
+        {/* Bento composition (desktop) */}
+        <div className="services-bento">
+          {SERVICES.map((svc) => (
+            <article
+              key={svc.title}
+              className={`service-card${svc.featured ? " service-card--featured" : ""}${svc.soon ? " service-card--soon" : ""}`}
+            >
+              {svc.tag && <span className="service-tag">{svc.tag}</span>}
+              <div className="service-icon" aria-hidden="true">{svc.icon}</div>
+              <div className="service-title">{svc.title}</div>
+              <p className="service-desc">{svc.desc}</p>
+              <div className="service-outcome">
+                <CheckIcon />
+                {svc.outcome}
+              </div>
+              <a
+                href={WA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={svc.featured ? "btn-primary" : "btn-ghost"}
+                style={{ marginTop: "auto", fontSize: "13px", padding: "9px 16px", alignSelf: "flex-start" }}
+              >
+                <SmallWaIcon />
+                Solicitar
+              </a>
+            </article>
+          ))}
+        </div>
+
+        {/* Horizontal scroll (mobile) */}
         <div className="services-scroll-wrap">
           <div className="services-scroll" ref={scrollRef}>
             {SERVICES.map((svc) => (
-              <article key={svc.title} className="service-card">
+              <article
+                key={`m-${svc.title}`}
+                className={`service-card${svc.featured ? " service-card--featured" : ""}${svc.soon ? " service-card--soon" : ""}`}
+              >
+                {svc.tag && <span className="service-tag">{svc.tag}</span>}
                 <div className="service-icon" aria-hidden="true">{svc.icon}</div>
                 <div className="service-title">{svc.title}</div>
                 <p className="service-desc">{svc.desc}</p>
@@ -95,7 +131,6 @@ export default function ServicesSection() {
               </article>
             ))}
           </div>
-          {/* dots */}
           <div className="services-scroll-dots" aria-hidden="true">
             {SERVICES.map((_, i) => (
               <span key={i} className={`services-scroll-dot${i === activeIdx ? " active" : ""}`} />
@@ -119,22 +154,6 @@ export default function ServicesSection() {
         </div>
       </div>
     </section>
-  );
-}
-
-function WaitlistForm() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "ok">("idle");
-  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setStatus("ok"); };
-  if (status === "ok") return <p className="saas-waitlist-msg show">Em construção. Tente pelo WhatsApp.</p>;
-  return (
-    <form className="saas-waitlist" onSubmit={handleSubmit} noValidate>
-      <div className="saas-waitlist-label">Entre na lista de espera</div>
-      <div className="saas-waitlist-row">
-        <input className="saas-waitlist-input" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <button className="saas-waitlist-btn" type="submit" disabled={status === "loading"}>{status === "loading" ? "..." : "Entrar"}</button>
-      </div>
-    </form>
   );
 }
 

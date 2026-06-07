@@ -65,60 +65,20 @@ export default function Header() {
         </a>
 
         {/* Desktop nav */}
-        <nav aria-label="Navegação principal" style={{ display: "flex", alignItems: "center", gap: "32px" }} className="nav-desktop">
+        <nav aria-label="Navegação principal" className="nav-desktop">
           {NAV_LINKS.map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              style={{
-                fontSize: "13px",
-                fontWeight: 500,
-                color: "var(--text-secondary)",
-                textDecoration: "none",
-                transition: "color 150ms",
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-secondary)")}
-            >
+            <a key={href} href={href} className="nav-link">
               {label}
             </a>
           ))}
-          <button
-            onClick={() => setNoxzOpen(true)}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              fontSize: "13px", fontWeight: 500,
-              color: "var(--text-secondary)",
-              transition: "color 150ms", padding: 0,
-            }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "var(--text-secondary)")}
-          >
+          <button className="nav-link nav-link-btn" onClick={() => setNoxzOpen(true)}>
             Metodologia
           </button>
         </nav>
 
         {/* CTA */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <a
-            href={WA}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              background: "var(--accent)",
-              color: "#fff",
-              padding: "8px 18px",
-              borderRadius: "var(--radius)",
-              fontSize: "13px",
-              fontWeight: 600,
-              textDecoration: "none",
-              transition: "background 150ms",
-            }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.background = "var(--accent-hover)")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.background = "var(--accent)")}
-          >
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta">
             Solicitar orçamento
           </a>
         </div>
