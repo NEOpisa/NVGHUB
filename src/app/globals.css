@@ -432,10 +432,6 @@ html {
   transform-box: fill-box; transform-origin: center;
   animation: eco-hub-breathe 5s ease-in-out infinite;
 }
-.eco-hub-disc { fill: var(--surface-raised); }
-.eco-hub-ring {
-  fill: none; stroke: var(--accent-border); stroke-width: 1.4;
-}
 @keyframes eco-hub-breathe {
   0%, 100% { opacity: 0.55; transform: scale(1); }
   50%       { opacity: 0.95; transform: scale(1.08); }
