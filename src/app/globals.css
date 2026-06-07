@@ -406,21 +406,20 @@ html {
   font-size: 13px; letter-spacing: 0.02em;
   fill: var(--text-secondary);
 }
-.eco-hub-core { animation: eco-hub-breathe 5s ease-in-out infinite; }
+.eco-hub-halo {
+  transform-box: fill-box; transform-origin: center;
+  animation: eco-hub-breathe 5s ease-in-out infinite;
+}
+.eco-hub-disc { fill: var(--surface-raised); }
 .eco-hub-ring {
-  fill: none; stroke: rgba(167,139,250,0.45); stroke-width: 1;
+  fill: none; stroke: var(--accent-border); stroke-width: 1.4;
 }
 @keyframes eco-hub-breathe {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(124,58,237,0.55)); }
-  50%       { filter: drop-shadow(0 0 22px rgba(124,58,237,0.8)); }
-}
-.eco-hub-label {
-  font-family: var(--font-mono); font-weight: 700;
-  font-size: 14px; letter-spacing: 0.16em;
-  fill: #fff;
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%       { opacity: 0.95; transform: scale(1.08); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .eco-line, .eco-ripple, .eco-node, .eco-hub-core { animation: none !important; }
+  .eco-line, .eco-ripple, .eco-node, .eco-hub-halo { animation: none !important; }
   .eco-ripple { display: none; }
 }
 
@@ -721,7 +720,7 @@ html {
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.diff-stat-col { display: flex; flex-direction: column; gap: 6px; }
+.diff-stat-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .diff-index {
   font-family: var(--font-mono); font-weight: 700;
   font-size: 11px; letter-spacing: 0.24em; color: var(--text-muted);
@@ -730,7 +729,7 @@ html {
   font-family: var(--font-display); font-weight: 800;
   font-size: clamp(2.4rem, 4.6vw, 4rem); line-height: 1;
   letter-spacing: -0.04em; color: var(--text-primary);
-  display: flex; align-items: baseline; gap: 8px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px;
   transition: background 350ms, -webkit-text-fill-color 350ms;
 }
 .diff-stat-suffix {
@@ -767,11 +766,11 @@ html {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius-xl); padding: 34px 28px;
   display: flex; flex-direction: column; position: relative; isolation: isolate;
-  overflow: hidden;
   transition: border-color 280ms, box-shadow 280ms, transform 280ms var(--ease-out);
 }
 .pricing-card::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
   background: radial-gradient(ellipse 100% 60% at 50% 0%, var(--accent-subtle), transparent 70%);
   opacity: 0; transition: opacity 350ms;
 }
