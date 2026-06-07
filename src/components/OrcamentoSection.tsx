@@ -29,7 +29,7 @@ export default function OrcamentoSection() {
   const msg =
     itens.length > 0
       ? `Olá! Quero um orçamento para: ${itens.map((o) => o.label).join(", ")}. Total estimado: R$ ${total.toLocaleString("pt-BR")}.`
-      : "Olá! Quero um orçamento da NeoVanguard.";
+      : "Olá! Quero um orçamento da Neovanguard.";
 
   return (
     <section id="orcamento" aria-label="Monte seu orçamento">

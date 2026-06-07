@@ -6,11 +6,11 @@ import AmbientField from "@/components/AmbientField";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NeoVanguard — Agência de Soluções Digitais",
+  title: "Neovanguard — Agência de Soluções Digitais",
   description:
     "Criamos sites e sistemas para pequenos negócios locais. Site pronto em até 7 dias. Você aparece no Google, seus clientes chegam.",
   openGraph: {
-    title: "NeoVanguard — Agência de Soluções Digitais",
+    title: "Neovanguard — Agência de Soluções Digitais",
     description:
       "Criamos sites e sistemas para pequenos negócios locais. Site pronto em até 7 dias.",
     type: "website",
