@@ -759,10 +759,6 @@ html {
   -webkit-text-fill-color: transparent;
 }
 .diff-stat-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.diff-index {
-  font-family: var(--font-mono); font-weight: 700;
-  font-size: 11px; letter-spacing: 0.24em; color: var(--text-muted);
-}
 .diff-stat {
   font-family: var(--font-display); font-weight: 800;
   font-size: clamp(2.4rem, 4.6vw, 4rem); line-height: 1;
