@@ -5,28 +5,24 @@ import { useReveal } from "@/hooks/useReveal";
 
 const ITEMS = [
   {
-    
     stat: "16",
     statSuffix: "dias",
     title: "Prazo de entrega",
     desc: "Se não entregamos em 16 dias úteis, você não paga. Simples assim — sem desculpa, sem asterisco.",
   },
   {
-    
     stat: "3",
     statSuffix: "meses",
     title: "Suporte pós-entrega",
     desc: "Cinco meses de suporte incluso. Você não fica sozinho depois que o site vai ao ar.",
   },
   {
-    
     stat: "0",
     statSuffix: "lock-in",
     title: "Contrato mínimo",
     desc: "Sem fidelidade forçada. Se quiser cancelar, é só falar — a gente confia no trabalho que entrega.",
   },
   {
-    
     stat: "100%",
     statSuffix: "remoto",
     title: "Atendimento nacional",
@@ -69,7 +65,6 @@ function DiffRow({ item, delay }: { item: (typeof ITEMS)[number]; delay: number 
   return (
     <div className="diff-row" ref={ref}>
       <div className="diff-stat-col">
-        <span className="diff-index">{item.index}</span>
         <div className="diff-stat">
           {item.stat}
           <span className="diff-stat-suffix">{item.statSuffix}</span>
