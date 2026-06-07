@@ -5,26 +5,30 @@ import { useReveal } from "@/hooks/useReveal";
 
 const ITEMS = [
   {
-    number: "16",
-    suffix: " dias",
+    index: "01",
+    stat: "16",
+    statSuffix: "dias",
     title: "Prazo de entrega",
     desc: "Se não entregamos em 16 dias úteis, você não paga. Simples assim — sem desculpa, sem asterisco.",
   },
   {
-    number: "5",
-    suffix: " meses",
+    index: "02",
+    stat: "5",
+    statSuffix: "meses",
     title: "Suporte pós-entrega",
     desc: "Cinco meses de suporte incluso. Você não fica sozinho depois que o site vai ao ar.",
   },
   {
-    number: "0",
-    suffix: "",
+    index: "03",
+    stat: "0",
+    statSuffix: "lock-in",
     title: "Contrato mínimo",
-    desc: "Sem lock-in, sem fidelidade forçada. Se quiser cancelar, é só falar. A gente confia no trabalho que entrega.",
+    desc: "Sem fidelidade forçada. Se quiser cancelar, é só falar — a gente confia no trabalho que entrega.",
   },
   {
-    number: "100%",
-    suffix: "",
+    index: "04",
+    stat: "100%",
+    statSuffix: "remoto",
     title: "Atendimento nacional",
     desc: "Brasil inteiro, 100% remoto. WhatsApp, videochamada — sem burocracia de reunião presencial.",
   },
@@ -32,14 +36,13 @@ const ITEMS = [
 
 export default function DiferenciaisSection() {
   const headerRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const rowsRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
-  useReveal(gridRef, 80);
 
   return (
     <section id="diferenciais" aria-label="Nossos diferenciais">
       <div className="inner">
-        <div ref={headerRef}>
+        <div ref={headerRef} className="diff-header">
           <span className="section-eyebrow">Diferenciais</span>
           <h2 className="section-heading">
             Por que a <span className="text-accent-nvg">Neovanguard?</span>
@@ -49,21 +52,33 @@ export default function DiferenciaisSection() {
           </p>
         </div>
 
-        <div className="diff-grid" ref={gridRef}>
-          {ITEMS.map((item) => (
-            <article key={item.title} className="diff-card">
-              <div className="diff-number">
-                {item.number}
-                {item.suffix && (
-                  <span style={{ fontSize: "0.5em" }}>{item.suffix}</span>
-                )}
-              </div>
-              <div className="diff-title">{item.title}</div>
-              <p className="diff-desc">{item.desc}</p>
-            </article>
+        <div className="diff-rows" ref={rowsRef}>
+          {ITEMS.map((item, i) => (
+            <DiffRow key={item.title} item={item} delay={i * 60} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function DiffRow({ item, delay }: { item: (typeof ITEMS)[number]; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useReveal(ref, delay);
+
+  return (
+    <div className="diff-row" ref={ref}>
+      <div className="diff-stat-col">
+        <span className="diff-index">{item.index}</span>
+        <div className="diff-stat">
+          {item.stat}
+          <span className="diff-stat-suffix">{item.statSuffix}</span>
+        </div>
+      </div>
+      <div className="diff-body">
+        <div className="diff-row-title">{item.title}</div>
+        <p className="diff-row-desc">{item.desc}</p>
+      </div>
+    </div>
   );
 }

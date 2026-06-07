@@ -72,7 +72,7 @@ export default function OrcamentoSection() {
         <div className="orcamento-footer">
           <div className="orcamento-total">
             <span className="orcamento-total-label">Total estimado</span>
-            <span className="orcamento-total-value">
+            <span className="orcamento-total-value" key={total}>
               {selecionados.length === 0 ? "—" : `R$ ${total.toLocaleString("pt-BR")}`}
             </span>
           </div>
