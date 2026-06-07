@@ -80,8 +80,10 @@ export default function ServicesSection() {
               key={svc.title}
               className={`service-card${svc.featured ? " service-card--featured" : ""}${svc.soon ? " service-card--soon" : ""}`}
             >
-              {svc.tag && <span className="service-tag">{svc.tag}</span>}
-              <div className="service-icon" aria-hidden="true">{svc.icon}</div>
+              <div className="service-card-head">
+                <div className="service-icon" aria-hidden="true">{svc.icon}</div>
+                {svc.tag && <span className="service-tag">{svc.tag}</span>}
+              </div>
               <div className="service-title">{svc.title}</div>
               <p className="service-desc">{svc.desc}</p>
               <div className="service-outcome">
@@ -110,8 +112,10 @@ export default function ServicesSection() {
                 key={`m-${svc.title}`}
                 className={`service-card${svc.featured ? " service-card--featured" : ""}${svc.soon ? " service-card--soon" : ""}`}
               >
-                {svc.tag && <span className="service-tag">{svc.tag}</span>}
-                <div className="service-icon" aria-hidden="true">{svc.icon}</div>
+                <div className="service-card-head">
+                  <div className="service-icon" aria-hidden="true">{svc.icon}</div>
+                  {svc.tag && <span className="service-tag">{svc.tag}</span>}
+                </div>
                 <div className="service-title">{svc.title}</div>
                 <p className="service-desc">{svc.desc}</p>
                 <div className="service-outcome">
