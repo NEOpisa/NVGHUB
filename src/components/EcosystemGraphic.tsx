@@ -2,7 +2,7 @@ import { LOGO_B64 } from "@/lib/logo";
 
 const HUB = { x: 260, y: 260, r: 42 };
 const NODE_R = 16;
-const LOGO_R = HUB.r - 9;
+const LOGO_R = (HUB.r - 9) * 2;
 
 const NODES = [
   { x: 260, y: 92,  label: "Sites",     anchor: "middle" as const, lx: 260, ly: 56  },
@@ -70,7 +70,6 @@ export default function EcosystemGraphic() {
 
       {/* central hub — the NEOVANGUARD mark, the point everything connects to */}
       <circle cx={HUB.x} cy={HUB.y} r={HUB.r + 30} fill="url(#eco-hub-glow)" className="eco-hub-halo" />
-      <circle cx={HUB.x} cy={HUB.y} r={HUB.r} className="eco-hub-disc" />
       <image
         href={LOGO_B64}
         x={HUB.x - LOGO_R}
@@ -80,7 +79,6 @@ export default function EcosystemGraphic() {
         clipPath="url(#eco-hub-clip)"
         preserveAspectRatio="xMidYMid meet"
       />
-      <circle cx={HUB.x} cy={HUB.y} r={HUB.r} className="eco-hub-ring" />
     </svg>
   );
 }
