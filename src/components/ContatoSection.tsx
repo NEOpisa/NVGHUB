@@ -13,14 +13,17 @@ export default function ContatoSection() {
 
   const [form, setForm] = useState({ nome: "", email: "", mensagem: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "err">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    if (status === "err") setStatus("idle");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
+    setErrorMsg("");
 
     try {
       const res = await fetch("/api/contact", {
@@ -28,15 +31,18 @@ export default function ContatoSection() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
         setStatus("ok");
         setForm({ nome: "", email: "", mensagem: "" });
       } else {
         setStatus("err");
+        setErrorMsg(data.error ?? "Não foi possível enviar sua mensagem.");
       }
     } catch {
       setStatus("err");
+      setErrorMsg("Não foi possível enviar sua mensagem. Verifique sua conexão.");
     }
   };
 
@@ -128,14 +134,14 @@ export default function ContatoSection() {
             )}
             {status === "err" && (
               <div className="form-message error">
-                Em construção. Tente pelo WhatsApp.
+                {errorMsg} Tente novamente ou fale pelo WhatsApp.
               </div>
             )}
 
             <button
               className="form-submit"
               type="submit"
-              disabled={status === "loading" || status === "ok" || status === "err"}
+              disabled={status === "loading" || status === "ok"}
             >
               {status === "loading" ? "Enviando..." : "Enviar mensagem"}
             </button>
