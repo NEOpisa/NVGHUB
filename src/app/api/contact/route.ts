@@ -11,13 +11,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Campos obrigatórios faltando.' }, { status: 400 });
     }
 
-    await resend.emails.send({
-      from: 'NeoVanguard <contato@neovanguard.com.br>',
+    const { error } = await resend.emails.send({
+      from: 'Neovanguard <contato@neovanguard.com.br>',
       to: 'comercial@neovanguard.com',
       replyTo: email,
       subject: `Novo contato de ${nome}`,
       text: `Nome: ${nome}\nEmail: ${email}\n\nMensagem:\n${mensagem}`,
     });
+
+    if (error) {
+      console.error(error);
+      return NextResponse.json({ error: 'Erro ao enviar e-mail.' }, { status: 502 });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
