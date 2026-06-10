@@ -835,6 +835,13 @@ html {
   0%, 100% { box-shadow: 0 4px 16px rgba(124,58,237,0.35); }
   50%       { box-shadow: 0 4px 26px rgba(124,58,237,0.6); }
 }
+.pricing-badge--alt {
+  background: var(--surface-raised);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-hover);
+  box-shadow: none;
+  animation: none;
+}
 @media (prefers-reduced-motion: reduce) {
   .pricing-badge { animation: none; }
 }

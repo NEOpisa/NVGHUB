@@ -6,10 +6,13 @@ import { useReveal } from "@/hooks/useReveal";
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
 const OPCOES = [
-  { id: "site",       label: "Site Profissional",        desc: "Landing page responsiva + 3 meses de suporte",     price: 760  },
-  { id: "sistema",    label: "+ Sistema para Negócio",   desc: "Cardápio, agendamento ou catálogo com painel de controle",     price: 930 },
-  { id: "seo",        label: "+ SEO Avançado",           desc: "Google Meu Negócio configurado + estratégia de palavras-chave", price: 390  },
-  { id: "manutencao", label: "+ Manutenção Mensal",      desc: "Suporte de 5 meses após o período incluso nos planos",           price: 530  },
+  { id: "site",       label: "Site Profissional",          desc: "Página única com foto, descrição e botão WhatsApp",             price: 350  },
+  { id: "presenca",   label: "+ SEO Local & Google",       desc: "SEO local básico + Google Meu Negócio configurado",              price: 250  },
+  { id: "sistema",    label: "+ Sistema para Negócio",     desc: "Cardápio, agendamento ou catálogo com painel de controle",       price: 600  },
+  { id: "ecommerce",  label: "+ Loja Virtual (E-commerce)", desc: "Carrinho + pagamento via Pix e Mercado Pago + painel do lojista", price: 1600 },
+  { id: "identidade", label: "+ Identidade Visual",        desc: "Logo, paleta de cores e manual básico de marca",                 price: 300  },
+  { id: "dominio",    label: "+ Domínio e Hospedagem",     desc: "Registro de domínio .com.br + hospedagem por 12 meses",          price: 150  },
+  { id: "manutencao", label: "+ Suporte Estendido",        desc: "Mais 5 meses de suporte além do período incluso nos pacotes",    price: 350  },
 ];
 
 export default function OrcamentoSection() {
@@ -24,7 +27,7 @@ export default function OrcamentoSection() {
     );
 
   const itens = OPCOES.filter((o) => selecionados.includes(o.id));
-  const total  = itens.reduce((s, o) => s + o.price, 0);
+  const total = itens.reduce((s, o) => s + o.price, 0);
 
   const msg =
     itens.length > 0
