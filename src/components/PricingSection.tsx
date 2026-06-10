@@ -2,12 +2,13 @@
 
 import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
-
-const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
+import { CheckIcon, StoreIcon, MapPinIcon, GearIcon, CartIcon, RocketIcon } from "@/components/icons";
+import { WA } from "@/lib/constants";
 
 const PACOTES = [
   {
     name: "Vitrine",
+    icon: <StoreIcon />,
     tagline: "Para quem quer existir online rapidamente",
     from: "A partir de",
     price: "R$ 430",
@@ -28,6 +29,7 @@ const PACOTES = [
   },
   {
     name: "Presença",
+    icon: <MapPinIcon />,
     tagline: "Para quem quer ser encontrado no Google",
     from: "A partir de",
     price: "R$ 730",
@@ -46,6 +48,7 @@ const PACOTES = [
   },
   {
     name: "Sistema",
+    icon: <GearIcon />,
     tagline: "Para quem quer o site funcionando como ferramenta do negócio",
     from: "A partir de",
     price: "R$ 1.460",
@@ -65,6 +68,7 @@ const PACOTES = [
   },
   {
     name: "E-commerce",
+    icon: <CartIcon />,
     tagline: "Para quem quer vender online",
     from: "A partir de",
     price: "R$ 4.200",
@@ -83,6 +87,7 @@ const PACOTES = [
   },
   {
     name: "SaaS",
+    icon: <RocketIcon />,
     tagline: "Solução escalável em desenvolvimento",
     from: "Assinatura mensal",
     price: "Em breve",
@@ -131,13 +136,14 @@ export default function PricingSection() {
                   {plan.badge}
                 </div>
               )}
+              <div className="pricing-icon" aria-hidden="true">{plan.icon}</div>
               <div className="pricing-plan">
                 {plan.name}
               </div>
               <div className="pricing-tagline">{plan.tagline}</div>
               <div className="pricing-price-wrap">
                 <div className="pricing-from">{plan.from}</div>
-                <div className="pricing-price">
+                <div className={`pricing-price${plan.price.startsWith("R$") ? "" : " pricing-price--text"}`}>
                   {plan.price}
                 </div>
                 <div className="pricing-period">{plan.period}</div>
@@ -145,7 +151,7 @@ export default function PricingSection() {
               <div className="pricing-features">
                 {plan.features.map((f) => (
                   <div key={f} className="pricing-feature">
-                    <CheckIcon />
+                    <CheckIcon size={14} />
                     {f}
                   </div>
                 ))}
@@ -160,13 +166,5 @@ export default function PricingSection() {
         </div>
       </div>
     </section>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
   );
 }

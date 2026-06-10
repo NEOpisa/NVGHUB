@@ -2,17 +2,45 @@
 
 import { useState, useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
-
-const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
+import {
+  CheckIcon,
+  WhatsAppIcon,
+  StoreIcon,
+  MapPinIcon,
+  GearIcon,
+  CartIcon,
+  GlobeIcon,
+  EditIcon,
+  BarChartIcon,
+  BotIcon,
+  PaletteIcon,
+  FileTextIcon,
+  ZapIcon,
+  ShieldIcon,
+} from "@/components/icons";
+import { WA } from "@/lib/constants";
 
 const OPCOES = [
-  { id: "site",       label: "Site Profissional",          desc: "Página única com foto, descrição e botão WhatsApp",          price: 430 },
-  { id: "presenca",   label: "+ SEO Local & Google",       desc: "SEO local básico + Google Meu Negócio configurado",           price: 305 },
-  { id: "sistema",    label: "+ Sistema para Negócio",     desc: "Cardápio, agendamento ou catálogo com painel de controle",    price: 730 },
-  { id: "identidade", label: "+ Identidade Visual",        desc: "Logo, paleta de cores e manual básico de marca",              price: 365 },
-  { id: "pagina",     label: "+ Página Extra",             desc: "Adicione uma página ao site (Sobre, Serviços, Blog, Portfólio)", price: 150 },
-  { id: "whatsapp",   label: "+ Catálogo no WhatsApp",     desc: "Configuração do catálogo de produtos e respostas automáticas", price: 180 },
-  { id: "manutencao", label: "+ Suporte Estendido",        desc: "Mais 5 meses de suporte além do período incluso nos pacotes", price: 425 },
+  { id: "site",       label: "Site Profissional",          desc: "Página única com foto, descrição e botão WhatsApp",          price: 430,  icon: <StoreIcon size={18} /> },
+  { id: "dominio",    label: "+ Domínio & E-mail Profissional", desc: "Registro do domínio (.com.br) por 1 ano + e-mails com seu nome", price: 180, icon: <GlobeIcon size={18} /> },
+  { id: "presenca",   label: "+ SEO Local & Google",       desc: "SEO local básico + Google Meu Negócio configurado",           price: 305,  icon: <MapPinIcon size={18} /> },
+  { id: "identidade", label: "+ Identidade Visual",        desc: "Logo, paleta de cores e manual básico de marca",              price: 365,  icon: <PaletteIcon size={18} /> },
+  { id: "blog",       label: "+ Blog / Área de Conteúdo",  desc: "Página de blog para publicar novidades e melhorar seu SEO",  price: 240,  icon: <EditIcon size={18} /> },
+  { id: "pagina",     label: "+ Página Extra",             desc: "Adicione uma página ao site (Sobre, Serviços, Blog, Portfólio)", price: 150, icon: <FileTextIcon size={18} /> },
+  { id: "analytics",  label: "+ Análise de Tráfego",       desc: "Google Analytics e Meta Pixel configurados para acompanhar visitantes", price: 150, icon: <BarChartIcon size={18} /> },
+  { id: "sistema",    label: "+ Sistema para Negócio",     desc: "Cardápio, agendamento ou catálogo com painel de controle",    price: 730,  icon: <GearIcon size={18} /> },
+  { id: "loja",       label: "+ Loja Virtual Simples",     desc: "Catálogo com carrinho e pagamento via Pix ou cartão (até 20 produtos)", price: 1350, icon: <CartIcon size={18} /> },
+  { id: "whatsapp",   label: "+ Catálogo no WhatsApp",     desc: "Configuração do catálogo de produtos e respostas automáticas", price: 180,  icon: <WhatsAppIcon size={18} /> },
+  { id: "chatbot",    label: "+ Chatbot no Site",          desc: "Assistente automático para responder perguntas frequentes dos visitantes", price: 380, icon: <BotIcon size={18} /> },
+  { id: "velocidade", label: "+ Otimização de Performance", desc: "Ajustes técnicos para o site carregar mais rápido e pontuar melhor no Google", price: 200, icon: <ZapIcon size={18} /> },
+  { id: "manutencao", label: "+ Suporte Estendido",        desc: "Mais 5 meses de suporte além do período incluso nos pacotes", price: 425,  icon: <ShieldIcon size={18} /> },
+];
+
+const CATEGORIAS = [
+  { name: "Para começar", ids: ["site", "dominio", "presenca"] },
+  { name: "Conteúdo & Marca", ids: ["identidade", "blog", "pagina", "analytics"] },
+  { name: "Sistemas & Vendas", ids: ["sistema", "loja", "whatsapp", "chatbot"] },
+  { name: "Suporte & Performance", ids: ["velocidade", "manutencao"] },
 ];
 
 export default function OrcamentoSection() {
@@ -47,30 +75,37 @@ export default function OrcamentoSection() {
           </p>
         </div>
 
-        <div className="orcamento-grid">
-          {OPCOES.map((opcao) => {
-            const ativo = selecionados.includes(opcao.id);
-            return (
-              <button
-                key={opcao.id}
-                className={`orcamento-item${ativo ? " ativo" : ""}`}
-                onClick={() => toggle(opcao.id)}
-                aria-pressed={ativo}
-              >
-                <div className="orcamento-check" aria-hidden="true">
-                  {ativo && <CheckIcon />}
-                </div>
-                <div className="orcamento-info">
-                  <div className="orcamento-label">{opcao.label}</div>
-                  <div className="orcamento-desc">{opcao.desc}</div>
-                </div>
-                <div className="orcamento-price">
-                  + R$ {opcao.price.toLocaleString("pt-BR")}
-                </div>
-              </button>
-            );
-          })}
-        </div>
+        {CATEGORIAS.map((categoria) => (
+          <div className="orcamento-categoria" key={categoria.name}>
+            <h3 className="orcamento-categoria-title">{categoria.name}</h3>
+            <div className="orcamento-grid">
+              {categoria.ids.map((id) => {
+                const opcao = OPCOES.find((o) => o.id === id)!;
+                const ativo = selecionados.includes(opcao.id);
+                return (
+                  <button
+                    key={opcao.id}
+                    className={`orcamento-item${ativo ? " ativo" : ""}`}
+                    onClick={() => toggle(opcao.id)}
+                    aria-pressed={ativo}
+                  >
+                    <div className="orcamento-icon" aria-hidden="true">{opcao.icon}</div>
+                    <div className="orcamento-info">
+                      <div className="orcamento-label">{opcao.label}</div>
+                      <div className="orcamento-desc">{opcao.desc}</div>
+                    </div>
+                    <div className="orcamento-price">
+                      + R$ {opcao.price.toLocaleString("pt-BR")}
+                    </div>
+                    <div className="orcamento-check" aria-hidden="true">
+                      {ativo && <CheckIcon size={12} strokeWidth={3} />}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
 
         <div className="orcamento-footer">
           <div className="orcamento-total">
@@ -85,7 +120,7 @@ export default function OrcamentoSection() {
             rel="noopener noreferrer"
             className="btn-primary"
           >
-            <WaIcon />
+            <WhatsAppIcon size={15} />
             {selecionados.length === 0 ? "Falar com a equipe" : "Solicitar este orçamento"}
           </a>
         </div>
@@ -94,18 +129,3 @@ export default function OrcamentoSection() {
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
-  );
-}
-
-function WaIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-    </svg>
-  );
-}

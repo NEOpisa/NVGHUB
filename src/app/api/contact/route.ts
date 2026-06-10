@@ -4,6 +4,22 @@ import { NextResponse } from 'next/server';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_LEN = { nome: 120, email: 180, mensagem: 4000 };
 
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 3;
+const lastRequests = new Map<string, number[]>();
+
+function isRateLimited(ip: string) {
+  const now = Date.now();
+  const timestamps = (lastRequests.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  if (timestamps.length >= RATE_LIMIT_MAX) {
+    lastRequests.set(ip, timestamps);
+    return true;
+  }
+  timestamps.push(now);
+  lastRequests.set(ip, timestamps);
+  return false;
+}
+
 function escapeHtml(s: string) {
   return s
     .replace(/&/g, '&amp;')
@@ -14,11 +30,21 @@ function escapeHtml(s: string) {
 }
 
 export async function POST(req: Request) {
-  let body: { nome?: unknown; email?: unknown; mensagem?: unknown };
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: 'Muitas tentativas. Aguarde alguns minutos e tente novamente.' }, { status: 429 });
+  }
+
+  let body: { nome?: unknown; email?: unknown; mensagem?: unknown; empresa?: unknown };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: 'Requisição inválida.' }, { status: 400 });
+  }
+
+  // Honeypot: campo invisível que só bots preenchem.
+  if (typeof body.empresa === 'string' && body.empresa.trim() !== '') {
+    return NextResponse.json({ ok: true });
   }
 
   const nome = typeof body.nome === 'string' ? body.nome.trim() : '';
