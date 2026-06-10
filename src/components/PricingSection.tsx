@@ -25,7 +25,7 @@ const PACOTES = [
       "2 meses de suporte",
     ],
     cta: "Começar com Vitrine",
-    href: WA,
+    message: "Olá! Quero contratar o pacote Vitrine (R$ 430, pagamento único).",
   },
   {
     name: "Presença",
@@ -44,7 +44,7 @@ const PACOTES = [
       "5 meses de suporte",
     ],
     cta: "Começar com Presença",
-    href: WA,
+    message: "Olá! Quero contratar o pacote Presença (R$ 730, pagamento único).",
   },
   {
     name: "Sistema",
@@ -64,7 +64,7 @@ const PACOTES = [
       "5 meses de suporte",
     ],
     cta: "Começar com Sistema",
-    href: WA,
+    message: "Olá! Quero contratar o pacote Sistema (R$ 1.460, pagamento único).",
   },
   {
     name: "E-commerce",
@@ -83,7 +83,7 @@ const PACOTES = [
       "5 meses de suporte",
     ],
     cta: "Quero minha loja virtual",
-    href: WA,
+    message: "Olá! Quero contratar o pacote E-commerce (R$ 3.130, pagamento único).",
   },
   {
     name: "SaaS",
@@ -102,7 +102,7 @@ const PACOTES = [
       "Preço e detalhes revelados em breve",
     ],
     cta: "Entrar na lista de espera",
-    href: WA,
+    message: "Olá! Quero entrar na lista de espera do pacote SaaS da Neovanguard.",
   },
 ];
 
@@ -157,7 +157,7 @@ export default function PricingSection() {
                 ))}
               </div>
               <div className={`pricing-cta${plan.featured ? " primary" : ""}`}>
-                <a href={plan.href} target={plan.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
+                <a href={`${WA}?text=${encodeURIComponent(plan.message)}`} target="_blank" rel="noopener noreferrer">
                   {plan.cta}
                 </a>
               </div>
