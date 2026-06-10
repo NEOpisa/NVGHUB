@@ -35,7 +35,7 @@ const OPCOES = [
 ];
 
 const CATEGORIAS = [
-  { name: "Para começar", ids: ["site", "dominio", "pagina", "presenca"] },
+  { name: "Para começar", ids: ["site", "pagina", "dominio", "presenca"] },
   { name: "Conteúdo & Marca", ids: ["identidade", "blog", "analytics"] },
   { name: "Sistemas & Vendas", ids: ["loja", "whatsapp", "chatbot"] },
   { name: "Suporte & Performance", ids: ["velocidade", "manutencao"] },
