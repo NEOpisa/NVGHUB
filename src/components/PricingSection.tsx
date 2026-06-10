@@ -5,17 +5,38 @@ import { useReveal } from "@/hooks/useReveal";
 
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
-const PLANS = [
+const PACOTES = [
+  {
+    name: "Vitrine",
+    tagline: "Para quem quer existir online rapidamente",
+    from: "A partir de",
+    price: "R$ 350",
+    period: "pagamento único",
+    featured: false,
+    badge: "Comece por aqui",
+    badgeVariant: "alt",
+    features: [
+      "Página única profissional com foto e descrição do negócio",
+      "Horário de funcionamento em destaque",
+      "Botão WhatsApp integrado",
+      "Links para todas as suas redes sociais",
+      "Entrega em até 7 dias úteis",
+      "2 meses de suporte",
+    ],
+    cta: "Começar com Vitrine",
+    href: WA,
+  },
   {
     name: "Presença",
-    tagline: "Para quem quer estar no digital agora",
+    tagline: "Para quem quer ser encontrado no Google",
     from: "A partir de",
-    price: "R$ 930 ",
+    price: "R$ 600",
     period: "pagamento único",
     featured: false,
     features: [
-      "Landing page responsiva",
-      "SEO local básico + Google Meu Negócio",
+      "Landing page completa e responsiva",
+      "SEO local básico",
+      "Google Meu Negócio configurado",
       "Botão WhatsApp integrado",
       "Entrega em até 16 dias úteis",
       "5 meses de suporte",
@@ -25,37 +46,55 @@ const PLANS = [
   },
   {
     name: "Sistema",
-    tagline: "Para quem quer automatizar e vender mais",
+    tagline: "Para quem quer o site funcionando como ferramenta do negócio",
     from: "A partir de",
-    price: "R$ 2.390",
+    price: "R$ 1.200",
     period: "pagamento único",
     featured: true,
     badge: "Mais escolhido",
     features: [
-      "Tudo do plano Presença",
-      "Cardápio digital / Agendamento / Catálogo",
+      "Tudo do pacote Presença",
+      "Cardápio digital, agendamento ou catálogo",
       "Painel de controle do cliente",
+      "Treinamento de uso por vídeo (1h)",
       "Entrega em até 26 dias úteis",
-      "5 meses de suporte incluídos",
-      "Treinamento de uso (1h via vídeo)",
+      "5 meses de suporte",
     ],
     cta: "Começar com Sistema",
     href: WA,
   },
   {
-    name: "SaaS",
-    taglineSuffix: "(em breve)",
-    tagline: "Solução pronta para o seu segmento",
-    from: "Assinatura mensal",
-    price: "Em lançamento",
-    priceMuted: true,
-    period: "preço revelado em breve",
+    name: "E-commerce",
+    tagline: "Para quem quer vender online",
+    from: "A partir de",
+    price: "R$ 2.800",
+    period: "pagamento único",
     featured: false,
     features: [
+      "Loja virtual completa com carrinho",
+      "Pagamento via Pix e Mercado Pago",
+      "Gestão básica de estoque",
+      "Painel do lojista",
+      "Entrega em até 35 dias úteis",
+      "5 meses de suporte",
+    ],
+    cta: "Quero minha loja virtual",
+    href: WA,
+  },
+  {
+    name: "SaaS",
+    tagline: "Solução escalável em desenvolvimento",
+    from: "Assinatura mensal",
+    price: "Em breve",
+    period: "Detalhes a confirmar",
+    featured: false,
+    badge: "Em breve",
+    badgeVariant: "alt",
+    features: [
+      "Plataforma pronta pro seu segmento",
       "Sem desenvolvimento customizado",
-      "Pronto para clínicas e restaurantes",
-      "Atualizações automáticas incluídas",
-      "Suporte contínuo no plano",
+      "Atualizações e suporte contínuo inclusos",
+      "Preço e detalhes revelados em breve",
     ],
     cta: "Entrar na lista de espera",
     href: WA,
@@ -69,42 +108,36 @@ export default function PricingSection() {
   useReveal(gridRef, 80);
 
   return (
-    <section id="precos" aria-label="Planos e preços">
+    <section id="precos" aria-label="Pacotes e preços">
       <div className="inner">
         <div ref={headerRef}>
-          <span className="section-eyebrow">Planos & Preços</span>
+          <span className="section-eyebrow">Pacotes & Preços</span>
           <h2 className="section-heading">
-            Escolha o plano <span className="text-accent-nvg">certo pra você</span>
+            Escolha o pacote <span className="text-accent-nvg">certo pra você</span>
           </h2>
           <p className="section-sub">
-            Preços transparentes, sem letra miúda. Entrega em até 16 dias úteis — ou você não paga.
+            Preços transparentes, sem letra miúda. Da vitrine digital à loja virtual completa — tem um pacote pro seu momento.
           </p>
         </div>
 
         <div className="pricing-grid" ref={gridRef}>
-          {PLANS.map((plan) => (
+          {PACOTES.map((plan) => (
             <article
               key={plan.name}
               className={`pricing-card${plan.featured ? " featured" : ""}`}
             >
-              {plan.featured && plan.badge && (
-                <div className="pricing-badge">{plan.badge}</div>
+              {plan.badge && (
+                <div className={`pricing-badge${plan.badgeVariant ? ` pricing-badge--${plan.badgeVariant}` : ""}`}>
+                  {plan.badge}
+                </div>
               )}
               <div className="pricing-plan">
                 {plan.name}
-                {plan.taglineSuffix && (
-                  <span style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: 400 }}>
-                    {" "}({plan.taglineSuffix})
-                  </span>
-                )}
               </div>
               <div className="pricing-tagline">{plan.tagline}</div>
               <div className="pricing-price-wrap">
                 <div className="pricing-from">{plan.from}</div>
-                <div
-                  className="pricing-price"
-                  style={plan.priceMuted ? { fontSize: "22px", color: "var(--text-secondary)" } : undefined}
-                >
+                <div className="pricing-price">
                   {plan.price}
                 </div>
                 <div className="pricing-period">{plan.period}</div>

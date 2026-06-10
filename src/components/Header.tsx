@@ -9,7 +9,7 @@ const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 const NAV_LINKS = [
   { label: "Serviços", href: "#servicos" },
   { label: "Orçamento", href: "#orcamento" },
-  { label: "Planos", href: "#precos" },
+  { label: "Pacotes", href: "#precos" },
   { label: "Contato", href: "#contato" },
 ];
 
