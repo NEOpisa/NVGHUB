@@ -6,11 +6,10 @@ import { useReveal } from "@/hooks/useReveal";
 const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
 
 const OPCOES = [
-  { id: "site",       label: "Site Profissional",          desc: "Página única com foto, descrição e botão WhatsApp",          price: 430 },
-  { id: "presenca",   label: "+ SEO Local & Google",       desc: "SEO local básico + Google Meu Negócio configurado",           price: 305 },
-  { id: "sistema",    label: "+ Sistema para Negócio",     desc: "Cardápio, agendamento ou catálogo com painel de controle",    price: 730 },
-  { id: "identidade", label: "+ Identidade Visual",        desc: "Logo, paleta de cores e manual básico de marca",              price: 365 },
+  { id: "site",       label: "Site Profissional",          desc: "Página única apresentando a empresa, descrição e botão WhatsApp",          price: 530 },
   { id: "pagina",     label: "+ Página Extra",             desc: "Adicione uma página ao site (Sobre, Serviços, Blog, Portfólio)", price: 150 },
+  { id: "presenca",   label: "+ SEO Local & Google",       desc: "SEO local básico + Google Meu Negócio configurado",           price: 305 },
+  { id: "identidade", label: "+ Identidade Visual",        desc: "Logo, paleta de cores e manual básico de marca",              price: 365 },
   { id: "whatsapp",   label: "+ Catálogo no WhatsApp",     desc: "Configuração do catálogo de produtos e respostas automáticas", price: 180 },
   { id: "manutencao", label: "+ Suporte Estendido",        desc: "Mais 5 meses de suporte além do período incluso nos pacotes", price: 425 },
 ];
