@@ -28,8 +28,8 @@ const OPCOES = [
   { id: "blog",       label: "+ Blog / Área de Conteúdo",  desc: "Página de blog para publicar novidades e melhorar seu SEO",  price: 240,  icon: <EditIcon size={18} /> },
   { id: "analytics",  label: "+ Análise de Tráfego",       desc: "Google Analytics e Meta Pixel configurados para acompanhar visitantes", price: 250, icon: <BarChartIcon size={18} /> },
   { id: "loja",       label: "+ Loja Virtual Simples",     desc: "Catálogo com carrinho e pagamento via Pix ou cartão (até 20 produtos)", price: 1350, icon: <CartIcon size={18} /> },
-  { id: "whatsapp",   label: "+ Catálogo no WhatsApp",     desc: "Configuração do catálogo de produtos e respostas automáticas", price: 280,  icon: <WhatsAppIcon size={18} /> },
-  { id: "chatbot",    label: "+ Chatbot no Site",          desc: "Assistente automático para responder perguntas frequentes dos visitantes", price: 380, icon: <BotIcon size={18} /> },
+  { id: "whatsapp",   label: "+ Catálogo no WhatsApp",     desc: "Configuração do catálogo de produtos e respostas automáticas", price: 380,  icon: <WhatsAppIcon size={18} /> },
+  { id: "chatbot",    label: "+ Chatbot no Site",          desc: "Assistente automático para responder perguntas frequentes dos visitantes", price: 1280, icon: <BotIcon size={18} /> },
   { id: "velocidade", label: "+ Otimização de Performance", desc: "Ajustes técnicos para o site carregar mais rápido e pontuar melhor no Google", price: 200, icon: <ZapIcon size={18} /> },
   { id: "manutencao", label: "+ Suporte Estendido",        desc: "Mais 5 meses de suporte além do período incluso nos pacotes", price: 425,  icon: <ShieldIcon size={18} /> },
 ];
