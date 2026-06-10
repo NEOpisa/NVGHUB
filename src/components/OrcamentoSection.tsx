@@ -20,7 +20,7 @@ import {
 import { WA } from "@/lib/constants";
 
 const OPCOES = [
-  { id: "site",       label: "Site Profissional",          desc: "Página única apresentando a empresa, descrição e botão WhatsApp", price: 530,  icon: <StoreIcon size={18} /> },
+  { id: "site",       label: "+ Site Profissional",          desc: "Página única apresentando a empresa, descrição e botão WhatsApp", price: 530,  icon: <StoreIcon size={18} /> },
   { id: "pagina",     label: "+ Página Extra",             desc: "Adicione uma página ao site (Sobre, Serviços, Blog, Portfólio)", price: 150, icon: <FileTextIcon size={18} /> },
   { id: "dominio",    label: "+ Domínio & E-mail Profissional", desc: "Registro do domínio (.com.br) por 1 ano + e-mails com seu nome", price: 380, icon: <GlobeIcon size={18} /> },
   { id: "presenca",   label: "+ SEO Local & Google",       desc: "SEO local básico + Google Meu Negócio configurado",           price: 305,  icon: <MapPinIcon size={18} /> },
