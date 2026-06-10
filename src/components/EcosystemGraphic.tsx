@@ -1,6 +1,6 @@
 const HUB = { x: 260, y: 260, r: 42 };
 const NODE_R = 16;
-const LOGO_R = (HUB.r - 9) * 2;
+const LOGO_R = (HUB.r - 9) * 3;
 
 const NODES = [
   { x: 260, y: 92,  label: "Sites",     anchor: "middle" as const, lx: 260, ly: 56  },
