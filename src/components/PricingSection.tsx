@@ -71,7 +71,7 @@ const PACOTES = [
     icon: <CartIcon />,
     tagline: "Para quem quer vender online",
     from: "A partir de",
-    price: "R$ 4.200",
+    price: "R$ 3.130",
     period: "pagamento único",
     featured: false,
     features: [
