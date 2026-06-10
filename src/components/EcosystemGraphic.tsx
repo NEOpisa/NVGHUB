@@ -1,5 +1,3 @@
-import { LOGO_B64 } from "@/lib/logo";
-
 const HUB = { x: 260, y: 260, r: 42 };
 const NODE_R = 16;
 const LOGO_R = (HUB.r - 9) * 2;
@@ -71,7 +69,7 @@ export default function EcosystemGraphic() {
       {/* central hub — the NEOVANGUARD mark, the point everything connects to */}
       <circle cx={HUB.x} cy={HUB.y} r={HUB.r + 30} fill="url(#eco-hub-glow)" className="eco-hub-halo" />
       <image
-        href={LOGO_B64}
+        href="/logo.png"
         x={HUB.x - LOGO_R}
         y={HUB.y - LOGO_R}
         width={LOGO_R * 2}

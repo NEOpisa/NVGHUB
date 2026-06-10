@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import NoxzModal from "@/components/NoxzSection";
-import { LOGO_B64 } from "@/lib/logo";
-
-const WA = "https://wa.me/qr/YDKPLNZS2ZDBC1";
+import { WhatsAppIcon } from "@/components/icons";
+import { WA } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Serviços", href: "#servicos" },
@@ -16,6 +15,7 @@ const NAV_LINKS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [noxzOpen, setNoxzOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,6 +28,21 @@ export default function Header() {
     window.addEventListener("open-noxz", handler);
     return () => window.removeEventListener("open-noxz", handler);
   }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    document.body.style.overflow = "hidden";
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [mobileOpen]);
+
+  const closeMobile = () => setMobileOpen(false);
 
   return (
     <>
@@ -51,9 +66,9 @@ export default function Header() {
         }}
       >
         {/* Wordmark */}
-        <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — página inicial">
+        <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — página inicial" onClick={closeMobile}>
           <img
-            src={LOGO_B64}
+            src="/logo.png"
             alt=""
             aria-hidden
             className="nav-logo"
@@ -81,8 +96,51 @@ export default function Header() {
           <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta">
             Solicitar orçamento
           </a>
+          <button
+            className="nav-mobile-toggle"
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+          >
+            <span className="nav-mobile-toggle-bar" />
+            <span className="nav-mobile-toggle-bar" />
+            <span className="nav-mobile-toggle-bar" />
+          </button>
         </div>
       </header>
+
+      {mobileOpen && (
+        <div className="nav-mobile-overlay" onClick={closeMobile} aria-hidden="true" />
+      )}
+      {mobileOpen && (
+        <nav id="mobile-menu" aria-label="Navegação mobile" className="nav-mobile-menu">
+          {NAV_LINKS.map(({ label, href }) => (
+            <a key={href} href={href} className="nav-mobile-link" onClick={closeMobile}>
+              {label}
+            </a>
+          ))}
+          <button
+            className="nav-mobile-link"
+            onClick={() => {
+              setNoxzOpen(true);
+              closeMobile();
+            }}
+          >
+            Metodologia
+          </button>
+          <a
+            href={WA}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary nav-mobile-cta"
+            onClick={closeMobile}
+          >
+            <WhatsAppIcon />
+            Solicitar orçamento
+          </a>
+        </nav>
+      )}
 
       <NoxzModal isOpen={noxzOpen} onClose={() => setNoxzOpen(false)} />
     </>
