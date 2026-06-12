@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { CheckIcon } from "@/components/icons";
+import TiltCard from "@/components/TiltCard";
 
 const SERVICES = [
   {
@@ -120,20 +121,25 @@ export default function ServicesSection() {
                   key={svc.title}
                   aria-hidden={i !== activeIdx}
                 >
-                  <article
-                    className={`service-card${svc.featured ? " service-card--featured" : ""}${svc.soon ? " service-card--soon" : ""}`}
-                  >
-                    <div className="service-card-head">
-                      <div className="service-icon" aria-hidden="true">{svc.icon}</div>
-                      {svc.tag && <span className="service-tag">{svc.tag}</span>}
-                    </div>
-                    <div className="service-title">{svc.title}</div>
-                    <p className="service-desc">{svc.desc}</p>
-                    <div className="service-outcome">
-                      <CheckIcon />
-                      {svc.outcome}
-                    </div>
-                  </article>
+                  <TiltCard maxTilt={5}>
+                    <article
+                      className={`service-card${svc.featured ? " service-card--featured" : ""}${svc.soon ? " service-card--soon" : ""}`}
+                    >
+                      <span className="service-num" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div className="service-card-head">
+                        <div className="service-icon" aria-hidden="true">{svc.icon}</div>
+                        {svc.tag && <span className="service-tag">{svc.tag}</span>}
+                      </div>
+                      <div className="service-title">{svc.title}</div>
+                      <p className="service-desc">{svc.desc}</p>
+                      <div className="service-outcome">
+                        <CheckIcon />
+                        {svc.outcome}
+                      </div>
+                    </article>
+                  </TiltCard>
                 </div>
               ))}
             </div>
