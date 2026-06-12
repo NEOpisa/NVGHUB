@@ -15,7 +15,7 @@ export default function Preloader() {
     }
 
     const start = performance.now();
-    const DURATION = 1900;
+    const DURATION = 1000;
     let raf: number;
 
     const tick = (now: number) => {
@@ -29,7 +29,7 @@ export default function Preloader() {
         setTimeout(() => {
           setDone(true);
           document.body.classList.add("site-loaded");
-        }, 350);
+        }, 180);
       }
     };
     raf = requestAnimationFrame(tick);
