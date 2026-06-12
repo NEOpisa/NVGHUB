@@ -587,6 +587,8 @@ html {
 .service-card-head {
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: 12px;
+  /* reserva o canto direito para o número fantasma "01" */
+  padding-right: 110px;
 }
 .service-tag {
   display: inline-flex; align-items: center; flex-shrink: 0;
