@@ -1,6 +1,9 @@
-import EcosystemGraphic from "@/components/EcosystemGraphic";
+import dynamic from "next/dynamic";
 import { WhatsAppIcon, CheckIcon, InstagramIcon } from "@/components/icons";
+import Magnetic from "@/components/Magnetic";
 import { WA, IG } from "@/lib/constants";
+
+const LogoScene = dynamic(() => import("@/components/LogoScene"));
 
 export default function Hero() {
   return (
@@ -9,37 +12,43 @@ export default function Hero() {
 
       <div className="inner hero-grid">
         <div className="hero-copy">
-          <div className="hero-eyebrow-row">
+          <div className="hero-eyebrow-row hero-enter hero-enter-1">
             <span className="badge">
               <span className="badge-dot" aria-hidden="true" />Neovanguard Soluções Digitais</span>
           </div>
 
-          <h1 className="hero-h1">
+          <h1 className="hero-h1 hero-enter hero-enter-2">
             Tudo o que seu negócio precisa no digital,{" "}
             <span className="text-gradient">conectado em um só lugar</span>
           </h1>
 
-          <p className="hero-sub">
+          <p className="hero-sub hero-enter hero-enter-3">
             Sites, sistemas, SEO e suporte — operados como um único ecossistema. Entrega em até <strong>16 dias úteis</strong>,
             suporte real, sem contrato mínimo.
           </p>
 
-          <div className="cta-row">
-            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary">
-              <WhatsAppIcon />
-              Falar pelo WhatsApp
-            </a>
-            <a href="#precos" className="btn-ghost">
-              Ver pacotes e preços
-              <ArrowRightIcon />
-            </a>
-            <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-              <InstagramIcon />
-              Instagram
-            </a>
+          <div className="cta-row hero-enter hero-enter-4">
+            <Magnetic>
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                <WhatsAppIcon />
+                Falar pelo WhatsApp
+              </a>
+            </Magnetic>
+            <Magnetic strength={0.25}>
+              <a href="#precos" className="btn-ghost">
+                Ver pacotes e preços
+                <ArrowRightIcon />
+              </a>
+            </Magnetic>
+            <Magnetic strength={0.25}>
+              <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                <InstagramIcon />
+                Instagram
+              </a>
+            </Magnetic>
           </div>
 
-          <div className="trust-signals">
+          <div className="trust-signals hero-enter hero-enter-5">
             {[
               "Entrega em até 16 dias úteis",
               "Sem contrato mínimo",
@@ -53,8 +62,8 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-visual" aria-hidden="true">
-          <EcosystemGraphic />
+        <div className="hero-visual hero-enter hero-enter-3" aria-hidden="true">
+          <LogoScene />
         </div>
       </div>
 

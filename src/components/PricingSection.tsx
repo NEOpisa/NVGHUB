@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { CheckIcon, StoreIcon, MapPinIcon, GearIcon, CartIcon, RocketIcon } from "@/components/icons";
+import TiltCard from "@/components/TiltCard";
 import { WA } from "@/lib/constants";
 
 const PACOTES = [
@@ -127,8 +128,8 @@ export default function PricingSection() {
 
         <div className="pricing-grid" ref={gridRef}>
           {PACOTES.map((plan) => (
+            <TiltCard key={plan.name} maxTilt={10}>
             <article
-              key={plan.name}
               className={`pricing-card${plan.featured ? " featured" : ""}`}
             >
               {plan.badge && (
@@ -162,6 +163,7 @@ export default function PricingSection() {
                 </a>
               </div>
             </article>
+            </TiltCard>
           ))}
         </div>
       </div>

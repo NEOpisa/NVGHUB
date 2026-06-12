@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import {
   CheckIcon,
@@ -41,6 +41,35 @@ const CATEGORIAS = [
   { name: "Suporte & Performance", ids: ["velocidade", "manutencao"] },
 ];
 
+/* total animado: conta suavemente do valor antigo para o novo */
+function useAnimatedTotal(total: number) {
+  const [display, setDisplay] = useState(total);
+  const prevRef = useRef(total);
+
+  useEffect(() => {
+    const from = prevRef.current;
+    prevRef.current = total;
+    if (from === total) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(total);
+      return;
+    }
+    const start = performance.now();
+    const DURATION = 520;
+    let raf: number;
+    const tick = (now: number) => {
+      const linear = Math.min((now - start) / DURATION, 1);
+      const eased = 1 - Math.pow(1 - linear, 3);
+      setDisplay(Math.round(from + (total - from) * eased));
+      if (linear < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [total]);
+
+  return display;
+}
+
 export default function OrcamentoSection() {
   const headerRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
@@ -54,6 +83,7 @@ export default function OrcamentoSection() {
 
   const itens = OPCOES.filter((o) => selecionados.includes(o.id));
   const total = itens.reduce((s, o) => s + o.price, 0);
+  const totalAnimado = useAnimatedTotal(total);
 
   const msg =
     itens.length > 0
@@ -87,6 +117,7 @@ export default function OrcamentoSection() {
                     onClick={() => toggle(opcao.id)}
                     aria-pressed={ativo}
                   >
+                    <span className="orcamento-burst" aria-hidden="true" />
                     <div className="orcamento-icon" aria-hidden="true">{opcao.icon}</div>
                     <div className="orcamento-info">
                       <div className="orcamento-label">{opcao.label}</div>
@@ -106,10 +137,20 @@ export default function OrcamentoSection() {
         ))}
 
         <div className="orcamento-footer">
+          <span className="orcamento-shine" key={total} aria-hidden="true" />
           <div className="orcamento-total">
-            <span className="orcamento-total-label">Total estimado</span>
+            <span className="orcamento-total-label">
+              Total estimado
+              {selecionados.length > 0 && (
+                <span className="orcamento-count-badge">
+                  {selecionados.length} {selecionados.length === 1 ? "item" : "itens"}
+                </span>
+              )}
+            </span>
             <span className="orcamento-total-value" key={total}>
-              {selecionados.length === 0 ? "—" : `R$ ${total.toLocaleString("pt-BR")}`}
+              {selecionados.length === 0
+                ? "—"
+                : `R$ ${totalAnimado.toLocaleString("pt-BR")}`}
             </span>
           </div>
           <a

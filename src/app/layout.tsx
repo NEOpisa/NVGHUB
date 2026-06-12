@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import AmbientField from "@/components/AmbientField";
+import Preloader from "@/components/Preloader";
+import SmoothScroll from "@/components/SmoothScroll";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
 
@@ -68,6 +70,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
+        <Preloader />
+        <SmoothScroll />
         <AmbientField />
         <ScrollProgress />
         <Header />

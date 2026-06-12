@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
+import { useCountUp } from "@/hooks/useCountUp";
 
 const ITEMS = [
   {
@@ -61,12 +62,13 @@ export default function DiferenciaisSection() {
 function DiffRow({ item, delay }: { item: (typeof ITEMS)[number]; delay: number }) {
   const ref = useRef<HTMLDivElement>(null);
   useReveal(ref, delay);
+  const { ref: statRef, display } = useCountUp(item.stat);
 
   return (
     <div className="diff-row" ref={ref}>
       <div className="diff-stat-col">
-        <div className="diff-stat">
-          {item.stat}
+        <div className="diff-stat" ref={statRef}>
+          {display}
           <span className="diff-stat-suffix">{item.statSuffix}</span>
         </div>
       </div>
