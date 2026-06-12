@@ -40,7 +40,8 @@ export default function Preloader() {
     <div className={`preloader${done ? " preloader--done" : ""}`} aria-hidden="true">
       <div className="preloader-inner">
         <span className="preloader-brand">
-          NEO<span className="preloader-brand-accent">VANGUARD</span>
+          N<span className="preloader-brand-accent">E</span>OVANGUAR
+          <span className="preloader-brand-accent">D</span>
         </span>
         <span className="preloader-counter">{progress}%</span>
         <div className="preloader-bar">
