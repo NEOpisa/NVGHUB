@@ -4,7 +4,7 @@ const imoveis = [
   {
     tag: "Exclusivo",
     brass: true,
-    loc: "[Bairro Nobre] · [Cidade]",
+    loc: "Jardins · São Paulo",
     nome: "Casa Térrea com Pátio Interno",
     preco: "R$ 4.850.000",
     dorm: "4 suítes",
@@ -14,7 +14,7 @@ const imoveis = [
   },
   {
     tag: "Cobertura",
-    loc: "[Bairro Nobre] · [Cidade]",
+    loc: "Jardins · São Paulo",
     nome: "Cobertura Duplex Vista Parque",
     preco: "R$ 6.200.000",
     dorm: "3 suítes",
@@ -24,7 +24,7 @@ const imoveis = [
   },
   {
     tag: "Lançamento",
-    loc: "[Bairro Nobre] · [Cidade]",
+    loc: "Jardins · São Paulo",
     nome: "Residência Contemporânea",
     preco: "R$ 3.480.000",
     dorm: "4 suítes",
@@ -35,7 +35,7 @@ const imoveis = [
   {
     tag: "Exclusivo",
     brass: true,
-    loc: "[Bairro Nobre] · [Cidade]",
+    loc: "Jardins · São Paulo",
     nome: "Apartamento Garden Reformado",
     preco: "R$ 2.150.000",
     dorm: "3 dorm.",
@@ -45,7 +45,7 @@ const imoveis = [
   },
   {
     tag: "Casa de Campo",
-    loc: "[Condomínio] · [Cidade]",
+    loc: "Condomínio · São Paulo",
     nome: "Casa em Condomínio Fechado",
     preco: "R$ 5.700.000",
     dorm: "5 suítes",
@@ -55,7 +55,7 @@ const imoveis = [
   },
   {
     tag: "Vista Mar",
-    loc: "[Orla] · [Cidade]",
+    loc: "Orla · São Paulo",
     nome: "Apartamento Frente Mar",
     preco: "R$ 4.100.000",
     dorm: "4 suítes",

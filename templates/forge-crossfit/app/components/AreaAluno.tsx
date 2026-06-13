@@ -41,7 +41,7 @@ export default function AreaAluno() {
         <div className="dash-header">
           <div>
             <h3>
-              [Nome do Aluno]{" "}
+              Mariana Ferreira{" "}
               <span
                 style={{
                   fontSize: "1rem",

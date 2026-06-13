@@ -29,7 +29,7 @@ export default function CTA() {
           </div>
           <div>
             Estúdio
-            <b>[Endereço] — [Cidade - UF]</b>
+            <b>Av. Paulista, 1842 — São Paulo - SP — São Paulo - SP</b>
           </div>
         </div>
       </div>

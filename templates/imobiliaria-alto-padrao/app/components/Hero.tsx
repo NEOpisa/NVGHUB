@@ -4,7 +4,7 @@ export default function Hero() {
       <div className="hero-img" aria-hidden="true" />
       <div className="wrap">
         <p className="eyebrow" style={{ color: "var(--brass-light)" }}>
-          Imóveis de alto padrão · [Cidade - UF]
+          Imóveis de alto padrão · São Paulo - SP
         </p>
         <h1>
           Endereços que <em>poucos</em> terão o privilégio de chamar de seu
@@ -34,7 +34,7 @@ export default function Hero() {
           </div>
           <div className="field">
             <label>Bairro</label>
-            <input type="text" placeholder="Ex.: [Bairro nobre]" />
+            <input type="text" placeholder="Ex.: Jardins" />
           </div>
           <div className="field">
             <label>Faixa de valor</label>

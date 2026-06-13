@@ -25,7 +25,7 @@ export default function ContentLesson({ isDone, onToggleDone }: ContentLessonPro
     const newComment: Comment = {
       id: `c-${Date.now()}`,
       initials: "AL",
-      author: "[Nome do Aluno]",
+      author: "Mariana Ferreira",
       text: commentInput,
       time: "agora · 0 curtidas",
     };

@@ -6,5 +6,6 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   reactStrictMode: true,
+  env: { NEXT_PUBLIC_BP: "/templates/studio-aura-estetica" },
 };
 export default nextConfig;

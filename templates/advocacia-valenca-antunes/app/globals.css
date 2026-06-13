@@ -7,26 +7,26 @@
    ============================================================ */
 
 :root{
-  /* superfícies vinho */
-  --vinho:#412127;          --vinho:oklch(25.5% 0.05 20);
-  --vinho-2:#4e2a30;        --vinho-2:oklch(29.5% 0.055 20);
-  --vinho-3:#2b1418;        --vinho-3:oklch(19.5% 0.042 20);
-  /* papel */
-  --papel:#faf2ef;          --papel:oklch(96.5% 0.007 30);
-  --papel-2:#f0e4e0;        --papel-2:oklch(93% 0.01 30);
+  /* superfícies — azul esverdeado acinzentado, sério e escuro */
+  --vinho:#25393b;
+  --vinho-2:#2e4648;
+  --vinho-3:#182829;
+  /* papel (claro, levemente frio) */
+  --papel:#eef2f1;
+  --papel-2:#e1e9e7;
   /* tinta (texto sobre papel) */
-  --tinta:#41262b;          --tinta:oklch(25% 0.03 20);
-  --tinta-2:#6e5358;        --tinta-2:oklch(44% 0.028 20);
-  /* carimbo (acento único) */
-  --carimbo:#c43d24;        --carimbo:oklch(55% 0.185 30);
-  --carimbo-tinta:#a32d1c;  --carimbo-tinta:oklch(47% 0.165 28);
-  --carimbo-claro:#e89e85;  --carimbo-claro:oklch(76% 0.105 35);
-  /* texto sobre vinho */
-  --texto-v:#e0d2d1;        --texto-v:oklch(87% 0.015 25);
-  --texto-v-forte:#faf5f4;  --texto-v-forte:oklch(97% 0.005 25);
+  --tinta:#1e2e2f;
+  --tinta-2:#4c5f60;
+  /* acento — teal sóbrio */
+  --carimbo:#46988f;
+  --carimbo-tinta:#2f6f69;
+  --carimbo-claro:#93c2bc;
+  /* texto sobre superfície escura */
+  --texto-v:#cdd9d8;
+  --texto-v-forte:#f1f6f5;
   /* linhas */
-  --linha-v:rgba(250,242,239,.13);
-  --linha-p:rgba(65,38,43,.16);
+  --linha-v:rgba(238,242,241,.13);
+  --linha-p:rgba(30,46,47,.16);
   /* fontes */
   --font-display:var(--font-besley),"Besley",Georgia,serif;
   --font-sans:var(--font-archivo),"Archivo",system-ui,sans-serif;
@@ -483,7 +483,7 @@ h2{font-size:clamp(2rem,3.8vw,3rem)}
   width:100%;
   padding:13px 15px;
   background:#fff;
-  border:1px solid rgba(65,38,43,.3);
+  border:1px solid rgba(30,46,47,.3);
   color:var(--tinta);
   font-family:var(--font-sans);
   font-size:.96rem;
@@ -500,7 +500,7 @@ h2{font-size:clamp(2rem,3.8vw,3rem)}
   padding-right:34px;
 }
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--carimbo-tinta)}
-.field input::placeholder,.field textarea::placeholder{color:#7a6368}
+.field input::placeholder,.field textarea::placeholder{color:#6a7d7d}
 .field .erro-msg{font-size:.78rem;color:var(--carimbo-tinta);margin-top:6px;display:block;font-weight:400}
 .field input[aria-invalid="true"]{border-color:var(--carimbo-tinta)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -604,7 +604,7 @@ h2{font-size:clamp(2rem,3.8vw,3rem)}
 }
 form.qualif{
   background:#fff;
-  border:1px solid rgba(65,38,43,.22);
+  border:1px solid rgba(30,46,47,.22);
   padding:clamp(28px,3.5vw,44px);
   position:relative;
 }

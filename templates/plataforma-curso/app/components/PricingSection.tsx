@@ -14,7 +14,7 @@ export default function PricingSection({ onPurchase }: PricingSectionProps) {
       <div className="section-inner" style={{ textAlign: "center" }}>
         <div className="section-label">Investimento</div>
         <h2 className="section-title">
-          Acesso completo ao <em>[Nome da Plataforma/Curso]</em>
+          Acesso completo ao <em>Código Pro</em>
         </h2>
         <div className="pricing-box">
           <div className="pricing-header">

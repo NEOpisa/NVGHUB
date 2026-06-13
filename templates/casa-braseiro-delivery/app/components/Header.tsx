@@ -10,7 +10,7 @@ export default function Header() {
       <div className="wrap">
         <nav>
           <a className="logo" href="#">
-            [Nome do Restaurante]
+            Casa Braseiro
           </a>
           <ul className="nav-links">
             <li>

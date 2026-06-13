@@ -19,7 +19,7 @@ export default function Sidebar({ currentContent, setCurrentContent, progressPct
             AL
           </div>
           <div>
-            <div style={{ fontSize: "0.875rem", fontWeight: 500 }}>[Nome do Aluno]</div>
+            <div style={{ fontSize: "0.875rem", fontWeight: 500 }}>Mariana Ferreira</div>
             <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Módulo 2 em andamento</div>
           </div>
         </div>

@@ -18,9 +18,9 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome da Imobiliária] — Imóveis de alto padrão em [Cidade - UF]",
+  title: "Alto Padrão Imóveis — Imóveis de alto padrão em São Paulo - SP",
   description:
-    "Curadoria de imóveis de alto padrão em [Cidade - UF]. Casas, apartamentos e coberturas exclusivas, com atendimento privativo e visitas agendadas.",
+    "Curadoria de imóveis de alto padrão em São Paulo - SP. Casas, apartamentos e coberturas exclusivas, com atendimento privativo e visitas agendadas.",
 };
 
 export default function RootLayout({

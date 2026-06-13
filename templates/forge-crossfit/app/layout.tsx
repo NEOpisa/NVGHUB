@@ -25,9 +25,9 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome da Academia] – CrossFit & Força",
+  title: "Forge CrossFit – CrossFit & Força",
   description:
-    "Box de CrossFit afiliado em [Bairro, Cidade - UF]. Comunidade real, resultado real. Aula experimental grátis — ou a segunda semana é por nossa conta.",
+    "Box de CrossFit afiliado em Pinheiros, São Paulo - SP. Comunidade real, resultado real. Aula experimental grátis — ou a segunda semana é por nossa conta.",
 };
 
 export default function RootLayout({

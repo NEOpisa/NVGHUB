@@ -19,7 +19,7 @@ export default function Contato() {
             </p>
             <div className="ci"><span>Telefone</span> (00) 00000-0000</div>
             <div className="ci"><span>E-mail</span> contato@seudominio.com.br</div>
-            <div className="ci"><span>Escritório</span> [Endereço] — [Bairro, Cidade - UF]</div>
+            <div className="ci"><span>Escritório</span> Av. Paulista, 1842 — São Paulo - SP — Pinheiros, São Paulo - SP</div>
             <div className="ci"><span>Horário</span> Seg a Sex 9h–19h · Sáb 9h–13h</div>
           </Reveal>
 

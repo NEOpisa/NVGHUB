@@ -3,13 +3,13 @@ export default function Footer() {
     <footer id="contato">
       <div className="wrap">
         <div className="foot-mark" aria-hidden="true">
-          [Nome do Restaurante]
+          Casa Braseiro
         </div>
         <div className="fg">
           <div>
-            <h4>[Nome do Restaurante]</h4>
+            <h4>Casa Braseiro</h4>
             <p style={{ fontSize: ".88rem" }}>
-              [Endereço completo] — [Bairro, Cidade - UF]
+              Av. Paulista, 1842 — Bela Vista, São Paulo - SP — Pinheiros, São Paulo - SP
               <br />
               Ter–Dom · 18h à 0h | Sáb e Dom também ao almoço
             </p>
@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="fb">
-          <span>© 2026 [Nome do Restaurante].</span>
+          <span>© 2026 Casa Braseiro.</span>
           <span>Política de privacidade · LGPD</span>
         </div>
         <p style={{ fontSize: ".7rem", color: "var(--ink-soft)", opacity: 0.5, marginTop: "12px", textAlign: "center" }}>

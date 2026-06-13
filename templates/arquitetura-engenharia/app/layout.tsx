@@ -17,9 +17,9 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome do Escritório] — Arquitetura & Engenharia em [Cidade - UF]",
+  title: "Valença & Antunes — Arquitetura & Engenharia em São Paulo - SP",
   description:
-    "Escritório de arquitetura e engenharia em [Cidade - UF]. Projeto arquitetônico, estrutural, interiores e gestão de obra — do conceito à entrega das chaves.",
+    "Escritório de arquitetura e engenharia em São Paulo - SP. Projeto arquitetônico, estrutural, interiores e gestão de obra — do conceito à entrega das chaves.",
 };
 
 export default function RootLayout({

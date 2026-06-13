@@ -3,23 +3,23 @@ import Tilt from "./Tilt";
 
 const equipe = [
   {
-    nome: "[Nome do(a) Especialista]",
-    cro: "CRM/UF 000000 · [Especialidade]",
-    desc: "Mestre em Implantodontia, +[XXXX] implantes instalados com cirurgia guiada.",
+    nome: "Dra. Helena Prado",
+    cro: "CRO-SP 54.120 · Implantodontia",
+    desc: "Mestre em Implantodontia, +2012 implantes instalados com cirurgia guiada.",
   },
   {
-    nome: "[Nome do(a) Especialista]",
-    cro: "CRM/UF 000000 · [Especialidade]",
+    nome: "Dr. Rafael Nunes",
+    cro: "CRO-SP 61.034 · Estética Dental",
     desc: "Especialista em reabilitação estética e lentes de contato, formação internacional em DSD.",
   },
   {
-    nome: "[Nome do(a) Especialista]",
-    cro: "CRM/UF 000000 · [Especialidade]",
+    nome: "Dra. Camila Reis",
+    cro: "CRO-SP 58.771 · Ortodontia",
     desc: "Certificada em alinhadores invisíveis, especialista em casos de adultos e adolescentes.",
   },
   {
-    nome: "[Nome do(a) Especialista]",
-    cro: "CRM/UF 000000 · [Especialidade]",
+    nome: "Dr. Eduardo Lima",
+    cro: "CRO-SP 49.205 · Periodontia",
     desc: "Doutor em Periodontia, responsável pelo programa de prevenção contínua da clínica.",
   },
 ];

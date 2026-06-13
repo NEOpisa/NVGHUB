@@ -1,10 +1,10 @@
 import Reveal from "./Reveal";
 
 const nums = [
-  { b: "[XXX] mil", s: "m² projetados" },
-  { b: "[XXX]+", s: "obras entregues" },
-  { b: "[XX] anos", s: "de escritório" },
-  { b: "[XX]", s: "prêmios & publicações" },
+  { b: "320 mil", s: "m² projetados" },
+  { b: "320+", s: "obras entregues" },
+  { b: "48 anos", s: "de escritório" },
+  { b: "48", s: "prêmios & publicações" },
 ];
 
 export default function Numeros() {

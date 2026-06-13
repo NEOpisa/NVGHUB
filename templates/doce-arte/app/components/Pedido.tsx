@@ -166,8 +166,8 @@ export default function Pedido() {
                   color: "#2E7D32",
                 }}
               >
-                <strong>Retirada gratuita!</strong> [Endereço completo] –
-                [Bairro, Cidade - UF]
+                <strong>Retirada gratuita!</strong> Av. Paulista, 1842 — Bela Vista, São Paulo - SP –
+                Pinheiros, São Paulo - SP
                 <br />
                 Horário: Seg–Sáb 9h–20h | Dom 9h–14h
               </div>

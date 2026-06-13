@@ -5,7 +5,7 @@ export interface FaqItem {
 
 export const faqItems: FaqItem[] = [
   {
-    question: "Para quem é o [Nome da Plataforma/Curso]?",
+    question: "Para quem é o Código Pro?",
     answer:
       "Para profissionais autônomos, consultores, criadores de conteúdo e empreendedores de serviço que já têm conhecimento, mas travam na hora de transformar isso em resultado consistente e renda crescente.",
   },

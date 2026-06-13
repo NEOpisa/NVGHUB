@@ -1,9 +1,9 @@
 import Reveal from "./Reveal";
 
 const deps = [
-  { q: "Encontraram a casa dos nossos sonhos antes mesmo de ela ir ao mercado. Discrição e bom gosto do começo ao fim.", n: "[Nome do Cliente]", c: "Comprou em [Bairro]" },
-  { q: "Vendi meu apartamento 12% acima do que esperava, sem stress e sem visita desnecessária. Atendimento impecável.", n: "[Nome do Cliente]", c: "Vendeu em [Bairro]" },
-  { q: "Senti que tinha um sócio cuidando de cada detalhe — jurídico, mudança, reforma. Recomendo de olhos fechados.", n: "[Nome do Cliente]", c: "Cobertura em [Bairro]" },
+  { q: "Encontraram a casa dos nossos sonhos antes mesmo de ela ir ao mercado. Discrição e bom gosto do começo ao fim.", n: "Bruno Almeida", c: "Comprou em Jardins" },
+  { q: "Vendi meu apartamento 12% acima do que esperava, sem stress e sem visita desnecessária. Atendimento impecável.", n: "Bruno Almeida", c: "Vendeu em Jardins" },
+  { q: "Senti que tinha um sócio cuidando de cada detalhe — jurídico, mudança, reforma. Recomendo de olhos fechados.", n: "Bruno Almeida", c: "Cobertura em Jardins" },
 ];
 
 export default function Depoimentos() {

@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
     <section className="hero">
-      <p className="eyebrow">Odontologia de precisão · [Bairro, Cidade - UF]</p>
+      <p className="eyebrow">Odontologia de precisão · Pinheiros, São Paulo - SP</p>
       <h1>
         Todo sorriso conta <strong>uma história.</strong>
       </h1>
@@ -23,15 +23,15 @@ export default function Hero() {
       </div>
       <div className="hero-proof">
         <div className="proof">
-          <b>+[XXXX]</b>
+          <b>+2012</b>
           <span>sorrisos transformados</span>
         </div>
         <div className="proof">
-          <b>[X]</b>
+          <b>12</b>
           <span>anos de excelência clínica</span>
         </div>
         <div className="proof">
-          <b>[X.X] ★</b>
+          <b>4.9 ★</b>
           <span>avaliação no Google</span>
         </div>
       </div>

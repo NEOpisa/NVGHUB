@@ -3,13 +3,13 @@ export default function Footer() {
     <footer>
       <div className="wrap">
         <div className="foot-mark" aria-hidden="true">
-          [Nome] arq+eng
+          Atelier arq+eng
         </div>
         <div className="fg">
           <div>
             <h4>Escritório</h4>
-            <p>[Endereço completo]</p>
-            <p>[Bairro, Cidade - UF]</p>
+            <p>Av. Paulista, 1842 — Bela Vista, São Paulo - SP</p>
+            <p>Pinheiros, São Paulo - SP</p>
             <p>CAU/CREA 00000</p>
           </div>
           <div>
@@ -31,7 +31,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="fb">
-          <span>© 2026 [Nome do Escritório]. Todos os direitos reservados.</span>
+          <span>© 2026 Valença & Antunes. Todos os direitos reservados.</span>
           <span>Provido por Neovanguard</span>
         </div>
       </div>

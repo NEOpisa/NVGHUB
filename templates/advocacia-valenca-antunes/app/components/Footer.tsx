@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <h4>Valença &amp; Antunes</h4>
             <p className="foot-sobre">
-              Advocacia empresarial com atuação em todo o estado de [UF]. Sociedade registrada na
+              Advocacia empresarial com atuação em todo o estado de SP. Sociedade registrada na
               OAB/UF sob nº 00.000.
             </p>
           </div>

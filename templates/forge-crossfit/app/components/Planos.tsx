@@ -42,7 +42,7 @@ const planos = [
       { text: "Análise de vídeo dos movimentos", off: false },
       { text: "Priority check-in", off: false },
       { text: "Acesso a eventos e competições", off: false },
-      { text: "Camiseta exclusiva [Nome da Academia]", off: false },
+      { text: "Camiseta exclusiva Forge CrossFit", off: false },
     ],
   },
 ];

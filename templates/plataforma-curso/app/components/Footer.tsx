@@ -3,10 +3,10 @@ export default function Footer() {
     <footer style={{ padding: "3rem 2rem", borderTop: "1px solid var(--border)", textAlign: "center" }}>
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
         <div className="nav-logo" style={{ display: "inline-block", marginBottom: "1.5rem", fontSize: "1rem" }}>
-          [Nome da Plataforma/Curso]
+          Código Pro
         </div>
         <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", lineHeight: 1.8 }}>
-          © 2025 [Nome da Plataforma/Curso]. Todos os direitos reservados.
+          © 2025 Código Pro. Todos os direitos reservados.
           <br />
           <a href="#" style={{ color: "var(--text-muted)", textDecoration: "none" }}>
             Termos de uso

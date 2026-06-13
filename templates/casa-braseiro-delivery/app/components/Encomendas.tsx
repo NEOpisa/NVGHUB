@@ -18,7 +18,7 @@ export default function Encomendas() {
         </Reveal>
         <Reveal as="div" className="st-card">
           <span className="num">02</span>
-          <h3>Clube [Nome do Restaurante]</h3>
+          <h3>Clube Casa Braseiro</h3>
           <p>
             5% de cashback em todo pedido pelo site, acumulado automático no
             seu cadastro para usar quando quiser.

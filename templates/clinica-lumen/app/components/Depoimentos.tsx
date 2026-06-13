@@ -4,17 +4,17 @@ const depoimentos = [
   {
     texto:
       '"Tinha pavor de dentista. A equipe me acolheu de um jeito que nunca vivi em outra clínica — fiz todo o tratamento sem ansiedade."',
-    autor: "[Nome do Paciente] · Lentes de contato",
+    autor: "Camila Souza · Lentes de contato",
   },
   {
     texto:
       '"Vi a simulação do meu sorriso no computador antes de começar. O resultado final ficou idêntico ao planejado."',
-    autor: "[Nome do Paciente] · Implantes",
+    autor: "Camila Souza · Implantes",
   },
   {
     texto:
       '"Agendamento pelo site, lembrete no WhatsApp, ficha preenchida em casa. Atendimento pontual do início ao fim."',
-    autor: "[Nome do Paciente] · Ortodontia",
+    autor: "Camila Souza · Ortodontia",
   },
 ];
 

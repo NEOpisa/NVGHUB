@@ -16,7 +16,7 @@ export default function Hero() {
   return (
     <section className="hero">
       <div>
-        <div className="hero-eyebrow">[Nome da Plataforma/Curso] · Turma 2025</div>
+        <div className="hero-eyebrow">Código Pro · Turma 2025</div>
         <h1>
           Do conhecimento inerte à <em>maestria que gera resultado</em>
         </h1>
@@ -45,19 +45,19 @@ export default function Hero() {
             </div>
             <div className="hero-stats">
               <div className="hero-stat">
-                <span>[X.XXX]+</span>
+                <span>1.240+</span>
                 <p>Alunos formados</p>
               </div>
               <div className="hero-stat">
-                <span>[XX]%</span>
+                <span>48%</span>
                 <p>Taxa de conclusão</p>
               </div>
               <div className="hero-stat">
-                <span>[X] anos</span>
+                <span>12 anos</span>
                 <p>De expertise</p>
               </div>
               <div className="hero-stat">
-                <span>[X.X] ★</span>
+                <span>4.9 ★</span>
                 <p>Avaliação média</p>
               </div>
             </div>

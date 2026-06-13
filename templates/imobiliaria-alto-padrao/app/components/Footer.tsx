@@ -4,12 +4,12 @@ export default function Footer() {
       <div className="wrap">
         <div className="fg">
           <div>
-            <a className="logo" href="#">[Nome].</a>
+            <a className="logo" href="#">Alto Padrão.</a>
             <p className="fg-about">
-              Curadoria de imóveis de alto padrão em [Cidade - UF]. Atendimento
+              Curadoria de imóveis de alto padrão em São Paulo - SP. Atendimento
               privativo para quem compra, vende ou investe com exigência.
             </p>
-            <p className="creci">CRECI [UF] 00000-J</p>
+            <p className="creci">CRECI SP 00000-J</p>
           </div>
           <div>
             <h4>Imóveis</h4>
@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="fb">
-          <span>© 2026 [Nome da Imobiliária]. Todos os direitos reservados.</span>
+          <span>© 2026 Alto Padrão Imóveis. Todos os direitos reservados.</span>
           <span>Provido por Neovanguard</span>
         </div>
       </div>

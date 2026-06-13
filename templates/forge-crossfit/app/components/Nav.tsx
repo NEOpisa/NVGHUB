@@ -9,7 +9,7 @@ export default function Nav() {
 
   return (
     <nav>
-      <div className="nav-logo">[Nome da Academia]</div>
+      <div className="nav-logo">Forge CrossFit</div>
       <ul className={`nav-links${mobileOpen ? " mobile-open" : ""}`}>
         <li>
           <a href="#porque" onClick={() => setMobileOpen(false)}>

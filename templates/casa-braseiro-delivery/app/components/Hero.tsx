@@ -4,7 +4,7 @@ export default function Hero() {
       <div className="hero-stamp" aria-hidden="true">
         Fogo<b>100%</b>lenha
       </div>
-      <span className="hero-tag">Cozinha de fogo · [Bairro, Cidade - UF]</span>
+      <span className="hero-tag">Cozinha de fogo · Pinheiros, São Paulo - SP</span>
       <h1>
         O lugar
         <br />

@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <nav>
       <div className="nav-logo">
-        [Nome da <span>Confeitaria]</span>
+        Doce <span>Arte</span>
       </div>
       <ul className={`nav-links${menuOpen ? " open" : ""}`}>
         <li>

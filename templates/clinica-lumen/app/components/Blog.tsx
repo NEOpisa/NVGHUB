@@ -22,7 +22,7 @@ export default function Blog() {
   return (
     <section id="blog">
       <Reveal as="div" className="sec-head">
-        <p className="eyebrow">Blog [Nome da Clínica]</p>
+        <p className="eyebrow">Blog Clínica Lumen</p>
         <h2>Conteúdo para cuidar do seu sorriso</h2>
       </Reveal>
       <div className="blog-grid">

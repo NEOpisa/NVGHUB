@@ -4,7 +4,7 @@ export default function Header() {
       <div className="wrap">
         <nav>
           <a className="logo" href="#">
-            [Nome da Clínica]
+            Clínica Lumen
           </a>
           <ul className="nav-links">
             <li>

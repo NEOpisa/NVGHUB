@@ -14,11 +14,11 @@ export default function ContentCertificate() {
         Complete 100% do curso para desbloquear e baixar seu certificado personalizado.
       </p>
       <div className="certificate">
-        <div className="cert-logo">[Nome da Plataforma/Curso]</div>
+        <div className="cert-logo">Código Pro</div>
         <h2>Certificado de Conclusão</h2>
-        <div className="student-name">[Nome do Aluno]</div>
+        <div className="student-name">Mariana Ferreira</div>
         <p>
-          concluiu com êxito o programa completo do [Nome da Plataforma/Curso], demonstrando domínio dos
+          concluiu com êxito o programa completo do Código Pro, demonstrando domínio dos
           fundamentos de posicionamento, sistemas de produtividade e estratégia de crescimento
           profissional.
         </p>
@@ -29,7 +29,7 @@ export default function ContentCertificate() {
         </div>
         <div className="cert-footer">
           <span>Emitido em: 00/00/2025</span>
-          <span>ID: [XX-2025-XXXX]</span>
+          <span>ID: 0042-2025-1180</span>
           <span>seudominio.com.br</span>
         </div>
       </div>
