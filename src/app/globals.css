@@ -139,6 +139,10 @@ html {
   .ambient-3d-floor, .ambient-3d-ceiling,
   .ambient-3d-left, .ambient-3d-right { animation: none; }
 }
+/* o corredor 3D animado é pesado p/ repintar — desliga em telas pequenas */
+@media (max-width: 768px) {
+  .ambient-3d { display: none; }
+}
 
 .ambient-grid {
   position: absolute; inset: 0;
@@ -514,65 +518,6 @@ html {
   from { opacity: 0; transform: scale(0.92); filter: blur(10px); }
   to   { opacity: 1; transform: scale(1); filter: blur(0); }
 }
-.ecosystem-graphic {
-  width: min(100%, 480px);
-  height: auto;
-  aspect-ratio: 1;
-  overflow: visible;
-}
-.eco-line {
-  stroke: var(--accent-border);
-  stroke-width: 1.4;
-  stroke-dasharray: 3 9;
-  animation: eco-flow 5.5s linear infinite;
-}
-@keyframes eco-flow { to { stroke-dashoffset: -120; } }
-.eco-ripple {
-  fill: none; stroke: var(--accent); stroke-width: 1.5;
-  transform-box: fill-box; transform-origin: center;
-  animation: eco-ripple 7.8s var(--ease-out) infinite;
-  opacity: 0;
-}
-@keyframes eco-ripple {
-  0%   { transform: scale(0.65); opacity: 0.45; }
-  70%  { opacity: 0; }
-  100% { transform: scale(2.1); opacity: 0; }
-}
-.eco-node {
-  transform-box: fill-box; transform-origin: center;
-  animation: eco-node-breathe 6s ease-in-out infinite;
-}
-@keyframes eco-node-breathe {
-  0%, 100% { opacity: 0.7; }
-  50%       { opacity: 1; }
-}
-.eco-node-ring {
-  fill: none; stroke: var(--border-hover); stroke-width: 1.2;
-}
-.eco-node-core { fill: var(--accent-light); }
-.eco-label {
-  font-family: var(--font-body); font-weight: 600;
-  font-size: 13px; letter-spacing: 0.02em;
-  fill: var(--text-secondary);
-}
-.eco-hub-halo {
-  transform-box: fill-box; transform-origin: center;
-  animation: eco-hub-breathe 5s ease-in-out infinite;
-}
-@keyframes eco-hub-breathe {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50%       { opacity: 0.95; transform: scale(1.08); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .eco-line, .eco-ripple, .eco-node, .eco-hub-halo { animation: none !important; }
-  .eco-ripple { display: none; }
-}
-@media (max-width: 768px) {
-  .eco-line, .eco-ripple, .eco-node, .eco-hub-halo { animation: none; }
-  .eco-ripple { display: none; }
-  .eco-node-core { filter: none; }
-}
-
 .hero-scroll-hint {
   position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -595,7 +540,6 @@ html {
   .hero-h1 { max-width: 18ch; }
   .cta-row, .trust-signals { justify-content: center; }
   .hero-visual { order: -1; }
-  .ecosystem-graphic { width: min(100%, 360px); }
 }
 
 /* ── Services ── */
@@ -1297,6 +1241,15 @@ footer {
   perspective-origin: 50% 50%;
   opacity: 0.55;
 }
+/* em mobile mantém só chão + teto (metade dos planos animados) */
+@media (max-width: 768px) {
+  .preloader-3d .ambient-3d-left,
+  .preloader-3d .ambient-3d-right { display: none; }
+  .preloader-3d { opacity: 0.4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-scene-fallback { animation: none; }
+}
 .preloader-inner {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center; gap: 16px;
@@ -1439,6 +1392,18 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   position: relative;
 }
 .logo-scene canvas { display: block; }
+/* logo estático servido em mobile/dispositivos fracos */
+.logo-scene-fallback {
+  width: min(78%, 420px);
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 40px rgba(124, 58, 237, 0.35));
+  animation: logo-fallback-float 6s ease-in-out infinite;
+}
+@keyframes logo-fallback-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
 @media (max-width: 968px) {
   .logo-scene { max-height: 360px; }
 }

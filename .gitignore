@@ -6,3 +6,6 @@ out/
 *.local
 .DS_Store
 gitignore.txt
+
+# screenshots de desenvolvimento dos templates
+templates/*/screenshots/
