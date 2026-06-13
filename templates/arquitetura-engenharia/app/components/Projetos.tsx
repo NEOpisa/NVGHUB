@@ -15,7 +15,7 @@ const projetos = [
 export default function Projetos() {
   const [active, setActive] = useState<string | null>(null);
 
-  const current = projetos.find((p) => p.n === active);
+  const current = projetos.find((p) => p.n === active) || projetos[0];
 
   return (
     <div className="proj-wrap">
@@ -34,35 +34,40 @@ export default function Projetos() {
         </Reveal>
       </div>
 
-      <Reveal as="div" className="proj-list">
-        {projetos.map((p) => (
-          <a
-            key={p.n}
-            className="proj"
-            href="#contato"
-            onMouseEnter={() => setActive(p.n)}
-            onMouseLeave={() => setActive((a) => (a === p.n ? null : a))}
-          >
-            <span className="idx">{p.n}</span>
-            <h3>{p.t}</h3>
-            <span className="pt">{p.tipo}</span>
-            <span className="py">São Paulo - SP · {p.ano}</span>
-            <span className="go" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M7 17 17 7M9 7h8v8" />
-              </svg>
-            </span>
-          </a>
-        ))}
-      </Reveal>
+      <div className="proj-main">
+        <Reveal as="div" className="proj-list">
+          {projetos.map((p) => (
+            <a
+              key={p.n}
+              className={`proj${active === p.n ? " is-active" : ""}`}
+              href="#contato"
+              onMouseEnter={() => setActive(p.n)}
+              onMouseLeave={() => setActive((a) => (a === p.n ? null : a))}
+            >
+              <span className="idx">{p.n}</span>
+              <h3>{p.t}</h3>
+              <span className="pt">{p.tipo}</span>
+              <span className="py">São Paulo - SP · {p.ano}</span>
+              <span className="go" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </span>
+            </a>
+          ))}
+        </Reveal>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className={`proj-thumb${active ? " show" : ""}`}
-        src={current?.img || projetos[0].img}
-        alt=""
-        aria-hidden="true"
-      />
+        <aside className="proj-preview" aria-hidden="true">
+          <div className="proj-preview-inner">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="proj-thumb" src={current.img} alt="" />
+            <div className="proj-preview-cap">
+              <span className="ppc-t">{current.t}</span>
+              <span className="ppc-m">{current.tipo} · {current.ano}</span>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }
