@@ -1229,9 +1229,50 @@ footer {
   pointer-events: none;
 }
 .preloader-inner {
-  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
   width: min(420px, 80vw);
 }
+
+/* ── Construção da marca (logo se desenhando) ── */
+.preloader-logo {
+  width: clamp(120px, 26vw, 184px);
+  height: auto;
+  overflow: visible;
+  margin-bottom: 6px;
+}
+.pl-stroke {
+  fill: transparent;
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+}
+.pl-white {
+  --len: 760;
+  stroke: #e8e8ee;
+  animation:
+    pl-draw 1.05s var(--ease-premium) forwards,
+    pl-fill-white 0.7s ease-out 1.15s forwards;
+}
+.pl-purple {
+  --len: 660;
+  stroke: #9f6ef9;
+  filter: drop-shadow(0 0 9px rgba(124, 58, 237, 0.5));
+  animation:
+    pl-draw 0.95s var(--ease-premium) 0.55s forwards,
+    pl-fill-purple 0.7s ease-out 1.55s forwards;
+}
+@keyframes pl-draw { to { stroke-dashoffset: 0; } }
+@keyframes pl-fill-white { to { fill: #e8e8ee; } }
+@keyframes pl-fill-purple { to { fill: #7c3aed; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-stroke { animation: none; stroke-dashoffset: 0; }
+  .pl-white { fill: #e8e8ee; }
+  .pl-purple { fill: #7c3aed; }
+}
+
 .preloader-brand {
   font-family: var(--font-mono); font-weight: 700;
   font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase;
@@ -1240,7 +1281,7 @@ footer {
 .preloader-brand-accent { color: var(--accent-light); }
 .preloader-counter {
   font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(64px, 14vw, 110px); line-height: 1;
+  font-size: clamp(40px, 8vw, 64px); line-height: 1;
   background: linear-gradient(120deg, #fff 20%, var(--accent-light) 80%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
