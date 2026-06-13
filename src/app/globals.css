@@ -87,13 +87,17 @@ html {
   perspective-origin: 50% 50%;
   opacity: 0.45;
 }
+/* a grade desliza via transform (composição na GPU), não background-position,
+   p/ evitar repaint a cada frame. Como o padrão se repete a cada 64px, o salto
+   de 1 célula no loop é imperceptível. */
 .ambient-3d-plane {
   position: absolute; left: -50%; width: 200%; height: 150%;
   background-image:
     linear-gradient(rgba(159, 110, 249, 0.45) 1px, transparent 1px),
     linear-gradient(90deg, rgba(124, 58, 237, 0.30) 1px, transparent 1px);
   background-size: 64px 64px;
-  will-change: background-position;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .ambient-3d-floor {
   bottom: -25%;
@@ -101,7 +105,7 @@ html {
   transform: rotateX(80deg);
   mask-image: linear-gradient(to top, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 72%);
-  animation: grid-flow 5s linear infinite;
+  animation: grid-floor 6s linear infinite;
 }
 .ambient-3d-ceiling {
   top: -25%;
@@ -109,7 +113,7 @@ html {
   transform: rotateX(-80deg);
   mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
-  animation: grid-flow 5s linear infinite;
+  animation: grid-ceiling 6s linear infinite;
 }
 .ambient-3d-left {
   left: 0; top: -25%; width: 150%; height: 150%;
@@ -117,7 +121,7 @@ html {
   transform: rotateY(80deg);
   mask-image: linear-gradient(to right, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 72%);
-  animation: grid-flow-x 5s linear infinite;
+  animation: grid-left 6s linear infinite;
 }
 .ambient-3d-right {
   left: auto; right: 0; top: -25%; width: 150%; height: 150%;
@@ -125,15 +129,23 @@ html {
   transform: rotateY(-80deg);
   mask-image: linear-gradient(to left, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to left, #000 0%, transparent 72%);
-  animation: grid-flow-x 5s linear infinite;
+  animation: grid-right 6s linear infinite;
 }
-@keyframes grid-flow {
-  from { background-position: 0 0; }
-  to   { background-position: 0 64px; }
+@keyframes grid-floor {
+  from { transform: rotateX(80deg) translateY(0); }
+  to   { transform: rotateX(80deg) translateY(64px); }
 }
-@keyframes grid-flow-x {
-  from { background-position: 0 0; }
-  to   { background-position: 64px 0; }
+@keyframes grid-ceiling {
+  from { transform: rotateX(-80deg) translateY(0); }
+  to   { transform: rotateX(-80deg) translateY(64px); }
+}
+@keyframes grid-left {
+  from { transform: rotateY(80deg) translateX(0); }
+  to   { transform: rotateY(80deg) translateX(64px); }
+}
+@keyframes grid-right {
+  from { transform: rotateY(-80deg) translateX(0); }
+  to   { transform: rotateY(-80deg) translateX(64px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .ambient-3d-floor, .ambient-3d-ceiling,
@@ -176,17 +188,18 @@ html {
   background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
   animation: orb-drift-c 38s ease-in-out infinite alternate;
 }
+/* só translate + opacity (composição GPU); sem scale, que re-rasteriza o blur */
 @keyframes orb-drift-a {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0.8; }
-  100% { transform: translate(60px, 90px) scale(1.12); opacity: 1; }
+  0%   { transform: translate3d(0, 0, 0); opacity: 0.8; }
+  100% { transform: translate3d(70px, 100px, 0); opacity: 1; }
 }
 @keyframes orb-drift-b {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0.7; }
-  100% { transform: translate(-80px, 60px) scale(1.08); opacity: 0.95; }
+  0%   { transform: translate3d(0, 0, 0); opacity: 0.7; }
+  100% { transform: translate3d(-90px, 70px, 0); opacity: 0.95; }
 }
 @keyframes orb-drift-c {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0.6; }
-  100% { transform: translate(50px, -70px) scale(1.1); opacity: 0.85; }
+  0%   { transform: translate3d(0, 0, 0); opacity: 0.6; }
+  100% { transform: translate3d(60px, -80px, 0); opacity: 0.85; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ambient-orb { animation: none !important; }
@@ -1241,14 +1254,9 @@ footer {
   perspective-origin: 50% 50%;
   opacity: 0.55;
 }
-/* em mobile mantém só chão + teto (metade dos planos animados) */
+/* no celular o fundo 3D é desligado (loading mantém só a construção do logo) */
 @media (max-width: 768px) {
-  .preloader-3d .ambient-3d-left,
-  .preloader-3d .ambient-3d-right { display: none; }
-  .preloader-3d { opacity: 0.4; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .logo-scene-fallback { animation: none; }
+  .preloader-3d { display: none; }
 }
 .preloader-inner {
   position: relative; z-index: 1;
@@ -1392,18 +1400,6 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   position: relative;
 }
 .logo-scene canvas { display: block; }
-/* logo estático servido em mobile/dispositivos fracos */
-.logo-scene-fallback {
-  width: min(78%, 420px);
-  margin: 0 auto;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 40px rgba(124, 58, 237, 0.35));
-  animation: logo-fallback-float 6s ease-in-out infinite;
-}
-@keyframes logo-fallback-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
 @media (max-width: 968px) {
   .logo-scene { max-height: 360px; }
 }
