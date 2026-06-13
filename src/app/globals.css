@@ -1943,3 +1943,105 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+
+/* ===================== EXEMPLOS (galeria de templates) ===================== */
+.exemplos-page { padding-top: 64px; }
+.exemplos-hero { padding: clamp(48px, 8vw, 96px) 0 12px; }
+.exemplos-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--text-secondary); font-size: 0.86rem; font-weight: 500;
+  text-decoration: none; margin-bottom: 28px; transition: color 0.2s;
+}
+.exemplos-back:hover { color: var(--text-primary); }
+.exemplos-grid-section { padding: 40px 0 var(--section-pad); }
+.exemplos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.exemplo-card {
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden; text-decoration: none;
+  transition: transform 0.35s var(--ease-out), border-color 0.35s, box-shadow 0.35s;
+  position: relative;
+}
+.exemplo-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--card-accent, var(--accent));
+  box-shadow: 0 24px 50px -24px rgba(0,0,0,0.7), 0 0 0 1px var(--card-accent, var(--accent));
+}
+.exemplo-thumb {
+  position: relative; aspect-ratio: 16 / 11; overflow: hidden;
+  background: var(--bg-2); border-bottom: 1px solid var(--border);
+}
+.exemplo-thumb img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  transition: transform 0.6s var(--ease-out);
+}
+.exemplo-card:hover .exemplo-thumb img { transform: scale(1.04); }
+.exemplo-thumb::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,13,13,0.55), transparent 45%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.exemplo-card:hover .exemplo-thumb::after { opacity: 1; }
+.exemplo-open {
+  position: absolute; left: 16px; bottom: 16px; z-index: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--card-accent, var(--accent)); color: #0a0a0a;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.01em;
+  padding: 9px 16px; border-radius: 100px;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.exemplo-card:hover .exemplo-open { opacity: 1; transform: none; }
+.exemplo-body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.exemplo-cat {
+  font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--card-accent, var(--accent-light));
+}
+.exemplo-name {
+  font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+  color: var(--text-primary); line-height: 1.1; letter-spacing: -0.01em;
+}
+.exemplo-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+.exemplos-foot {
+  margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.exemplos-foot p { color: var(--text-secondary); font-size: 1rem; }
+
+/* botão Exemplos no bloco de CTA dos serviços */
+.services-exemplos-row {
+  display: flex; justify-content: center; margin-top: 14px;
+}
+.btn-exemplos {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent; color: var(--text-primary);
+  border: 1px dashed var(--border-hover);
+  padding: 13px 26px; border-radius: 100px;
+  font-family: var(--font-body); font-size: 0.92rem; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.2s;
+}
+.btn-exemplos:hover {
+  border-color: var(--accent); color: var(--accent-light);
+  background: var(--accent-subtle); transform: translateY(-2px);
+}
+.btn-exemplos .be-tag {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
+  text-transform: uppercase; background: var(--accent); color: #0a0a0a;
+  padding: 2px 7px; border-radius: 100px;
+}
+
+@media (max-width: 980px) {
+  .exemplos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .exemplos-grid { grid-template-columns: 1fr; }
+  .exemplos-foot { flex-direction: column; align-items: flex-start; }
+}

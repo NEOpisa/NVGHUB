@@ -182,8 +182,27 @@ export default function ServicesSection() {
             Conhecer o Plano Noxz
           </button>
         </div>
+
+        {/* Botão Exemplos — abre a galeria de templates prontos */}
+        <div className="services-exemplos-row">
+          <a href="/exemplos" className="btn-exemplos">
+            <GalleryIcon />
+            Ver exemplos de sites
+            <span className="be-tag">Novo</span>
+          </a>
+        </div>
       </div>
     </section>
+  );
+}
+
+function GalleryIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M3 14l4-4 5 5M14 13l3-2 4 4" />
+      <circle cx="8" cy="8" r="1.4" />
+    </svg>
   );
 }
 
