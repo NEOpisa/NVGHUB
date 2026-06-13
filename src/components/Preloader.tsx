@@ -71,13 +71,21 @@ export default function Preloader() {
           fill="none"
           aria-hidden="true"
         >
+          <defs>
+            <linearGradient id="pl-grad-white" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#c9c9d6" />
+            </linearGradient>
+            <linearGradient id="pl-grad-purple" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#b69bff" />
+              <stop offset="100%" stopColor="#6d28d9" />
+            </linearGradient>
+          </defs>
           <path className="pl-stroke pl-white" d={WHITE_D} />
           <path className="pl-stroke pl-purple" d={PURPLE_D} />
+          <path className="pl-spark pl-spark-white" d={WHITE_D} />
+          <path className="pl-spark pl-spark-purple" d={PURPLE_D} />
         </svg>
-        <span className="preloader-brand">
-          N<span className="preloader-brand-accent">E</span>OVANGUAR
-          <span className="preloader-brand-accent">D</span>
-        </span>
         <span className="preloader-counter">{progress}%</span>
         <div className="preloader-bar">
           <div className="preloader-bar-fill" style={{ width: `${progress}%` }} />

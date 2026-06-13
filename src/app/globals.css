@@ -1235,14 +1235,18 @@ footer {
 
 /* ── Construção da marca (logo se desenhando) ── */
 .preloader-logo {
-  width: clamp(120px, 26vw, 184px);
+  width: clamp(220px, 46vw, 360px);
   height: auto;
   overflow: visible;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  transform-origin: center;
+  animation: pl-settle 2.6s var(--ease-premium) forwards;
 }
+
+/* contorno que se desenha e depois preenche com gradiente */
 .pl-stroke {
   fill: transparent;
-  stroke-width: 3.4;
+  stroke-width: 3;
   stroke-linejoin: round;
   stroke-linecap: round;
   stroke-dasharray: var(--len);
@@ -1250,35 +1254,77 @@ footer {
 }
 .pl-white {
   --len: 760;
-  stroke: #e8e8ee;
+  stroke: url(#pl-grad-white);
   animation:
-    pl-draw 1.05s var(--ease-premium) forwards,
-    pl-fill-white 0.7s ease-out 1.15s forwards;
+    pl-draw 1.15s var(--ease-premium) forwards,
+    pl-fill-white 0.8s ease-out 1.2s forwards;
 }
 .pl-purple {
   --len: 660;
-  stroke: #9f6ef9;
-  filter: drop-shadow(0 0 9px rgba(124, 58, 237, 0.5));
+  stroke: url(#pl-grad-purple);
+  filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.55));
   animation:
-    pl-draw 0.95s var(--ease-premium) 0.55s forwards,
-    pl-fill-purple 0.7s ease-out 1.55s forwards;
+    pl-draw 1s var(--ease-premium) 0.6s forwards,
+    pl-fill-purple 0.8s ease-out 1.65s forwards,
+    pl-glow 2.4s ease-in-out 2s infinite;
 }
+
+/* faísca luminosa correndo pelo traço enquanto a marca é construída */
+.pl-spark {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.95));
+}
+.pl-spark-white {
+  --len: 760;
+  stroke-dasharray: 26 734;
+  stroke-dashoffset: 760;
+  animation: pl-trace-w 1.15s linear forwards;
+}
+.pl-spark-purple {
+  --len: 660;
+  stroke: #c9b3ff;
+  stroke-dasharray: 24 636;
+  stroke-dashoffset: 660;
+  filter: drop-shadow(0 0 8px rgba(159, 110, 249, 0.95));
+  animation: pl-trace-p 1s linear 0.6s forwards;
+}
+
 @keyframes pl-draw { to { stroke-dashoffset: 0; } }
-@keyframes pl-fill-white { to { fill: #e8e8ee; } }
-@keyframes pl-fill-purple { to { fill: #7c3aed; } }
+@keyframes pl-fill-white { to { fill: url(#pl-grad-white); } }
+@keyframes pl-fill-purple { to { fill: url(#pl-grad-purple); } }
+@keyframes pl-trace-w {
+  0% { stroke-dashoffset: 760; opacity: 1; }
+  85% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes pl-trace-p {
+  0% { stroke-dashoffset: 660; opacity: 1; }
+  85% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes pl-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.45)); }
+  50% { filter: drop-shadow(0 0 22px rgba(124, 58, 237, 0.85)); }
+}
+@keyframes pl-settle {
+  0% { transform: scale(0.82); opacity: 0; }
+  18% { opacity: 1; }
+  82% { transform: scale(1); }
+  88% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
 @media (prefers-reduced-motion: reduce) {
+  .preloader-logo { animation: none; }
   .pl-stroke { animation: none; stroke-dashoffset: 0; }
-  .pl-white { fill: #e8e8ee; }
-  .pl-purple { fill: #7c3aed; }
+  .pl-white { fill: url(#pl-grad-white); }
+  .pl-purple { fill: url(#pl-grad-purple); }
+  .pl-spark { display: none; }
 }
 
-.preloader-brand {
-  font-family: var(--font-mono); font-weight: 700;
-  font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--text-primary);
-}
-.preloader-brand-accent { color: var(--accent-light); }
 .preloader-counter {
   font-family: var(--font-display); font-weight: 800;
   font-size: clamp(40px, 8vw, 64px); line-height: 1;
