@@ -43,6 +43,10 @@ export default function AmbientField() {
   return (
     <div className="ambient-field" aria-hidden="true" ref={fieldRef}>
       <div className="ambient-grain" />
+      <div className="ambient-3d">
+        <div className="ambient-3d-plane ambient-3d-floor" />
+        <div className="ambient-3d-plane ambient-3d-ceiling" />
+      </div>
       <div className="ambient-grid" />
       <div className="ambient-orb ambient-orb-a" />
       <div className="ambient-orb ambient-orb-b" />
