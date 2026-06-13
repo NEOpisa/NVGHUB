@@ -6,7 +6,7 @@ export type TemplateItem = {
 };
 
 // Cada slug corresponde a uma pasta em /public/templates/<slug>/ (export estático)
-// e a uma imagem em /public/exemplos/<slug>.png (thumbnail).
+// e a uma imagem em /public/exemplos/<slug>.webp (thumbnail).
 export const TEMPLATES: TemplateItem[] = [
   {
     slug: "casa-braseiro-delivery",
