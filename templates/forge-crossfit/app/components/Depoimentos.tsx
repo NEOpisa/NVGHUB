@@ -1,17 +1,25 @@
 import Reveal from "./Reveal";
 import { depos } from "@/app/data/depos";
+import { IconStar, IconCheck } from "./icons";
 
 export default function Depoimentos() {
   return (
     <section id="depoimentos" className="sec">
-      <p className="sec-label">✦ Transformações reais</p>
       <h2 className="sec-title">
         Quem <span>já treina</span> aqui
       </h2>
       <div className="depo-grid">
         {depos.map((d) => (
           <Reveal className="depo-card" key={d.nome}>
-            <div className="depo-stars">{d.stars}</div>
+            <div
+              className="depo-stars"
+              role="img"
+              aria-label={`${d.stars} de 5 estrelas`}
+            >
+              {Array.from({ length: d.stars }, (_, i) => (
+                <IconStar key={i} />
+              ))}
+            </div>
             <p className="depo-text">{d.txt}</p>
             <div className="depo-author">
               <div
@@ -23,7 +31,8 @@ export default function Depoimentos() {
                 <div className="depo-meta">{d.meta}</div>
                 {d.trans && (
                   <div className="transform-badge">
-                    ✦ Transformação verificada
+                    <IconCheck />
+                    Transformação verificada
                   </div>
                 )}
               </div>

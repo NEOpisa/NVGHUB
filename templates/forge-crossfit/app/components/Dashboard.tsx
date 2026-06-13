@@ -5,10 +5,13 @@ const heights = [55, 62, 58, 70, 68, 74, 80, 88];
 export default function Dashboard() {
   return (
     <section id="dashboard" className="sec">
-      <p className="sec-label">✦ Gestão</p>
       <h2 className="sec-title">
         Painel do <span>dono</span>
       </h2>
+      <p className="sec-lead">
+        Receita, churn e frequência em tempo real. Gestão do box no mesmo
+        lugar em que o aluno faz check-in.
+      </p>
       <Reveal className="owner-dash">
         <div className="owner-header">
           <h3>[Nome da Academia] — Visão geral</h3>
@@ -60,7 +63,7 @@ export default function Dashboard() {
                 ></div>
               ))}
             </div>
-            <p style={{ fontSize: ".72rem", color: "var(--muted)", marginTop: ".8rem" }}>
+            <p style={{ fontSize: ".72rem", color: "var(--text-secondary)", marginTop: ".8rem" }}>
               Passe o mouse nas barras para ver detalhes
             </p>
           </div>

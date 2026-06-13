@@ -1,7 +1,9 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Servicos from "./components/Servicos";
-import Fidelidade from "./components/Fidelidade";
+import Marquee from "./components/Marquee";
+import Rituais from "./components/Rituais";
+import AntesDepois from "./components/AntesDepois";
+import ClubeAura from "./components/ClubeAura";
 import Equipe from "./components/Equipe";
 import Agendar from "./components/Agendar";
 import Galeria from "./components/Galeria";
@@ -14,23 +16,15 @@ export default function Home() {
     <>
       <Header />
       <main>
-        <div className="wrap">
-          <Hero />
-          <Servicos />
-        </div>
-
-        <Fidelidade />
-
-        <div className="wrap">
-          <Equipe />
-        </div>
-
+        <Hero />
+        <Marquee />
+        <Rituais />
+        <AntesDepois />
+        <ClubeAura />
+        <Equipe />
         <Agendar />
-
-        <div className="wrap">
-          <Galeria />
-          <Depoimentos />
-        </div>
+        <Galeria />
+        <Depoimentos />
       </main>
       <Footer />
       <WhatsAppButton />

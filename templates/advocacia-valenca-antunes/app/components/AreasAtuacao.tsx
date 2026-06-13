@@ -4,7 +4,7 @@ const areas = [
   {
     num: "§ 1º",
     title: "Direito Tributário",
-    text: "Pagamos só o imposto devido — nada além. Revisão fiscal, planejamento tributário e recuperação de créditos pagos indevidamente.",
+    text: "Pagar só o imposto devido — nada além. Revisão fiscal, planejamento tributário e recuperação de créditos pagos indevidamente.",
   },
   {
     num: "§ 2º",
@@ -35,24 +35,38 @@ const areas = [
 
 export default function AreasAtuacao() {
   return (
-    <section id="areas">
-      <Reveal className="sec-head">
-        <p className="art">Art. 01 — Áreas de atuação</p>
-        <h2>O que sua empresa ganha em cada frente</h2>
-        <p>
-          Cada área tem página própria, escrita em linguagem direta: o problema que resolvemos e o
-          resultado que você pode esperar.
-        </p>
-      </Reveal>
-      <div className="areas">
-        {areas.map((area) => (
-          <Reveal className="area" key={area.num}>
-            <span className="num">{area.num}</span>
-            <h3>{area.title}</h3>
-            <p>{area.text}</p>
-            <a href="#contato">Conhecer a área</a>
+    <section className="folha" id="areas">
+      <div className="wrap">
+        <div className="timbre">
+          <b>Valença &amp; Antunes — Advocacia</b>
+          <span>Folha 01 / 03</span>
+        </div>
+        <div className="areas-grid">
+          <Reveal className="areas-head">
+            <h2>Áreas de atuação</h2>
+            <p>
+              Seis frentes, um mesmo método: entender o risco real do seu negócio antes de propor
+              qualquer tese. Cada área tem página própria, escrita em linguagem direta.
+            </p>
+            <a className="btn em-papel" href="#contato">
+              Falar com um sócio
+            </a>
           </Reveal>
-        ))}
+          <ul className="clausulas">
+            {areas.map((area) => (
+              <Reveal as="li" className="clausula" key={area.num}>
+                <a href="#contato">
+                  <span className="num">{area.num}</span>
+                  <h3>{area.title}</h3>
+                  <span className="seta" aria-hidden="true">
+                    →
+                  </span>
+                  <p>{area.text}</p>
+                </a>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

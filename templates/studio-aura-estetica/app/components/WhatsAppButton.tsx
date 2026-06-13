@@ -1,8 +1,10 @@
+import { site } from "../site.config";
+
 export default function WhatsAppButton() {
   return (
     <a
       className="whats"
-      href="https://wa.me/5500000000000"
+      href={`https://wa.me/${site.whatsapp}`}
       target="_blank"
       rel="noopener"
       aria-label="Falar no WhatsApp"

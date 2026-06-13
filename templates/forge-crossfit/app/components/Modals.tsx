@@ -95,7 +95,7 @@ export default function Modals() {
             Entrar →
           </button>
           <p style={{ textAlign: "center", marginTop: "1rem", fontSize: ".78rem" }}>
-            <a href="#" style={{ color: "var(--muted)" }}>
+            <a href="#" style={{ color: "var(--text-secondary)" }}>
               Esqueci minha senha
             </a>
           </p>

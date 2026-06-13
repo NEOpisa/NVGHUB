@@ -8,8 +8,13 @@ export default function Modalidades() {
 
   return (
     <section id="modalidades" className="sec">
-      <p className="sec-label">✦ O que treinamos</p>
-      <h2 className="sec-title">Modalidades</h2>
+      <h2 className="sec-title">
+        O que você <span>treina</span> aqui
+      </h2>
+      <p className="sec-lead">
+        Quatro frentes de treino, uma base comum: movimento bem executado, com
+        carga e intensidade ajustadas para o seu nível.
+      </p>
       <div className="mod-tabs">
         {modalidades.map((m) => (
           <button

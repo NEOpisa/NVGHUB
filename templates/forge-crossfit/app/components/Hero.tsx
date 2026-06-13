@@ -1,8 +1,15 @@
+"use client";
+
+import dynamic from "next/dynamic";
+
+const Hero3D = dynamic(() => import("./Hero3D"), { ssr: false });
+
 export default function Hero() {
   return (
     <section id="hero">
       <div className="hero-bg"></div>
       <div className="hero-noise"></div>
+      <Hero3D />
       <div className="hero-content">
         <div className="hero-eyebrow">Box de CrossFit — [Bairro, Cidade - UF]</div>
         <h1 className="hero-headline">
@@ -23,20 +30,6 @@ export default function Hero() {
           <a href="#planos" className="btn-ghost">
             Ver planos →
           </a>
-        </div>
-        <div className="hero-stats">
-          <div>
-            <div className="hstat-num">847</div>
-            <div className="hstat-label">Alunos ativos</div>
-          </div>
-          <div>
-            <div className="hstat-num">6×</div>
-            <div className="hstat-label">Turmas por dia</div>
-          </div>
-          <div>
-            <div className="hstat-num">94%</div>
-            <div className="hstat-label">Retém após 3 meses</div>
-          </div>
         </div>
       </div>
     </section>

@@ -10,15 +10,18 @@ export default function Horarios() {
 
   const handleCheckin = (hora: string) => {
     setBooked((prev) => ({ ...prev, [hora]: true }));
-    showToast(`Check-in confirmado para as ${hora}! ⚡`);
+    showToast(`Check-in confirmado para as ${hora}.`);
   };
 
   return (
     <section id="horarios" className="sec">
-      <p className="sec-label">✦ Grade semanal</p>
       <h2 className="sec-title">
         Horários das <span>aulas</span>
       </h2>
+      <p className="sec-lead">
+        Seis turmas por dia, do amanhecer ao fim da noite. Reserve sua vaga
+        com check-in direto pelo site.
+      </p>
       <div className="schedule-wrap">
         <table className="schedule-table">
           <thead>
@@ -39,9 +42,9 @@ export default function Horarios() {
                 <tr key={r.hora}>
                   <td
                     style={{
-                      fontFamily: "var(--font-jetbrains-mono), monospace",
+                      fontFamily: "var(--font-mono)",
                       fontSize: ".88rem",
-                      color: "var(--volt)",
+                      color: "var(--forge)",
                     }}
                   >
                     {r.hora}

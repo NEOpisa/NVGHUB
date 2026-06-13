@@ -2,12 +2,15 @@ export default function Footer() {
   return (
     <footer>
       <div className="wrap">
+        <p className="foot-masthead">
+          A defesa da sua empresa, <em>assinada</em>.
+        </p>
         <div className="foot-grid">
           <div>
-            <h4>[Nome do Escritório de Advocacia]</h4>
-            <p style={{ fontSize: ".88rem", maxWidth: "26rem" }}>
-              Advocacia empresarial com atuação em todo o estado de [UF]. Sociedade
-              registrada na OAB/UF sob nº 00.000.
+            <h4>Valença &amp; Antunes</h4>
+            <p className="foot-sobre">
+              Advocacia empresarial com atuação em todo o estado de [UF]. Sociedade registrada na
+              OAB/UF sob nº 00.000.
             </p>
           </div>
           <div>
@@ -43,11 +46,9 @@ export default function Footer() {
           </div>
         </div>
         <div className="foot-bottom">
-          <span>© 2026 [Nome do Escritório de Advocacia].</span>
-          <span className="lgpd">Site em conformidade com a LGPD · Conexão segura SSL</span>
-        </div>
-        <div className="foot-bottom" style={{ borderTop: "none", paddingTop: 0, marginTop: "-6px" }}>
-          <span style={{ fontSize: ".7rem", color: "var(--txt)" }}>Provido por Neovanguard</span>
+          <span>© 2026 Valença &amp; Antunes Advocacia</span>
+          <span>LGPD · Conexão segura SSL</span>
+          <span>Provido por Neovanguard</span>
         </div>
       </div>
     </footer>

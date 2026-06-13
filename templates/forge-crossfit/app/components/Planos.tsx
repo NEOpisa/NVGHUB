@@ -52,10 +52,13 @@ export default function Planos() {
 
   return (
     <section id="planos" className="sec">
-      <p className="sec-label">✦ Investimento</p>
       <h2 className="sec-title">
         Planos sem <span>pegadinha</span>
       </h2>
+      <p className="sec-lead">
+        Sem taxa de adesão, sem contrato de fidelidade, sem letra miúda.
+        Cancele quando quiser.
+      </p>
       <div className="planos-grid">
         {planos.map((plano) => (
           <div
@@ -88,7 +91,7 @@ export default function Planos() {
           textAlign: "center",
           marginTop: "1.5rem",
           fontSize: ".82rem",
-          color: "var(--muted)",
+          color: "var(--text-secondary)",
         }}
       >
         Aceitamos cartão, Pix e recorrência automática. Sem taxa de adesão.

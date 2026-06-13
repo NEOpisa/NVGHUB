@@ -1,55 +1,82 @@
+import { rodape, site } from "../site.config";
+
 export default function Footer() {
+  const [antes, destaque] = site.nome.split(site.destaque);
+
   return (
     <footer>
       <div className="wrap">
-        <div className="fg">
+        <p className="foot-word">
+          {antes}
+          <span>{site.destaque}</span>
+          {destaque}
+        </p>
+
+        <div className="foot-grid">
           <div>
-            <h4>[Nome do Studio]</h4>
-            <p style={{ fontSize: ".9rem" }}>
-              [Endereço completo]
+            <h3>O studio</h3>
+            <p>
+              {site.endereco}
               <br />
-              [Bairro, Cidade - UF]
+              {site.cidade} · {site.bairro}
               <br />
-              Ter–Sáb · 9h às 20h
+              {site.horario}
             </p>
           </div>
           <div>
-            <h4>Links</h4>
+            <h3>Navegar</h3>
             <ul>
               <li>
-                <a href="#servicos">Serviços</a>
+                <a href="#rituais">Rituais</a>
               </li>
               <li>
-                <a href="#agendar">Agendar</a>
+                <a href="#resultados">Resultados</a>
               </li>
               <li>
-                <a href="#fidelidade">Clube [Nome do Studio]</a>
+                <a href="#clube">Clube de fidelidade</a>
+              </li>
+              <li>
+                <a href="#agendar">Reservar horário</a>
               </li>
             </ul>
           </div>
           <div>
-            <h4>Contato</h4>
+            <h3>Contato</h3>
             <ul>
-              <li>(00) 00000-0000</li>
-              <li>@seuinstagram</li>
-              <li>contato@seudominio.com.br</li>
+              <li>
+                <a
+                  href={`https://wa.me/${site.whatsapp}`}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {site.whatsappBonito}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://instagram.com/${site.instagram}`}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  @{site.instagram}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${site.email}`}>{site.email}</a>
+              </li>
             </ul>
           </div>
         </div>
-        <div className="fb">
-          <span>© 2026 [Nome do Studio].</span>
-          <span>Política de privacidade · LGPD</span>
+
+        <div className="foot-base">
+          <span>
+            © {new Date().getFullYear()} {site.nome}. Todos os direitos
+            reservados.
+          </span>
+          <span>
+            {rodape.lgpd} · {rodape.assinatura}
+          </span>
         </div>
-        <p
-          style={{
-            marginTop: "16px",
-            fontSize: ".74rem",
-            color: "var(--soft)",
-            textAlign: "center",
-          }}
-        >
-          Provido por Neovanguard
-        </p>
       </div>
     </footer>
   );

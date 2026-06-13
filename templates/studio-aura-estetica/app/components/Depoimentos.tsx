@@ -1,38 +1,33 @@
+import { depoimentos } from "../site.config";
 import Reveal from "./Reveal";
 
-const depoimentos = [
-  {
-    texto:
-      '"Agendei pelo site em um minuto, sem precisar mandar mensagem e esperar resposta. Atendimento pontual e impecável."',
-    autor: "[Nome do Cliente]",
-  },
-  {
-    texto:
-      '"O cartão fidelidade digital é genial — ganhei minha limpeza de pele de presente no mês passado!"',
-    autor: "[Nome do Cliente]",
-  },
-  {
-    texto:
-      '"Melhor design de sobrancelha da cidade. O studio é lindo e o cuidado com cada detalhe se nota na hora."',
-    autor: "[Nome do Cliente]",
-  },
-];
-
 export default function Depoimentos() {
+  const [lead, ...resto] = depoimentos;
+
   return (
-    <section>
-      <Reveal className="sec-head">
-        <p className="eyebrow">Depoimentos</p>
-        <h2>Elas contam melhor</h2>
-      </Reveal>
-      <div className="dep-row">
-        {depoimentos.map((d, i) => (
-          <Reveal as="div" key={i} className="dep">
-            <div className="st">★★★★★</div>
-            <p>{d.texto}</p>
-            <b>{d.autor}</b>
-          </Reveal>
-        ))}
+    <section className="depo">
+      <div className="wrap">
+        <h2 className="sr-only">Depoimentos de clientes</h2>
+
+        <Reveal as="figure" className="depo-lead">
+          <blockquote>{lead.texto}</blockquote>
+          <figcaption className="depo-who" style={{ marginTop: "26px" }}>
+            {lead.autora}
+            <span>{lead.ritual}</span>
+          </figcaption>
+        </Reveal>
+
+        <div className="depo-row">
+          {resto.map((d) => (
+            <Reveal as="figure" key={d.autora}>
+              <blockquote>“{d.texto}”</blockquote>
+              <figcaption className="depo-who">
+                {d.autora}
+                <span>{d.ritual}</span>
+              </figcaption>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

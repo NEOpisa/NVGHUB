@@ -21,20 +21,43 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
+    const show = () => el.classList.add("in");
+
+    // If the element is already within (or near) the viewport at mount,
+    // reveal it right away — nothing should wait on a scroll that won't come.
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < vh * 0.9) {
+      show();
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      show();
+      return;
+    }
+
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("in");
+            show();
             obs.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.12 }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 }
     );
-
     obs.observe(el);
-    return () => obs.disconnect();
+
+    // Failsafe: never let a section stay invisible because the observer
+    // missed it (backgrounded tab, fast programmatic scroll, headless render).
+    const failsafe = window.setTimeout(show, 1600);
+
+    return () => {
+      obs.disconnect();
+      window.clearTimeout(failsafe);
+    };
   }, []);
 
   return (

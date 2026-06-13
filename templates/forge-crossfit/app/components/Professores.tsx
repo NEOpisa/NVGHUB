@@ -4,10 +4,13 @@ import { coaches } from "@/app/data/coaches";
 export default function Professores() {
   return (
     <section id="professores" className="sec">
-      <p className="sec-label">✦ Nossa equipe</p>
       <h2 className="sec-title">
-        Os <span>coaches</span>
+        Quem comanda o <span>treino</span>
       </h2>
+      <p className="sec-lead">
+        Certificações verificáveis e formação continuada. Quem corrige o seu
+        movimento sabe exatamente o que está corrigindo.
+      </p>
       <div className="prof-grid">
         {coaches.map((c) => (
           <Reveal className="prof-card" key={c.nome}>
