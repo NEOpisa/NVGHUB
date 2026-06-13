@@ -46,6 +46,8 @@ export default function AmbientField() {
       <div className="ambient-3d">
         <div className="ambient-3d-plane ambient-3d-floor" />
         <div className="ambient-3d-plane ambient-3d-ceiling" />
+        <div className="ambient-3d-plane ambient-3d-left" />
+        <div className="ambient-3d-plane ambient-3d-right" />
       </div>
       <div className="ambient-grid" />
       <div className="ambient-orb ambient-orb-a" />
