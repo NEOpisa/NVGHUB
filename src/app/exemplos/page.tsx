@@ -13,7 +13,7 @@ export default function ExemplosPage() {
     <main id="main" className="exemplos-page">
       <section className="exemplos-hero">
         <div className="inner">
-          <Link href="/#main" className="exemplos-back">
+          <Link href="/" className="exemplos-back">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
             Voltar para a Neovanguard
           </Link>
