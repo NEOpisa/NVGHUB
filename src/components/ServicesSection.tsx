@@ -183,7 +183,7 @@ export default function ServicesSection() {
           </button>
         </div>
 
-        {/* Botão Exemplos — abre a galeria de templates prontos */}
+        {/* Botão Exemplos */}
         <div className="services-exemplos-row">
           <a href="/exemplos" className="btn-exemplos">
             <GalleryIcon />
