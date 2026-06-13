@@ -50,7 +50,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const confirmarPlano = useCallback(() => {
     setPlanoModalOpen(false);
-    showToast("Assinatura confirmada! Bem-vindo ao [Nome da Academia]. ⚡");
+    showToast("Assinatura confirmada. Bem-vindo ao [Nome da Academia].");
   }, [showToast]);
 
   const loginAluno = useCallback(() => {
@@ -59,7 +59,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const el = document.getElementById("area-aluno");
       el?.scrollIntoView({ behavior: "smooth" });
     }
-    showToast("Bem-vindo de volta, [Nome do Aluno]! ⚡");
+    showToast("Bem-vindo de volta, [Nome do Aluno].");
   }, [showToast]);
 
   const value: StoreContextValue = {

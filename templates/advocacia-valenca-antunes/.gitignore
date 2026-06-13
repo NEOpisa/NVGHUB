@@ -2,10 +2,13 @@
 /node_modules
 /.pnp
 .pnp.js
+.impeccable
+PRODUCT.mn
+DESIGN.mn
 
 # testing
 /coverage
-
+/scripts
 # next.js
 /.next/
 /out/

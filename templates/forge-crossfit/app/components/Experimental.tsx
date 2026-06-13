@@ -8,9 +8,7 @@ export default function Experimental() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const agendarAula = () => {
-    showToast(
-      "Aula agendada! Você receberá confirmação no WhatsApp. 🎉"
-    );
+    showToast("Aula agendada. Você receberá a confirmação no WhatsApp.");
     formRef.current?.reset();
   };
 
@@ -18,7 +16,6 @@ export default function Experimental() {
     <section id="experimental" className="sec">
       <div className="exp-layout">
         <div className="exp-copy">
-          <p className="sec-label">✦ Primeira aula</p>
           <h2 className="sec-title">
             Venha treinar <span>de graça</span>
           </h2>

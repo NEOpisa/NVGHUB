@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Archivo } from "next/font/google";
+import { Besley, Archivo, Courier_Prime } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const cormorantGaramond = Cormorant_Garamond({
+const besley = Besley({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  variable: "--font-besley",
   display: "swap",
 });
 
@@ -18,8 +18,15 @@ const archivo = Archivo({
   display: "swap",
 });
 
+const courierPrime = Courier_Prime({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-courier",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "[Nome do Escritório de Advocacia] — Advocacia Empresarial",
+  title: "Valença & Antunes — Advocacia Empresarial",
   description:
     "Escritório de advocacia empresarial em [Bairro, Cidade - UF]. Direito tributário, trabalhista, societário e contratos. Atendimento estratégico para empresas.",
 };
@@ -27,7 +34,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LegalService",
-  name: "[Nome do Escritório de Advocacia]",
+  name: "Valença & Antunes Advocacia",
   address: {
     "@type": "PostalAddress",
     addressLocality: "[Cidade]",
@@ -43,7 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${cormorantGaramond.variable} ${archivo.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${besley.variable} ${archivo.variable} ${courierPrime.variable}`}
+    >
       <body>
         <Script
           id="legal-service-jsonld"

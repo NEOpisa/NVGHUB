@@ -10,12 +10,17 @@ export default function Calculadora() {
   const [anos, setAnos] = useState("");
   const [tipo, setTipo] = useState<TipoDesligamento>("semjusta");
   const [resultado, setResultado] = useState<string | null>(null);
+  const [erroSalario, setErroSalario] = useState(false);
 
   function calcular() {
     const sal = parseFloat(salario) || 0;
     const anosNum = parseFloat(anos) || 0;
 
-    if (!sal) return;
+    if (!sal) {
+      setErroSalario(true);
+      return;
+    }
+    setErroSalario(false);
 
     const fgtsAcum = sal * 0.08 * 12 * anosNum;
     let total = sal; // saldo aproximado (1 mês)
@@ -37,21 +42,21 @@ export default function Calculadora() {
   return (
     <section className="calc-sec" id="calc">
       <div className="wrap calc-grid">
-        <Reveal>
-          <p className="art">Art. 03 — Ferramentas</p>
-          <h2 style={{ fontSize: "clamp(1.9rem,3.4vw,2.6rem)" }}>
-            Calculadora de verbas rescisórias
-          </h2>
-          <p style={{ marginTop: "16px" }}>
-            Faça uma estimativa imediata e gratuita. Empresas que usam nossas calculadoras recebem
-            um relatório completo por e-mail — e nossa equipe à disposição para revisar o cálculo
-            oficial.
+        <Reveal className="calc-copy">
+          <h2>Calculadora de verbas rescisórias</h2>
+          <p>
+            Estime as verbas rescisórias de um colaborador em segundos. O cálculo oficial é feito
+            pelo escritório após análise do caso concreto.
           </p>
-          <p style={{ marginTop: "14px", fontSize: ".9rem" }}>
+          <p className="extras">
             Também disponíveis: <u>simulador do Simples Nacional</u> e <u>cálculo de pró-labore</u>.
           </p>
         </Reveal>
-        <Reveal className="calc">
+        <Reveal className="guia">
+          <div className="guia-cab">
+            <b>Guia de cálculo nº 001</b>
+            <span>Uso livre</span>
+          </div>
           <h3>Estimativa de rescisão</h3>
           <p className="sub">Valores aproximados, sem efeito legal.</p>
           <div className="field">
@@ -62,8 +67,18 @@ export default function Calculadora() {
               min={0}
               placeholder="3500"
               value={salario}
-              onChange={(e) => setSalario(e.target.value)}
+              aria-invalid={erroSalario || undefined}
+              aria-describedby={erroSalario ? "sal-erro" : undefined}
+              onChange={(e) => {
+                setSalario(e.target.value);
+                setErroSalario(false);
+              }}
             />
+            {erroSalario && (
+              <span id="sal-erro" className="erro-msg">
+                Informe o salário mensal para calcular.
+              </span>
+            )}
           </div>
           <div className="row2">
             <div className="field">
@@ -93,9 +108,9 @@ export default function Calculadora() {
           <button className="btn solid" onClick={calcular} type="button">
             Calcular estimativa
           </button>
-          <div className={`result${resultado !== null ? " show" : ""}`} id="res">
-            <b id="res-val">{resultado ?? "R$ 0,00"}</b>
-            <span>estimativa total de verbas rescisórias</span>
+          <div className={`resultado${resultado !== null ? " show" : ""}`} aria-live="polite">
+            <b>{resultado ?? "R$ 0,00"}</b>
+            <span>Total estimado de verbas</span>
           </div>
           <p className="disclaim">
             Estimativa simplificada (saldo, aviso, 13º e férias proporcionais, multa do FGTS quando

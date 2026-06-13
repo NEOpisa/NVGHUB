@@ -4,10 +4,13 @@ import { blogPosts } from "@/app/data/blogPosts";
 export default function Blog() {
   return (
     <section id="blog" className="sec">
-      <p className="sec-label">✦ Conhecimento</p>
       <h2 className="sec-title">
         Blog de treino <span>e nutrição</span>
       </h2>
+      <p className="sec-lead">
+        Conteúdo escrito pelos coaches — técnica, mobilidade e nutrição sem
+        modinha.
+      </p>
       <div className="blog-grid">
         {blogPosts.map((p) => (
           <Reveal className="blog-card" key={p.title}>

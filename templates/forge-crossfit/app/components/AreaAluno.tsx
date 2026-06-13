@@ -23,17 +23,20 @@ const historico = [
   },
   { texto: "Qui — Weightlifting PR Snatch", cor: "var(--green)" },
   { texto: "Qua — AMRAP 20 min", cor: "var(--green)" },
-  { texto: "Ter — Faltou", cor: "#888" },
+  { texto: "Ter — Faltou", cor: "var(--text-secondary)" },
   { texto: "Seg — Cindy 26 rounds", cor: "var(--green)" },
 ];
 
 export default function AreaAluno() {
   return (
     <section id="area-aluno" className="sec">
-      <p className="sec-label">✦ Dashboard</p>
       <h2 className="sec-title">
         Área do <span>aluno</span>
       </h2>
+      <p className="sec-lead">
+        Cada treino, carga e PR registrado. O aluno acompanha a própria
+        evolução — e o coach também.
+      </p>
       <Reveal className="aluno-dash">
         <div className="dash-header">
           <div>
@@ -42,7 +45,7 @@ export default function AreaAluno() {
               <span
                 style={{
                   fontSize: "1rem",
-                  color: "var(--muted)",
+                  color: "var(--text-secondary)",
                   fontStyle: "normal",
                 }}
               >
@@ -111,9 +114,9 @@ export default function AreaAluno() {
                     {" "}
                     <span
                       style={{
-                        fontFamily: "var(--font-jetbrains-mono), monospace",
+                        fontFamily: "var(--font-mono)",
                         fontSize: ".75rem",
-                        color: "var(--volt)",
+                        color: "var(--forge)",
                       }}
                     >
                       {h.extra}

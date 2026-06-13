@@ -68,7 +68,7 @@ export default function Footer() {
           padding: ".6rem 5vw 1.2rem",
           background: "#050505",
           fontSize: ".68rem",
-          color: "var(--muted)",
+          color: "var(--text-secondary)",
         }}
       >
         Provido por Neovanguard

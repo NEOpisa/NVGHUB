@@ -1,23 +1,24 @@
 import Reveal from "./Reveal";
+import { IconUsers, IconChart, IconFlame, IconActivity } from "./icons";
 
 const diffs = [
   {
-    icon: "👥",
+    icon: <IconUsers />,
     title: "Turmas pequenas, atenção real",
     text: "Máximo 12 alunos por turma. Seu coach sabe seu nome, histórico de lesões e metas pessoais — não é número de matrícula.",
   },
   {
-    icon: "📊",
+    icon: <IconChart />,
     title: "Programação periodizada",
     text: "Planejamento científico de 12 semanas. Cada treino tem propósito — não é sortear exercício no dado.",
   },
   {
-    icon: "🏆",
+    icon: <IconFlame />,
     title: "Comunidade que puxa junto",
     text: "O último a terminar o WOD recebe mais aplausos que o primeiro. Essa cultura é construída, não prometida.",
   },
   {
-    icon: "📱",
+    icon: <IconActivity />,
     title: "Acompanhamento completo",
     text: "Área do aluno com histórico de cargas, fotos de progresso e comunicação direta com o coach.",
   },
@@ -35,7 +36,6 @@ export default function Porque() {
           </div>
         </Reveal>
         <Reveal>
-          <p className="sec-label">✦ Por que o [Nome da Academia]</p>
           <h2 className="sec-title">
             A diferença que você <span>sente</span> no primeiro treino
           </h2>

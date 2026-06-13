@@ -14,26 +14,15 @@ export default function Home() {
     <>
       <Header />
       <main>
-        <div className="wrap">
-          <Hero />
-          <AreasAtuacao />
-        </div>
-
+        <Hero />
+        <AreasAtuacao />
         <Socios />
-
         <Calculadora />
-
-        <div className="wrap">
-          <Insights />
-        </div>
-
+        <Insights />
         <Contato />
-
         <Newsletter />
       </main>
-
       <Footer />
-
       <WhatsAppButton />
     </>
   );
