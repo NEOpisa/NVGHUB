@@ -38,8 +38,8 @@ export default function Preloader() {
     }
 
     const start = performance.now();
-    // dá tempo da marca "se construir" (desenho + preenchimento ~2.2s)
-    const DURATION = 2200;
+    // dá tempo da marca "se construir" (desenho + preenchimento ~1.76s)
+    const DURATION = 1760;
     let raf: number;
 
     const tick = (now: number) => {
@@ -53,7 +53,7 @@ export default function Preloader() {
         setTimeout(() => {
           setDone(true);
           reveal();
-        }, 220);
+        }, 176);
       }
     };
     raf = requestAnimationFrame(tick);

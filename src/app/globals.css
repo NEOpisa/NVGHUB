@@ -79,6 +79,46 @@ html {
   opacity: 0.035; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+/* ── Fundo 3D infinito (corredor de grade em perspectiva) ── */
+.ambient-3d {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  perspective: 480px;
+  perspective-origin: 50% 50%;
+  opacity: 0.45;
+}
+.ambient-3d-plane {
+  position: absolute; left: -50%; width: 200%; height: 150%;
+  background-image:
+    linear-gradient(rgba(159, 110, 249, 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.30) 1px, transparent 1px);
+  background-size: 64px 64px;
+  will-change: background-position;
+}
+.ambient-3d-floor {
+  bottom: -25%;
+  transform-origin: 50% 0%;
+  transform: rotateX(80deg);
+  mask-image: linear-gradient(to top, #000 0%, transparent 72%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 72%);
+  animation: grid-flow 5s linear infinite;
+}
+.ambient-3d-ceiling {
+  top: -25%;
+  transform-origin: 50% 100%;
+  transform: rotateX(-80deg);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
+  animation: grid-flow 5s linear infinite;
+}
+@keyframes grid-flow {
+  from { background-position: 0 0; }
+  to   { background-position: 0 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-3d-floor, .ambient-3d-ceiling { animation: none; }
+}
+
 .ambient-grid {
   position: absolute; inset: 0;
   background-image:
@@ -1240,7 +1280,7 @@ footer {
   overflow: visible;
   margin-bottom: 10px;
   transform-origin: center;
-  animation: pl-settle 2.6s var(--ease-premium) forwards;
+  animation: pl-settle 2.08s var(--ease-premium) forwards;
 }
 
 /* contorno que se desenha e depois preenche com gradiente */
@@ -1256,17 +1296,17 @@ footer {
   --len: 760;
   stroke: url(#pl-grad-white);
   animation:
-    pl-draw 1.15s var(--ease-premium) forwards,
-    pl-fill-white 0.8s ease-out 1.2s forwards;
+    pl-draw 0.92s var(--ease-premium) forwards,
+    pl-fill-white 0.64s ease-out 0.96s forwards;
 }
 .pl-purple {
   --len: 660;
   stroke: url(#pl-grad-purple);
   filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.55));
   animation:
-    pl-draw 1s var(--ease-premium) 0.6s forwards,
-    pl-fill-purple 0.8s ease-out 1.65s forwards,
-    pl-glow 2.4s ease-in-out 2s infinite;
+    pl-draw 0.8s var(--ease-premium) 0.48s forwards,
+    pl-fill-purple 0.64s ease-out 1.32s forwards,
+    pl-glow 1.92s ease-in-out 1.6s infinite;
 }
 
 /* faísca luminosa correndo pelo traço enquanto a marca é construída */
@@ -1281,7 +1321,7 @@ footer {
   --len: 760;
   stroke-dasharray: 26 734;
   stroke-dashoffset: 760;
-  animation: pl-trace-w 1.15s linear forwards;
+  animation: pl-trace-w 0.92s linear forwards;
 }
 .pl-spark-purple {
   --len: 660;
@@ -1289,7 +1329,7 @@ footer {
   stroke-dasharray: 24 636;
   stroke-dashoffset: 660;
   filter: drop-shadow(0 0 8px rgba(159, 110, 249, 0.95));
-  animation: pl-trace-p 1s linear 0.6s forwards;
+  animation: pl-trace-p 0.8s linear 0.48s forwards;
 }
 
 @keyframes pl-draw { to { stroke-dashoffset: 0; } }
