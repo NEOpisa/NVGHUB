@@ -185,7 +185,7 @@ export default function ServicesSection() {
 
         {/* Botão Exemplos */}
         <div className="services-exemplos-row">
-          <a href="/exemplos" className="btn-exemplos">
+          <a href="/exemplos" className="btn-ghost">
             <GalleryIcon />
             Ver exemplos de sites
             <span className="be-tag">Novo</span>

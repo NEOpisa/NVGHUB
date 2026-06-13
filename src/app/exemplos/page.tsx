@@ -42,15 +42,14 @@ export default function ExemplosPage() {
               >
                 <div className="exemplo-thumb">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`/exemplos/${t.slug}.png`} alt={`Prévia do site ${t.name}`} loading="lazy" />
+                  <img src={`/exemplos/${t.slug}.png`} alt={`Prévia de site — ${t.category}`} loading="lazy" />
                   <span className="exemplo-open">
                     Abrir exemplo
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
                   </span>
                 </div>
                 <div className="exemplo-body">
-                  <span className="exemplo-cat">{t.category}</span>
-                  <h3 className="exemplo-name">{t.name}</h3>
+                  <h3 className="exemplo-name">{t.category}</h3>
                   <p className="exemplo-desc">{t.description}</p>
                 </div>
               </a>
