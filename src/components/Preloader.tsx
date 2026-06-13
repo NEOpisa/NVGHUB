@@ -38,8 +38,8 @@ export default function Preloader() {
     }
 
     const start = performance.now();
-    // dá tempo da marca "se construir" (desenho + preenchimento ~1.76s)
-    const DURATION = 1760;
+    // dá tempo da marca "se construir" (desenho + preenchimento ~1.67s)
+    const DURATION = 1672;
     let raf: number;
 
     const tick = (now: number) => {
@@ -53,7 +53,7 @@ export default function Preloader() {
         setTimeout(() => {
           setDone(true);
           reveal();
-        }, 176);
+        }, 167);
       }
     };
     raf = requestAnimationFrame(tick);
@@ -64,6 +64,12 @@ export default function Preloader() {
 
   return (
     <div className={`preloader${done ? " preloader--done" : ""}`} aria-hidden="true">
+      <div className="preloader-3d" aria-hidden="true">
+        <div className="ambient-3d-plane ambient-3d-floor" />
+        <div className="ambient-3d-plane ambient-3d-ceiling" />
+        <div className="ambient-3d-plane ambient-3d-left" />
+        <div className="ambient-3d-plane ambient-3d-right" />
+      </div>
       <div className="preloader-inner">
         <svg
           className="preloader-logo"

@@ -111,12 +111,33 @@ html {
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
   animation: grid-flow 5s linear infinite;
 }
+.ambient-3d-left {
+  left: 0; top: -25%; width: 150%; height: 150%;
+  transform-origin: 0% 50%;
+  transform: rotateY(80deg);
+  mask-image: linear-gradient(to right, #000 0%, transparent 72%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 72%);
+  animation: grid-flow-x 5s linear infinite;
+}
+.ambient-3d-right {
+  left: auto; right: 0; top: -25%; width: 150%; height: 150%;
+  transform-origin: 100% 50%;
+  transform: rotateY(-80deg);
+  mask-image: linear-gradient(to left, #000 0%, transparent 72%);
+  -webkit-mask-image: linear-gradient(to left, #000 0%, transparent 72%);
+  animation: grid-flow-x 5s linear infinite;
+}
 @keyframes grid-flow {
   from { background-position: 0 0; }
   to   { background-position: 0 64px; }
 }
+@keyframes grid-flow-x {
+  from { background-position: 0 0; }
+  to   { background-position: 64px 0; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .ambient-3d-floor, .ambient-3d-ceiling { animation: none; }
+  .ambient-3d-floor, .ambient-3d-ceiling,
+  .ambient-3d-left, .ambient-3d-right { animation: none; }
 }
 
 .ambient-grid {
@@ -1268,7 +1289,16 @@ footer {
   visibility: hidden;
   pointer-events: none;
 }
+/* fundo 3D infinito atrás do conteúdo do loading */
+.preloader-3d {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden;
+  perspective: 460px;
+  perspective-origin: 50% 50%;
+  opacity: 0.55;
+}
 .preloader-inner {
+  position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center; gap: 16px;
   width: min(420px, 80vw);
 }
@@ -1280,7 +1310,7 @@ footer {
   overflow: visible;
   margin-bottom: 10px;
   transform-origin: center;
-  animation: pl-settle 2.08s var(--ease-premium) forwards;
+  animation: pl-settle 1.98s var(--ease-premium) forwards;
 }
 
 /* contorno que se desenha e depois preenche com gradiente */
@@ -1296,17 +1326,17 @@ footer {
   --len: 760;
   stroke: url(#pl-grad-white);
   animation:
-    pl-draw 0.92s var(--ease-premium) forwards,
-    pl-fill-white 0.64s ease-out 0.96s forwards;
+    pl-draw 0.87s var(--ease-premium) forwards,
+    pl-fill-white 0.61s ease-out 0.91s forwards;
 }
 .pl-purple {
   --len: 660;
   stroke: url(#pl-grad-purple);
   filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.55));
   animation:
-    pl-draw 0.8s var(--ease-premium) 0.48s forwards,
-    pl-fill-purple 0.64s ease-out 1.32s forwards,
-    pl-glow 1.92s ease-in-out 1.6s infinite;
+    pl-draw 0.76s var(--ease-premium) 0.46s forwards,
+    pl-fill-purple 0.61s ease-out 1.25s forwards,
+    pl-glow 1.82s ease-in-out 1.52s infinite;
 }
 
 /* faísca luminosa correndo pelo traço enquanto a marca é construída */
@@ -1321,7 +1351,7 @@ footer {
   --len: 760;
   stroke-dasharray: 26 734;
   stroke-dashoffset: 760;
-  animation: pl-trace-w 0.92s linear forwards;
+  animation: pl-trace-w 0.87s linear forwards;
 }
 .pl-spark-purple {
   --len: 660;
@@ -1329,7 +1359,7 @@ footer {
   stroke-dasharray: 24 636;
   stroke-dashoffset: 660;
   filter: drop-shadow(0 0 8px rgba(159, 110, 249, 0.95));
-  animation: pl-trace-p 0.8s linear 0.48s forwards;
+  animation: pl-trace-p 0.76s linear 0.46s forwards;
 }
 
 @keyframes pl-draw { to { stroke-dashoffset: 0; } }
