@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { TEMPLATES } from "@/lib/templates";
 
 export const metadata: Metadata = {
@@ -12,10 +13,10 @@ export default function ExemplosPage() {
     <main id="main" className="exemplos-page">
       <section className="exemplos-hero">
         <div className="inner">
-          <a href="/#main" className="exemplos-back">
+          <Link href="/#main" className="exemplos-back">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
             Voltar para a Neovanguard
-          </a>
+          </Link>
           <span className="section-eyebrow">Exemplos</span>
           <h1 className="section-heading">
             Veja sites <span className="text-accent-nvg">de verdade</span>, prontos pra usar
@@ -59,7 +60,7 @@ export default function ExemplosPage() {
 
           <div className="exemplos-foot">
             <p>Gostou de algum? A gente personaliza com a sua marca, textos e fotos.</p>
-            <a href="/#orcamento" className="btn-primary">Montar meu orçamento</a>
+            <Link href="/#orcamento" className="btn-primary">Montar meu orçamento</Link>
           </div>
         </div>
       </section>
