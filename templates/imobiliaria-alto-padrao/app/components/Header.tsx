@@ -15,7 +15,7 @@ export default function Header() {
     <header className={solid ? "solid" : ""}>
       <div className="wrap">
         <a className="logo" href="#">
-          [Nome]<span>.</span>
+          Alto Padrão<span>.</span>
         </a>
         <nav className="nav-links">
           <a href="#destaques">Imóveis</a>

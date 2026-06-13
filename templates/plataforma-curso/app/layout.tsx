@@ -17,9 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome da Plataforma/Curso] — Plataforma",
+  title: "Código Pro — Plataforma",
   description:
-    "[Nome da Plataforma/Curso] — o sistema completo para transformar conhecimento em carreira e negócio com método, consistência e autoridade real.",
+    "Código Pro — o sistema completo para transformar conhecimento em carreira e negócio com método, consistência e autoridade real.",
 };
 
 export default function RootLayout({

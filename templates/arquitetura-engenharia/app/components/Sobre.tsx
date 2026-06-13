@@ -19,7 +19,7 @@ export default function Sobre() {
             </p>
             <h2>Arquitetos e engenheiros, lado a lado desde o primeiro risco</h2>
             <p>
-              O [Nome do Escritório] nasceu da convicção de que projeto e
+              O Valença & Antunes nasceu da convicção de que projeto e
               cálculo não deveriam viver em prédios diferentes. Aqui, a mesma
               equipe pensa a forma e garante que ela fique de pé.
             </p>
@@ -30,7 +30,7 @@ export default function Sobre() {
             </p>
             <div className="sign">
               <div>
-                <b>[Nome do(a) Sócio(a)]</b>
+                <b>Marina Duarte</b>
                 <span>Arquiteto(a) e Eng. — CAU/CREA 00000</span>
               </div>
             </div>

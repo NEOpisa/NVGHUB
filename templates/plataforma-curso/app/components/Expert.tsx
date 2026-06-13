@@ -6,7 +6,7 @@ export default function Expert() {
           <div className="expert-portrait">
             <div className="portrait-placeholder">
               <span>?</span>
-              <p>Foto de [Nome do Mentor]</p>
+              <p>Foto de João Pedro Martins</p>
             </div>
           </div>
         </div>
@@ -26,25 +26,25 @@ export default function Expert() {
             <div className="cred-item">
               <div className="cred-dot"></div>
               <div>
-                <h4>[Credencial 1]</h4>
-                <p>[Descrição da credencial 1 — ex: tempo de experiência, número de alunos formados, etc.]</p>
+                <h4>+10 anos de experiência</h4>
+                <p>Mais de uma década formando profissionais e liderando projetos na área.</p>
               </div>
             </div>
             <div className="cred-item">
               <div className="cred-dot"></div>
               <div>
-                <h4>[Credencial 2]</h4>
+                <h4>+8 mil alunos formados</h4>
                 <p>
-                  [Descrição da credencial 2 — ex: projetos relevantes, faturamento gerado, etc.]
+                  Comunidade ativa de alunos que já aplicaram o método na prática.
                 </p>
               </div>
             </div>
             <div className="cred-item">
               <div className="cred-dot"></div>
               <div>
-                <h4>[Credencial 3]</h4>
+                <h4>Reconhecimento na área</h4>
                 <p>
-                  [Descrição da credencial 3 — ex: reconhecimentos, prêmios, listas de destaque, etc.]
+                  Presença reconhecida no mercado, com cases e resultados comprovados.
                 </p>
               </div>
             </div>

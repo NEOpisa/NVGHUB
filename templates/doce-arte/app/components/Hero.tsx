@@ -5,7 +5,7 @@ export default function Hero() {
       <div className="hero-grain"></div>
       <div className="hero-overlay"></div>
       <div className="hero-content">
-        <p className="hero-eyebrow">✦ Confeitaria Artesanal — Desde [XXXX]</p>
+        <p className="hero-eyebrow">✦ Confeitaria Artesanal — Desde 2012</p>
         <h1 className="hero-title">
           Feito com <em>amor</em>,<br />
           entregue na sua porta

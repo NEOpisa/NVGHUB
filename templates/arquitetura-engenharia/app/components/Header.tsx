@@ -3,7 +3,7 @@ export default function Header() {
     <header>
       <div className="wrap">
         <a className="logo" href="#">
-          [Nome] <span>/ arq+eng</span>
+          Atelier <span>/ arq+eng</span>
         </a>
         <nav className="nav-links">
           <a href="#disciplinas">Disciplinas</a>

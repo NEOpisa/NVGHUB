@@ -11,7 +11,7 @@ export default function Hero() {
       <div className="hero-noise"></div>
       <Hero3D />
       <div className="hero-content">
-        <div className="hero-eyebrow">Box de CrossFit — [Bairro, Cidade - UF]</div>
+        <div className="hero-eyebrow">Box de CrossFit — Pinheiros, São Paulo - SP</div>
         <h1 className="hero-headline">
           <span className="line1">VOCÊ</span>
           <span className="line2">NÃO</span>
@@ -20,7 +20,7 @@ export default function Hero() {
         <p className="hero-sub">
           para <strong>esteira e musiquinha ambiente.</strong>
           <br />
-          [Nome da Academia] é para quem quer sentir o treino. Comunidade
+          Forge CrossFit é para quem quer sentir o treino. Comunidade
           real, resultado real — ou a segunda semana é por nossa conta.
         </p>
         <div className="hero-btns">

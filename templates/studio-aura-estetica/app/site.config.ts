@@ -125,15 +125,18 @@ export const rituais: Ritual[] = [
    natural durante a preparação × produção completa de maquiagem.
    Troque pelos seus próprios resultados em public/antes-depois/. */
 
+// prefixo do basePath (vazio no dev/standalone, "/templates/..." no NVGHUB)
+const BP = process.env.NEXT_PUBLIC_BP ?? "";
+
 export const antesDepois = {
   titulo: "O resultado fala baixo. E convence.",
   legenda: "Arraste para comparar — a mesma cliente, no mesmo dia.",
   antes: {
-    src: "/antes-depois/antes.png",
+    src: `${BP}/antes-depois/antes.png`,
     alt: "Cliente de rosto natural, sem maquiagem, durante a preparação no studio",
   },
   depois: {
-    src: "/antes-depois/depois_aligned.jpg",
+    src: `${BP}/antes-depois/depois_aligned.jpg`,
     alt: "A mesma cliente com maquiagem completa — delineador, blush e lábios gloss",
   },
 } as const;

@@ -56,11 +56,11 @@ export default function Hero3D() {
       camera.lookAt(0, 0, 0);
 
       // luz: abajur quente à direita, rebatida fria do vinho, rim carimbo
-      cena.add(new THREE.HemisphereLight(0xffe9dd, 0x2a1014, 1.1));
-      const chave = new THREE.DirectionalLight(0xfff0e4, 2.6);
+      cena.add(new THREE.HemisphereLight(0xeef2f1, 0x182829, 1.1));
+      const chave = new THREE.DirectionalLight(0xf1f6f5, 2.6);
       chave.position.set(6, 10, 5);
       cena.add(chave);
-      const rim = new THREE.DirectionalLight(0xff7755, 0.9);
+      const rim = new THREE.DirectionalLight(0x46988f, 0.9);
       rim.position.set(-6, 2, -5);
       cena.add(rim);
 
@@ -71,11 +71,11 @@ export default function Hero3D() {
       const grupo = new THREE.Group();
       const geoFolha = new THREE.BoxGeometry(2.9, 0.045, 4.1);
       const matPapel = new THREE.MeshStandardMaterial({
-        color: 0xf5ebe7,
+        color: 0xeef2f1,
         roughness: 0.92,
       });
       const matRubrica = new THREE.MeshStandardMaterial({
-        color: 0xc43d24,
+        color: 0x46988f,
         roughness: 0.7,
       });
 

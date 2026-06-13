@@ -17,9 +17,9 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome do Restaurante] — Cozinha de fogo & delivery direto",
+  title: "Casa Braseiro — Cozinha de fogo & delivery direto",
   description:
-    "Restaurante e delivery em [Bairro, Cidade - UF]. Peça direto pelo nosso site, sem taxa de marketplace, com cashback em cada pedido.",
+    "Restaurante e delivery em Pinheiros, São Paulo - SP. Peça direto pelo nosso site, sem taxa de marketplace, com cashback em cada pedido.",
 };
 
 export default function RootLayout({

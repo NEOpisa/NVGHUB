@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Reveal from "./Reveal";
 
 const projetos = [
@@ -14,19 +14,11 @@ const projetos = [
 
 export default function Projetos() {
   const [active, setActive] = useState<string | null>(null);
-  const thumbRef = useRef<HTMLImageElement>(null);
-
-  function move(e: React.MouseEvent) {
-    const el = thumbRef.current;
-    if (!el) return;
-    el.style.left = `${e.clientX}px`;
-    el.style.top = `${e.clientY}px`;
-  }
 
   const current = projetos.find((p) => p.n === active);
 
   return (
-    <div onMouseMove={move}>
+    <div className="proj-wrap">
       <div className="sec-head">
         <Reveal>
           <p className="eyebrow" style={{ marginBottom: "20px" }}>
@@ -54,7 +46,7 @@ export default function Projetos() {
             <span className="idx">{p.n}</span>
             <h3>{p.t}</h3>
             <span className="pt">{p.tipo}</span>
-            <span className="py">[Cidade - UF] · {p.ano}</span>
+            <span className="py">São Paulo - SP · {p.ano}</span>
             <span className="go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                 <path d="M7 17 17 7M9 7h8v8" />
@@ -66,7 +58,6 @@ export default function Projetos() {
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        ref={thumbRef}
         className={`proj-thumb${active ? " show" : ""}`}
         src={current?.img || projetos[0].img}
         alt=""

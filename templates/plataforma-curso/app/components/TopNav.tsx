@@ -43,7 +43,7 @@ export default function TopNav({
           setView("sales");
         }}
       >
-        [Nome da Plataforma/Curso]
+        Código Pro
       </a>
       <div className="nav-links" id="navLinks">
         {!isMembers && (

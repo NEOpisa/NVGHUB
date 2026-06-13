@@ -14,7 +14,7 @@ export default function ContentDashboard({ setCurrentContent }: ContentDashboard
       <div className="content-header">
         <div>
           <div className="content-breadcrumb">ÁREA DE MEMBROS</div>
-          <h1 className="content-title">Bem-vindo de volta, [Nome do Aluno]</h1>
+          <h1 className="content-title">Bem-vindo de volta, Mariana Ferreira</h1>
         </div>
       </div>
       <div className="dashboard-grid">

@@ -14,7 +14,7 @@ export default function Diferenciais() {
     <section id="diferenciais">
       <div className="wrap">
         <Reveal className="sec-head center">
-          <p className="eyebrow">Por que a [Nome]</p>
+          <p className="eyebrow">Por que a Alto Padrão</p>
           <h2>
             O cuidado de uma <em>butique</em>, a força de uma imobiliária
           </h2>

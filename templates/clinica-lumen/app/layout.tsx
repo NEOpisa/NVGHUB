@@ -18,19 +18,19 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome da Clínica] — Odontologia de precisão em [Bairro, Cidade - UF]",
+  title: "Clínica Lumen — Odontologia de precisão em Pinheiros, São Paulo - SP",
   description:
-    "Clínica odontológica premium em [Bairro, Cidade - UF]. Implantes, lentes de contato dental, ortodontia e harmonização. Agende sua avaliação online.",
+    "Clínica odontológica premium em Pinheiros, São Paulo - SP. Implantes, lentes de contato dental, ortodontia e harmonização. Agende sua avaliação online.",
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Dentist",
-  name: "[Nome da Clínica]",
-  description: "Clínica odontológica de alto padrão em [Bairro, Cidade - UF]",
+  name: "Clínica Lumen",
+  description: "Clínica odontológica de alto padrão em Pinheiros, São Paulo - SP",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "[Cidade]",
+    addressLocality: "São Paulo",
     addressRegion: "UF",
     addressCountry: "BR",
   },

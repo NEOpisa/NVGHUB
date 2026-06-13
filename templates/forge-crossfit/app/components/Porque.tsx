@@ -31,8 +31,8 @@ export default function Porque() {
         <Reveal className="porque-img">
           <div className="porque-photo"></div>
           <div className="porque-badge">
-            <strong>[X]</strong>
-            <span>anos de [Nome da Academia]</span>
+            <strong>12</strong>
+            <span>anos de Forge CrossFit</span>
           </div>
         </Reveal>
         <Reveal>

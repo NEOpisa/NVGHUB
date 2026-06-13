@@ -4,11 +4,11 @@ export default function Footer() {
       <footer>
         <div className="footer-brand">
           <div className="nav-logo">
-            [Nome da <span>Confeitaria]</span>
+            Doce <span>Arte</span>
           </div>
           <p>
             Confeitaria artesanal feita com ingredientes selecionados e muito
-            carinho, desde [XXXX]. Sem intermediários, sem taxas — só sabor.
+            carinho, desde 2012. Sem intermediários, sem taxas — só sabor.
           </p>
         </div>
         <div>
@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
       </footer>
       <div className="footer-bottom">
-        © 2024 [Nome da Confeitaria] Confeitaria Artesanal — Todos os
+        © 2024 Doce Arte Confeitaria Artesanal — Todos os
         direitos reservados &nbsp;·&nbsp; Pedidos diretos sem taxas de
         marketplace
         <div

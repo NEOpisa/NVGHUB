@@ -4,11 +4,11 @@ export default function Footer() {
       <div className="wrap">
         <div className="foot-grid">
           <div>
-            <h4>[Nome da Clínica]</h4>
+            <h4>Clínica Lumen</h4>
             <p style={{ fontSize: ".9rem" }}>
-              [Endereço completo]
+              Av. Paulista, 1842 — Bela Vista, São Paulo - SP
               <br />
-              [Bairro, Cidade - UF]
+              Pinheiros, São Paulo - SP
             </p>
             <div className="mapa">Mapa interativo (Google Maps)</div>
           </div>
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="foot-bottom">
-          <span>© 2026 [Nome da Clínica]. Todos os direitos reservados.</span>
+          <span>© 2026 Clínica Lumen. Todos os direitos reservados.</span>
           <span>Avalie-nos no Google ★★★★★</span>
         </div>
         <div

@@ -9,16 +9,16 @@ export interface Depoimento {
 
 export const depos: Depoimento[] = [
   {
-    nome: "[Nome do Aluno 1]",
+    nome: "Rafael Lima",
     meta: "−14kg em 8 meses",
     stars: 5,
-    txt: "Tentei academia 3× antes. No [Nome da Academia] eu fico porque o coach SABE quem eu sou. Quando faltei duas semanas por viagem, recebi mensagem perguntando se tava tudo bem. Isso não existe em academia grande.",
+    txt: "Tentei academia 3× antes. No Forge CrossFit eu fico porque o coach SABE quem eu sou. Quando faltei duas semanas por viagem, recebi mensagem perguntando se tava tudo bem. Isso não existe em academia grande.",
     trans: true,
     avatar:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&q=70",
   },
   {
-    nome: "[Nome do Aluno 2]",
+    nome: "Juliana Alves",
     meta: "+8kg de massa em 6 meses",
     stars: 5,
     txt: "Vim do mundo corporativo sem nunca ter treinado sério. Achei que ia me matar no primeiro treino. Escalam tudo, você cresce no ritmo certo. 6 meses depois bati PR de back squat.",
@@ -27,7 +27,7 @@ export const depos: Depoimento[] = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=70",
   },
   {
-    nome: "[Nome do Aluno 3]",
+    nome: "Pedro Santos",
     meta: "Primeira pull-up em 4 meses",
     stars: 5,
     txt: "A comunidade é o diferencial absurdo. No sábado é Team WOD e a galera fica, toma café, conversa. Minha agenda social agora gira em torno do box. Não é exagero.",

@@ -5,7 +5,7 @@ export default function Hero() {
     <div className="wrap">
       <section className="hero">
         <div className="hero-copy">
-          <span className="protocolo">Advocacia empresarial · [Cidade]–[UF] · desde [AAAA]</span>
+          <span className="protocolo">Advocacia empresarial · São Paulo–SP · desde 2008</span>
           <h1>
             <span className="quebra">Construir</span>
             <span className="quebra">é com você.</span>
@@ -28,22 +28,22 @@ export default function Hero() {
           </div>
           <div className="ficha">
             <div>
-              <b>[X]+</b>
+              <b>12+</b>
               <span>anos de atuação</span>
             </div>
             <div>
-              <b>[XXX]</b>
+              <b>320</b>
               <span>empresas assessoradas</span>
             </div>
             <div>
-              <b>R$ [XX] mi</b>
+              <b>R$ 48 mi</b>
               <span>em teses recuperadas</span>
             </div>
           </div>
         </div>
         <div className="hero-palco">
           <Hero3D />
-          <span className="carimbo">Protocolado · [Cidade]-[UF]</span>
+          <span className="carimbo">Protocolado · São Paulo-SP</span>
         </div>
       </section>
     </div>

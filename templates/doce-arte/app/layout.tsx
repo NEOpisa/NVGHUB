@@ -18,9 +18,9 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "[Nome da Confeitaria] – Confeitaria Artesanal",
+  title: "Doce Arte – Confeitaria Artesanal",
   description:
-    "Bolos artesanais, doces finos e encomendas especiais entregues na sua porta. Confeitaria artesanal desde [XXXX], sem taxas de marketplace.",
+    "Bolos artesanais, doces finos e encomendas especiais entregues na sua porta. Confeitaria artesanal desde 2012, sem taxas de marketplace.",
 };
 
 export default function RootLayout({

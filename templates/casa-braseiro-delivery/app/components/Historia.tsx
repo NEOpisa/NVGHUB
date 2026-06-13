@@ -7,10 +7,10 @@ export default function Historia() {
         <Reveal as="div">
           <p className="eyebrow">A casa</p>
           <h2 style={{ fontSize: "clamp(2rem,4vw,2.9rem)" }}>
-            Uma família, um forno a lenha e [X]+ anos de história
+            Uma família, um forno a lenha e 12+ anos de história
           </h2>
           <p style={{ marginTop: "16px" }}>
-            O [Nome do Restaurante] nasceu no quintal de [Nome do Chef/Proprietário], assando
+            O Casa Braseiro nasceu no quintal de Chef Marcos, assando
             galeto para os vizinhos aos domingos. O quintal cresceu, virou
             restaurante — mas o fogo continua o mesmo.
           </p>

@@ -10,7 +10,7 @@ export default function VideoSection() {
       <div className="section-inner" style={{ textAlign: "center" }}>
         <div className="section-label">Assista antes de decidir</div>
         <h2 className="section-title">
-          O que está por trás do <em>[Nome da Plataforma/Curso]</em>
+          O que está por trás do <em>Código Pro</em>
         </h2>
         <div className="video-wrap">
           {!playClicked && (

@@ -5,7 +5,7 @@ export default function Historia() {
         <div className="historia-img-wrap">
           <div className="historia-img"></div>
           <div className="historia-accent">
-            <strong>[X]</strong>
+            <strong>12</strong>
             <span>
               anos de
               <br />
@@ -19,7 +19,7 @@ export default function Historia() {
             Nascida numa <em>cozinha de família</em>
           </h2>
           <p>
-            Em [XXXX], [Nome da Confeiteira/Proprietária] transformou as
+            Em 2012, Ana Beatriz transformou as
             receitas da avó em uma confeitaria que virou ponto de encontro do
             bairro. O que começou com uma mesa de doces em festas de família
             cresceu até se tornar o endereço certo para quem busca sabor
@@ -37,7 +37,7 @@ export default function Historia() {
           <div className="chef-sig">
             <div className="chef-avatar"></div>
             <div className="chef-info">
-              <strong>[Nome da Confeiteira/Proprietária]</strong>
+              <strong>Ana Beatriz</strong>
               <span>Chef Confeiteira & Fundadora</span>
             </div>
           </div>

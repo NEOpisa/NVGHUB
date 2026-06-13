@@ -14,7 +14,7 @@ export default function Dashboard() {
       </p>
       <Reveal className="owner-dash">
         <div className="owner-header">
-          <h3>[Nome da Academia] — Visão geral</h3>
+          <h3>Forge CrossFit — Visão geral</h3>
           <select className="period-select" defaultValue="Junho 2025">
             <option>Junho 2025</option>
             <option>Maio 2025</option>

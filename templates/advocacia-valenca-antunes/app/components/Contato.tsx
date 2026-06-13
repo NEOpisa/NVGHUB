@@ -27,7 +27,7 @@ export default function Contato() {
             </p>
             <ul>
               <li>
-                <b>Endereço</b> [Endereço completo] — [Bairro, Cidade - UF]
+                <b>Endereço</b> Av. Paulista, 1842 — Bela Vista, São Paulo - SP — Pinheiros, São Paulo - SP
               </li>
               <li>
                 <b>Telefone</b> (00) 00000-0000 · WhatsApp Business

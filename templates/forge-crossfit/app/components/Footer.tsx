@@ -3,9 +3,9 @@ export default function Footer() {
     <>
       <footer>
         <div>
-          <div className="footer-logo">[Nome da Academia]</div>
+          <div className="footer-logo">Forge CrossFit</div>
           <p>
-            Box de CrossFit afiliado, [Bairro, Cidade - UF]. Comunidade real.
+            Box de CrossFit afiliado, Pinheiros, São Paulo - SP. Comunidade real.
             Resultado real.
           </p>
         </div>
@@ -13,7 +13,7 @@ export default function Footer() {
           <h5>Box</h5>
           <ul>
             <li>
-              <a href="#porque">Por que o [Nome da Academia]</a>
+              <a href="#porque">Por que o Forge CrossFit</a>
             </li>
             <li>
               <a href="#modalidades">Modalidades</a>
@@ -53,13 +53,13 @@ export default function Footer() {
               <a href="#">@seuinstagram</a>
             </li>
             <li>
-              <a href="#">[Endereço completo]</a>
+              <a href="#">Av. Paulista, 1842 — Bela Vista, São Paulo - SP</a>
             </li>
           </ul>
         </div>
       </footer>
       <div className="footer-bottom">
-        <span>© 2025 [Nome da Academia] — CrossFit afiliado</span>
+        <span>© 2025 Forge CrossFit — CrossFit afiliado</span>
         <span>Feito para atletas urbanos</span>
       </div>
       <div

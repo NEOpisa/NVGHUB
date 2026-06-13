@@ -28,7 +28,7 @@ const courierPrime = Courier_Prime({
 export const metadata: Metadata = {
   title: "Valença & Antunes — Advocacia Empresarial",
   description:
-    "Escritório de advocacia empresarial em [Bairro, Cidade - UF]. Direito tributário, trabalhista, societário e contratos. Atendimento estratégico para empresas.",
+    "Escritório de advocacia empresarial em Pinheiros, São Paulo - SP. Direito tributário, trabalhista, societário e contratos. Atendimento estratégico para empresas.",
 };
 
 const jsonLd = {
@@ -37,7 +37,7 @@ const jsonLd = {
   name: "Valença & Antunes Advocacia",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "[Cidade]",
+    addressLocality: "São Paulo",
     addressRegion: "UF",
     addressCountry: "BR",
   },

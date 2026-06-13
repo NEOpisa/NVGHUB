@@ -21,9 +21,9 @@ export default function Info() {
         <div className="info-card">
           <h4>Onde nos encontrar</h4>
           <p>
-            [Endereço completo]
+            Av. Paulista, 1842 — Bela Vista, São Paulo - SP
             <br />
-            [Bairro, Cidade - UF]
+            Pinheiros, São Paulo - SP
             <br />
             CEP 00000-000
             <br />

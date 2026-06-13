@@ -8,7 +8,7 @@ export const dashCards: DashCard[] = [
   { label: "Aulas concluídas", value: "18", sub: "de 48 no total" },
   { label: "Horas assistidas", value: "9,4h", sub: "esta semana: 2,1h" },
   { label: "Dias consecutivos", value: "7", sub: "sequência ativa" },
-  { label: "Posição na turma", value: "Top [XX]%", sub: "entre [X.XXX] alunos" },
+  { label: "Posição na turma", value: "Top 48%", sub: "entre 1.240 alunos" },
 ];
 
 export const weeklyChartData: number[] = [2, 4, 3, 6, 5, 8, 7, 9];
