@@ -1,9 +1,7 @@
-import dynamic from "next/dynamic";
 import { WhatsAppIcon, CheckIcon, InstagramIcon } from "@/components/icons";
 import Magnetic from "@/components/Magnetic";
+import HeroVisual from "@/components/HeroVisual";
 import { WA, IG } from "@/lib/constants";
-
-const LogoScene = dynamic(() => import("@/components/LogoScene"));
 
 export default function Hero() {
   return (
@@ -63,7 +61,7 @@ export default function Hero() {
         </div>
 
         <div className="hero-visual hero-enter hero-enter-3" aria-hidden="true">
-          <LogoScene />
+          <HeroVisual />
         </div>
       </div>
 
