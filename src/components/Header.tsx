@@ -93,7 +93,7 @@ export default function Header() {
 
         {/* CTA */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta btn-whatsapp">
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta">
             Solicitar orçamento
           </a>
           <button
@@ -133,7 +133,7 @@ export default function Header() {
             href={WA}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary nav-mobile-cta btn-whatsapp"
+            className="btn-primary nav-mobile-cta"
             onClick={closeMobile}
           >
             <WhatsAppIcon />
