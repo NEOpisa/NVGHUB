@@ -27,7 +27,7 @@ export default function Hero() {
 
           <div className="cta-row hero-enter hero-enter-4">
             <Magnetic>
-              <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
                 <WhatsAppIcon />
                 Falar pelo WhatsApp
               </a>

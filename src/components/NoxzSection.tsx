@@ -101,7 +101,7 @@ export default function NoxzModal({ isOpen, onClose }: Props) {
             href={`${WA}?text=${encodeURIComponent("Olá! Quero saber mais sobre o Plano Noxz da Neovanguard.")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary noxz-cta"
+            className="btn-primary noxz-cta btn-whatsapp"
           >
             <WhatsAppIcon size={15} />
             Ativar o Plano Noxz

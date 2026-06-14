@@ -2146,3 +2146,14 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   .exemplos-grid { grid-template-columns: 1fr; }
   .exemplos-foot { flex-direction: column; align-items: flex-start; }
 }
+
+/* Botões de WhatsApp (com texto) — sempre na cor verde do WhatsApp */
+.btn-whatsapp {
+  background: #16a34a !important;
+  color: #fff !important;
+  box-shadow: none;
+}
+.btn-whatsapp:hover {
+  background: #15803d !important;
+  box-shadow: 0 0 24px rgba(22,163,74,0.45);
+}
