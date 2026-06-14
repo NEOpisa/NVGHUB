@@ -157,7 +157,7 @@ export default function OrcamentoSection() {
             href={`${WA}?text=${encodeURIComponent(msg)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary"
+            className="btn-primary btn-whatsapp"
           >
             <WhatsAppIcon size={15} />
             {selecionados.length === 0 ? "Falar com a equipe" : "Solicitar este orçamento"}
