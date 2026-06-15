@@ -17,23 +17,45 @@ export default function AmbientField() {
     const mouse = { x: 0, y: 0 };
     const pos = { x: 0, y: 0 };
 
-    const onMove = (e: MouseEvent) => {
-      mouse.x = e.clientX / window.innerWidth - 0.5;
-      mouse.y = e.clientY / window.innerHeight - 0.5;
-    };
+    // Os orbs têm filter: blur(120px); reescrever o transform deles a cada
+    // frame é caríssimo e trava o scroll. Por isso o loop só roda enquanto
+    // ainda há diferença a interpolar — quando o paralaxe "assenta", ele para
+    // e só é religado no próximo mousemove.
+    let raf = 0;
+    let running = false;
 
-    let raf: number;
-    const loop = () => {
-      pos.x += (mouse.x - pos.x) * 0.04;
-      pos.y += (mouse.y - pos.y) * 0.04;
+    const apply = () => {
       orbs.forEach((orb, i) => {
         const d = depths[i] ?? 14;
         orb.style.translate = `${pos.x * d * 2}px ${pos.y * d * 2}px`;
       });
+    };
+
+    const loop = () => {
+      pos.x += (mouse.x - pos.x) * 0.04;
+      pos.y += (mouse.y - pos.y) * 0.04;
+      apply();
+      // settled? para o loop para não repintar os blurs à toa
+      if (Math.abs(mouse.x - pos.x) < 0.0005 && Math.abs(mouse.y - pos.y) < 0.0005) {
+        running = false;
+        return;
+      }
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
-    window.addEventListener("mousemove", onMove);
+
+    const start = () => {
+      if (running) return;
+      running = true;
+      raf = requestAnimationFrame(loop);
+    };
+
+    const onMove = (e: MouseEvent) => {
+      mouse.x = e.clientX / window.innerWidth - 0.5;
+      mouse.y = e.clientY / window.innerHeight - 0.5;
+      start();
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
