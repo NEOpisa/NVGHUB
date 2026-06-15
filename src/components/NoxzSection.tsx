@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useRef } from "react";
+import { useReveal } from "@/hooks/useReveal";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
 
@@ -31,63 +32,35 @@ const CARDS = [
   },
 ];
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function NoxzModal({ isOpen, onClose }: Props) {
-  useEffect(() => {
-    if (!isOpen) return;
-    document.body.style.overflow = "hidden";
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKey);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+export default function NoxzSection() {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  useReveal(headerRef);
+  useReveal(gridRef, 80);
 
   return (
-    <div className="noxz-modal-overlay" onClick={onClose}>
-      <div className="noxz-modal" onClick={(e) => e.stopPropagation()}>
-        {/* auroras de fundo */}
-        <span className="noxz-aurora noxz-aurora-a" aria-hidden="true" />
-        <span className="noxz-aurora noxz-aurora-b" aria-hidden="true" />
+    <section id="metodologia" className="noxz-section" aria-label="Metodologia — Plano Noxz">
+      <span className="noxz-aurora noxz-aurora-a" aria-hidden="true" />
+      <span className="noxz-aurora noxz-aurora-b" aria-hidden="true" />
 
-        <button
-          className="noxz-modal-close"
-          onClick={onClose}
-          aria-label="Fechar"
-        >
-          ✕
-        </button>
-
-        <div className="noxz-modal-header">
+      <div className="inner">
+        <div className="noxz-section-header" ref={headerRef}>
           <span className="noxz-badge">
             <span className="noxz-badge-pulse" aria-hidden="true" />
             Metodologia exclusiva NVG
           </span>
-          <h2 className="noxz-title">
+          <h1 className="noxz-title">
             Plano <span className="noxz-title-shimmer">Noxz</span>
-          </h2>
+          </h1>
           <p className="section-sub">
             Uma metodologia de execução síncrona e implacável — projetada para
             entregar com velocidade e segurança extrema.
           </p>
         </div>
 
-        <div className="noxz-modal-grid">
-          {CARDS.map((card, i) => (
-            <article
-              key={card.name}
-              className="noxz-card"
-              style={{ animationDelay: `${0.15 + i * 0.1}s` }}
-            >
+        <div className="noxz-section-grid" ref={gridRef}>
+          {CARDS.map((card) => (
+            <article key={card.name} className="noxz-card">
               <span className="noxz-card-num" aria-hidden="true">{card.num}</span>
               <span className="noxz-card-tag">{card.tag}</span>
               <div className="noxz-name">{card.name}</div>
@@ -96,7 +69,7 @@ export default function NoxzModal({ isOpen, onClose }: Props) {
           ))}
         </div>
 
-        <div className="noxz-modal-footer">
+        <div className="noxz-section-footer">
           <a
             href={`${WA}?text=${encodeURIComponent("Olá! Quero saber mais sobre o Plano Noxz da Neovanguard.")}`}
             target="_blank"
@@ -111,6 +84,6 @@ export default function NoxzModal({ isOpen, onClose }: Props) {
           </span>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

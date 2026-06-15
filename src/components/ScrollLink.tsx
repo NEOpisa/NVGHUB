@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import type { ReactNode, MouseEvent } from "react";
 import { getLenisInstance } from "@/lib/lenis";
 
@@ -25,8 +24,6 @@ export default function ScrollLink({
   onNavigate,
   children,
 }: Props) {
-  const router = useRouter();
-
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     // respeita ctrl/cmd/click do meio (abrir em nova aba)
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
@@ -51,10 +48,13 @@ export default function ScrollLink({
       window.history.pushState(null, "", href);
       onNavigate?.();
     } else {
-      // seção não existe nesta página → navega de verdade (rewrite serve a home)
+      // seção não existe nesta página (ex.: estamos em /exemplos) → navegação
+      // real: o servidor aplica o rewrite p/ a home e o ScrollToSection rola
+      // até a seção certa no carregamento. (router.push client + rewrite às
+      // vezes não rola pra área certa.)
       e.preventDefault();
       onNavigate?.();
-      router.push(href);
+      window.location.assign(href);
     }
   };
 

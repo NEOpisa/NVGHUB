@@ -175,13 +175,10 @@ export default function ServicesSection() {
             <CalcIcon />
             Montar meu orçamento
           </ScrollLink>
-          <button
-            className="btn-ghost"
-            onClick={() => window.dispatchEvent(new Event("open-noxz"))}
-          >
+          <Link href="/metodologia" className="btn-ghost">
             <SparkIcon />
             Conhecer o Plano Noxz
-          </button>
+          </Link>
         </div>
 
         {/* Botão Exemplos */}
