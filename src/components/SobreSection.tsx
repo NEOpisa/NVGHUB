@@ -1,0 +1,58 @@
+"use client";
+
+import { useRef } from "react";
+import { useReveal } from "@/hooks/useReveal";
+
+const PILARES = [
+  {
+    num: "01",
+    title: "Segurança extrema",
+    desc: "Arquitetura pensada sob Zero Trust desde o primeiro dia: infraestrutura blindada, criptografia de ponta e estabilidade total.",
+  },
+  {
+    num: "02",
+    title: "Velocidade real",
+    desc: "Time-to-market acelerado, sem burocracia. Seu produto validado e no ar no menor tempo possível — em dias, não meses.",
+  },
+  {
+    num: "03",
+    title: "Eficácia cirúrgica",
+    desc: "Foco no que gera resultado de verdade. Código limpo alinhado a uma estratégia de aquisição de clientes — tecnologia que vira venda.",
+  },
+];
+
+export default function SobreSection() {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  useReveal(headerRef);
+  useReveal(gridRef, 80);
+
+  return (
+    <section id="sobre" className="sobre" aria-label="Quem somos">
+      <div className="inner">
+        <div className="sobre-head" ref={headerRef}>
+          <h2 className="section-heading">
+            Uma agência digital pensada como{" "}
+            <span className="text-accent-nvg">um só ecossistema</span>
+          </h2>
+          <p className="section-sub">
+            Somos a Neovanguard — uma operação 100% remota que atende o Brasil
+            inteiro. Sites, sistemas, SEO e suporte não são serviços soltos:
+            funcionam como um organismo único, conduzido por uma força-tarefa
+            síncrona do briefing à entrega.
+          </p>
+        </div>
+
+        <div className="sobre-grid" ref={gridRef}>
+          {PILARES.map((p) => (
+            <article key={p.title} className="sobre-card">
+              <span className="sobre-card-num" aria-hidden="true">{p.num}</span>
+              <h3 className="sobre-card-title">{p.title}</h3>
+              <p className="sobre-card-desc">{p.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

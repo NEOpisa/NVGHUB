@@ -116,16 +116,17 @@ html.lenis body {
     linear-gradient(rgba(159, 110, 249, 0.45) 1px, transparent 1px),
     linear-gradient(90deg, rgba(124, 58, 237, 0.30) 1px, transparent 1px);
   background-size: 64px 64px;
-  will-change: transform;
   backface-visibility: hidden;
 }
+/* Corredor 3D ESTÁTICO. Antes 4 planos grandes mascarados deslizavam a cada
+   frame (6s linear infinite) — recompondo máscara + transform 3D = lag forte.
+   Parado, mantém a profundidade por custo de uma pintura só. */
 .ambient-3d-floor {
   bottom: -25%;
   transform-origin: 50% 0%;
   transform: rotateX(80deg);
   mask-image: linear-gradient(to top, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 72%);
-  animation: grid-floor 6s linear infinite;
 }
 .ambient-3d-ceiling {
   top: -25%;
@@ -133,7 +134,6 @@ html.lenis body {
   transform: rotateX(-80deg);
   mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 72%);
-  animation: grid-ceiling 6s linear infinite;
 }
 .ambient-3d-left {
   left: 0; top: -25%; width: 150%; height: 150%;
@@ -141,7 +141,6 @@ html.lenis body {
   transform: rotateY(80deg);
   mask-image: linear-gradient(to right, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 72%);
-  animation: grid-left 6s linear infinite;
 }
 .ambient-3d-right {
   left: auto; right: 0; top: -25%; width: 150%; height: 150%;
@@ -149,29 +148,7 @@ html.lenis body {
   transform: rotateY(-80deg);
   mask-image: linear-gradient(to left, #000 0%, transparent 72%);
   -webkit-mask-image: linear-gradient(to left, #000 0%, transparent 72%);
-  animation: grid-right 6s linear infinite;
 }
-@keyframes grid-floor {
-  from { transform: rotateX(80deg) translateY(0); }
-  to   { transform: rotateX(80deg) translateY(64px); }
-}
-@keyframes grid-ceiling {
-  from { transform: rotateX(-80deg) translateY(0); }
-  to   { transform: rotateX(-80deg) translateY(64px); }
-}
-@keyframes grid-left {
-  from { transform: rotateY(80deg) translateX(0); }
-  to   { transform: rotateY(80deg) translateX(64px); }
-}
-@keyframes grid-right {
-  from { transform: rotateY(-80deg) translateX(0); }
-  to   { transform: rotateY(-80deg) translateX(64px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ambient-3d-floor, .ambient-3d-ceiling,
-  .ambient-3d-left, .ambient-3d-right { animation: none; }
-}
-/* o corredor 3D animado é pesado p/ repintar — desliga em telas pequenas */
 @media (max-width: 768px) {
   .ambient-3d { display: none; }
 }
@@ -185,60 +162,34 @@ html.lenis body {
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 0%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 0%, transparent 75%);
 }
+/* Orbs estáticos: animar camadas de ~600px com blur recompõe a tela inteira
+   a cada frame. Parados, custam uma pintura só. */
 .ambient-orb {
   position: absolute; border-radius: 50%;
-  filter: blur(120px);
-  will-change: transform, opacity;
+  filter: blur(80px);
 }
 .ambient-orb-a {
-  width: 620px; height: 620px;
+  width: 560px; height: 560px;
   top: -180px; left: -120px;
-  background: radial-gradient(circle, rgba(124,58,237,0.20) 0%, transparent 70%);
-  animation: orb-drift-a 26s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
 }
 .ambient-orb-b {
-  width: 540px; height: 540px;
+  width: 500px; height: 500px;
   top: 32%; right: -200px;
-  background: radial-gradient(circle, rgba(159,110,249,0.14) 0%, transparent 70%);
-  animation: orb-drift-b 32s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(159,110,249,0.12) 0%, transparent 70%);
 }
 .ambient-orb-c {
-  width: 480px; height: 480px;
+  width: 440px; height: 440px;
   bottom: -220px; left: 22%;
-  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
-  animation: orb-drift-c 38s ease-in-out infinite alternate;
-}
-/* só translate + opacity (composição GPU); sem scale, que re-rasteriza o blur */
-@keyframes orb-drift-a {
-  0%   { transform: translate3d(0, 0, 0); opacity: 0.8; }
-  100% { transform: translate3d(70px, 100px, 0); opacity: 1; }
-}
-@keyframes orb-drift-b {
-  0%   { transform: translate3d(0, 0, 0); opacity: 0.7; }
-  100% { transform: translate3d(-90px, 70px, 0); opacity: 0.95; }
-}
-@keyframes orb-drift-c {
-  0%   { transform: translate3d(0, 0, 0); opacity: 0.6; }
-  100% { transform: translate3d(60px, -80px, 0); opacity: 0.85; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ambient-orb { animation: none !important; }
+  background: radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 70%);
 }
 @media (max-width: 768px) {
-  .ambient-orb-a, .ambient-orb-b, .ambient-orb-c { filter: blur(90px); animation: none; }
   .ambient-orb-a { width: 420px; height: 420px; }
   .ambient-orb-b { width: 380px; height: 380px; }
   .ambient-orb-c { width: 340px; height: 340px; }
 }
 
 /* ── Scroll progress bar ── */
-#scroll-progress {
-  position: fixed; top: 0; left: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-  z-index: 200; width: 0%; transition: width 60ms linear;
-  box-shadow: 0 0 12px var(--accent);
-}
-
 /* ── Wordmark / logo ── */
 .wordmark {
   display: inline-flex; align-items: center;
@@ -271,6 +222,8 @@ html.lenis body {
 }
 .nav-link:hover { color: var(--text-primary); }
 .nav-link:hover::after { right: 0; }
+.nav-link--active { color: var(--text-primary); }
+.nav-link--active::after { right: 0; }
 .nav-link-btn {
   background: none; border: none; cursor: pointer; font-family: var(--font-body);
 }
@@ -365,8 +318,8 @@ html.lenis body {
 }
 .section-heading {
   font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(2rem, 3.5vw + 0.5rem, 2.75rem);
-  letter-spacing: -0.025em; color: var(--text-primary); line-height: 1.1;
+  font-size: clamp(2.25rem, 4vw + 0.5rem, 3.5rem);
+  letter-spacing: -0.03em; color: var(--text-primary); line-height: 1.05;
 }
 .section-sub {
   font-size: 16px; color: var(--text-secondary); line-height: 1.7;
@@ -752,13 +705,52 @@ html.lenis body {
 .saas-waitlist-msg.show { display: block; }
 
 /* ── Orçamento ── */
-#orcamento {
-  background: var(--bg-2-veil); padding: var(--section-pad) 0;
+/* ── Área de compra (pacotes + orçamento numa seção só) ── */
+.comprar-area {
+  background: var(--bg-2-veil);
+  padding: var(--section-pad) 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-.orcamento-categoria { margin-top: 40px; }
-.orcamento-categoria:first-of-type { margin-top: 48px; }
+.comprar-intro { max-width: 620px; }
+.comprar-part { padding: 56px 0 0; }
+/* divisória sutil entre pacotes e orçamento */
+.comprar-part--divider {
+  margin-top: 56px;
+  padding-top: 56px;
+  border-top: 1px solid var(--border);
+}
+.comprar-part-head { margin-bottom: 8px; }
+.comprar-part-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 3.4vw, 30px);
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+/* layout 2 colunas: seleção + resumo fixo (sticky) */
+.orcamento-layout {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (min-width: 940px) {
+  .orcamento-layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 44px; }
+  .orcamento-summary { position: sticky; top: 88px; }
+}
+.orcamento-categoria { margin-top: 36px; }
+.orcamento-cats .orcamento-categoria:first-of-type { margin-top: 0; }
+/* resumo como cartão vertical na coluna lateral */
+.orcamento-summary .orcamento-footer {
+  margin-top: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 22px;
+}
+.orcamento-summary .orcamento-total { gap: 8px; }
+.orcamento-summary .orcamento-footer .btn-primary { justify-content: center; width: 100%; }
 .orcamento-categoria-title {
   font-family: var(--font-display); font-weight: 700;
   font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em;
@@ -854,6 +846,73 @@ html.lenis body {
 .orcamento-footer .btn-primary { position: relative; z-index: 1; }
 
 /* ── Diferenciais ── */
+/* ── Sobre / Quem somos ── */
+#sobre { padding: var(--section-pad) 0; }
+.sobre-head { max-width: 640px; }
+.sobre-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+.sobre-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  transition: border-color 250ms, transform 250ms var(--ease-out), box-shadow 250ms;
+}
+.sobre-card:hover {
+  border-color: var(--accent-border);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 44px rgba(124,58,237,0.10);
+}
+.sobre-card-num {
+  font-family: var(--font-mono);
+  font-size: 13px; letter-spacing: 0.2em;
+  color: var(--accent-light);
+}
+.sobre-card-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 19px; color: var(--text-primary);
+  margin: 14px 0 10px;
+}
+.sobre-card-desc { font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+
+/* ── Processo / Como funciona ── */
+#processo {
+  padding: var(--section-pad) 0;
+  border-top: 1px solid var(--border);
+}
+.processo-head { max-width: 640px; }
+.processo-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 28px;
+}
+.processo-step {
+  position: relative;
+  padding-top: 24px;
+  border-top: 2px solid var(--border);
+  transition: border-color 250ms;
+}
+.processo-step:hover { border-top-color: var(--accent); }
+.processo-step-num {
+  display: block;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 40px; line-height: 1;
+  color: var(--accent-light); opacity: 0.45;
+  margin-bottom: 16px;
+}
+.processo-step-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 18px; color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.processo-step-desc { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+
 #diferenciais {
   background: var(--bg-2-veil); padding: var(--section-pad) 0;
   border-top: 1px solid var(--border);
@@ -915,11 +974,7 @@ html.lenis body {
 }
 
 /* ── Preços ── */
-#precos {
-  background: var(--bg-2-veil); padding: var(--section-pad) 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
+/* #precos agora é parte da .comprar-area (sem fundo/borda próprios) */
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -1223,7 +1278,7 @@ footer {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  #servicos, #orcamento, #precos, #diferenciais, #contato {
+  #servicos, #sobre, #processo, .comprar-area, #diferenciais, #contato {
     padding: var(--section-pad-mobile) 0;
   }
   .contact-wrap { grid-template-columns: 1fr; gap: 44px; }
@@ -1436,16 +1491,19 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .marquee-row { overflow: hidden; white-space: nowrap; }
 .marquee-track {
   display: inline-flex; align-items: center;
-  animation: marquee-scroll 36s linear infinite;
+  animation: marquee-scroll 40s linear infinite;
   will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .marquee-row--reverse .marquee-track {
   animation-direction: reverse;
-  animation-duration: 44s;
+  animation-duration: 48s;
 }
+/* translate3d mantém a animação 100% na GPU (sem repaint do texto a cada frame) */
 @keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-33.333%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-33.333%, 0, 0); }
 }
 .marquee-item {
   display: inline-flex; align-items: center; gap: 28px;
@@ -1870,6 +1928,9 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 /* ── Pricing: cartas laminadas (holo trading card) ── */
 .pricing-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: clamp(22px, 3vw, 34px);
   background: transparent;
   border: none;
@@ -1879,6 +1940,8 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   margin-top: 64px;
 }
 .pricing-grid .tilt-card {
+  flex: 1 1 300px;
+  max-width: 360px;
   height: auto;
   animation: card-levitate 6.5s ease-in-out infinite;
 }
@@ -2074,8 +2137,10 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 /* ════════════════════════════════════════════════
    PERFORMANCE — render adiado fora da viewport
    ════════════════════════════════════════════════ */
-#precos,
-#orcamento,
+/* #comprar fora da lista: content-visibility cria containment que quebra
+   o position:sticky do resumo do orçamento */
+#sobre,
+#processo,
 #diferenciais,
 #contato {
   content-visibility: auto;

@@ -91,80 +91,83 @@ export default function OrcamentoSection() {
       : "Olá! Quero um orçamento da Neovanguard.";
 
   return (
-    <section id="orcamento" aria-label="Monte seu orçamento">
+    <div id="orcamento" className="comprar-part" aria-label="Monte seu orçamento">
       <div className="inner">
-        <div ref={headerRef}>
-          <span className="section-eyebrow">Orçamento</span>
-          <h2 className="section-heading">
-            Monte o seu <span className="text-accent-nvg">pacote</span>
-          </h2>
+        <div ref={headerRef} className="comprar-part-head">
+          <h3 className="comprar-part-title">Monte o seu orçamento</h3>
           <p className="section-sub">
             Adicione serviços avulsos um de cada vez e veja o preço atualizar na hora. Sem enrolação.
           </p>
         </div>
 
-        {CATEGORIAS.map((categoria) => (
-          <div className="orcamento-categoria" key={categoria.name}>
-            <h3 className="orcamento-categoria-title">{categoria.name}</h3>
-            <div className="orcamento-grid">
-              {categoria.ids.map((id) => {
-                const opcao = OPCOES.find((o) => o.id === id)!;
-                const ativo = selecionados.includes(opcao.id);
-                return (
-                  <button
-                    key={opcao.id}
-                    className={`orcamento-item${ativo ? " ativo" : ""}`}
-                    onClick={() => toggle(opcao.id)}
-                    aria-pressed={ativo}
-                  >
-                    <span className="orcamento-burst" aria-hidden="true" />
-                    <div className="orcamento-icon" aria-hidden="true">{opcao.icon}</div>
-                    <div className="orcamento-info">
-                      <div className="orcamento-label">{opcao.label}</div>
-                      <div className="orcamento-desc">{opcao.desc}</div>
-                    </div>
-                    <div className="orcamento-price">
-                      + R$ {opcao.price.toLocaleString("pt-BR")}
-                    </div>
-                    <div className="orcamento-check" aria-hidden="true">
-                      {ativo && <CheckIcon size={12} strokeWidth={3} />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+        <div className="orcamento-layout">
+          <div className="orcamento-cats">
+            {CATEGORIAS.map((categoria) => (
+              <div className="orcamento-categoria" key={categoria.name}>
+                <h4 className="orcamento-categoria-title">{categoria.name}</h4>
+                <div className="orcamento-grid">
+                  {categoria.ids.map((id) => {
+                    const opcao = OPCOES.find((o) => o.id === id)!;
+                    const ativo = selecionados.includes(opcao.id);
+                    return (
+                      <button
+                        key={opcao.id}
+                        className={`orcamento-item${ativo ? " ativo" : ""}`}
+                        onClick={() => toggle(opcao.id)}
+                        aria-pressed={ativo}
+                      >
+                        <span className="orcamento-burst" aria-hidden="true" />
+                        <div className="orcamento-icon" aria-hidden="true">{opcao.icon}</div>
+                        <div className="orcamento-info">
+                          <div className="orcamento-label">{opcao.label}</div>
+                          <div className="orcamento-desc">{opcao.desc}</div>
+                        </div>
+                        <div className="orcamento-price">
+                          + R$ {opcao.price.toLocaleString("pt-BR")}
+                        </div>
+                        <div className="orcamento-check" aria-hidden="true">
+                          {ativo && <CheckIcon size={12} strokeWidth={3} />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
 
-        <div className="orcamento-footer">
-          <span className="orcamento-shine" key={total} aria-hidden="true" />
-          <div className="orcamento-total">
-            <span className="orcamento-total-label">
-              Total estimado
-              {selecionados.length > 0 && (
-                <span className="orcamento-count-badge">
-                  {selecionados.length} {selecionados.length === 1 ? "item" : "itens"}
+          <aside className="orcamento-summary">
+            <div className="orcamento-footer">
+              <span className="orcamento-shine" key={total} aria-hidden="true" />
+              <div className="orcamento-total">
+                <span className="orcamento-total-label">
+                  Total estimado
+                  {selecionados.length > 0 && (
+                    <span className="orcamento-count-badge">
+                      {selecionados.length} {selecionados.length === 1 ? "item" : "itens"}
+                    </span>
+                  )}
                 </span>
-              )}
-            </span>
-            <span className="orcamento-total-value" key={total}>
-              {selecionados.length === 0
-                ? "—"
-                : `R$ ${totalAnimado.toLocaleString("pt-BR")}`}
-            </span>
-          </div>
-          <a
-            href={`${WA}?text=${encodeURIComponent(msg)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-          >
-            <WhatsAppIcon size={15} />
-            {selecionados.length === 0 ? "Falar com a equipe" : "Solicitar este orçamento"}
-          </a>
+                <span className="orcamento-total-value" key={total}>
+                  {selecionados.length === 0
+                    ? "—"
+                    : `R$ ${totalAnimado.toLocaleString("pt-BR")}`}
+                </span>
+              </div>
+              <a
+                href={`${WA}?text=${encodeURIComponent(msg)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                <WhatsAppIcon size={15} />
+                {selecionados.length === 0 ? "Falar com a equipe" : "Solicitar este orçamento"}
+              </a>
+            </div>
+          </aside>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

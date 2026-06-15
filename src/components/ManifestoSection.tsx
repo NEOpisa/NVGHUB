@@ -26,7 +26,8 @@ export default function ManifestoSection() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".manifesto-line").forEach((line, i) => {
+      // preenchimento progressivo conforme o scroll (efeito "ir completando")
+      gsap.utils.toArray<HTMLElement>(".manifesto-line").forEach((line) => {
         gsap.fromTo(
           line,
           { backgroundPositionX: "100%" },
@@ -35,9 +36,9 @@ export default function ManifestoSection() {
             ease: "none",
             scrollTrigger: {
               trigger: line,
-              start: "top 82%",
-              end: "top 38%",
-              scrub: 0.6,
+              start: "top 85%",
+              end: "top 45%",
+              scrub: 0.5,
             },
           }
         );
@@ -65,7 +66,6 @@ export default function ManifestoSection() {
       aria-label="Manifesto da Neovanguard"
     >
       <div className="inner">
-        <span className="section-eyebrow">Manifesto</span>
         <h2 className="manifesto-heading">
           {LINES.map((line) => (
             <span className="manifesto-line" key={line}>

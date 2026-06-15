@@ -114,15 +114,12 @@ export default function PricingSection() {
   useReveal(gridRef, 80);
 
   return (
-    <section id="precos" aria-label="Pacotes e preços">
+    <div id="precos" className="comprar-part comprar-part--divider" aria-label="Pacotes e preços">
       <div className="inner">
-        <div ref={headerRef}>
-          <span className="section-eyebrow">Pacotes & Preços</span>
-          <h2 className="section-heading">
-            Escolha o pacote <span className="text-accent-nvg">certo pra você</span>
-          </h2>
+        <div ref={headerRef} className="comprar-part-head">
+          <h3 className="comprar-part-title">Ou escolha um pacote pronto</h3>
           <p className="section-sub">
-            Preços transparentes, sem letra miúda. Da vitrine digital à loja virtual completa — tem um pacote pro seu momento.
+            Da vitrine digital à loja virtual completa — tem um pacote pro seu momento.
           </p>
         </div>
 
@@ -167,6 +164,6 @@ export default function PricingSection() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
