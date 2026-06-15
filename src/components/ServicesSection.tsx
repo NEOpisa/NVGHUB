@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import ScrollLink from "@/components/ScrollLink";
 import { useRef, useState } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { CheckIcon } from "@/components/icons";
@@ -78,7 +80,6 @@ export default function ServicesSection() {
     <section id="servicos" aria-label="Nossos serviços">
       <div className="inner">
         <header className="services-header" ref={headerRef}>
-          <span className="section-eyebrow">O que fazemos</span>
           <h2 className="section-heading">
             Soluções digitais <span className="text-accent-nvg">que entregam</span>
           </h2>
@@ -170,10 +171,10 @@ export default function ServicesSection() {
 
         {/* Botão orçamento */}
         <div className="services-orcamento-cta">
-          <a href="#orcamento" className="btn-primary">
+          <ScrollLink href="/orcamento" target="orcamento" className="btn-primary">
             <CalcIcon />
             Montar meu orçamento
-          </a>
+          </ScrollLink>
           <button
             className="btn-ghost"
             onClick={() => window.dispatchEvent(new Event("open-noxz"))}
@@ -185,11 +186,11 @@ export default function ServicesSection() {
 
         {/* Botão Exemplos */}
         <div className="services-exemplos-row">
-          <a href="/exemplos" className="btn-ghost">
+          <Link href="/exemplos" className="btn-ghost">
             <GalleryIcon />
             Ver exemplos de sites
             <span className="be-tag">Novo</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

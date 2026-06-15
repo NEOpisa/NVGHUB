@@ -6,7 +6,13 @@ const nextConfig: NextConfig = {
   // URL "bonita" /orcamento serve a home; o scroll até a seção é feito
   // no cliente (ScrollToSection), sem deixar #orcamento na barra.
   async rewrites() {
-    return [{ source: "/orcamento", destination: "/" }];
+    return [
+      { source: "/comprar", destination: "/" },
+      { source: "/orcamento", destination: "/" },
+      { source: "/pacotes", destination: "/" },
+      { source: "/solucoes", destination: "/" },
+      { source: "/contato", destination: "/" },
+    ];
   },
 };
 

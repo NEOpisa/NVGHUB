@@ -1,6 +1,7 @@
 import { WhatsAppIcon, CheckIcon, InstagramIcon } from "@/components/icons";
 import Magnetic from "@/components/Magnetic";
 import HeroVisual from "@/components/HeroVisual";
+import ScrollLink from "@/components/ScrollLink";
 import { WA, IG } from "@/lib/constants";
 
 export default function Hero() {
@@ -10,12 +11,7 @@ export default function Hero() {
 
       <div className="inner hero-grid">
         <div className="hero-copy">
-          <div className="hero-eyebrow-row hero-enter hero-enter-1">
-            <span className="badge">
-              <span className="badge-dot" aria-hidden="true" />Neovanguard Soluções Digitais</span>
-          </div>
-
-          <h1 className="hero-h1 hero-enter hero-enter-2">
+          <h1 className="hero-h1 hero-enter hero-enter-2 hero-enter-1">
             Tudo o que seu negócio precisa no digital,{" "}
             <span className="text-gradient">conectado em um só lugar</span>
           </h1>
@@ -33,10 +29,10 @@ export default function Hero() {
               </a>
             </Magnetic>
             <Magnetic strength={0.25}>
-              <a href="#precos" className="btn-ghost">
+              <ScrollLink href="/pacotes" target="precos" className="btn-ghost">
                 Ver pacotes e preços
                 <ArrowRightIcon />
-              </a>
+              </ScrollLink>
             </Magnetic>
             <Magnetic strength={0.25}>
               <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">

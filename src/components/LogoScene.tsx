@@ -44,9 +44,9 @@ function buildGeometry(points: [number, number][], depth: number) {
   const geo = new THREE.ExtrudeGeometry(shape, {
     depth,
     bevelEnabled: true,
-    bevelThickness: 0.08,
-    bevelSize: 0.06,
-    bevelSegments: 3,
+    bevelThickness: 0.07,
+    bevelSize: 0.05,
+    bevelSegments: 1,
   });
   // centraliza apenas no eixo Z; X/Y preservam a composição da marca
   geo.translate(0, 0, -depth / 2);
@@ -71,26 +71,22 @@ function LogoMark() {
   return (
     <group ref={groupRef}>
       <Float speed={2} rotationIntensity={0.15} floatIntensity={0.9}>
-        {/* traço branco metálico */}
+        {/* traço branco metálico (standard material: bem mais barato que physical) */}
         <mesh geometry={whiteGeo} position={[0, 0, -0.28]}>
-          <meshPhysicalMaterial
+          <meshStandardMaterial
             color="#e8e8ee"
             metalness={0.85}
-            roughness={0.22}
-            clearcoat={0.8}
-            clearcoatRoughness={0.2}
+            roughness={0.28}
           />
         </mesh>
         {/* check roxo emissivo (à frente, como na marca) */}
         <mesh geometry={purpleGeo} position={[0, 0, 0.34]}>
-          <meshPhysicalMaterial
+          <meshStandardMaterial
             color="#7c3aed"
             emissive="#5b21b6"
             emissiveIntensity={0.9}
             metalness={0.55}
-            roughness={0.25}
-            clearcoat={1}
-            clearcoatRoughness={0.12}
+            roughness={0.3}
           />
         </mesh>
       </Float>
@@ -108,7 +104,7 @@ function OrbitRing() {
   });
   return (
     <mesh ref={ref} position={[0, -0.2, -1.4]}>
-      <torusGeometry args={[4.4, 0.012, 8, 120]} />
+      <torusGeometry args={[4.4, 0.012, 6, 64]} />
       <meshBasicMaterial color="#9f6ef9" transparent opacity={0.35} />
     </mesh>
   );
@@ -140,23 +136,22 @@ export default function LogoScene() {
   return (
     <div className="logo-scene" aria-hidden="true" ref={wrapRef}>
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, 1.25]}
         frameloop={active ? "always" : "never"}
         camera={{ position: [0, 0, 9], fov: 38 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       >
-        <ambientLight intensity={0.45} />
-        <directionalLight position={[6, 8, 6]} intensity={2.2} color="#ffffff" />
-        <pointLight position={[-6, -3, 4]} intensity={40} color="#7c3aed" />
-        <pointLight position={[5, -5, -3]} intensity={26} color="#9f6ef9" />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />
+        <pointLight position={[-6, -3, 4]} intensity={42} color="#7c3aed" />
         <LogoMark />
         <OrbitRing />
         <Sparkles
-          count={64}
+          count={16}
           scale={[11, 8, 6]}
           size={2.2}
-          speed={0.3}
-          opacity={0.55}
+          speed={0.25}
+          opacity={0.45}
           color="#9f6ef9"
         />
       </Canvas>

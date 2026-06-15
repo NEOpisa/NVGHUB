@@ -50,7 +50,6 @@ export default function ContatoSection() {
     <section id="contato" aria-label="Contato">
       <div className="inner">
         <div ref={headerRef}>
-          <span className="section-eyebrow">Contato</span>
           <h2 className="section-heading">
             Bora <span className="text-accent-nvg">começar?</span>
           </h2>

@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from "react";
 import NoxzModal from "@/components/NoxzSection";
+import ScrollLink from "@/components/ScrollLink";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
 
+// URLs limpas (só /, sem #). O scroll é feito pelo ScrollLink/ScrollToSection.
 const NAV_LINKS = [
-  { label: "Serviços", href: "#servicos" },
-  { label: "Orçamento", href: "#orcamento" },
-  { label: "Pacotes", href: "#precos" },
-  { label: "Contato", href: "#contato" },
+  { label: "Início", href: "/", target: undefined as string | undefined },
+  { label: "Orçamento", href: "/orcamento", target: "orcamento" },
+  { label: "Pacotes", href: "/pacotes", target: "precos" },
+  { label: "Contato", href: "/contato", target: "contato" },
 ];
 
 export default function Header() {
@@ -66,7 +68,7 @@ export default function Header() {
         }}
       >
         {/* Wordmark */}
-        <a href="#hero" className="wordmark" aria-label="NEOVANGUARD — página inicial" onClick={closeMobile}>
+        <ScrollLink href="/" className="wordmark" ariaLabel="NEOVANGUARD — página inicial" onNavigate={closeMobile}>
           <img
             src="/logo.png"
             alt=""
@@ -77,18 +79,15 @@ export default function Header() {
             N<span className="accent-letters">E</span>OVANGUAR
             <span className="accent-letters">D</span>
           </span>
-        </a>
+        </ScrollLink>
 
         {/* Desktop nav */}
         <nav aria-label="Navegação principal" className="nav-desktop">
-          {NAV_LINKS.map(({ label, href }) => (
-            <a key={href} href={href} className="nav-link">
+          {NAV_LINKS.map(({ label, href, target }) => (
+            <ScrollLink key={href} href={href} target={target} className="nav-link">
               {label}
-            </a>
+            </ScrollLink>
           ))}
-          <button className="nav-link nav-link-btn" onClick={() => setNoxzOpen(true)}>
-            Metodologia
-          </button>
         </nav>
 
         {/* CTA */}
@@ -115,20 +114,17 @@ export default function Header() {
       )}
       {mobileOpen && (
         <nav id="mobile-menu" aria-label="Navegação mobile" className="nav-mobile-menu">
-          {NAV_LINKS.map(({ label, href }) => (
-            <a key={href} href={href} className="nav-mobile-link" onClick={closeMobile}>
+          {NAV_LINKS.map(({ label, href, target }) => (
+            <ScrollLink
+              key={href}
+              href={href}
+              target={target}
+              className="nav-mobile-link"
+              onNavigate={closeMobile}
+            >
               {label}
-            </a>
+            </ScrollLink>
           ))}
-          <button
-            className="nav-mobile-link"
-            onClick={() => {
-              setNoxzOpen(true);
-              closeMobile();
-            }}
-          >
-            Metodologia
-          </button>
           <a
             href={WA}
             target="_blank"
