@@ -15,7 +15,7 @@ const ITEMS = [
     stat: "3",
     statSuffix: "meses",
     title: "Suporte pós-entrega",
-    desc: "Cinco meses de suporte incluso. Você não fica sozinho depois que o site vai ao ar.",
+    desc: "Três meses de suporte incluso. Você não fica sozinho depois que o site vai ao ar.",
   },
   {
     stat: "0",
