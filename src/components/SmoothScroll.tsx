@@ -10,11 +10,10 @@ export default function SmoothScroll() {
     // em telas de toque o scroll nativo já é suave; evita o loop rAF do Lenis
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    // Suavização por lerp (independente de FPS): inércia macia estilo Awwwards,
-    // mas responsiva — sem a sensação de "arrasto" de durações longas.
+    // Easing do NVGinstitucional: inércia macia e elegante (estilo Awwwards).
     const lenis = new Lenis({
-      lerp: 0.1,
-      wheelMultiplier: 1.05,
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       anchors: true,
     });

@@ -336,14 +336,15 @@ html.lenis body {
 /* ── Scroll reveal ── */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  filter: blur(8px);
+  transform: translateY(40px);
   transition:
-    opacity 0.85s var(--ease-premium),
-    transform 0.85s var(--ease-premium),
-    filter 0.85s var(--ease-premium);
+    opacity 0.9s var(--ease-premium),
+    transform 1s var(--ease-premium);
 }
-[data-reveal].is-visible { opacity: 1; transform: none; filter: blur(0); }
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
 [data-reveal][data-delay="100"] { transition-delay: 0.10s; }
 [data-reveal][data-delay="150"] { transition-delay: 0.15s; }
 [data-reveal][data-delay="200"] { transition-delay: 0.20s; }
@@ -359,6 +360,31 @@ html.lenis body {
   transition: opacity 350ms var(--ease-out);
 }
 .glow-expand:hover::after, .glow-expand:focus-visible::after { opacity: 1; }
+
+/* ── Cursor custom ── */
+.cursor-dot {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  width: 14px; height: 14px; border-radius: 50%;
+  /* branco + difference = inversão real da cor do que está embaixo
+     (lavanda + difference dava aquele verde estranho) */
+  background: #ffffff;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 200ms, width 200ms var(--ease-out),
+    height 200ms var(--ease-out);
+}
+.cursor-dot.is-visible { opacity: 1; }
+.cursor-dot.is-hover { width: 50px; height: 50px; }
+.cursor-dot.is-down.is-visible { opacity: 0.7; }
+.has-custom-cursor * { cursor: none !important; }
+.has-custom-cursor input,
+.has-custom-cursor textarea,
+.has-custom-cursor select { cursor: text !important; }
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot { display: none; }
+}
 
 /* ── Buttons ── */
 .btn-primary {
@@ -503,6 +529,29 @@ html.lenis body {
 @keyframes hero-visual-enter {
   from { opacity: 0; transform: scale(0.92); filter: blur(10px); }
   to   { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+/* pequeno efeito ao dar scroll: o hero sai com leve parallax/fade conforme
+   você rola. CSS scroll-driven (sem JS) — graceful se o browser não suportar. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .hero-copy {
+      animation: hero-scroll-out linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 95%;
+    }
+    .logo-scene {
+      animation: hero-scroll-parallax linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+@keyframes hero-scroll-out {
+  to { transform: translateY(-48px); opacity: 0.25; }
+}
+@keyframes hero-scroll-parallax {
+  from { transform: translateY(-26px); }
+  to   { transform: translateY(52px); }
 }
 .hero-scroll-hint {
   position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
