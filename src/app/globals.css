@@ -495,11 +495,8 @@ html.lenis body {
 .hero-h1 .text-gradient {
   display: inline;
   background-size: 200% auto;
-  animation: text-gradient-shimmer 7s ease-in-out infinite;
-}
-@keyframes text-gradient-shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
+  /* shimmer infinito removido: repintava texto grande em gradiente a cada
+     frame no topo da página. Gradiente estático mantém o visual. */
 }
 .hero-sub {
   font-size: clamp(1rem, 1.1vw + 0.5rem, 1.125rem);
@@ -1148,48 +1145,18 @@ html.lenis body {
   box-shadow: 0 0 24px rgba(124,58,237,0.4); transform: translateY(-1px);
 }
 
-/* ── Noxz Modal ── */
-.noxz-modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(0,0,0,0.82);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
-  animation: modal-fade 200ms var(--ease-out);
-}
-@keyframes modal-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-.noxz-modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  max-width: 920px; width: 100%;
-  max-height: 90vh; overflow-y: auto;
-  padding: 52px;
+/* ── Noxz (página /metodologia) ── */
+.noxz-section {
   position: relative;
-  animation: modal-slide 280ms var(--ease-out);
+  overflow: hidden;
+  padding: var(--section-pad) 0;
+  border-top: 1px solid var(--border);
 }
-@keyframes modal-slide {
-  from { transform: translateY(24px); opacity: 0; }
-  to   { transform: none; opacity: 1; }
-}
-.noxz-modal-close {
-  position: absolute; top: 20px; right: 20px;
-  background: var(--surface-raised); border: 1px solid var(--border);
-  color: var(--text-secondary); font-size: 16px;
-  width: 36px; height: 36px; border-radius: var(--radius-sm);
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: background 150ms, color 150ms;
-}
-.noxz-modal-close:hover { background: var(--accent-subtle); color: var(--accent-light); }
-.noxz-modal-header { margin-bottom: 40px; }
-.noxz-modal-grid {
+.noxz-section-header { margin-bottom: 48px; max-width: 680px; }
+.noxz-section-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
 }
 .noxz-card {
   background: var(--surface); border: 1px solid var(--border);
@@ -1333,8 +1300,8 @@ footer {
   .contact-wrap { grid-template-columns: 1fr; gap: 44px; }
   .services-grid { grid-template-columns: 1fr; }
   .nav-desktop { display: none !important; }
-  .noxz-modal { padding: 32px 24px; }
-  .noxz-modal-grid { grid-template-columns: 1fr; }
+  .noxz-section { padding: var(--section-pad-mobile) 0; }
+  .noxz-section-grid { grid-template-columns: 1fr; }
   .orcamento-footer { flex-direction: column; align-items: flex-start; }
   .orcamento-price { font-size: 14px; }
   .orcamento-icon { display: none; }
@@ -1351,7 +1318,6 @@ footer {
   .cta-row { flex-direction: column; align-items: stretch; }
   .cta-row a, .cta-row button { justify-content: center; }
   .hero-scroll-hint { display: none; }
-  .noxz-modal { padding: 24px 16px; }
 }
 
 /* ════════════════════════════════════════════════
@@ -1560,13 +1526,13 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   font-family: var(--font-display); font-weight: 800;
   font-size: clamp(26px, 4.5vw, 44px);
   letter-spacing: 0.02em; text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(240, 240, 240, 0.35);
+  /* preenchimento tênue no lugar de text-stroke (vazado): rasteriza muito
+     mais barato — o stroke em texto enorme animando era a causa do lag */
+  color: rgba(240, 240, 240, 0.14);
 }
 .marquee-row--reverse .marquee-item {
   color: var(--text-primary);
-  -webkit-text-stroke: 0;
-  opacity: 0.92;
+  opacity: 0.9;
 }
 .marquee-sep { font-size: 0.5em; color: var(--accent-light); -webkit-text-stroke: 0; }
 @media (prefers-reduced-motion: reduce) {
@@ -1737,45 +1703,30 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 }
 
 /* ── Noxz premium ── */
-.noxz-modal {
+.noxz-section {
   background:
-    radial-gradient(ellipse 90% 50% at 50% -10%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
-    #101014;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  box-shadow:
-    0 0 0 1px rgba(124, 58, 237, 0.28),
-    0 0 60px rgba(124, 58, 237, 0.18),
-    0 40px 120px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-  overflow-y: auto;
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 60%),
+    var(--bg-2-veil);
 }
+/* auroras estáticas (blur animado = lag) */
 .noxz-aurora {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(80px);
   pointer-events: none;
   z-index: 0;
 }
 .noxz-aurora-a {
   width: 420px; height: 420px;
-  top: -180px; right: -120px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, transparent 70%);
-  animation: noxz-drift 11s ease-in-out infinite alternate;
+  top: -120px; right: -120px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, transparent 70%);
 }
 .noxz-aurora-b {
   width: 360px; height: 360px;
   bottom: -160px; left: -100px;
-  background: radial-gradient(circle, rgba(159, 110, 249, 0.14) 0%, transparent 70%);
-  animation: noxz-drift 14s ease-in-out infinite alternate-reverse;
+  background: radial-gradient(circle, rgba(159, 110, 249, 0.12) 0%, transparent 70%);
 }
-@keyframes noxz-drift {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(-50px, 40px) scale(1.15); }
-}
-.noxz-modal-header, .noxz-modal-grid, .noxz-modal-footer, .noxz-modal-close {
-  position: relative; z-index: 1;
-}
+.noxz-section .inner { position: relative; z-index: 1; }
 
 .noxz-badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1856,7 +1807,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   color: var(--accent-light);
 }
 
-.noxz-modal-footer {
+.noxz-section-footer {
   margin-top: 36px;
   display: flex; align-items: center; gap: 18px;
   flex-wrap: wrap;
@@ -1992,18 +1943,8 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   flex: 1 1 300px;
   max-width: 360px;
   height: auto;
-  animation: card-levitate 6.5s ease-in-out infinite;
 }
-.pricing-grid .tilt-card:nth-child(2n) { animation-delay: -2.2s; }
-.pricing-grid .tilt-card:nth-child(3n) { animation-delay: -4.4s; }
 .pricing-grid .tilt-card:hover { z-index: 3; }
-@keyframes card-levitate {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -11px; }
-}
-@media (prefers-reduced-motion: reduce), (hover: none) {
-  .pricing-grid .tilt-card { animation: none; }
-}
 
 .pricing-card {
   border-radius: 18px;

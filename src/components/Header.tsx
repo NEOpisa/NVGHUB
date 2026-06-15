@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NoxzModal from "@/components/NoxzSection";
 import ScrollLink from "@/components/ScrollLink";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
@@ -16,19 +15,12 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [noxzOpen, setNoxzOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const handler = () => setNoxzOpen(true);
-    window.addEventListener("open-noxz", handler);
-    return () => window.removeEventListener("open-noxz", handler);
   }, []);
 
   useEffect(() => {
@@ -137,8 +129,6 @@ export default function Header() {
           </a>
         </nav>
       )}
-
-      <NoxzModal isOpen={noxzOpen} onClose={() => setNoxzOpen(false)} />
     </>
   );
 }
