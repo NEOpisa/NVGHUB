@@ -6,6 +6,7 @@ import AmbientField from "@/components/AmbientField";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollToSection from "@/components/ScrollToSection";
+import Cursor from "@/components/Cursor";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
 
@@ -73,6 +74,7 @@ export default function RootLayout({
         <Preloader />
         <SmoothScroll />
         <ScrollToSection />
+        <Cursor />
         <AmbientField />
         <Header />
         {children}
