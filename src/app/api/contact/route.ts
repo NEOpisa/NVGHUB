@@ -64,7 +64,7 @@ export async function POST(req: Request) {
 
   try {
     const { error } = await resend.emails.send({
-      from: 'Neovanguard <contato@neovanguard.com.br>',
+      from: 'Neovanguard <comercial@neovanguard.com.br>',
       to: 'comercial@neovanguard.com.br',
       replyTo: email,
       subject: `Novo contato pelo site — ${nome}`,

@@ -143,8 +143,8 @@ export default function Header() {
             <InstagramIcon size={16} />
             Instagram
           </a>
-          <a href="mailto:contato@neovanguard.com.br" className="menu-contact">
-            contato@neovanguard.com.br
+          <a href="mailto:comercial@neovanguard.com.br" className="menu-contact">
+            comercial@neovanguard.com.br
           </a>
 
           <div className="menu-aside-meta">
