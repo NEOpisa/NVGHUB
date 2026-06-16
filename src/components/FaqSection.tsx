@@ -43,9 +43,9 @@ export default function FaqSection() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
       <div className="inner faq-inner">
-        <h2 className="section-heading faq-heading">
+        <h1 className="section-heading faq-heading">
           Perguntas <span className="text-accent-nvg">frequentes</span>
-        </h2>
+        </h1>
         <div className="faq-list">
           {FAQ.map(({ q, a }) => (
             <details key={q} className="faq-item">

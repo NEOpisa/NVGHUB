@@ -7,6 +7,7 @@ const ROUTES = [
   { path: "/metodologia", priority: 0.7 },
   { path: "/orcamento", priority: 0.9 },
   { path: "/pacotes", priority: 0.9 },
+  { path: "/faq", priority: 0.7 },
   { path: "/contato", priority: 0.8 },
   { path: "/exemplos", priority: 0.6 },
 ];

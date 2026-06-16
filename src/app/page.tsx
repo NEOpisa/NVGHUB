@@ -2,7 +2,6 @@ import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import ServicesSection from "@/components/ServicesSection";
 import ExploreSection from "@/components/ExploreSection";
-import FaqSection from "@/components/FaqSection";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
 import { pageMetadata } from "@/lib/seo";
@@ -22,7 +21,6 @@ export default function Home() {
       <Marquee />
       <ServicesSection />
       <ExploreSection />
-      <FaqSection />
 
       <section className="home-cta" aria-label="Vamos começar">
         <div className="inner home-cta-inner">
