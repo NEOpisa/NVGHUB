@@ -8,7 +8,8 @@ const AREAS = [
   { num: "01", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
   { num: "02", label: "Orçamento", href: "/orcamento", desc: "Monte o seu sob medida e veja o preço na hora." },
   { num: "03", label: "Pacotes", href: "/pacotes", desc: "Planos fechados, com preço transparente." },
-  { num: "04", label: "Contato", href: "/contato", desc: "Fale com a gente pelo WhatsApp ou formulário." },
+  { num: "04", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, preços e como a gente trabalha." },
+  { num: "05", label: "Contato", href: "/contato", desc: "Fale com a gente pelo WhatsApp ou formulário." },
 ];
 
 export default function ExploreSection() {
