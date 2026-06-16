@@ -81,14 +81,6 @@ export default function Header() {
           </Link>
 
           <div className="site-header-right">
-            <a
-              href={WA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-cta"
-            >
-              Solicitar orçamento
-            </a>
             <button
               className="menu-toggle"
               onClick={() => setMenuOpen((o) => !o)}

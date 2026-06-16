@@ -2318,12 +2318,25 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 .menu-toggle {
   display: inline-flex; align-items: center; gap: 12px;
-  background: none; border: none; cursor: pointer;
-  color: var(--text-primary); padding: 8px 2px;
-  font-family: var(--font-mono); font-size: 11px;
+  cursor: pointer; color: var(--text-primary);
+  padding: 10px 18px;
+  border: 1px solid var(--border-hover); border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
+  transition: border-color 220ms, background 220ms, color 220ms, box-shadow 220ms;
 }
-.menu-toggle-label { min-width: 44px; text-align: right; }
+.menu-toggle:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-subtle);
+  color: var(--accent-light);
+  box-shadow: 0 0 22px var(--accent-glow);
+}
+.site-header.is-menu-open .menu-toggle {
+  border-color: var(--accent-border); color: var(--accent-light);
+  background: var(--accent-subtle);
+}
+.menu-toggle-label { min-width: 44px; text-align: left; }
 .menu-toggle-icon {
   display: flex; flex-direction: column; justify-content: center;
   gap: 5px; width: 26px; height: 12px;
@@ -2348,7 +2361,9 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   background: rgba(8, 8, 11, 0.98);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   opacity: 0; visibility: hidden; pointer-events: none;
-  transition: opacity 420ms var(--ease-premium), visibility 420ms;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 560ms var(--ease-premium),
+    opacity 420ms var(--ease-premium), visibility 560ms;
 }
 .menu-overlay::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -2356,7 +2371,10 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
     radial-gradient(ellipse 50% 50% at 85% 20%, var(--accent-subtle), transparent 70%),
     radial-gradient(ellipse 40% 40% at 10% 90%, rgba(232, 121, 249, 0.06), transparent 70%);
 }
-.menu-overlay.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+.menu-overlay.is-open {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  clip-path: inset(0 0 0% 0);
+}
 
 .menu-nav { display: flex; flex-direction: column; position: relative; z-index: 1; }
 .menu-link {
