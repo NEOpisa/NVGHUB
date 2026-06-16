@@ -17,6 +17,7 @@ const NAV_LINKS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hideBrand, setHideBrand] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -38,6 +39,21 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    if (!hero) {
+      setHideBrand(false);
+      return;
+    }
+    setHideBrand(true);
+    const io = new IntersectionObserver(
+      ([entry]) => setHideBrand(entry.isIntersecting),
+      { rootMargin: "-45% 0px -45% 0px" }
+    );
+    io.observe(hero);
+    return () => io.disconnect();
+  }, [pathname]);
+
   const closeMenu = () => setMenuOpen(false);
 
   return (
@@ -47,6 +63,7 @@ export default function Header() {
           "site-header",
           scrolled ? "is-scrolled" : "",
           menuOpen ? "is-menu-open" : "",
+          hideBrand && !menuOpen ? "brand-hidden" : "",
         ].join(" ")}
       >
         <div className="site-header-inner">
@@ -59,8 +76,7 @@ export default function Header() {
           >
             <img src="/logo.png" alt="" aria-hidden className="nav-logo" />
             <span className="wordmark-text">
-              N<span className="accent-letters">E</span>OVANGUAR
-              <span className="accent-letters">D</span>
+              NEO<b>VANGUARD</b>
             </span>
           </Link>
 

@@ -12,8 +12,7 @@ export default function Footer() {
           className="nav-logo"
         />
         <span className="wordmark-text">
-          N<span className="accent-letters">E</span>OVANGUAR
-          <span className="accent-letters">D</span>
+          NEO<b>VANGUARD</b>
         </span>
       </Link>
 
