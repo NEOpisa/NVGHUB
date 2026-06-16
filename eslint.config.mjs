@@ -12,6 +12,13 @@ const compat = new FlatCompat({
 const eslintConfig = [
   { ignores: ["templates/**", "public/templates/**"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      // Uso intencional de <img>: logo é um PNG decorativo de ~2KB (aria-hidden)
+      // e o projeto roda com images.unoptimized, então <Image> não traria ganho.
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
