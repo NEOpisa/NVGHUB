@@ -74,7 +74,7 @@ export default function Header() {
             aria-label="NEOVANGUARD — página inicial"
             onClick={closeMenu}
           >
-            <img src="/logo.png" alt="" aria-hidden className="nav-logo" />
+            <img src="/logo.png" alt="" aria-hidden width={43} height={32} className="nav-logo" />
             <span className="wordmark-text">
               NEO<b>VANGUARD</b>
             </span>

@@ -9,6 +9,8 @@ export default function Footer() {
           src="/logo.png"
           alt=""
           aria-hidden
+          width={43}
+          height={32}
           className="nav-logo"
         />
         <span className="wordmark-text">

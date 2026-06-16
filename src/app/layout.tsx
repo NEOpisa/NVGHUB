@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Criamos sites e sistemas para pequenos negócios locais. Site pronto em até 7 dias.",
     type: "website",
     url: SITE_URL,
-    images: ["/logo.png"],
+    images: ["/og.png"],
   },
 };
 
@@ -56,6 +56,12 @@ const JSON_LD = {
   description:
     "Agência de soluções digitais 100% remota, especializada em sites e sistemas para pequenos negócios locais em todo o Brasil.",
   areaServed: { "@type": "Country", name: "Brasil" },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    telephone: "+5521969043544",
+    availableLanguage: ["pt-BR"],
+  },
   sameAs: [IG],
 };
 

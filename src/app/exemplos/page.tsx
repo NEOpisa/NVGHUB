@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { TEMPLATES } from "@/lib/templates";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Exemplos de Sites — Neovanguard",
   description:
     "Modelos de sites prontos da Neovanguard. Clique em qualquer exemplo e navegue pelo site completo, funcionando de verdade.",
-};
+  path: "/exemplos",
+});
 
 export default function ExemplosPage() {
   return (
