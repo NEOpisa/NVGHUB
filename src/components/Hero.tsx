@@ -12,7 +12,7 @@ export default function Hero() {
       <div className="inner hero-grid">
         <div className="hero-copy">
           <div className="hero-brand hero-enter hero-enter-1">
-            <img src="/logo.png" alt="" aria-hidden="true" />
+            <img src="/logo.png" alt="" aria-hidden="true" width={40} height={30} />
             <span className="hero-brand-name">
               NEO<b>VANGUARD</b>
             </span>
