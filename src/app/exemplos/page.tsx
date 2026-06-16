@@ -42,7 +42,6 @@ export default function ExemplosPage() {
                 style={{ ["--card-accent" as string]: t.accent }}
               >
                 <div className="exemplo-thumb">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/exemplos/${t.slug}.webp`} alt={`Prévia de site — ${t.category}`} loading="lazy" width={760} height={534} />
                   <span className="exemplo-open">
                     Abrir exemplo
