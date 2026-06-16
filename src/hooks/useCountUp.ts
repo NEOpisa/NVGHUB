@@ -2,11 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/*
- * Conta de 0 até o número contido em `target` quando o elemento
- * entra na tela. Preserva sufixos não numéricos ("100%" → conta até 100
- * e mantém o "%").
- */
 export function useCountUp(target: string, duration = 1400) {
   const ref = useRef<HTMLDivElement>(null);
   const [display, setDisplay] = useState(target);

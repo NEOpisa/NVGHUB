@@ -1,11 +1,10 @@
 import Link from "next/link";
-import ScrollLink from "@/components/ScrollLink";
 import { WA, IG } from "@/lib/constants";
 
 export default function Footer() {
   return (
     <footer>
-      <ScrollLink href="/" className="wordmark" ariaLabel="NEOVANGUARD — voltar ao início">
+      <Link href="/" className="wordmark" aria-label="NEOVANGUARD — voltar ao início">
         <img
           src="/logo.png"
           alt=""
@@ -16,13 +15,12 @@ export default function Footer() {
           N<span className="accent-letters">E</span>OVANGUAR
           <span className="accent-letters">D</span>
         </span>
-      </ScrollLink>
+      </Link>
 
       <div className="footer-links">
-        <ScrollLink href="/solucoes" target="servicos">Soluções</ScrollLink>
-        <ScrollLink href="/orcamento" target="orcamento">Orçamento</ScrollLink>
-        <ScrollLink href="/pacotes" target="precos">Pacotes</ScrollLink>
-        <ScrollLink href="/contato" target="contato">Contato</ScrollLink>
+        <Link href="/orcamento">Orçamento</Link>
+        <Link href="/pacotes">Pacotes</Link>
+        <Link href="/contato">Contato</Link>
         <Link href="/exemplos">Exemplos</Link>
         <a href={WA} target="_blank" rel="noopener noreferrer">WhatsApp</a>
         <a href={IG} target="_blank" rel="noopener noreferrer">Instagram</a>

@@ -59,7 +59,7 @@ export default function ContatoSection() {
         </div>
 
         <div className="contact-wrap" ref={wrapRef}>
-          {/* Left — WhatsApp info */}
+
           <div className="contact-info">
             <div>
               <div className="contact-info-title">Prefere pelo WhatsApp?</div>
@@ -83,9 +83,8 @@ export default function ContatoSection() {
             </div>
           </div>
 
-          {/* Right — form */}
           <form className="contact-form" onSubmit={handleSubmit} noValidate>
-            {/* Honeypot anti-spam: invisível para humanos, bots tendem a preencher */}
+
             <input
               type="text"
               name="empresa"

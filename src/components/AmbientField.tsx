@@ -1,10 +1,16 @@
-// Campo ambiente decorativo e estático.
-// O paralaxe de mouse reescrevia o transform de orbs com blur(120px) a cada
-// frame — recompondo camadas enormes e travando o scroll. Agora é tudo estático
-// (zero custo por frame), mantendo a profundidade visual.
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export default function AmbientField() {
+  const pathname = usePathname();
+  const minimal = pathname !== "/";
+
   return (
-    <div className="ambient-field" aria-hidden="true">
+    <div
+      className={`ambient-field${minimal ? " ambient-field--minimal" : ""}`}
+      aria-hidden="true"
+    >
       <div className="ambient-grain" />
       <div className="ambient-3d">
         <div className="ambient-3d-plane ambient-3d-floor" />

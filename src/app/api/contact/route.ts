@@ -42,7 +42,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Requisição inválida.' }, { status: 400 });
   }
 
-  // Honeypot: campo invisível que só bots preenchem.
   if (typeof body.empresa === 'string' && body.empresa.trim() !== '') {
     return NextResponse.json({ ok: true });
   }

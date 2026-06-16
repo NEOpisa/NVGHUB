@@ -5,11 +5,6 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
-/*
- * A marca NV em 3D — contornos extraídos pixel a pixel do logo.png
- * (viewBox 320×240). As duas formas vivem no mesmo espaço de
- * coordenadas para preservar a composição exata da marca.
- */
 const WHITE_POINTS: [number, number][] = [
   [48, 25],
   [86, 44],
@@ -48,7 +43,6 @@ function buildGeometry(points: [number, number][], depth: number) {
     bevelSize: 0.05,
     bevelSegments: 1,
   });
-  // centraliza apenas no eixo Z; X/Y preservam a composição da marca
   geo.translate(0, 0, -depth / 2);
   return geo;
 }
@@ -63,7 +57,6 @@ function LogoMark() {
     const g = groupRef.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    // oscilação lenta + paralaxe do mouse
     g.rotation.y = Math.sin(t * 0.35) * 0.38 + state.pointer.x * 0.45;
     g.rotation.x = Math.sin(t * 0.22) * 0.1 + state.pointer.y * -0.25;
   });
@@ -71,7 +64,7 @@ function LogoMark() {
   return (
     <group ref={groupRef}>
       <Float speed={2} rotationIntensity={0.15} floatIntensity={0.9}>
-        {/* traço branco metálico (standard material: bem mais barato que physical) */}
+
         <mesh geometry={whiteGeo} position={[0, 0, -0.28]}>
           <meshStandardMaterial
             color="#e8e8ee"
@@ -79,7 +72,7 @@ function LogoMark() {
             roughness={0.28}
           />
         </mesh>
-        {/* check roxo emissivo (à frente, como na marca) */}
+
         <mesh geometry={purpleGeo} position={[0, 0, 0.34]}>
           <meshStandardMaterial
             color="#7c3aed"
@@ -114,7 +107,6 @@ export default function LogoScene() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(true);
 
-  // pausa o loop 3D quando o hero sai da tela ou a aba fica oculta
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;

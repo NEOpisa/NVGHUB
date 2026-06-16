@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, ReactNode } from "react";
 
-/* Inclina o card em 3D seguindo o cursor, com brilho especular.
-   As leituras/escritas são agrupadas em um único rAF por frame. */
 export default function TiltCard({
   children,
   className = "",

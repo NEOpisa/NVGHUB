@@ -7,17 +7,15 @@ import { setLenisInstance } from "@/lib/lenis";
 export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // em telas de toque o scroll nativo já é suave; evita o loop rAF do Lenis
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    // Easing do NVGinstitucional: inércia macia e elegante (estilo Awwwards).
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.09,
       smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
       anchors: true,
     });
-    // exposto p/ a navegação por rota limpa (ScrollToSection) rolar suave
     setLenisInstance(lenis);
 
     let raf: number;

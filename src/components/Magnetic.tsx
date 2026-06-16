@@ -2,7 +2,6 @@
 
 import { useRef, ReactNode } from "react";
 
-/* Envolve um elemento e o faz "grudar" suavemente no cursor */
 export default function Magnetic({
   children,
   strength = 0.35,

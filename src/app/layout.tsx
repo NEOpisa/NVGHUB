@@ -6,7 +6,7 @@ import AmbientField from "@/components/AmbientField";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollToSection from "@/components/ScrollToSection";
-import Cursor from "@/components/Cursor";
+import ClickFX from "@/components/ClickFX";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
 
@@ -74,11 +74,13 @@ export default function RootLayout({
         <Preloader />
         <SmoothScroll />
         <ScrollToSection />
-        <Cursor />
+        <ClickFX />
         <AmbientField />
+        <div className="scroll-progress" aria-hidden="true" />
         <Header />
         {children}
         <Footer />
+        <div className="site-frame" aria-hidden="true" />
       </body>
     </html>
   );

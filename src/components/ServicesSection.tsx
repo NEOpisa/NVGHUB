@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import ScrollLink from "@/components/ScrollLink";
-import { useRef, useState } from "react";
-import { useReveal } from "@/hooks/useReveal";
+import { useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CheckIcon } from "@/components/icons";
 import TiltCard from "@/components/TiltCard";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const SERVICES = [
   {
@@ -44,9 +46,38 @@ const SERVICES = [
 ];
 
 export default function ServicesSection() {
-  const headerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
-  useReveal(headerRef);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      section
+        .querySelectorAll<HTMLElement>(".manifesto-line")
+        .forEach((el) => (el.style.backgroundPositionX = "0%"));
+      return;
+    }
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".manifesto-line").forEach((line) => {
+        gsap.fromTo(
+          line,
+          { backgroundPositionX: "100%" },
+          {
+            backgroundPositionX: "0%",
+            ease: "none",
+            scrollTrigger: {
+              trigger: line,
+              start: "top 88%",
+              end: "top 48%",
+              scrub: 0.5,
+            },
+          }
+        );
+      });
+    }, section);
+    return () => ctx.revert();
+  }, []);
 
   const goTo = (idx: number) => setActiveIdx(((idx % SERVICES.length) + SERVICES.length) % SERVICES.length);
   const goPrev = () => goTo(activeIdx - 1);
@@ -57,7 +88,6 @@ export default function ServicesSection() {
     else if (e.key === "ArrowRight") { e.preventDefault(); goNext(); }
   };
 
-  // touch swipe (mobile)
   const touchStart = useRef({ x: 0, y: 0 });
   const touchDelta = useRef({ x: 0, y: 0 });
   const onTouchStart = (e: React.TouchEvent) => {
@@ -77,18 +107,19 @@ export default function ServicesSection() {
   };
 
   return (
-    <section id="servicos" aria-label="Nossos serviços">
+    <section id="servicos" aria-label="Nossos serviços" ref={sectionRef}>
       <div className="inner">
-        <header className="services-header" ref={headerRef}>
-          <h2 className="section-heading">
-            Soluções digitais <span className="text-accent-nvg">que entregam</span>
+        <header className="services-header">
+          <span className="section-eyebrow">Serviços</span>
+          <h2 className="services-fill">
+            <span className="manifesto-line">Soluções digitais</span>
+            <span className="manifesto-line">que entregam de verdade.</span>
           </h2>
           <p className="section-sub">
             Do site ao sistema, entrega em até 16 dias úteis. Sem papo de agência grande.
           </p>
         </header>
 
-        {/* Carousel — exibe 1 card por vez, igual em desktop e mobile */}
         <div
           className="services-carousel"
           role="group"
@@ -169,19 +200,16 @@ export default function ServicesSection() {
           ))}
         </div>
 
-        {/* Botão orçamento */}
         <div className="services-orcamento-cta">
-          <ScrollLink href="/orcamento" target="orcamento" className="btn-primary">
+          <Link href="/orcamento" className="btn-primary">
             <CalcIcon />
             Montar meu orçamento
-          </ScrollLink>
-          <Link href="/metodologia" className="btn-ghost">
-            <SparkIcon />
-            Conhecer o Plano Noxz
+          </Link>
+          <Link href="/pacotes" className="btn-ghost">
+            Ver pacotes prontos
           </Link>
         </div>
 
-        {/* Botão Exemplos */}
         <div className="services-exemplos-row">
           <Link href="/exemplos" className="btn-ghost">
             <GalleryIcon />
@@ -217,4 +245,3 @@ function ChevronIcon({ direction }: { direction: "left" | "right" }) {
   );
 }
 function CalcIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>; }
-function SparkIcon() { return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>; }

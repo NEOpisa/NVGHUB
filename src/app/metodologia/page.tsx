@@ -4,5 +4,9 @@ import NoxzSection from "@/components/NoxzSection";
 export const metadata: Metadata = { title: "Metodologia — Plano Noxz" };
 
 export default function MetodologiaPage() {
-  return <NoxzSection />;
+  return (
+    <main id="main">
+      <NoxzSection />
+    </main>
+  );
 }

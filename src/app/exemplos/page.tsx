@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import ScrollLink from "@/components/ScrollLink";
 import { TEMPLATES } from "@/lib/templates";
 
 export const metadata: Metadata = {
@@ -59,7 +58,7 @@ export default function ExemplosPage() {
 
           <div className="exemplos-foot">
             <p>Gostou de algum? A gente personaliza com a sua marca, textos e fotos.</p>
-            <ScrollLink href="/orcamento" target="orcamento" className="btn-primary">Montar meu orçamento</ScrollLink>
+            <Link href="/orcamento" className="btn-primary">Montar meu orçamento</Link>
           </div>
         </div>
       </section>
