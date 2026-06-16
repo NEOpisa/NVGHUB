@@ -1,21 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ScrollLink from "@/components/ScrollLink";
-import { WhatsAppIcon } from "@/components/icons";
-import { WA } from "@/lib/constants";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
+import { WA, IG } from "@/lib/constants";
 
-// URLs limpas (só /, sem #). O scroll é feito pelo ScrollLink/ScrollToSection.
 const NAV_LINKS = [
-  { label: "Início", href: "/", target: undefined as string | undefined },
-  { label: "Orçamento", href: "/orcamento", target: "orcamento" },
-  { label: "Pacotes", href: "/pacotes", target: "precos" },
-  { label: "Contato", href: "/contato", target: "contato" },
+  { label: "Início", href: "/" },
+  { label: "Quem somos", href: "/sobre" },
+  { label: "Orçamento", href: "/orcamento" },
+  { label: "Pacotes", href: "/pacotes" },
+  { label: "Contato", href: "/contato" },
 ];
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -24,111 +26,124 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (!mobileOpen) return;
+    if (!menuOpen) return;
     document.body.style.overflow = "hidden";
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileOpen(false);
+      if (e.key === "Escape") setMenuOpen(false);
     };
     window.addEventListener("keydown", handleKey);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKey);
     };
-  }, [mobileOpen]);
+  }, [menuOpen]);
 
-  const closeMobile = () => setMobileOpen(false);
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
       <header
-        style={{
-          position: "fixed",
-          top: 0, left: 0, right: 0,
-          zIndex: 100,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 clamp(24px, 4vw, 48px)",
-          height: "64px",
-          transition: "background 300ms, border-color 300ms, backdrop-filter 300ms",
-          borderBottom: scrolled
-            ? "1px solid rgba(42,42,42,0.6)"
-            : "1px solid transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
-          background: scrolled ? "rgba(10,10,15,0.85)" : "transparent",
-        }}
+        className={[
+          "site-header",
+          scrolled ? "is-scrolled" : "",
+          menuOpen ? "is-menu-open" : "",
+        ].join(" ")}
       >
-        {/* Wordmark */}
-        <ScrollLink href="/" className="wordmark" ariaLabel="NEOVANGUARD — página inicial" onNavigate={closeMobile}>
-          <img
-            src="/logo.png"
-            alt=""
-            aria-hidden
-            className="nav-logo"
-          />
-          <span className="wordmark-text">
-            N<span className="accent-letters">E</span>OVANGUAR
-            <span className="accent-letters">D</span>
-          </span>
-        </ScrollLink>
+        <div className="site-header-inner">
 
-        {/* Desktop nav */}
-        <nav aria-label="Navegação principal" className="nav-desktop">
-          {NAV_LINKS.map(({ label, href, target }) => (
-            <ScrollLink key={href} href={href} target={target} className="nav-link">
-              {label}
-            </ScrollLink>
-          ))}
-        </nav>
-
-        {/* CTA */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta">
-            Solicitar orçamento
-          </a>
-          <button
-            className="nav-mobile-toggle"
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
+          <Link
+            href="/"
+            className="wordmark"
+            aria-label="NEOVANGUARD — página inicial"
+            onClick={closeMenu}
           >
-            <span className="nav-mobile-toggle-bar" />
-            <span className="nav-mobile-toggle-bar" />
-            <span className="nav-mobile-toggle-bar" />
-          </button>
+            <img src="/logo.png" alt="" aria-hidden className="nav-logo" />
+            <span className="wordmark-text">
+              N<span className="accent-letters">E</span>OVANGUAR
+              <span className="accent-letters">D</span>
+            </span>
+          </Link>
+
+          <div className="site-header-right">
+            <a
+              href={WA}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-cta"
+            >
+              Solicitar orçamento
+            </a>
+            <button
+              className="menu-toggle"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={menuOpen}
+              aria-controls="menu-overlay"
+            >
+              <span className="menu-toggle-label">
+                {menuOpen ? "Fechar" : "Menu"}
+              </span>
+              <span className="menu-toggle-icon" aria-hidden="true">
+                <span />
+                <span />
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 
-      {mobileOpen && (
-        <div className="nav-mobile-overlay" onClick={closeMobile} aria-hidden="true" />
-      )}
-      {mobileOpen && (
-        <nav id="mobile-menu" aria-label="Navegação mobile" className="nav-mobile-menu">
-          {NAV_LINKS.map(({ label, href, target }) => (
-            <ScrollLink
+      <div
+        id="menu-overlay"
+        className={`menu-overlay ${menuOpen ? "is-open" : ""}`}
+        aria-hidden={!menuOpen}
+      >
+        <nav className="menu-nav" aria-label="Navegação principal">
+          {NAV_LINKS.map(({ label, href }, i) => (
+            <Link
               key={href}
               href={href}
-              target={target}
-              className="nav-mobile-link"
-              onNavigate={closeMobile}
+              className={`menu-link${pathname === href ? " is-active" : ""}`}
+              aria-current={pathname === href ? "page" : undefined}
+              onClick={closeMenu}
             >
-              {label}
-            </ScrollLink>
+              <span className="menu-link-index" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="menu-link-label">{label}</span>
+            </Link>
           ))}
+        </nav>
+
+        <aside className="menu-aside">
+          <span className="menu-aside-label">Vamos conversar</span>
           <a
             href={WA}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary nav-mobile-cta"
-            onClick={closeMobile}
+            className="menu-contact"
           >
-            <WhatsAppIcon />
-            Solicitar orçamento
+            <WhatsAppIcon size={16} />
+            WhatsApp
           </a>
-        </nav>
-      )}
+          <a
+            href={IG}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="menu-contact"
+          >
+            <InstagramIcon size={16} />
+            Instagram
+          </a>
+          <a href="mailto:contato@neovanguard.com.br" className="menu-contact">
+            contato@neovanguard.com.br
+          </a>
+
+          <div className="menu-aside-meta">
+            <span>100% remoto · atende o Brasil inteiro</span>
+            <span>Entrega em até 16 dias úteis</span>
+          </div>
+        </aside>
+      </div>
     </>
   );
 }

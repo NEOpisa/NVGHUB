@@ -1,42 +1,41 @@
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
-import ManifestoSection from "@/components/ManifestoSection";
-import SobreSection from "@/components/SobreSection";
 import ServicesSection from "@/components/ServicesSection";
-import ProcessoSection from "@/components/ProcessoSection";
-import OrcamentoSection from "@/components/OrcamentoSection";
-import PricingSection from "@/components/PricingSection";
-import DiferenciaisSection from "@/components/DiferenciaisSection";
-import ContatoSection from "@/components/ContatoSection";
+import ExploreSection from "@/components/ExploreSection";
+import { WhatsAppIcon } from "@/components/icons";
+import { WA } from "@/lib/constants";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main id="main">
       <Hero />
       <Marquee />
-      <ManifestoSection />
-      <SobreSection />
       <ServicesSection />
-      <ProcessoSection />
+      <ExploreSection />
 
-      {/* Área de compra: pacotes prontos + orçamento sob medida, juntos */}
-      <section id="comprar" className="comprar-area" aria-label="Comprar — pacotes e orçamento">
-        <div className="inner">
-          <div className="comprar-intro">
+      <section className="home-cta" aria-label="Vamos começar">
+        <div className="inner home-cta-inner">
+          <div className="home-cta-copy">
             <h2 className="section-heading">
-              Orçamento e <span className="text-accent-nvg">pacotes</span>
+              Pronto para tirar a ideia <span className="text-accent-nvg">do papel?</span>
             </h2>
             <p className="section-sub">
-              Monte o seu orçamento sob medida ou escolha um pacote pronto com preço fechado. Transparente, sem letra miúda.
+              Sem contrato mínimo, sem letra miúda. Conte o que você precisa e a
+              gente devolve um escopo claro com preço fechado.
             </p>
           </div>
+          <div className="home-cta-actions">
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
+              <WhatsAppIcon />
+              Falar pelo WhatsApp
+            </a>
+            <Link href="/pacotes" className="btn-ghost">
+              Ver pacotes e preços
+            </Link>
+          </div>
         </div>
-        <OrcamentoSection />
-        <PricingSection />
       </section>
-
-      <DiferenciaisSection />
-      <ContatoSection />
     </main>
   );
 }

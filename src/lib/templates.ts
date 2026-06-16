@@ -5,8 +5,6 @@ export type TemplateItem = {
   accent: string;
 };
 
-// Cada slug corresponde a uma pasta em /public/templates/<slug>/ (export estático)
-// e a uma imagem em /public/exemplos/<slug>.webp (thumbnail).
 export const TEMPLATES: TemplateItem[] = [
   {
     slug: "casa-braseiro-delivery",

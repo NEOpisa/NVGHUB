@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 
@@ -52,7 +53,31 @@ export default function SobreSection() {
             </article>
           ))}
         </div>
+
+        <div className="sobre-method">
+          <div className="sobre-method-copy">
+            <h3 className="sobre-method-title">
+              Tudo isso vira execução no <span className="text-accent-nvg">Plano Noxz</span>
+            </h3>
+            <p className="sobre-method-desc">
+              Nossa metodologia de força-tarefa síncrona — segurança extrema,
+              velocidade e eficácia cirúrgica do briefing à entrega.
+            </p>
+          </div>
+          <Link href="/metodologia" className="btn-primary">
+            <SparkIcon />
+            Conhecer o Plano Noxz
+          </Link>
+        </div>
       </div>
     </section>
+  );
+}
+
+function SparkIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" />
+    </svg>
   );
 }
