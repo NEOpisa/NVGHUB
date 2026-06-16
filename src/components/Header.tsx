@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: "Quem somos", href: "/sobre" },
   { label: "Orçamento", href: "/orcamento" },
   { label: "Pacotes", href: "/pacotes" },
+  { label: "Perguntas frequentes", href: "/faq" },
   { label: "Contato", href: "/contato" },
 ];
 
