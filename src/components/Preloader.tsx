@@ -86,13 +86,21 @@ export default function Preloader() {
           <path className="pl-spark pl-spark-white" d={WHITE_D} />
           <path className="pl-spark pl-spark-purple" d={PURPLE_D} />
         </svg>
-        <span className="preloader-counter" ref={counterRef}>0%</span>
+
+        <span className="preloader-wordmark">
+          NEO<b>VANGUARD</b>
+        </span>
+
         <div className="preloader-bar">
           <div className="preloader-bar-fill" ref={barRef} />
         </div>
-        <span className="preloader-status" ref={statusRef}>
-          Construindo a marca…
-        </span>
+
+        <div className="preloader-meta">
+          <span className="preloader-status" ref={statusRef}>
+            Construindo a marca
+          </span>
+          <span className="preloader-counter" ref={counterRef}>0%</span>
+        </div>
       </div>
     </div>
   );

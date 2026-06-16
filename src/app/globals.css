@@ -194,9 +194,10 @@ html.lenis body {
 }
 .wordmark-text {
   font-family: var(--font-mono); font-weight: 700;
-  font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
-  line-height: 1; color: var(--text-primary);
+  font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase;
+  line-height: 1; color: var(--text-secondary);
 }
+.wordmark-text b { color: var(--accent-light); font-weight: 700; }
 .accent-letters { color: var(--accent-light); }
 
 /* ── Nav links ── */
@@ -1406,12 +1407,21 @@ footer {
   .pl-spark { display: none; }
 }
 
+.preloader-wordmark {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(16px, 2.4vw, 20px); letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--text-secondary);
+  margin-top: 4px;
+}
+.preloader-wordmark b { color: var(--accent-light); font-weight: 700; }
+.preloader-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; margin-top: 2px;
+}
 .preloader-counter {
-  font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(40px, 8vw, 64px); line-height: 1;
-  background: linear-gradient(120deg, #fff 20%, var(--accent-light) 80%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 13px; line-height: 1; letter-spacing: 0.06em;
+  color: var(--accent-light);
   font-variant-numeric: tabular-nums;
 }
 .preloader-bar {
@@ -3039,4 +3049,36 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   .hero-copy .cta-row, .hero-copy .trust-signals { justify-content: center; }
   .hero-visual { order: -1; }
   .hero-visual .logo-scene { max-width: 340px; max-height: 320px; }
+}
+
+/* ════════════════════════════════════════════════
+   v13 — preloader bonito, brand do header condicional,
+   hero 20% menor
+   ════════════════════════════════════════════════ */
+.preloader::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 46% 38% at 50% 44%, var(--accent-subtle), transparent 70%);
+}
+.preloader-inner { gap: 18px; }
+
+/* header: wordmark + logo só aparecem quando o hero não está visível */
+.site-header .wordmark {
+  transition: opacity 360ms var(--ease-out), transform 360ms var(--ease-out);
+}
+.site-header.brand-hidden .wordmark {
+  opacity: 0; visibility: hidden; transform: translateY(-6px); pointer-events: none;
+}
+
+/* hero 20% menor (título, logo, sub, marca, espaçamentos) */
+.hero-grid { gap: clamp(24px, 4vw, 58px); }
+.hero-copy { gap: 20px; }
+.hero-h1 { font-size: clamp(1.5rem, 2.7vw + 0.3rem, 2.5rem); max-width: 15ch; }
+.hero-sub { font-size: clamp(0.85rem, 0.8vw + 0.4rem, 0.92rem); max-width: 44ch; }
+.hero-brand img { height: 24px; }
+.hero-brand-name { font-size: 13px; }
+.hero-visual .logo-scene {
+  max-width: 384px; max-height: min(52vh, 384px);
+}
+@media (max-width: 1024px) {
+  .hero-visual .logo-scene { max-width: 272px; max-height: 256px; }
 }
