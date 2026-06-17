@@ -49,7 +49,7 @@ export const produtos: Produto[] = [
     preco: 38,
     porcoes: "9 unidades",
     desc: "Brigadeiro artesanal com chocolate belga e granulado crocante.",
-    img: "https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?w=600&q=70",
+    img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=600&q=70",
     badges: ["veg", "gf"],
   },
   {
@@ -101,7 +101,7 @@ export const produtos: Produto[] = [
     preco: 22,
     porcoes: "1 fatia",
     desc: "Massa crocante com recheio cremoso de queijo e tomate seco.",
-    img: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&q=70",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Quiche_lorraine.jpg/960px-Quiche_lorraine.jpg",
     badges: ["veg"],
   },
   {
@@ -114,7 +114,7 @@ export const produtos: Produto[] = [
     preco: 9,
     porcoes: "1 unidade",
     desc: "Pão de mel com especiarias e doce de leite caseiro, coberto com chocolate.",
-    img: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=70",
+    img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&q=70",
     badges: ["veg", "novo"],
   },
 ];
