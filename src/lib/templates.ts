@@ -60,4 +60,10 @@ export const TEMPLATES: TemplateItem[] = [
     description: "Estúdio de estética: serviços, galeria, fidelidade e agendamento.",
     accent: "#c08bb0",
   },
+  {
+    slug: "ravelle-moda",
+    category: "Moda & Vestuário",
+    description: "Boutique de moda autoral light com provador virtual: monte o look, pinte a cor e envie pelo WhatsApp.",
+    accent: "#be7257",
+  },
 ];
