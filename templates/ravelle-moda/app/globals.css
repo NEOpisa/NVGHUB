@@ -448,7 +448,7 @@ section {
 }
 
 /* ============================================================
-   PROVADOR VIRTUAL
+   PROVADOR VIRTUAL — seletor de looks reais
    ============================================================ */
 .provador {
   background: var(--bg-2);
@@ -457,138 +457,162 @@ section {
 }
 .prov-grid {
   display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
+  grid-template-columns: 1fr 0.82fr;
   gap: clamp(36px, 5vw, 72px);
   align-items: start;
 }
 
-/* palco do manequim */
+/* palco — foto real do look */
 .prov-stage {
   position: sticky;
   top: 100px;
-  background: var(--paper);
-  border: 1px solid var(--line);
+}
+.prov-viewer {
+  position: relative;
+  aspect-ratio: 4 / 5;
   border-radius: var(--r-card);
-  padding: 26px;
-  box-shadow: var(--sh-card);
   overflow: hidden;
+  border: 1px solid var(--line);
+  background: radial-gradient(120% 80% at 50% 0%, var(--paper), transparent 70%),
+    linear-gradient(180deg, var(--bg-3), var(--bg-2));
+  box-shadow: var(--sh-card);
 }
-.prov-stage::before {
-  content: "";
+.prov-viewer img {
   position: absolute;
-  width: 520px;
-  height: 520px;
-  left: 50%;
-  top: 6%;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, var(--clay-soft), transparent 62%);
-  pointer-events: none;
-}
-.prov-figure {
-  position: relative;
+  inset: 0;
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 0.7s var(--ease), transform 1.1s var(--ease);
 }
-.prov-figure svg {
-  width: 100%;
-  height: auto;
-  display: block;
+.prov-viewer img.show {
+  opacity: 1;
+  transform: scale(1);
 }
-.garment {
-  transition: opacity 0.45s var(--ease);
-}
-.garment-enter {
-  animation: dress 0.5s var(--ease) both;
-}
-@keyframes dress {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.prov-stage-foot {
-  position: relative;
-  margin-top: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-}
-.prov-look-name {
+.prov-count {
+  position: absolute;
+  top: 16px;
+  left: 16px;
   font-family: var(--ff-display);
-  font-size: 1.25rem;
-}
-.prov-look-name span {
-  display: block;
-  font-family: var(--ff-text);
-  font-size: 0.74rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-top: 2px;
-}
-.prov-shuffle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: 1px solid var(--line-2);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: oklch(0.99 0.006 90 / 0.82);
+  backdrop-filter: blur(6px);
+  padding: 5px 12px;
   border-radius: var(--r-pill);
-  padding: 9px 16px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  border: 1px solid var(--line);
 }
-.prov-shuffle:hover {
-  border-color: var(--clay);
+.prov-count i {
+  font-style: normal;
+  color: var(--ink-3);
+}
+.prov-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: oklch(0.99 0.006 90 / 0.85);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  color: var(--ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.prov-arrow:hover {
+  background: var(--paper);
   color: var(--clay);
 }
-.prov-shuffle svg {
-  width: 15px;
-  height: 15px;
+.prov-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+.prov-arrow.left {
+  left: 14px;
+}
+.prov-arrow.right {
+  right: 14px;
 }
 
-/* painel de controles */
-.prov-panel {
-  padding-top: 4px;
+/* miniaturas dos looks */
+.prov-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 14px;
 }
-.prov-modes {
-  display: inline-flex;
+.prov-thumb {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--r-img);
+  overflow: hidden;
+  border: 1px solid var(--line);
   background: var(--bg-3);
-  border-radius: var(--r-pill);
-  padding: 4px;
-  margin-bottom: 30px;
-}
-.prov-modes button {
-  border: 0;
-  background: transparent;
-  padding: 9px 22px;
-  border-radius: var(--r-pill);
-  font-size: 0.84rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--ink-2);
+  padding: 0;
   cursor: pointer;
-  transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+  opacity: 0.6;
+  transition: opacity 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
-.prov-modes button[aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--paper);
+.prov-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.prov-thumb:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+.prov-thumb.on {
+  opacity: 1;
+  border-color: var(--ink);
 }
 
+/* painel do look */
+.prov-panel {
+  padding-top: 6px;
+}
+.prov-estilo {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clay-deep);
+}
+.prov-look-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 10px 0 22px;
+}
+.prov-pecas-list {
+  list-style: none;
+  margin-bottom: 30px;
+  border-top: 1px solid var(--line);
+}
+.prov-pecas-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.96rem;
+  color: var(--ink-2);
+}
+.prov-pecas-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--clay);
+  flex: none;
+}
 .prov-block {
   margin-bottom: 26px;
 }
-.prov-block > h3 {
+.prov-block h4 {
   font-family: var(--ff-text);
   font-size: 0.74rem;
   font-weight: 700;
@@ -597,78 +621,22 @@ section {
   color: var(--ink-3);
   margin-bottom: 14px;
 }
-.prov-pecas {
+.prov-paleta {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
 }
-.prov-peca {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  border: 1px solid var(--line-2);
-  background: var(--paper);
-  border-radius: var(--r-field);
-  padding: 11px 16px;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease,
-    transform 0.2s ease;
-}
-.prov-peca:hover {
-  border-color: var(--line-clay);
-  transform: translateY(-1px);
-}
-.prov-peca[aria-pressed="true"] {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--paper);
-}
-.prov-peca b {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-.prov-peca span {
-  font-size: 0.76rem;
-  color: var(--ink-3);
-}
-.prov-peca[aria-pressed="true"] span {
-  color: oklch(0.98 0.01 85 / 0.7);
-}
-
-/* cartela de cor */
-.prov-cores {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 11px;
-}
-.prov-cor {
-  width: 30px;
-  height: 30px;
+.prov-dot {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: 1px solid var(--line-2);
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.2s ease;
 }
-.prov-cor:hover {
-  transform: scale(1.12);
+.prov-cor-nome {
+  margin-left: 6px;
+  font-size: 0.9rem;
+  color: var(--ink-2);
 }
-.prov-cor[aria-pressed="true"] {
-  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
-}
-.prov-cor-alvo {
-  font-size: 0.8rem;
-  color: var(--ink-3);
-  margin-bottom: 14px;
-}
-.prov-cor-alvo b {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-/* tamanhos */
 .prov-tamanhos {
   display: flex;
   gap: 8px;
@@ -692,42 +660,15 @@ section {
   background: var(--ink);
   color: var(--paper);
 }
-
-/* resumo + cta */
 .prov-resumo {
   margin-top: 30px;
   padding-top: 24px;
   border-top: 1px solid var(--line);
 }
-.prov-linha {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding: 7px 0;
-  font-size: 0.92rem;
-  color: var(--ink-2);
-}
-.prov-linha b {
-  color: var(--ink);
-  font-weight: 500;
-}
-.prov-linha .dot {
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1px solid var(--line-2);
-  margin-right: 8px;
-  vertical-align: middle;
-}
 .prov-total {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-top: 12px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
 }
 .prov-total span {
   font-size: 0.78rem;

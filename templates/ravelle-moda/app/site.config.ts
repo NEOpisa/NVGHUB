@@ -62,53 +62,107 @@ export const marquee = [
 ] as const;
 
 /* ============================================================
-   PROVADOR VIRTUAL
-   `cor` aponta para uma chave de `cores` (abaixo). A geometria
-   de cada peça (o desenho) é definida pelo `id` em Provador.tsx.
+   PROVADOR VIRTUAL — seletor de looks reais
+   Cada look é uma foto real de modelo. Trocar o look faz a foto
+   trocar em crossfade. `paleta` são os tons do look (bolinhas),
+   `pecas` é a composição e `preco` é o total do look.
+   Fotos: Pexels (uso comercial livre). Troque pelas suas em `src`.
    ============================================================ */
 
-export type Cor = { key: string; nome: string; hex: string };
+const pexels = (id: number, w = 760, h = 950) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${w}&h=${h}`;
 
-/** Cartela de cores que recolore as peças no provador. */
-export const cores: Cor[] = [
-  { key: "osso", nome: "Osso", hex: "#ECE6DA" },
-  { key: "argila", nome: "Argila", hex: "#BE7257" },
-  { key: "espresso", nome: "Espresso", hex: "#3B332C" },
-  { key: "salvia", nome: "Sálvia", hex: "#9AA886" },
-  { key: "manteiga", nome: "Manteiga", hex: "#E7C579" },
-  { key: "tinta", nome: "Azul tinta", hex: "#3C4A69" },
-  { key: "vinho", nome: "Vinho", hex: "#6E2C3B" },
-];
-
-export type Peca = {
+export type Look = {
   id: string;
   nome: string;
-  /** "top" e "bottom" formam um conjunto; "vestido" é peça única. */
-  tipo: "top" | "bottom" | "vestido";
-  preco: number;
-  /** Cor inicial (chave em `cores`). */
+  estilo: string;
+  /** Tom principal do look (entra na mensagem do WhatsApp). */
   cor: string;
+  /** Tons do look exibidos como bolinhas. */
+  paleta: string[];
+  /** Composição do look. */
+  pecas: string[];
+  /** Total do look. */
+  preco: number;
+  src: string;
+  alt: string;
 };
 
-export const pecas: Peca[] = [
-  { id: "blusa", nome: "Blusa de seda", tipo: "top", preco: 329, cor: "osso" },
-  { id: "trico", nome: "Tricô gola alta", tipo: "top", preco: 289, cor: "argila" },
-  { id: "blazer", nome: "Blazer de alfaiataria", tipo: "top", preco: 689, cor: "espresso" },
-  { id: "pantalona", nome: "Calça pantalona", tipo: "bottom", preco: 459, cor: "espresso" },
-  { id: "saia", nome: "Saia midi plissada", tipo: "bottom", preco: 379, cor: "salvia" },
-  { id: "reta", nome: "Calça reta cropped", tipo: "bottom", preco: 429, cor: "tinta" },
-  { id: "slip", nome: "Vestido slip", tipo: "vestido", preco: 549, cor: "vinho" },
-  { id: "tubinho", nome: "Vestido midi", tipo: "vestido", preco: 489, cor: "manteiga" },
+export const looks: Look[] = [
+  {
+    id: "alfaiataria-rose",
+    nome: "Alfaiataria Rosé",
+    estilo: "Alfaiataria",
+    cor: "Rosé",
+    paleta: ["#C98B86", "#EAE3D8", "#7A5C5C"],
+    pecas: ["Blazer estruturado", "Calça de alfaiataria", "Regata de seda"],
+    preco: 1477,
+    src: pexels(7203488),
+    alt: "Modelo com blazer e calça de alfaiataria rosé sobre regata de seda clara",
+  },
+  {
+    id: "marfim-total",
+    nome: "Marfim Total",
+    estilo: "Alfaiataria",
+    cor: "Marfim",
+    paleta: ["#ECE6DA", "#D8CFC0"],
+    pecas: ["Blazer marfim", "Calça flare", "Mule de couro"],
+    preco: 1398,
+    src: pexels(31215272),
+    alt: "Modelo em look total marfim com blazer e calça flare claros",
+  },
+  {
+    id: "vestido-po-de-rosa",
+    nome: "Vestido Pó-de-rosa",
+    estilo: "Vestidos",
+    cor: "Pó-de-rosa",
+    paleta: ["#C9A6A6", "#7A5C5C"],
+    pecas: ["Vestido tubinho", "Cinto fino"],
+    preco: 549,
+    src: pexels(30246250),
+    alt: "Modelo com vestido tubinho pó-de-rosa e cinto fino",
+  },
+  {
+    id: "vestido-coral",
+    nome: "Vestido Coral",
+    estilo: "Vestidos",
+    cor: "Coral",
+    paleta: ["#E08A6E", "#D86A52"],
+    pecas: ["Vestido slip", "Sandália de tira"],
+    preco: 629,
+    src: pexels(30381007),
+    alt: "Modelo com vestido slip coral fluido",
+  },
+  {
+    id: "animal-print",
+    nome: "Onça & Preto",
+    estilo: "Camisaria",
+    cor: "Onça",
+    paleta: ["#B98A52", "#2B2622", "#7A5A36"],
+    pecas: ["Camisa estampa onça", "Calça flare preta"],
+    preco: 788,
+    src: pexels(32166790),
+    alt: "Modelo com camisa de estampa onça e calça flare preta",
+  },
+  {
+    id: "off-duty",
+    nome: "Off-duty",
+    estilo: "Casual",
+    cor: "Branco & Jeans",
+    paleta: ["#ECE6DA", "#5A6B86"],
+    pecas: ["Blusa canelada", "Jeans reto"],
+    preco: 718,
+    src: pexels(27542891),
+    alt: "Modelo com blusa canelada branca e jeans reto",
+  },
 ];
 
 export const provador = {
   titulo: "O provador que abre antes da loja.",
-  lead: "Troque as peças, pinte na cor que quiser e escolha o tamanho. Quando o look estiver do seu jeito, ele vai pronto para o nosso WhatsApp.",
+  lead: "Navegue pelos looks da estação, veja como cada um cai e escolha o seu tamanho. Quando achar o seu, ele vai pronto para o nosso WhatsApp.",
   tamanhos: ["PP", "P", "M", "G", "GG"],
   /** Primeira linha da mensagem que chega no seu WhatsApp. */
-  saudacao: "Olá, Ravelle! Montei este look no provador virtual:",
-  /** Look inicial exibido ao abrir a página. */
-  inicial: { modo: "look" as "look" | "vestido", top: "blusa", bottom: "pantalona", vestido: "slip", tamanho: "M" },
+  saudacao: "Olá, Ravelle! Gostei deste look no provador virtual:",
 } as const;
 
 /* ---------- Vitrine (grade de produtos) ---------- */
