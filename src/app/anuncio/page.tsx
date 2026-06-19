@@ -144,7 +144,7 @@ export default function Anuncio() {
           <div className="ad-price-sub">INVESTIMENTO ÚNICO · SEM MENSALIDADES · SEU SITE PARA SEMPRE</div>
         </div>
 
-        <TrackLink href={WA} className="ad-cta-main" target="_blank" rel="noopener noreferrer" event="Lead">
+        <TrackLink href="/pacotes" className="ad-cta-main" event="Lead">
           QUERO O SITE DA MINHA CLÍNICA
         </TrackLink>
 
