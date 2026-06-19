@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans, Orbitron } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ChromeGate from "@/components/ChromeGate";
 import AmbientField from "@/components/AmbientField";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -83,10 +84,14 @@ export default function RootLayout({
         <ClickFX />
         <AmbientField />
         <div className="scroll-progress" aria-hidden="true" />
-        <Header />
+        <ChromeGate>
+          <Header />
+        </ChromeGate>
         {children}
-        <Footer />
-        <div className="site-frame" aria-hidden="true" />
+        <ChromeGate>
+          <Footer />
+          <div className="site-frame" aria-hidden="true" />
+        </ChromeGate>
       </body>
     </html>
   );
