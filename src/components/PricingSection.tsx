@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { CheckIcon, StoreIcon, MapPinIcon, GearIcon, CartIcon, RocketIcon } from "@/components/icons";
 import TiltCard from "@/components/TiltCard";
-import { WA } from "@/lib/constants";
-import { PACOTES, type PacoteKey } from "@/lib/pacotes";
+import LeadModal from "@/components/LeadModal";
+import { PACOTES, type Pacote, type PacoteKey } from "@/lib/pacotes";
 
 const ICONS: Record<PacoteKey, ReactNode> = {
   Vitrine: <StoreIcon />,
@@ -21,6 +21,8 @@ export default function PricingSection() {
   const gridRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
   useReveal(gridRef, 80);
+
+  const [planoSelecionado, setPlanoSelecionado] = useState<Pacote | null>(null);
 
   return (
     <div id="precos" className="comprar-part comprar-part--divider" aria-label="Pacotes e preços">
@@ -64,9 +66,9 @@ export default function PricingSection() {
                 ))}
               </div>
               <div className={`pricing-cta${plan.featured ? " primary" : ""}`}>
-                <a href={`${WA}?text=${encodeURIComponent(plan.message)}`} target="_blank" rel="noopener noreferrer">
+                <button type="button" onClick={() => setPlanoSelecionado(plan)}>
                   {plan.cta}
-                </a>
+                </button>
               </div>
             </article>
             </TiltCard>
@@ -81,6 +83,15 @@ export default function PricingSection() {
           </Link>
         </div>
       </div>
+
+      <LeadModal
+        open={planoSelecionado !== null}
+        onClose={() => setPlanoSelecionado(null)}
+        origem="pacote"
+        tipo={planoSelecionado ? `Pacote ${planoSelecionado.name}` : ""}
+        itens={planoSelecionado ? [{ label: planoSelecionado.name, price: planoSelecionado.priceNumber }] : []}
+        valor={planoSelecionado?.priceNumber ?? null}
+      />
     </div>
   );
 }

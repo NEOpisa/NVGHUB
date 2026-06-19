@@ -18,7 +18,7 @@ import {
   ZapIcon,
   ShieldIcon,
 } from "@/components/icons";
-import { WA } from "@/lib/constants";
+import LeadModal from "@/components/LeadModal";
 
 const OPCOES = [
   { id: "site",       label: "+ Site Profissional",          desc: "Página única apresentando a empresa, descrição e botão WhatsApp", price: 530,  icon: <StoreIcon size={18} /> },
@@ -75,6 +75,7 @@ export default function OrcamentoSection() {
   useReveal(headerRef);
 
   const [selecionados, setSelecionados] = useState<string[]>([]);
+  const [modalAberto, setModalAberto] = useState(false);
 
   const toggle = (id: string) =>
     setSelecionados((prev) =>
@@ -84,11 +85,6 @@ export default function OrcamentoSection() {
   const itens = OPCOES.filter((o) => selecionados.includes(o.id));
   const total = itens.reduce((s, o) => s + o.price, 0);
   const totalAnimado = useAnimatedTotal(total);
-
-  const msg =
-    itens.length > 0
-      ? `Olá! Quero um orçamento para: ${itens.map((o) => o.label).join(", ")}. Total estimado: R$ ${total.toLocaleString("pt-BR")}.`
-      : "Olá! Quero um orçamento da Neovanguard.";
 
   return (
     <div id="orcamento" className="comprar-part" aria-label="Monte seu orçamento">
@@ -154,15 +150,14 @@ export default function OrcamentoSection() {
                     : `R$ ${totalAnimado.toLocaleString("pt-BR")}`}
                 </span>
               </div>
-              <a
-                href={`${WA}?text=${encodeURIComponent(msg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn-primary"
+                onClick={() => setModalAberto(true)}
               >
-                <WhatsAppIcon size={15} />
                 {selecionados.length === 0 ? "Falar com a equipe" : "Solicitar este orçamento"}
-              </a>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </button>
             </div>
           </aside>
         </div>
@@ -175,6 +170,15 @@ export default function OrcamentoSection() {
           </Link>
         </div>
       </div>
+
+      <LeadModal
+        open={modalAberto}
+        onClose={() => setModalAberto(false)}
+        origem="orcamento"
+        tipo="Orçamento sob medida"
+        itens={itens.map((o) => ({ label: o.label, price: o.price }))}
+        valor={selecionados.length > 0 ? total : null}
+      />
     </div>
   );
 }
