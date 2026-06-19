@@ -1091,7 +1091,8 @@ html.lenis body {
 }
 .pricing-feature svg { flex-shrink: 0; color: var(--accent-light); margin-top: 1px; }
 .pricing-cta { margin-top: 30px; }
-.pricing-cta a {
+.pricing-cta a,
+.pricing-cta button {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   width: 100%; padding: 14px 20px; border-radius: var(--radius);
   font-family: var(--font-body); font-size: 14px; font-weight: 600;
@@ -1100,16 +1101,19 @@ html.lenis body {
   color: var(--text-primary);
   transition: border-color 150ms, color 150ms, background 150ms, transform 150ms;
 }
-.pricing-cta a:hover {
+.pricing-cta a:hover,
+.pricing-cta button:hover {
   border-color: var(--accent-border);
   color: var(--accent-light);
   background: var(--accent-subtle);
   transform: translateY(-1px);
 }
-.pricing-cta.primary a {
+.pricing-cta.primary a,
+.pricing-cta.primary button {
   background: var(--accent); border-color: var(--accent); color: #fff;
 }
-.pricing-cta.primary a:hover {
+.pricing-cta.primary a:hover,
+.pricing-cta.primary button:hover {
   background: var(--accent-hover); border-color: var(--accent-hover);
   box-shadow: 0 0 24px rgba(124,58,237,0.4); transform: translateY(-1px);
 }
@@ -2636,7 +2640,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 /* ── 2. Botões: brilho que varre + microfeedback (100% composited) ── */
 .btn-primary, .btn-ghost, .nav-cta, .form-submit,
-.contact-whatsapp, .pricing-cta a, .home-cta-actions a,
+.contact-whatsapp, .pricing-cta a, .pricing-cta button, .home-cta-actions a,
 .services-orcamento-cta a, .comprar-crosslink a {
   position: relative;
   overflow: hidden;
@@ -2644,7 +2648,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 }
 
 .btn-primary::before, .btn-ghost::before, .nav-cta::before, .form-submit::before,
-.pricing-cta a::before, .home-cta-actions a::before,
+.pricing-cta a::before, .pricing-cta button::before, .home-cta-actions a::before,
 .services-orcamento-cta a::before, .comprar-crosslink a::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(
@@ -2660,20 +2664,22 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 .btn-primary:hover::before, .btn-ghost:hover::before, .nav-cta:hover::before,
 .form-submit:hover:not(:disabled)::before, .pricing-cta a:hover::before,
+.pricing-cta button:hover::before,
 .home-cta-actions a:hover::before, .services-orcamento-cta a:hover::before,
 .comprar-crosslink a:hover::before {
   transform: translateX(130%); will-change: transform;
 }
 
 .btn-primary:active, .btn-ghost:active, .nav-cta:active, .form-submit:active:not(:disabled),
-.pricing-cta a:active, .home-cta-actions a:active, .contact-whatsapp:active,
+.pricing-cta a:active, .pricing-cta button:active, .home-cta-actions a:active, .contact-whatsapp:active,
 .comprar-crosslink a:active, .services-orcamento-cta a:active {
   transform: translateY(0) scale(0.965);
   transition: transform 0.12s var(--ease-out);
 }
 
 .btn-primary:focus-visible, .btn-ghost:focus-visible, .nav-cta:focus-visible,
-.form-submit:focus-visible, .pricing-cta a:focus-visible, .menu-link:focus-visible,
+.form-submit:focus-visible, .pricing-cta a:focus-visible, .pricing-cta button:focus-visible,
+.menu-link:focus-visible,
 .explore-link:focus-visible, .comprar-crosslink a:focus-visible {
   outline: 2px solid var(--accent-light);
   outline-offset: 3px;
