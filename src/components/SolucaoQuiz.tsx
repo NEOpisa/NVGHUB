@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import {
   GlobeIcon,
@@ -16,6 +16,7 @@ import {
   InstagramIcon,
   ZapIcon,
   WhatsAppIcon,
+  CheckIcon,
 } from "@/components/icons";
 import LeadModal from "@/components/LeadModal";
 import TiltCard from "@/components/TiltCard";
@@ -85,19 +86,22 @@ export default function SolucaoQuiz() {
     setPasso(0);
   };
 
-  const itens = PERGUNTAS.filter((p) => respostas[p.id]).map((p) => ({
-    label: `${p.resumo}: ${respostas[p.id]}`,
-    price: null,
-  }));
-
-  const mensagemWA = [
-    "Olá! Acabei de fazer o diagnóstico no site da Neovanguard.",
-    "",
-    ...PERGUNTAS.filter((p) => respostas[p.id]).map((p) => `• ${p.resumo}: ${respostas[p.id]}`),
-    "",
-    "Quero montar a minha solução sob medida.",
-  ].join("\n");
-  const waHref = `${WA}?text=${encodeURIComponent(mensagemWA)}`;
+  // Deriva itens + link do WhatsApp só quando as respostas mudam (uma única
+  // varredura de PERGUNTAS) e mantém a referência estável de `itens` p/ o modal.
+  const { itens, waHref } = useMemo(() => {
+    const respondidas = PERGUNTAS.filter((p) => respostas[p.id]);
+    const mensagemWA = [
+      "Olá! Acabei de fazer o diagnóstico no site da Neovanguard.",
+      "",
+      ...respondidas.map((p) => `• ${p.resumo}: ${respostas[p.id]}`),
+      "",
+      "Quero montar a minha solução sob medida.",
+    ].join("\n");
+    return {
+      itens: respondidas.map((p) => ({ label: `${p.resumo}: ${respostas[p.id]}`, price: null })),
+      waHref: `${WA}?text=${encodeURIComponent(mensagemWA)}`,
+    };
+  }, [respostas]);
 
   const progresso = Math.round((passo / TOTAL) * 100);
 
@@ -164,7 +168,7 @@ export default function SolucaoQuiz() {
             <TiltCard maxTilt={6} className="quiz-final-tilt">
             <div className="quiz-final">
               <div className="quiz-final-badge" aria-hidden="true">
-                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                <CheckIcon size={21} strokeWidth={2.4} />
               </div>
               <h4 className="quiz-final-title">Temos a solução certa pra você.</h4>
               <p className="quiz-final-sub">

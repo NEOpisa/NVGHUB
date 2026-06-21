@@ -91,7 +91,7 @@ export async function POST(req: Request) {
 
   const registro = {
     Nome: nome || null,
-    Tipo: tipo || (origem === "pacote" ? "Pacote" : "Atendimento sob medida"),
+    Tipo: tipo || "Atendimento sob medida",
     Status: "pendente",
     Email: email || null,
     Telefone: telefone || null,
