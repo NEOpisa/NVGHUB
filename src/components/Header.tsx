@@ -8,7 +8,7 @@ import { WA, IG } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Início", href: "/" },
-  { label: "Sua solução", href: "/solucao" },
+  { label: "Sua solução", href: "/solucao", highlight: true },
   { label: "Pacotes", href: "/pacotes" },
   { label: "Quem somos", href: "/sobre" },
   { label: "Perguntas frequentes", href: "/faq" },
@@ -107,11 +107,11 @@ export default function Header() {
         aria-hidden={!menuOpen}
       >
         <nav className="menu-nav" aria-label="Navegação principal">
-          {NAV_LINKS.map(({ label, href }, i) => (
+          {NAV_LINKS.map(({ label, href, highlight }, i) => (
             <Link
               key={href}
               href={href}
-              className={`menu-link${pathname === href ? " is-active" : ""}`}
+              className={`menu-link${pathname === href ? " is-active" : ""}${highlight ? " is-solucao" : ""}`}
               aria-current={pathname === href ? "page" : undefined}
               onClick={closeMenu}
             >

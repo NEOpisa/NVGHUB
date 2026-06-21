@@ -166,7 +166,7 @@ export default function SolucaoQuiz() {
                   href={waHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-metal"
+                  className="btn-primary"
                 >
                   <WhatsAppIcon size={16} />
                   Falar agora no WhatsApp
