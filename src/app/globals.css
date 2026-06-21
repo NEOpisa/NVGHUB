@@ -3275,27 +3275,14 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 }
 
 /* ════════════════════════════════════════════════
-   HERO — composição central: 3D no centro, statement
-   centralizado, índice de áreas à esquerda, barra inferior.
-   (Sobrepõe as camadas anteriores do hero.)
+   HERO — elementos mantidos: índice de áreas (esq.) +
+   barra inferior. O statement/3D voltaram ao layout anterior.
    ════════════════════════════════════════════════ */
-#hero {
-  position: relative;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  min-height: 100svh; padding: 120px 0 64px; overflow: hidden;
-}
-/* 3D em fluxo, acima do texto — nada se sobrepõe (legibilidade) */
-.hero-stage {
-  width: clamp(180px, 26vw, 300px);
-  margin: 0 auto -6px; pointer-events: none;
-  transform: translateZ(0);
-}
-.hero-stage .logo-scene { width: 100%; height: clamp(190px, 30vh, 300px); }
-
+/* Índice vertical na margem externa esquerda (só onde há espaço,
+   pra não cobrir a copy). */
 .hero-index {
-  position: absolute; left: clamp(20px, 4vw, 56px); top: 50%;
-  transform: translateY(-50%); z-index: 2;
+  position: absolute; left: clamp(20px, 2.4vw, 44px); top: 50%;
+  transform: translateY(-50%); z-index: 3;
   display: flex; flex-direction: column; gap: 4px;
 }
 .hero-index-link {
@@ -3306,33 +3293,17 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .hero-index-link:hover { color: var(--accent-light); transform: translateX(5px); }
 .hero-index-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; }
 .hero-index-label { font-family: var(--font-display); font-weight: 600; font-size: 13px; letter-spacing: 0.01em; }
+@media (max-width: 1499px) { .hero-index { display: none; } }
 
-.hero-center {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 22px; max-width: 860px; padding: 0 24px; margin: auto 0;
-}
-.hero-center .hero-eyebrow {
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--text-secondary);
-}
-.hero-center .hero-h1 {
-  text-align: center; max-width: 17ch; font-weight: 800;
-  font-size: clamp(2.2rem, 5vw + 0.4rem, 4rem);
-  line-height: 1.04; letter-spacing: -0.035em;
-}
-.hero-center .hero-sub { text-align: center; max-width: 54ch; margin: 0 auto; }
-.hero-center-cta {
-  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 6px;
-}
-
+/* Barra inferior: "role para explorar" (esq.) + contato (dir.) */
 .hero-bar {
-  position: absolute; left: 0; right: 0; bottom: clamp(20px, 3vw, 36px);
-  z-index: 2; display: flex; align-items: center; justify-content: space-between;
-  gap: 20px; padding: 0 clamp(20px, 4vw, 56px); border-top: none;
+  position: absolute; left: 0; right: 0; bottom: clamp(18px, 2.6vw, 32px);
+  z-index: 3; display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; padding: 0 clamp(20px, 4vw, 56px); pointer-events: none;
 }
+.hero-bar > * { pointer-events: auto; }
 .hero-bar .hero-scroll-hint {
-  position: static; transform: none;
+  position: static; transform: none; left: auto; bottom: auto;
   display: inline-flex; flex-direction: row; align-items: center; gap: 10px;
   font-size: 11px; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase;
 }
@@ -3342,11 +3313,6 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   color: var(--text-muted); text-decoration: none; transition: color 200ms;
 }
 .hero-bar-chat:hover { color: var(--accent-light); }
-
-@media (max-width: 900px) {
-  .hero-index { display: none; }
-  .hero-stage { opacity: 0.28; width: 90%; }
-}
 @media (max-width: 600px) {
-  .hero-bar { position: static; margin-top: 32px; justify-content: center; }
+  .hero-bar { position: static; margin-top: 28px; justify-content: center; gap: 28px; }
 }
