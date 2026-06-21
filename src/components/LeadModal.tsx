@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CheckIcon } from "@/components/icons";
 
 export type LeadItem = { label: string; price: number | null };
 
@@ -116,9 +117,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
         {status === "ok" ? (
           <div className="lead-success">
             <div className="lead-success-icon" aria-hidden="true">
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 6 9 17l-5-5" />
-              </svg>
+              <CheckIcon size={30} strokeWidth={2.6} />
             </div>
             <h3 id="lead-modal-title" className="lead-title">Recebido!</h3>
             <p className="lead-sub">
