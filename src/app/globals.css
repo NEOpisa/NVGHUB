@@ -103,10 +103,12 @@ html.lenis body {
   position: fixed; inset: 0; z-index: -1;
   pointer-events: none; overflow: hidden;
   background: var(--bg);
+  /* promove o fundo a UMA camada GPU: pinta uma vez, não repinta ao rolar */
+  transform: translateZ(0);
 }
 .ambient-grain {
   position: absolute; inset: -100px;
-  opacity: 0.035; mix-blend-mode: overlay;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 /* ── Fundo 3D infinito (corredor de grade em perspectiva) ── */
@@ -171,7 +173,9 @@ html.lenis body {
 
 .ambient-orb {
   position: absolute; border-radius: var(--radius-sm);
-  filter: blur(80px);
+  /* sem filter: blur (caríssimo em 560px) — o radial-gradient já é suave;
+     translateZ promove a uma camada compositada, pintada uma única vez */
+  transform: translateZ(0);
 }
 .ambient-orb-a {
   width: 560px; height: 560px;
@@ -445,8 +449,8 @@ html.lenis body {
   animation: hero-enter 0.8s var(--ease-premium) both;
 }
 @keyframes hero-enter {
-  from { opacity: 0; transform: translateY(22px); filter: blur(6px); }
-  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .hero-eyebrow-row {
   display: flex; align-items: center; gap: 14px;
@@ -504,8 +508,8 @@ html.lenis body {
   animation: hero-visual-enter 1s var(--ease-premium) 0.15s both;
 }
 @keyframes hero-visual-enter {
-  from { opacity: 0; transform: scale(0.92); filter: blur(10px); }
-  to   { opacity: 1; transform: scale(1); filter: blur(0); }
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1651,7 +1655,8 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .noxz-aurora {
   position: absolute;
   border-radius: var(--radius-sm);
-  filter: blur(80px);
+  filter: blur(48px);
+  transform: translateZ(0);
   pointer-events: none;
   z-index: 0;
 }
