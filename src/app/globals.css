@@ -3379,13 +3379,21 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
    "Sua solução" na navegação.
    ════════════════════════════════════════════════ */
 
-/* ── Destaque holográfico: "Sua solução" na navegação ──
-   Em repouso: roxo (acento). No hover: texto holográfico que
-   varre. Anima só background-position de UM elemento — sem lag. */
+/* ── Destaque holográfico: "Sua solução" ──
+   Aplicado no menu (.menu-link) e na área "Navegue" (.explore-link).
+   Em repouso: sempre roxo (acento). No hover: o rótulo vira texto
+   holográfico que varre. Anima só background-position de UM
+   elemento — sem lag. */
 .menu-link.is-solucao,
-.menu-link.is-solucao .menu-link-index { color: var(--accent-light); }
-.menu-link.is-solucao:hover { color: var(--accent-light); }
-.menu-link.is-solucao:hover .menu-link-label {
+.menu-link.is-solucao .menu-link-index,
+.menu-link.is-solucao:hover,
+.explore-link.is-solucao,
+.explore-link.is-solucao .explore-index,
+.explore-link.is-solucao .explore-arrow,
+.explore-link.is-solucao:hover { color: var(--accent-light); }
+
+.menu-link.is-solucao:hover .menu-link-label,
+.explore-link.is-solucao:hover .explore-label {
   background: var(--holo-text);
   background-size: 280% 100%;
   -webkit-background-clip: text; background-clip: text;
@@ -3397,5 +3405,6 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   to   { background-position: 280% 50%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .menu-link.is-solucao:hover .menu-link-label { animation: none; }
+  .menu-link.is-solucao:hover .menu-link-label,
+  .explore-link.is-solucao:hover .explore-label { animation: none; }
 }
