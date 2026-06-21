@@ -1121,7 +1121,7 @@ html.lenis body {
   padding: clamp(28px, 4vw, 44px) 20px;
   border-bottom: 1px solid var(--border);
   position: relative; isolation: isolate;
-  transition: padding-left 350ms var(--ease-out);
+  transition: transform 350ms var(--ease-out);
 }
 .diff-row::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
@@ -1129,7 +1129,7 @@ html.lenis body {
   opacity: 0; transition: opacity 350ms var(--ease-out);
 }
 .diff-row:hover {
-  padding-left: 32px;
+  transform: translateX(16px);
 }
 .diff-row:hover::before { opacity: 1; }
 .diff-row:hover .diff-stat {
@@ -1161,7 +1161,7 @@ html.lenis body {
 }
 @media (max-width: 640px) {
   .diff-row { grid-template-columns: 1fr; gap: 14px; padding: 28px 4px; }
-  .diff-row:hover { padding-left: 4px; }
+  .diff-row:hover { transform: translateX(4px); }
 }
 
 /* ── Preços ── */
@@ -2568,7 +2568,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   border-bottom: 1px solid var(--border);
   text-decoration: none; color: var(--text-primary);
   opacity: 0; transform: translateY(22px);
-  transition: color 250ms, padding-left 360ms var(--ease-out);
+  transition: color 250ms, transform 360ms var(--ease-out);
 }
 .menu-overlay.is-open .menu-link {
   animation: menu-link-in 0.6s var(--ease-premium) forwards;
@@ -2593,7 +2593,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   font-size: clamp(28px, 4vw, 52px); line-height: 1.04;
   letter-spacing: -0.025em;
 }
-.menu-link:hover { color: var(--accent-light); padding-left: 14px; }
+.menu-link:hover { color: var(--accent-light); transform: translateX(10px); }
 .menu-link:hover .menu-link-index { color: var(--accent-light); }
 
 .menu-aside {
@@ -2664,14 +2664,14 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   border-bottom: 1px solid var(--border);
   text-decoration: none; color: var(--text-primary);
   position: relative; isolation: isolate;
-  transition: padding-left 360ms var(--ease-out), color 250ms;
+  transition: transform 360ms var(--ease-out), color 250ms;
 }
 .explore-link::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(90deg, var(--accent-subtle) 0%, transparent 60%);
   opacity: 0; transition: opacity 350ms var(--ease-out);
 }
-.explore-link:hover { padding-left: 26px; color: var(--accent-light); }
+.explore-link:hover { transform: translateX(14px); color: var(--accent-light); }
 .explore-link:hover::before { opacity: 1; }
 .explore-index {
   font-family: var(--font-mono); font-size: 12px;
@@ -3533,4 +3533,23 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   .menu-solucao-cta:hover::after,
   .explore-link.is-solucao:hover::after { animation: none; }
   .explore-link.is-solucao:hover .explore-label { animation: none; }
+}
+
+/* ════════════════════════════════════════════════
+   PERFORMANCE / MOVIMENTO (Fase 1)
+   - Hovers de indentação migrados de padding-left → transform (GPU).
+   - Hardening global de motion: respeita o "reduzir movimento" do
+     sistema (acessibilidade + economia de bateria/CPU em máquina fraca),
+     zerando animações/transições e o smooth scroll.
+   ════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto !important; }
 }
