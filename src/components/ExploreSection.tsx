@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 
 const AREAS = [
-  { num: "01", label: "Sua solução", href: "/solucao", desc: "Responda 3 perguntas e a gente monta o seu sob medida." },
+  { num: "01", label: "Sua solução", href: "/solucao", desc: "Responda 3 perguntas e a gente monta o seu sob medida.", highlight: true },
   { num: "02", label: "Pacotes", href: "/pacotes", desc: "Os tipos de solução que a gente entrega." },
   { num: "03", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
   { num: "04", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, suporte e como a gente trabalha." },
@@ -33,7 +33,7 @@ export default function ExploreSection() {
 
         <div className="explore-list" ref={listRef}>
           {AREAS.map((a) => (
-            <Link key={a.href} href={a.href} className="explore-link">
+            <Link key={a.href} href={a.href} className={`explore-link${a.highlight ? " is-solucao" : ""}`}>
               <span className="explore-index" aria-hidden="true">{a.num}</span>
               <span className="explore-label">{a.label}</span>
               <span className="explore-desc">{a.desc}</span>
