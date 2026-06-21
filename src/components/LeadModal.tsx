@@ -130,7 +130,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
           <>
             <h3 id="lead-modal-title" className="lead-title">Quase lá!</h3>
             <p className="lead-sub">
-              Deixa um contato e a gente te manda o orçamento detalhado. Sem compromisso.
+              Deixa um contato e a equipe te chama com a sua solução sob medida. Sem compromisso.
             </p>
 
             {itens.length > 0 && (
@@ -209,7 +209,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
               {status === "err" && <div className="form-message error">{errorMsg}</div>}
 
               <button className="form-submit" type="submit" disabled={status === "loading"}>
-                {status === "loading" ? "Enviando..." : "Enviar pedido de orçamento"}
+                {status === "loading" ? "Enviando..." : "Quero que me chamem"}
               </button>
             </form>
           </>

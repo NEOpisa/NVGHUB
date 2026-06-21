@@ -8,9 +8,9 @@ import { WA, IG } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Início", href: "/" },
-  { label: "Quem somos", href: "/sobre" },
-  { label: "Orçamento", href: "/orcamento" },
+  { label: "Sua solução", href: "/solucao" },
   { label: "Pacotes", href: "/pacotes" },
+  { label: "Quem somos", href: "/sobre" },
   { label: "Perguntas frequentes", href: "/faq" },
   { label: "Contato", href: "/contato" },
 ];
