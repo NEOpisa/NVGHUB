@@ -634,11 +634,6 @@ html.lenis body {
 }
 .service-card--soon:hover { opacity: 1; }
 
-.service-num {
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
-  color: var(--text-muted);
-}
-
 /* ── Services carousel (1 card por vez, desktop e mobile) ── */
 .services-carousel {
   margin-top: 52px;
