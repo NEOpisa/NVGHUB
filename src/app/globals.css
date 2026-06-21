@@ -3325,3 +3325,23 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .menu-nav:has(.menu-link:hover) .menu-link .menu-link-index { opacity: 0.36; }
 .menu-nav .menu-link:hover .menu-link-label,
 .menu-nav .menu-link:hover .menu-link-index { opacity: 1; }
+
+/* cada item ganha posição relativa p/ o realce e a seta */
+.menu-link { position: relative; isolation: isolate; }
+/* realce sutil da linha no hover */
+.menu-link::before {
+  content: ""; position: absolute; inset: 0 -16px; z-index: -1;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--accent-subtle) 0%, transparent 58%);
+  opacity: 0; transition: opacity 300ms var(--ease-out);
+}
+.menu-link:hover::before { opacity: 1; }
+/* seta que entra no hover (cara de menu) */
+.menu-link::after {
+  content: "↗"; margin-left: auto; align-self: center;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(18px, 2vw, 26px); color: var(--accent-light);
+  opacity: 0; transform: translateX(-10px);
+  transition: opacity 260ms, transform 320ms var(--ease-out);
+}
+.menu-link:hover::after { opacity: 1; transform: translateX(0); }
