@@ -29,10 +29,10 @@ const PERGUNTAS: Pergunta[] = [
     resumo: "Objetivo",
     q: "O que você mais quer agora?",
     opcoes: [
-      { label: "Existir online de vez", icon: <GlobeIcon size={20} /> },
-      { label: "Ser encontrado no Google", icon: <MapPinIcon size={20} /> },
-      { label: "Vender online", icon: <CartIcon size={20} /> },
-      { label: "Automatizar e organizar o negócio", icon: <GearIcon size={20} /> },
+      { label: "Existir online de vez", icon: <GlobeIcon size={16} /> },
+      { label: "Ser encontrado no Google", icon: <MapPinIcon size={16} /> },
+      { label: "Vender online", icon: <CartIcon size={16} /> },
+      { label: "Automatizar e organizar o negócio", icon: <GearIcon size={16} /> },
     ],
   },
   {
@@ -40,11 +40,11 @@ const PERGUNTAS: Pergunta[] = [
     resumo: "Ramo",
     q: "Qual é o seu ramo?",
     opcoes: [
-      { label: "Comércio / Loja", icon: <StoreIcon size={20} /> },
-      { label: "Serviços", icon: <ShieldIcon size={20} /> },
-      { label: "Alimentação", icon: <CartIcon size={20} /> },
-      { label: "Saúde & Beleza", icon: <PaletteIcon size={20} /> },
-      { label: "Outro", icon: <EditIcon size={20} /> },
+      { label: "Comércio / Loja", icon: <StoreIcon size={16} /> },
+      { label: "Serviços", icon: <ShieldIcon size={16} /> },
+      { label: "Alimentação", icon: <CartIcon size={16} /> },
+      { label: "Saúde & Beleza", icon: <PaletteIcon size={16} /> },
+      { label: "Outro", icon: <EditIcon size={16} /> },
     ],
   },
   {
@@ -52,9 +52,9 @@ const PERGUNTAS: Pergunta[] = [
     resumo: "Situação",
     q: "Em que pé você está hoje?",
     opcoes: [
-      { label: "Não tenho nada online ainda", icon: <RocketIcon size={20} /> },
-      { label: "Tenho redes, mas não tenho site", icon: <InstagramIcon size={20} /> },
-      { label: "Já tenho site e quero melhorar", icon: <ZapIcon size={20} /> },
+      { label: "Não tenho nada online ainda", icon: <RocketIcon size={16} /> },
+      { label: "Tenho redes, mas não tenho site", icon: <InstagramIcon size={16} /> },
+      { label: "Já tenho site e quero melhorar", icon: <ZapIcon size={16} /> },
     ],
   },
 ];
@@ -162,7 +162,7 @@ export default function SolucaoQuiz() {
           ) : (
             <div className="quiz-final">
               <div className="quiz-final-badge" aria-hidden="true">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
               </div>
               <h4 className="quiz-final-title">Temos a solução certa pra você.</h4>
               <p className="quiz-final-sub">
