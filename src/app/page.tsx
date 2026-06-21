@@ -30,7 +30,7 @@ export default function Home() {
             </h2>
             <p className="section-sub">
               Sem contrato mínimo, sem letra miúda. Conte o que você precisa e a
-              gente devolve um escopo claro com preço fechado.
+              gente monta uma solução sob medida pro seu negócio.
             </p>
           </div>
           <div className="home-cta-actions">
@@ -39,7 +39,7 @@ export default function Home() {
               Falar pelo WhatsApp
             </a>
             <Link href="/pacotes" className="btn-ghost">
-              Ver pacotes e preços
+              Ver tipos de solução
             </Link>
           </div>
         </div>

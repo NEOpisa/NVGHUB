@@ -40,7 +40,7 @@ export default function Hero() {
             </Magnetic>
             <Magnetic strength={0.25}>
               <Link href="/pacotes" className="btn-ghost">
-                Ver pacotes e preços
+                Ver tipos de solução
                 <ArrowRightIcon />
               </Link>
             </Magnetic>

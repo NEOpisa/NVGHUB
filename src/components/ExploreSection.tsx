@@ -5,10 +5,10 @@ import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 
 const AREAS = [
-  { num: "01", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
-  { num: "02", label: "Orçamento", href: "/orcamento", desc: "Monte o seu sob medida e veja o preço na hora." },
-  { num: "03", label: "Pacotes", href: "/pacotes", desc: "Planos fechados, com preço transparente." },
-  { num: "04", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, preços e como a gente trabalha." },
+  { num: "01", label: "Sua solução", href: "/solucao", desc: "Responda 3 perguntas e a gente monta o seu sob medida." },
+  { num: "02", label: "Pacotes", href: "/pacotes", desc: "Os tipos de solução que a gente entrega." },
+  { num: "03", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
+  { num: "04", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, suporte e como a gente trabalha." },
   { num: "05", label: "Contato", href: "/contato", desc: "Fale com a gente pelo WhatsApp ou formulário." },
 ];
 

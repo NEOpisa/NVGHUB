@@ -19,7 +19,7 @@ export default function Footer() {
       </Link>
 
       <div className="footer-links">
-        <Link href="/orcamento">Orçamento</Link>
+        <Link href="/solucao">Sua solução</Link>
         <Link href="/pacotes">Pacotes</Link>
         <Link href="/contato">Contato</Link>
         <Link href="/exemplos">Exemplos</Link>

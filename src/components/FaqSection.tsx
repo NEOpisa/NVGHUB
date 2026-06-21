@@ -13,7 +13,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Quanto custa um site?",
-    a: "Os pacotes começam em R$ 430 (Vitrine), com preço fechado e transparente. Pacotes maiores variam conforme o escopo, e dá para montar um orçamento sob medida item a item.",
+    a: "O valor depende do que o seu negócio precisa. A gente monta uma solução sob medida e fecha tudo com você no atendimento, antes de começar — sem surpresa e sem letra miúda.",
   },
   {
     q: "Tem suporte depois que o site é entregue?",

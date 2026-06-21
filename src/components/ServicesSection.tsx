@@ -201,12 +201,12 @@ export default function ServicesSection() {
         </div>
 
         <div className="services-orcamento-cta">
-          <Link href="/orcamento" className="btn-primary">
+          <Link href="/solucao" className="btn-primary">
             <CalcIcon />
-            Montar meu orçamento
+            Montar minha solução
           </Link>
           <Link href="/pacotes" className="btn-ghost">
-            Ver pacotes prontos
+            Ver tipos de solução
           </Link>
         </div>
 

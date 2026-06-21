@@ -58,7 +58,7 @@ export default function ExemplosPage() {
 
           <div className="exemplos-foot">
             <p>Gostou de algum? A gente personaliza com a sua marca, textos e fotos.</p>
-            <Link href="/orcamento" className="btn-primary">Montar meu orçamento</Link>
+            <Link href="/solucao" className="btn-primary">Montar minha solução</Link>
           </div>
         </div>
       </section>
