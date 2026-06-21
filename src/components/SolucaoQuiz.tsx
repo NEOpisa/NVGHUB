@@ -103,8 +103,11 @@ export default function SolucaoQuiz() {
   return (
     <div id="diagnostico" className="comprar-part" aria-label="Diagnóstico sob medida">
       <div className="inner">
-        <div ref={headerRef} className="comprar-part-head">
-          <h3 className="comprar-part-title">Vamos montar a sua solução</h3>
+        <div ref={headerRef} className="quiz-head">
+          <span className="section-eyebrow">Sua solução</span>
+          <h1 className="section-heading">
+            Vamos montar a <span className="text-accent-nvg">sua solução</span>
+          </h1>
           <p className="section-sub">
             Responda 3 perguntas rápidas e a gente já entende o seu momento — sem formulário gigante, sem compromisso.
           </p>
@@ -112,12 +115,18 @@ export default function SolucaoQuiz() {
 
         <div className="quiz">
           <div className="quiz-progress" aria-hidden="true">
+            <span className="quiz-progress-step">
+              {finalizado ? (
+                "Concluído"
+              ) : (
+                <>
+                  Passo <b>{String(passo + 1).padStart(2, "0")}</b> / {String(TOTAL).padStart(2, "0")}
+                </>
+              )}
+            </span>
             <div className="quiz-progress-track">
               <div className="quiz-progress-fill" style={{ width: `${progresso}%` }} />
             </div>
-            <span className="quiz-progress-step">
-              {finalizado ? "Pronto!" : `Passo ${passo + 1} de ${TOTAL}`}
-            </span>
           </div>
 
           {!finalizado && pergunta ? (
@@ -152,7 +161,6 @@ export default function SolucaoQuiz() {
             </div>
           ) : (
             <div className="quiz-final">
-              <span className="quiz-final-shine" aria-hidden="true" />
               <div className="quiz-final-badge" aria-hidden="true">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
               </div>
