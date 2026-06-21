@@ -2365,23 +2365,15 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 /* ── Índice de áreas (home) ── */
 .explore { padding: var(--section-pad) 0; border-top: 1px solid var(--border); }
-.explore .inner {
-  display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  gap: clamp(36px, 6vw, 88px); align-items: start;
-}
-.explore-head { max-width: 620px; margin-bottom: 0; }
+.explore-head { max-width: 640px; margin-bottom: clamp(32px, 5vw, 48px); }
 .explore-list {
   display: flex; flex-direction: column;
   border-top: 1px solid var(--border);
 }
-@media (max-width: 860px) {
-  .explore .inner { grid-template-columns: 1fr; gap: 28px; }
-}
 .explore-link {
   display: flex;
-  align-items: center; gap: 16px;
-  padding: 15px 4px;
+  align-items: center; gap: 18px;
+  padding: clamp(16px, 2vw, 22px) 4px;
   border-bottom: 1px solid var(--border);
   text-decoration: none; color: var(--text-primary);
   position: relative; isolation: isolate;
@@ -2403,10 +2395,11 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .explore-label {
   flex: 1; min-width: 0;
   font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(16px, 1.5vw, 21px); letter-spacing: -0.01em;
+  font-size: clamp(18px, 2vw, 26px); letter-spacing: -0.015em;
   line-height: 1.1;
 }
 .explore-desc { display: none; }
+.explore-index { flex-shrink: 0; }
 .explore-arrow {
   display: inline-flex; color: var(--text-muted);
   transition: transform 320ms var(--ease-out), color 250ms;
