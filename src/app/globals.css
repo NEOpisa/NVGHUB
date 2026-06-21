@@ -3309,3 +3309,19 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 @media (max-width: 600px) {
   .hero-bar { position: static; margin-top: 28px; justify-content: center; gap: 28px; }
 }
+
+/* ════════════════════════════════════════════════
+   MENU — refino editorial: rótulo de seção + foco
+   (ao passar o mouse num link, os outros esmaecem)
+   ════════════════════════════════════════════════ */
+.menu-nav-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: clamp(14px, 2vw, 22px);
+}
+.menu-link-label,
+.menu-link-index { transition: opacity 320ms var(--ease-out), color 250ms; }
+.menu-nav:has(.menu-link:hover) .menu-link .menu-link-label,
+.menu-nav:has(.menu-link:hover) .menu-link .menu-link-index { opacity: 0.36; }
+.menu-nav .menu-link:hover .menu-link-label,
+.menu-nav .menu-link:hover .menu-link-index { opacity: 1; }

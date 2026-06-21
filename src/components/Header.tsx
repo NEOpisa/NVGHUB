@@ -106,6 +106,7 @@ export default function Header() {
         aria-hidden={!menuOpen}
       >
         <nav className="menu-nav" aria-label="Navegação principal">
+          <span className="menu-nav-eyebrow" aria-hidden="true">Navegação</span>
           {NAV_LINKS.map(({ label, href }, i) => (
             <Link
               key={href}

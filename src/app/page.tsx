@@ -20,7 +20,26 @@ export default function Home() {
       <Hero />
       <Marquee />
       <ServicesSection />
+      <Marquee
+        items={[
+          "Entrega em 16 dias úteis",
+          "Sem contrato mínimo",
+          "Suporte real",
+          "100% remoto",
+          "Atende o Brasil inteiro",
+          "Preço sob medida",
+        ]}
+      />
       <ExploreSection />
+      <Marquee
+        items={[
+          "Vamos conversar",
+          "Diagnóstico em 1 minuto",
+          "Solução sob medida",
+          "Sem compromisso",
+          "Fale no WhatsApp",
+        ]}
+      />
 
       <section className="home-cta" aria-label="Vamos começar">
         <div className="inner home-cta-inner">
