@@ -120,7 +120,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
                 <path d="M20 6 9 17l-5-5" />
               </svg>
             </div>
-            <h3 id="lead-modal-title" className="lead-title">Recebido! 🎉</h3>
+            <h3 id="lead-modal-title" className="lead-title">Recebido!</h3>
             <p className="lead-sub">
               Seu pedido chegou pra nossa equipe. A gente retorna pelo contato informado em até 3 horas úteis.
             </p>
