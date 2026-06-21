@@ -634,19 +634,10 @@ html.lenis body {
 }
 .service-card--soon:hover { opacity: 1; }
 
-/* Grade editorial leve (substitui o carrossel) */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(252px, 1fr));
-  gap: 16px;
-  margin-top: clamp(40px, 5vw, 56px);
-  align-items: stretch;
-}
 .service-num {
   font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
   color: var(--text-muted);
 }
-.services-grid .service-card { min-height: 0; }
 
 /* ── Services carousel (1 card por vez, desktop e mobile) ── */
 .services-carousel {
