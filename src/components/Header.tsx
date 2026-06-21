@@ -8,7 +8,6 @@ import { WA, IG } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Início", href: "/" },
-  { label: "Sua solução", href: "/solucao", highlight: true },
   { label: "Pacotes", href: "/pacotes" },
   { label: "Quem somos", href: "/sobre" },
   { label: "Perguntas frequentes", href: "/faq" },
@@ -107,11 +106,11 @@ export default function Header() {
         aria-hidden={!menuOpen}
       >
         <nav className="menu-nav" aria-label="Navegação principal">
-          {NAV_LINKS.map(({ label, href, highlight }, i) => (
+          {NAV_LINKS.map(({ label, href }, i) => (
             <Link
               key={href}
               href={href}
-              className={`menu-link${pathname === href ? " is-active" : ""}${highlight ? " is-solucao" : ""}`}
+              className={`menu-link${pathname === href ? " is-active" : ""}`}
               aria-current={pathname === href ? "page" : undefined}
               onClick={closeMenu}
             >
@@ -124,6 +123,11 @@ export default function Header() {
         </nav>
 
         <aside className="menu-aside">
+          <Link href="/solucao" className="menu-solucao-cta" onClick={closeMenu}>
+            <span className="menu-solucao-cta-label">Sua solução</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </Link>
+
           <span className="menu-aside-label">Vamos conversar</span>
           <a
             href={WA}
