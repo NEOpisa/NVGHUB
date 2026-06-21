@@ -3393,14 +3393,15 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
    Translúcido e coerente com os .menu-contact (ícone + rótulo,
    alinhado à esquerda). No hover: foil laminado no botão todo. */
 .menu-solucao-cta {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 12px;
   width: fit-content;
-  padding: 10px 16px; border-radius: var(--radius);
-  background: rgba(124, 58, 237, 0.12);
+  padding: 16px 20px; border-radius: var(--radius);
+  background: rgba(124, 58, 237, 0.30);
   border: 1px solid var(--accent-border);
-  color: var(--accent-light);
-  font-family: var(--font-display); font-weight: 700; font-size: 15px;
-  letter-spacing: -0.01em; text-decoration: none;
+  color: #fff;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(16px, 1.4vw, 19px); letter-spacing: -0.01em;
+  text-decoration: none;
   position: relative; overflow: hidden; isolation: isolate;
   -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
   transition: color 200ms, border-color 200ms, background 200ms, transform 200ms var(--ease-out);
@@ -3409,7 +3410,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .menu-solucao-cta:hover {
   color: #fff;
   border-color: var(--accent);
-  background: rgba(124, 58, 237, 0.20);
+  background: rgba(124, 58, 237, 0.44);
   transform: translateX(3px);
 }
 .menu-solucao-cta::after {
