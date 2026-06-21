@@ -3319,13 +3319,6 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   text-transform: uppercase; color: var(--text-muted);
   margin-bottom: clamp(14px, 2vw, 22px);
 }
-.menu-link-label,
-.menu-link-index { transition: opacity 320ms var(--ease-out), color 250ms; }
-.menu-nav:has(.menu-link:hover) .menu-link .menu-link-label,
-.menu-nav:has(.menu-link:hover) .menu-link .menu-link-index { opacity: 0.36; }
-.menu-nav .menu-link:hover .menu-link-label,
-.menu-nav .menu-link:hover .menu-link-index { opacity: 1; }
-
 /* cada item ganha posição relativa p/ o realce e a seta */
 .menu-link { position: relative; isolation: isolate; }
 /* realce sutil da linha no hover */
