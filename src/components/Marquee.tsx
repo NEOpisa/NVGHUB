@@ -1,4 +1,4 @@
-const ITEMS = [
+const DEFAULT_ITEMS = [
   "Sites",
   "Sistemas",
   "SEO",
@@ -9,10 +9,10 @@ const ITEMS = [
   "SaaS",
 ];
 
-function Row({ reverse = false }: { reverse?: boolean }) {
-  const sequence = [...ITEMS, ...ITEMS, ...ITEMS];
+function Row({ items }: { items: string[] }) {
+  const sequence = [...items, ...items, ...items];
   return (
-    <div className={`marquee-row${reverse ? " marquee-row--reverse" : ""}`}>
+    <div className="marquee-row">
       <div className="marquee-track">
         {sequence.map((item, i) => (
           <span className="marquee-item" key={`${item}-${i}`}>
@@ -25,10 +25,10 @@ function Row({ reverse = false }: { reverse?: boolean }) {
   );
 }
 
-export default function Marquee() {
+export default function Marquee({ items = DEFAULT_ITEMS }: { items?: string[] }) {
   return (
     <div className="marquee" aria-hidden="true">
-      <Row />
+      <Row items={items} />
     </div>
   );
 }
