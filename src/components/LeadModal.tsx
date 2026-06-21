@@ -116,14 +116,19 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
         {status === "ok" ? (
           <div className="lead-success">
             <div className="lead-success-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 6 9 17l-5-5" />
               </svg>
             </div>
             <h3 id="lead-modal-title" className="lead-title">Recebido!</h3>
             <p className="lead-sub">
-              Seu pedido chegou pra nossa equipe. A gente retorna pelo contato informado em até 3 horas úteis.
+              Sua solução já está com a nossa equipe. A gente te chama pelo contato informado em até <strong>3 horas úteis</strong>.
             </p>
+            <ol className="lead-success-steps">
+              <li><span className="lead-step-n">1</span> Analisamos o seu diagnóstico</li>
+              <li><span className="lead-step-n">2</span> Montamos a proposta sob medida</li>
+              <li><span className="lead-step-n">3</span> Falamos com você no WhatsApp</li>
+            </ol>
             <button className="form-submit" onClick={onClose}>Fechar</button>
           </div>
         ) : (

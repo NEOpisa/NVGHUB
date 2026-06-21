@@ -18,6 +18,7 @@ import {
   WhatsAppIcon,
 } from "@/components/icons";
 import LeadModal from "@/components/LeadModal";
+import TiltCard from "@/components/TiltCard";
 import { WA } from "@/lib/constants";
 
 type Opcao = { label: string; icon: ReactNode };
@@ -160,6 +161,7 @@ export default function SolucaoQuiz() {
               )}
             </div>
           ) : (
+            <TiltCard maxTilt={6} className="quiz-final-tilt">
             <div className="quiz-final">
               <div className="quiz-final-badge" aria-hidden="true">
                 <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
@@ -193,6 +195,7 @@ export default function SolucaoQuiz() {
                 Refazer o diagnóstico
               </button>
             </div>
+            </TiltCard>
           )}
         </div>
 
