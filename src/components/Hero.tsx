@@ -16,10 +16,6 @@ export default function Hero() {
     <section id="hero" aria-label="Apresentação da NEOVANGUARD">
       <div className="hero-glow-veil" aria-hidden="true" />
 
-      <div className="hero-stage" aria-hidden="true">
-        <HeroVisual />
-      </div>
-
       <nav className="hero-index" aria-label="Áreas do site">
         {AREAS.map((a) => (
           <Link key={a.href} href={a.href} className="hero-index-link">
@@ -30,6 +26,9 @@ export default function Hero() {
       </nav>
 
       <div className="hero-center hero-enter">
+        <div className="hero-stage" aria-hidden="true">
+          <HeroVisual />
+        </div>
         <span className="hero-eyebrow">Agência digital · atende o Brasil inteiro</span>
         <h1 className="hero-h1">
           Tudo o que seu negócio precisa no digital,{" "}
