@@ -634,6 +634,20 @@ html.lenis body {
 }
 .service-card--soon:hover { opacity: 1; }
 
+/* Grade editorial leve (substitui o carrossel) */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(252px, 1fr));
+  gap: 16px;
+  margin-top: clamp(40px, 5vw, 56px);
+  align-items: stretch;
+}
+.service-num {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+.services-grid .service-card { min-height: 0; }
+
 /* ── Services carousel (1 card por vez, desktop e mobile) ── */
 .services-carousel {
   margin-top: 52px;
@@ -1519,11 +1533,10 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 /* ── Marquee infinito ── */
 .marquee {
   overflow: hidden;
-  padding: clamp(28px, 5vh, 48px) 0;
+  padding: clamp(16px, 2.4vh, 24px) 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  background: rgba(20, 20, 20, 0.4);
-  display: flex; flex-direction: column; gap: 10px;
+  background: transparent;
 }
 .marquee-row { overflow: hidden; white-space: nowrap; }
 .marquee-track {
@@ -1543,19 +1556,14 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   to   { transform: translate3d(-33.333%, 0, 0); }
 }
 .marquee-item {
-  display: inline-flex; align-items: center; gap: 28px;
-  padding-right: 28px;
-  font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(26px, 4.5vw, 44px);
-  letter-spacing: 0.02em; text-transform: uppercase;
-
-  color: rgba(240, 240, 240, 0.14);
+  display: inline-flex; align-items: center; gap: 22px;
+  padding-right: 22px;
+  font-family: var(--font-mono); font-weight: 600;
+  font-size: clamp(12px, 1vw + 0.4rem, 15px);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-muted);
 }
-.marquee-row--reverse .marquee-item {
-  color: var(--text-primary);
-  opacity: 0.9;
-}
-.marquee-sep { font-size: 0.5em; color: var(--accent-light); -webkit-text-stroke: 0; }
+.marquee-sep { font-size: 0.7em; color: var(--accent-border); -webkit-text-stroke: 0; }
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none; }
 }
@@ -2118,7 +2126,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 .manifesto-line { font-size: clamp(26px, 5vw, 56px); }
 .manifesto-tagline { font-size: 15px; }
-.marquee-item { font-size: clamp(20px, 3.2vw, 32px); }
+.marquee-item { font-size: clamp(11px, 2vw, 14px); }
 .noxz-title { font-size: clamp(28px, 4.4vw, 40px); }
 
 :root { --section-pad: 100px; }
