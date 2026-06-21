@@ -208,7 +208,7 @@ export default function SolucaoQuiz() {
       <LeadModal
         open={modalAberto}
         onClose={() => setModalAberto(false)}
-        origem="orcamento"
+        origem="atendimento"
         tipo="Diagnóstico sob medida"
         itens={itens}
         valor={null}

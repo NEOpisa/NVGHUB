@@ -68,9 +68,15 @@ export async function POST(req: Request) {
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY ?? process.env.SUPABASE_KEY;
+  // Chave de serviço (secret) — rota server-side, bypassa RLS. A anon legada
+  // está desligada no projeto, por isso a secret é a opção principal.
+  const SUPABASE_KEY =
+    process.env.SUPABASE_SECRET_KEY ??
+    process.env.SUPABASE_SERVICE_ROLE_KEY ??
+    process.env.SUPABASE_ANON_KEY ??
+    process.env.SUPABASE_KEY;
   if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.error("[lead] SUPABASE_URL / SUPABASE_ANON_KEY não configurados.");
+    console.error("[lead] SUPABASE_URL / SUPABASE_SECRET_KEY não configurados.");
     return NextResponse.json({ error: "Serviço indisponível no momento." }, { status: 500 });
   }
 
@@ -85,7 +91,7 @@ export async function POST(req: Request) {
 
   const registro = {
     Nome: nome || null,
-    Tipo: tipo || (origem === "pacote" ? "Pacote" : "Orçamento sob medida"),
+    Tipo: tipo || (origem === "pacote" ? "Pacote" : "Atendimento sob medida"),
     Status: "pendente",
     Email: email || null,
     Telefone: telefone || null,
