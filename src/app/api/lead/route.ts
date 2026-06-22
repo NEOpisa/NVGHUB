@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { EMAIL_RE, isValidPhone } from "@/lib/validation";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_LEN = { nome: 120, email: 180, telefone: 40, tipo: 120 };
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -59,6 +59,9 @@ export async function POST(req: Request) {
   }
   if (email && !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "Informe um e-mail válido." }, { status: 400 });
+  }
+  if (telefone && !isValidPhone(telefone)) {
+    return NextResponse.json({ error: "Informe um telefone válido." }, { status: 400 });
   }
   if (
     nome.length > MAX_LEN.nome || email.length > MAX_LEN.email ||
