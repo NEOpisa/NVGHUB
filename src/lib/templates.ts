@@ -66,4 +66,16 @@ export const TEMPLATES: TemplateItem[] = [
     description: "Boutique de moda autoral light com provador virtual: monte o look, pinte a cor e envie pelo WhatsApp.",
     accent: "#be7257",
   },
+  {
+    slug: "pousada-vista-serra",
+    category: "Pousada & Turismo",
+    description: "Pousada boutique na serra: chalés, café da manhã, spa e reserva — editorial creme & sálvia.",
+    accent: "#3f7d5a",
+  },
+  {
+    slug: "motriz-auto-center",
+    category: "Oficina & Auto Center",
+    description: "Centro automotivo industrial dark: serviços, diferenciais, processo e orçamento pelo WhatsApp.",
+    accent: "#f25c1f",
+  },
 ];
