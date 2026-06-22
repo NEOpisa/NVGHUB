@@ -27,7 +27,7 @@ export default function Footer() {
         <a href={IG} target="_blank" rel="noopener noreferrer">Instagram</a>
       </div>
 
-      <span className="footer-copy">© 2026 Neovanguard. Todos os direitos reservados.</span>
+      <span className="footer-copy">© {new Date().getFullYear()} Neovanguard. Todos os direitos reservados.</span>
     </footer>
   );
 }

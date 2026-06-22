@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CheckIcon } from "@/components/icons";
+import { EMAIL_RE, isValidPhone } from "@/lib/validation";
+import { track } from "@/lib/fpixel";
 
 export type LeadItem = { label: string; price: number | null };
 
@@ -17,8 +19,6 @@ type Props = {
   /** Total estimado em BRL (null quando não há preço fechado). */
   valor: number | null;
 };
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LeadModal({ open, onClose, origem, tipo, itens, valor }: Props) {
   const [form, setForm] = useState({ nome: "", email: "", telefone: "", empresa: "" });
@@ -68,6 +68,11 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
       setErrorMsg("O e-mail informado não parece válido.");
       return;
     }
+    if (telefone && !isValidPhone(telefone)) {
+      setStatus("err");
+      setErrorMsg("O telefone informado não parece válido.");
+      return;
+    }
 
     setStatus("loading");
     setErrorMsg("");
@@ -88,6 +93,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
+        track("Lead", { content_name: tipo, value: valor ?? undefined, currency: "BRL" });
         setStatus("ok");
       } else {
         setStatus("err");

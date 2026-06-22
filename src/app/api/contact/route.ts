@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import { EMAIL_RE } from '@/lib/validation';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_LEN = { nome: 120, email: 180, mensagem: 4000 };
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;

@@ -8,6 +8,8 @@ import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
+import MetaPixel from "@/components/MetaPixel";
+import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
 
@@ -37,11 +39,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Neovanguard — Agência de Soluções Digitais",
   description:
-    "Criamos sites e sistemas para pequenos negócios locais. Site pronto em até 7 dias. Você aparece no Google, seus clientes chegam.",
+    "Sites, sistemas, SEO e suporte operados como um só ecossistema. Entrega com prazo definido, sem contrato mínimo, atendendo o Brasil inteiro de forma 100% remota.",
   openGraph: {
     title: "Neovanguard — Agência de Soluções Digitais",
     description:
-      "Criamos sites e sistemas para pequenos negócios locais. Site pronto em até 7 dias.",
+      "Sites, sistemas, SEO e suporte operados como um só ecossistema. Entrega com prazo definido, sem contrato mínimo, 100% remoto.",
     type: "website",
     url: SITE_URL,
     images: ["/og.png"],
@@ -92,6 +94,8 @@ export default function RootLayout({
           <Footer />
           <div className="site-frame" aria-hidden="true" />
         </ChromeGate>
+        <MetaPixel />
+        <Analytics />
       </body>
     </html>
   );

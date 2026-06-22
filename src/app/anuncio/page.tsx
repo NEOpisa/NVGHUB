@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import MetaPixel from "@/components/MetaPixel";
 import TrackLink from "@/components/TrackLink";
 import "./anuncio.css";
 
@@ -63,7 +62,6 @@ function Icon({ name, size = 18 }: { name: string; size?: number }) {
 export default function Anuncio() {
   return (
     <main className="ad">
-      <MetaPixel />
       <div className="ad-circuit" aria-hidden="true" />
       <div className="ad-glow" aria-hidden="true" />
 

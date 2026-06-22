@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
+import { track } from "@/lib/fpixel";
 
 export default function ContatoSection() {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -34,6 +35,7 @@ export default function ContatoSection() {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
+        track("Contact");
         setStatus("ok");
         setForm({ nome: "", email: "", mensagem: "", empresa: "" });
       } else {
