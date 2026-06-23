@@ -21,28 +21,53 @@ export default function ExploreSection() {
   useLayoutEffect(() => {
     const s = sectionRef.current;
     if (!s || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const head  = s.querySelector(".explore-head");
-    const links = s.querySelectorAll(".explore-link");
-    if (head)        gsap.set(head,  { opacity: 0, y: 24 });
-    if (links.length) gsap.set(links, { opacity: 0, y: 18 });
+    const eyebrow = s.querySelector(".section-eyebrow");
+    const heading = s.querySelector(".section-heading");
+    const sub     = s.querySelector(".section-sub");
+    const links   = s.querySelectorAll(".explore-link");
+    if (eyebrow) gsap.set(eyebrow, { opacity: 0, x: -20 });
+    if (heading) gsap.set(heading, { clipPath: "inset(0 0 110% 0)", y: 14 });
+    if (sub)     gsap.set(sub,     { opacity: 0, y: 18 });
+    // Links: cada um oculto + rotacionado levemente (efeito 3D)
+    links.forEach(l => gsap.set(l, { opacity: 0, x: -30, rotateY: -6, transformOrigin: "left center", perspective: 600 }));
   }, []);
 
   useEffect(() => {
     const s = sectionRef.current;
     if (!s || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const head  = s.querySelector<HTMLElement>(".explore-head");
-    const links = s.querySelectorAll<HTMLElement>(".explore-link");
+    const eyebrow = s.querySelector<HTMLElement>(".section-eyebrow");
+    const heading = s.querySelector<HTMLElement>(".section-heading");
+    const sub     = s.querySelector<HTMLElement>(".section-sub");
+    const links   = s.querySelectorAll<HTMLElement>(".explore-link");
+    const list    = s.querySelector<HTMLElement>(".explore-list");
 
     const ctx = gsap.context(() => {
-      if (head) {
-        gsap.to(head, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out",
-          scrollTrigger: { trigger: head, start: "top 88%", once: true } });
+      // Eyebrow desliza
+      if (eyebrow) {
+        gsap.to(eyebrow, { opacity: 1, x: 0, duration: 0.50, ease: "power3.out",
+          scrollTrigger: { trigger: s, start: "top 86%", once: true } });
       }
+      // Heading: clip de baixo (dramático)
+      if (heading) {
+        gsap.to(heading, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.80, ease: "power4.out",
+          delay: 0.08,
+          scrollTrigger: { trigger: s, start: "top 85%", once: true } });
+      }
+      // Sub fade
+      if (sub) {
+        gsap.to(sub, { opacity: 1, y: 0, duration: 0.60, ease: "power3.out",
+          delay: 0.22,
+          scrollTrigger: { trigger: s, start: "top 84%", once: true } });
+      }
+      // Links: surgem com rotação 3D lateral + x (efeito "virando para o usuário")
       links.forEach((link, i) => {
-        gsap.to(link, { opacity: 1, y: 0, duration: 0.60, ease: "power3.out",
-          delay: i * 0.07,
-          scrollTrigger: { trigger: s.querySelector(".explore-list"), start: "top 82%", once: true } });
+        gsap.to(link, {
+          opacity: 1, x: 0, rotateY: 0,
+          duration: 0.65, ease: "power3.out",
+          delay: i * 0.08,
+          scrollTrigger: { trigger: list, start: "top 82%", once: true },
+        });
       });
     }, s);
 

@@ -59,34 +59,84 @@ export default function ServicesSection() {
       return;
     }
     const header   = section.querySelector<HTMLElement>(".services-header");
+    const eyebrow  = section.querySelector<HTMLElement>(".section-eyebrow");
+    const lines    = section.querySelectorAll<HTMLElement>(".manifesto-line");
+    const sub      = section.querySelector<HTMLElement>(".section-sub");
     const viewport = section.querySelector<HTMLElement>(".carousel-viewport");
+    const arrows   = section.querySelectorAll<HTMLElement>(".carousel-arrow");
+    const dots     = section.querySelector<HTMLElement>(".services-scroll-dots");
     const cta      = section.querySelector<HTMLElement>(".services-orcamento-cta");
+    const exRow    = section.querySelector<HTMLElement>(".services-exemplos-row");
 
-    if (header)   gsap.set(header,   { opacity: 0, y: 28 });
-    if (viewport) gsap.set(viewport, { opacity: 0, y: 36 });
-    if (cta)      gsap.set(cta,      { opacity: 0, y: 20 });
+    // Estados iniciais
+    if (eyebrow)  gsap.set(eyebrow,  { opacity: 0, x: -20 });
+    if (sub)      gsap.set(sub,      { opacity: 0, y: 20 });
+    if (viewport) gsap.set(viewport, { opacity: 0, y: 48, scale: 0.96 });
+    if (dots)     gsap.set(dots,     { opacity: 0 });
+    if (cta)      gsap.set(cta,      { opacity: 0, y: 24 });
+    if (exRow)    gsap.set(exRow,    { opacity: 0, y: 12 });
+    if (arrows.length) gsap.set(arrows, { opacity: 0, scale: 0.5 });
+    lines.forEach(l => gsap.set(l, { clipPath: "inset(0 0 110% 0)" }));
 
     const ctx = gsap.context(() => {
-      // Manifesto fill scrubado
-      gsap.utils.toArray<HTMLElement>(".manifesto-line").forEach((line) => {
+      // Eyebrow desliza da esquerda
+      if (eyebrow) {
+        gsap.to(eyebrow, { opacity: 1, x: 0, duration: 0.55, ease: "power3.out",
+          scrollTrigger: { trigger: header ?? section, start: "top 86%", once: true } });
+      }
+
+      // Manifesto: clip-reveal + fill de cor scrubado
+      lines.forEach((line, i) => {
+        gsap.to(line, {
+          clipPath: "inset(0 0 0% 0)",
+          duration: 0.70, ease: "power4.out",
+          delay: i * 0.12,
+          scrollTrigger: { trigger: line, start: "top 86%", once: true },
+        });
         gsap.fromTo(line,
           { backgroundPositionX: "100%" },
           { backgroundPositionX: "0%", ease: "none",
-            scrollTrigger: { trigger: line, start: "top 88%", end: "top 48%", scrub: 0.6 } }
+            scrollTrigger: { trigger: line, start: "top 85%", end: "top 40%", scrub: 0.8 } }
         );
       });
 
-      if (header) {
-        gsap.to(header, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out",
-          scrollTrigger: { trigger: header, start: "top 86%", once: true } });
+      // Sub fade
+      if (sub) {
+        gsap.to(sub, { opacity: 1, y: 0, duration: 0.65, ease: "power3.out",
+          scrollTrigger: { trigger: sub, start: "top 88%", once: true } });
       }
+
+      // Carousel: surge com escala + y (efeito de "emergir")
       if (viewport) {
-        gsap.to(viewport, { opacity: 1, y: 0, duration: 0.80, ease: "power3.out",
-          scrollTrigger: { trigger: viewport, start: "top 84%", once: true } });
+        gsap.to(viewport, { opacity: 1, y: 0, scale: 1,
+          duration: 0.90, ease: "power3.out",
+          scrollTrigger: { trigger: viewport, start: "top 82%", once: true } });
       }
+
+      // Arrows: pop com spring
+      if (arrows.length) {
+        gsap.to(arrows, { opacity: 1, scale: 1, duration: 0.50, ease: "back.out(2.5)",
+          stagger: 0.10,
+          scrollTrigger: { trigger: viewport ?? section, start: "top 78%", once: true } });
+      }
+
+      // Dots fade
+      if (dots) {
+        gsap.to(dots, { opacity: 1, duration: 0.40,
+          scrollTrigger: { trigger: dots, start: "top 92%", once: true } });
+      }
+
+      // CTA: clip-reveal de baixo
       if (cta) {
-        gsap.to(cta, { opacity: 1, y: 0, duration: 0.60, ease: "power2.out",
-          scrollTrigger: { trigger: cta, start: "top 90%", once: true } });
+        gsap.fromTo(Array.from(cta.children),
+          { opacity: 0, y: 20, scale: 0.94 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)", stagger: 0.08,
+            scrollTrigger: { trigger: cta, start: "top 90%", once: true } });
+      }
+
+      if (exRow) {
+        gsap.to(exRow, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out",
+          scrollTrigger: { trigger: exRow, start: "top 92%", once: true } });
       }
     }, section);
     return () => ctx.revert();
