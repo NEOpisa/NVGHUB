@@ -460,12 +460,8 @@ html.lenis body {
 }
 .hero-wordmark-mini img {
   height: 44px; width: auto;
-  filter: drop-shadow(0 0 18px var(--accent-glow));
-  animation: wordmark-glow-pulse 4.5s ease-in-out infinite;
-}
-@keyframes wordmark-glow-pulse {
-  0%, 100% { filter: drop-shadow(0 0 14px var(--accent-glow)); }
-  50%       { filter: drop-shadow(0 0 26px var(--accent-glow)); }
+  opacity: 0.92;
+  /* filter:drop-shadow animado removido — causava repaint a cada frame */
 }
 .hero-wordmark-mini span {
   font-family: var(--font-mono); font-weight: 700; font-size: 13px;
@@ -1400,8 +1396,7 @@ footer {
   filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.55));
   animation:
     pl-draw 0.76s var(--ease-premium) 0.46s forwards,
-    pl-fill-purple 0.61s ease-out 1.25s forwards,
-    pl-glow 1.82s ease-in-out 1.52s infinite;
+    pl-fill-purple 0.61s ease-out 1.25s forwards;
 }
 
 .pl-spark {
@@ -1624,7 +1619,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   top: -20%; left: 50%;
   width: 1px; height: 140%;
   background: linear-gradient(to bottom, transparent, rgba(159, 110, 249, 0.25), transparent);
-  will-change: transform, opacity;
+ 
   animation: beam-sweep 14s ease-in-out infinite alternate;
 }
 @keyframes beam-sweep {
@@ -2257,8 +2252,8 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   display: grid; grid-template-columns: 1.5fr 1fr;
   align-items: center; gap: clamp(32px, 5vw, 80px);
   padding: 132px clamp(28px, 7vw, 120px) 64px;
-  background: rgba(8, 8, 11, 0.98);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(8, 8, 11, 0.99);
+  /* backdrop-filter removido do menu — muito pesado, fundo opaco cobre o mesmo efeito */
   opacity: 0; visibility: hidden; pointer-events: none;
   clip-path: inset(0 0 100% 0);
   transition: clip-path 560ms var(--ease-premium),
@@ -2497,8 +2492,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   content: ""; position: absolute; inset: -8px; z-index: -1;
   border-radius: inherit;
   background: radial-gradient(closest-side, rgba(124,58,237,0.7), transparent 75%);
-  opacity: 0.4; will-change: opacity, transform;
-  animation: halo-pulse 3s ease-in-out infinite;
+  opacity: 0.4;
 }
 @media (prefers-reduced-motion: reduce) { .pricing-badge::after { animation: none; } }
 
@@ -2507,8 +2501,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   content: ""; position: absolute; inset: 0; z-index: -1;
   border-radius: inherit;
   background: radial-gradient(closest-side, rgba(22,163,74,0.55), transparent 78%);
-  opacity: 0; will-change: opacity, transform;
-  animation: halo-pulse 3.2s ease-in-out infinite;
+  opacity: 0;
 }
 .contact-whatsapp:hover::after { animation-play-state: paused; opacity: 0.9; }
 @media (prefers-reduced-motion: reduce) { .contact-whatsapp::after { animation: none; } }
@@ -2622,7 +2615,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   background: radial-gradient(circle, rgba(255, 255, 255, 0.55), transparent 70%);
   transform: scale(0); opacity: 0.65;
   animation: click-ripple 0.6s var(--ease-out) forwards;
-  will-change: transform, opacity;
+ 
 }
 @keyframes click-ripple {
   to { transform: scale(2.4); opacity: 0; }

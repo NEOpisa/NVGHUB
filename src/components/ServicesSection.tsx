@@ -58,23 +58,36 @@ export default function ServicesSection() {
         .forEach((el) => (el.style.backgroundPositionX = "0%"));
       return;
     }
+    const header   = section.querySelector<HTMLElement>(".services-header");
+    const viewport = section.querySelector<HTMLElement>(".carousel-viewport");
+    const cta      = section.querySelector<HTMLElement>(".services-orcamento-cta");
+
+    if (header)   gsap.set(header,   { opacity: 0, y: 28 });
+    if (viewport) gsap.set(viewport, { opacity: 0, y: 36 });
+    if (cta)      gsap.set(cta,      { opacity: 0, y: 20 });
+
     const ctx = gsap.context(() => {
+      // Manifesto fill scrubado
       gsap.utils.toArray<HTMLElement>(".manifesto-line").forEach((line) => {
-        gsap.fromTo(
-          line,
+        gsap.fromTo(line,
           { backgroundPositionX: "100%" },
-          {
-            backgroundPositionX: "0%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: line,
-              start: "top 88%",
-              end: "top 48%",
-              scrub: 0.5,
-            },
-          }
+          { backgroundPositionX: "0%", ease: "none",
+            scrollTrigger: { trigger: line, start: "top 88%", end: "top 48%", scrub: 0.6 } }
         );
       });
+
+      if (header) {
+        gsap.to(header, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out",
+          scrollTrigger: { trigger: header, start: "top 86%", once: true } });
+      }
+      if (viewport) {
+        gsap.to(viewport, { opacity: 1, y: 0, duration: 0.80, ease: "power3.out",
+          scrollTrigger: { trigger: viewport, start: "top 84%", once: true } });
+      }
+      if (cta) {
+        gsap.to(cta, { opacity: 1, y: 0, duration: 0.60, ease: "power2.out",
+          scrollTrigger: { trigger: cta, start: "top 90%", once: true } });
+      }
     }, section);
     return () => ctx.revert();
   }, []);
