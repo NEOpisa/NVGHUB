@@ -73,7 +73,7 @@ export default function ServicesSection() {
     if (sub)      gsap.set(sub,      { opacity: 0, y: 20 });
     if (viewport) gsap.set(viewport, { opacity: 0, y: 48, scale: 0.96 });
     if (dots)     gsap.set(dots,     { opacity: 0 });
-    if (cta)      gsap.set(cta,      { opacity: 0, y: 24 });
+    if (cta) gsap.set(Array.from(cta.children), { opacity: 0, y: 20, scale: 0.94 });
     if (exRow)    gsap.set(exRow,    { opacity: 0, y: 12 });
     if (arrows.length) gsap.set(arrows, { opacity: 0, scale: 0.5 });
     lines.forEach(l => gsap.set(l, { clipPath: "inset(0 0 110% 0)" }));
@@ -126,12 +126,13 @@ export default function ServicesSection() {
           scrollTrigger: { trigger: dots, start: "top 92%", once: true } });
       }
 
-      // CTA: clip-reveal de baixo
+      // CTA: cada botão surge com pop (pai já visível, filhos animam)
       if (cta) {
-        gsap.fromTo(Array.from(cta.children),
-          { opacity: 0, y: 20, scale: 0.94 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)", stagger: 0.08,
-            scrollTrigger: { trigger: cta, start: "top 90%", once: true } });
+        gsap.to(Array.from(cta.children), {
+          opacity: 1, y: 0, scale: 1,
+          duration: 0.55, ease: "back.out(1.5)", stagger: 0.08,
+          scrollTrigger: { trigger: cta, start: "top 90%", once: true },
+        });
       }
 
       if (exRow) {
