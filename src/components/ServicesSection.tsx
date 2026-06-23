@@ -175,8 +175,7 @@ export default function ServicesSection() {
         <header className="services-header">
           <span className="section-eyebrow">Serviços</span>
           <h2 className="services-fill">
-            <span className="manifesto-line">Soluções digitais</span>
-            <span className="manifesto-line">que entregam de verdade.</span>
+            <span className="manifesto-line">Soluções digitais que entregam de verdade.</span>
           </h2>
           <p className="section-sub">
             Do site ao sistema, entrega em até 16 dias úteis. Sem papo de agência grande.
