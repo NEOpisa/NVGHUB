@@ -4,29 +4,40 @@
 
 :root {
 
-  --bg:             #0d0d0d;
-  --bg-2:           #0a0a0a;
+  /* ── igloo.inc inspired palette ── */
+  --bg:             #0b0e18;
+  --bg-2:           #080b13;
 
-  --surface:        #141414;
-  --surface-raised: #1c1c1c;
-  --surface-interactive: #202020;
+  --surface:        #111520;
+  --surface-raised: #161b28;
+  --surface-interactive: #1c2235;
 
-  --border:         #2a2a2a;
-  --border-hover:   #3a3a3a;
+  --border:         #1e2438;
+  --border-hover:   #2a3350;
   --accent-border:  rgba(124,58,237,0.35);
 
-  --text-primary:   #f0f0f0;
-  --text-secondary: #a0a0a0;
-  --text-muted:     #606060;
+  --text-primary:   #e8eaf0;
+  --text-secondary: #8b90a0;
+  --text-muted:     #4a5060;
 
   --accent:         #7c3aed;
   --accent-hover:   #6d28d9;
   --accent-light:   #9f6ef9;
+  --accent-ll:      #c4b5fd;
   --accent-glow:    rgba(124,58,237,0.24);
-  --accent-subtle:  rgba(124,58,237,0.12);
-  --bg-veil:       rgba(13,13,13,0.55);
-  --bg-2-veil:     rgba(10,10,10,0.6);
+  --accent-subtle:  rgba(124,58,237,0.10);
+  --silver:         #b6bac5;
+  --charcoal:       #383e4e;
+  --bg-veil:        rgba(11,14,24,0.55);
+  --bg-2-veil:      rgba(8,11,19,0.6);
   --green:          #10b981;
+
+  /* ── Editorial type scale (igloo-style) ── */
+  --fs-display: clamp(4rem, 10vw + 0.5rem, 10rem);
+  --fs-h2:      clamp(2.5rem, 6vw + 0.25rem, 7rem);
+  --fs-h3:      clamp(1.4rem, 2.5vw + 0.2rem, 2.8rem);
+  --fs-body:    clamp(1rem, 1.1vw + 0.35rem, 1.15rem);
+  --fs-small:   0.875rem;
   --font-display:   var(--ff-syne), ui-sans-serif, sans-serif;
   --font-mono:      var(--ff-orbitron), monospace;
   --font-body:      var(--ff-jakarta), ui-sans-serif, sans-serif;
@@ -51,11 +62,13 @@
 
   --max-w:          1280px;
   --max-w-wide:     1400px;
-  --section-pad:    120px;
-  --section-pad-mobile: 80px;
-  --gutter:         32px;
+  --section-pad:    80px;
+  --section-pad-mobile: 56px;
+  --gutter:         clamp(24px, 5vw, 64px);
   --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
   --ease-premium:   cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-silk:      cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-snap:      cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
@@ -3338,3 +3351,285 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   transition: opacity 260ms, transform 320ms var(--ease-out);
 }
 .menu-link:hover::after { opacity: 1; transform: translateX(0); }
+
+/* ══════════════════════════════════════════════════════════════
+   REDESIGN IGLOO.INC — tipografia editorial + aberração cromática
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Heading editorial gigante ── */
+.hero-h1 {
+  font-size: var(--fs-display) !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.95 !important;
+  max-width: none !important;
+  color: var(--text-primary);
+}
+
+.section-heading {
+  font-size: var(--fs-h2) !important;
+  letter-spacing: -0.035em !important;
+  line-height: 1.0 !important;
+  max-width: none !important;
+}
+
+/* ── Aberração cromática — hover nos elementos grandes ── */
+.chroma:hover {
+  text-shadow:
+    -1px 0 1px rgba(255, 50, 140, 0.30),
+     1px 0 1px rgba(50,  210, 255, 0.30);
+}
+
+/* ── Hero editorial — novo layout ── */
+#hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  padding: clamp(80px, 10svh, 140px) 0 clamp(40px, 5svh, 80px);
+  overflow: hidden;
+}
+
+.hero-editorial {
+  padding-inline: var(--gutter);
+  max-width: var(--max-w-wide);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: clamp(24px, 4vh, 48px);
+}
+
+.hero-eyebrow-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.hero-h1-editorial {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+  color: var(--text-primary);
+  margin-bottom: clamp(28px, 4vh, 56px);
+}
+
+.hero-h1-editorial .text-accent {
+  color: var(--accent-ll);
+}
+
+.hero-sub-editorial {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 52ch;
+  margin-bottom: clamp(36px, 5vh, 64px);
+}
+
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: var(--text-primary);
+  color: var(--bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background 0.22s, color 0.22s, transform 0.22s var(--ease-snap);
+}
+
+.hero-cta-primary:hover {
+  background: var(--accent-ll);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+
+.hero-cta-ghost {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.hero-cta-ghost:hover { color: var(--text-primary); }
+
+.hero-bottom-bar {
+  margin-top: auto;
+  padding: 20px var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Orb 3D no hero ── */
+.hero-orb {
+  position: absolute;
+  top: -10%;
+  right: -8%;
+  width: clamp(280px, 44vw, 680px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-orb canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-editorial {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── ServicesSection editorial (lista numerada) ── */
+.services-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.service-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto auto;
+  align-items: center;
+  gap: clamp(12px, 2vw, 32px);
+  padding: clamp(18px, 2.5vh, 28px) 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: color 0.2s, opacity 0.2s;
+  cursor: default;
+}
+
+.services-list:hover .service-row {
+  opacity: 0.35;
+}
+.services-list:hover .service-row:hover {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+.service-row-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.service-row-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.service-row-outcome {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.service-row-arrow {
+  width: 20px;
+  color: var(--text-muted);
+  transition: transform 0.25s var(--ease-snap), color 0.2s;
+}
+
+.service-row:hover .service-row-arrow {
+  transform: translate(4px, -4px);
+  color: var(--accent-light);
+}
+
+.service-row:hover .service-row-title {
+  color: var(--accent-ll);
+}
+
+@media (max-width: 640px) {
+  .service-row {
+    grid-template-columns: 2rem 1fr;
+    grid-template-rows: auto auto;
+  }
+  .service-row-outcome { display: none; }
+  .service-row-arrow   { display: none; }
+}
+
+/* ── ExploreSection — tipo maior ── */
+.explore-label {
+  font-size: clamp(1.8rem, 4vw, 4rem) !important;
+  letter-spacing: -0.025em !important;
+}
+
+.explore-desc { display: none !important; }
+
+/* ── Ambient simplificado ── */
+.ambient-3d, .ambient-grid, .ambient-beam { display: none !important; }
+
+.ambient-orb-a {
+  width: clamp(300px, 50vw, 600px) !important;
+  height: clamp(300px, 50vw, 600px) !important;
+  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%) !important;
+}
+
+.ambient-orb-b {
+  width: clamp(200px, 35vw, 420px) !important;
+  height: clamp(200px, 35vw, 420px) !important;
+  background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%) !important;
+}
+
+.ambient-orb-c { display: none !important; }
+
+/* ── Menu toggle minimalista ── */
+.menu-toggle {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.menu-toggle:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--accent-light) !important;
+}
+
+/* ── Page transition — cor do fundo ── */
+.page-transition-overlay {
+  background: var(--bg) !important;
+  border-top: 2px solid var(--accent) !important;
+}
+
+/* ── Hero glow veil ── */
+.hero-glow-veil { display: none; }
