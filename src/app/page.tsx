@@ -1,20 +1,21 @@
+"use client";
+
+import { useRef } from "react";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import ServicesSection from "@/components/ServicesSection";
 import ExploreSection from "@/components/ExploreSection";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
-import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-
-export const metadata = pageMetadata({
-  title: "Neovanguard — Agência de Soluções Digitais",
-  description:
-    "Sites, sistemas, SEO e suporte operados como um só ecossistema. Entrega com prazo definido, sem contrato mínimo, atendendo o Brasil inteiro de forma 100% remota.",
-  path: "/",
-});
+import { useReveal } from "@/hooks/useReveal";
 
 export default function Home() {
+  const ctaCopyRef    = useRef<HTMLDivElement>(null);
+  const ctaActionsRef = useRef<HTMLDivElement>(null);
+  useReveal(ctaCopyRef);
+  useReveal(ctaActionsRef, 150);
+
   return (
     <main id="main">
       <Hero />
@@ -43,7 +44,7 @@ export default function Home() {
 
       <section className="home-cta" aria-label="Vamos começar">
         <div className="inner home-cta-inner">
-          <div className="home-cta-copy">
+          <div className="home-cta-copy" ref={ctaCopyRef}>
             <h2 className="section-heading">
               Pronto para tirar a ideia <span className="text-accent-nvg">do papel?</span>
             </h2>
@@ -52,7 +53,7 @@ export default function Home() {
               gente monta uma solução sob medida pro seu negócio.
             </p>
           </div>
-          <div className="home-cta-actions">
+          <div className="home-cta-actions" ref={ctaActionsRef}>
             <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
               <WhatsAppIcon />
               Falar pelo WhatsApp

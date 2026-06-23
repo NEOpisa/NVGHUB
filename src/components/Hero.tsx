@@ -23,15 +23,19 @@ export default function Hero() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const s = ref.current;
     if (!s) return;
+    // Estados iniciais via useLayoutEffect (antes do paint = sem flash)
+    const brand  = s.querySelector(".hero-brand");
+    const h1     = s.querySelector(".hero-h1");
+    const visual = s.querySelector(".hero-visual");
+    if (brand)  gsap.set(brand,  { clipPath: "inset(0 0 110% 0)", y: 10 });
+    if (h1)     gsap.set(h1,     { clipPath: "inset(0 0 110% 0)", y: 16, scale: 0.97 });
+    if (visual) gsap.set(visual, { opacity: 0, scale: 0.82, rotateY: -8 });
     gsap.set([
-      s.querySelector(".hero-brand"),
-      s.querySelector(".hero-h1"),
-      s.querySelector(".hero-sub"),
       ...Array.from(s.querySelectorAll(".cta-row > *")),
-      ...Array.from(s.querySelectorAll(".trust-item")),
-      s.querySelector(".hero-visual"),
+      s.querySelector(".hero-sub"),
       s.querySelector(".hero-bar"),
-    ].filter(Boolean), { opacity: 0, y: 22 });
+    ].filter(Boolean), { opacity: 0 });
+    gsap.set(Array.from(s.querySelectorAll(".trust-item")), { opacity: 0, x: -16 });
   }, []);
 
   useEffect(() => {
@@ -40,17 +44,44 @@ export default function Hero() {
     if (!s) return;
 
     const run = () => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      const q = (sel: string) => s.querySelector<HTMLElement>(sel);
+      const q  = (sel: string) => s.querySelector<HTMLElement>(sel);
       const qa = (sel: string) => s.querySelectorAll<HTMLElement>(sel);
+      const tl = gsap.timeline();
 
-      tl.to(q(".hero-visual"),  { opacity: 1, y: 0, duration: 1.0 }, 0.0)
-        .to(q(".hero-brand"),   { opacity: 1, y: 0, duration: 0.6 }, 0.15)
-        .to(q(".hero-h1"),      { opacity: 1, y: 0, duration: 0.75 }, 0.28)
-        .to(q(".hero-sub"),     { opacity: 1, y: 0, duration: 0.65 }, 0.50)
-        .to(qa(".cta-row > *"), { opacity: 1, y: 0, duration: 0.55, stagger: 0.08 }, 0.65)
-        .to(qa(".trust-item"),  { opacity: 1, y: 0, duration: 0.45, stagger: 0.05 }, 0.78)
-        .to(q(".hero-bar"),     { opacity: 1, y: 0, duration: 0.45 }, 0.88);
+      // Visual: escala + fade (mais dramático que slide)
+      tl.fromTo(q(".hero-visual"),
+        { opacity: 0, scale: 0.82, rotateY: -8 },
+        { opacity: 1, scale: 1, rotateY: 0, duration: 1.2, ease: "power3.out" }, 0.0);
+
+      // Brand: clip de baixo para cima
+      tl.fromTo(q(".hero-brand"),
+        { clipPath: "inset(0 0 110% 0)", y: 10 },
+        { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.65, ease: "power4.out" }, 0.18);
+
+      // H1: clip com leve scale (mais impacto)
+      tl.fromTo(q(".hero-h1"),
+        { clipPath: "inset(0 0 110% 0)", y: 16, scale: 0.97 },
+        { clipPath: "inset(0 0 0% 0)", y: 0, scale: 1, duration: 0.85, ease: "power4.out" }, 0.32);
+
+      // Sub: surge de baixo com leve delay
+      tl.fromTo(q(".hero-sub"),
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, duration: 0.70, ease: "power3.out" }, 0.58);
+
+      // Botões: surgem com escala + rotação leve (estilo "pop")
+      tl.fromTo(qa(".cta-row > *"),
+        { opacity: 0, y: 24, scale: 0.90 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.8)", stagger: 0.09 }, 0.72);
+
+      // Trust signals: cascata rápida
+      tl.fromTo(qa(".trust-item"),
+        { opacity: 0, x: -16 },
+        { opacity: 1, x: 0, duration: 0.40, ease: "power2.out", stagger: 0.06 }, 0.88);
+
+      // Bar: slide sutil de baixo
+      tl.fromTo(q(".hero-bar"),
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.98);
     };
 
     if (document.body.classList.contains("site-loaded")) {

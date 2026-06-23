@@ -3331,3 +3331,36 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   transition: opacity 260ms, transform 320ms var(--ease-out);
 }
 .menu-link:hover::after { opacity: 1; transform: translateX(0); }
+
+/* ── Motion: clip-path suporte ── */
+.section-heading,
+.hero-h1,
+.hero-brand,
+.services-fill .manifesto-line {
+  will-change: clip-path, transform;
+}
+
+/* Remove will-change após animação (o JS pode fazer isso, mas CSS garante) */
+@media (prefers-reduced-motion: no-preference) {
+  .explore-list { perspective: 800px; }
+}
+
+/* ── CTA section: animação inline ── */
+.home-cta-copy,
+.home-cta-actions {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+}
+.home-cta-copy.is-visible,
+.home-cta-actions.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.home-cta-actions { transition-delay: 0.15s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cta-copy, .home-cta-actions { opacity: 1 !important; transform: none !important; }
+  .section-heading, .hero-h1, .hero-brand { clip-path: none !important; }
+  .explore-link { opacity: 1 !important; transform: none !important; }
+}
