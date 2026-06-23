@@ -1,73 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef } from "react";
+import { useReveal } from "@/hooks/useReveal";
 
 const AREAS = [
-  { num: "01", label: "Sua solução",          href: "/solucao",  highlight: true },
-  { num: "02", label: "Pacotes",               href: "/pacotes" },
-  { num: "03", label: "Quem somos",            href: "/sobre" },
-  { num: "04", label: "Perguntas frequentes",  href: "/faq" },
-  { num: "05", label: "Contato",               href: "/contato" },
+  { num: "01", label: "Sua solução", href: "/solucao", desc: "Responda 3 perguntas e a gente monta o seu sob medida.", highlight: true },
+  { num: "02", label: "Pacotes", href: "/pacotes", desc: "Os tipos de solução que a gente entrega." },
+  { num: "03", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
+  { num: "04", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, suporte e como a gente trabalha." },
+  { num: "05", label: "Contato", href: "/contato", desc: "Fale com a gente pelo WhatsApp ou formulário." },
 ];
 
 export default function ExploreSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const listRef    = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const list    = listRef.current;
-    if (!section || !list) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const head  = section.querySelector<HTMLElement>(".explore-head");
-    const links = list.querySelectorAll<HTMLElement>(".explore-link");
-
-    if (head) gsap.set(head, { opacity: 0, y: 24 });
-    gsap.set(links, { opacity: 0, y: 18 });
-
-    const ctx = gsap.context(() => {
-      if (head) {
-        gsap.to(head, {
-          opacity: 1, y: 0, duration: 0.75, ease: "power3.out",
-          scrollTrigger: { trigger: head, start: "top 88%", once: true },
-        });
-      }
-      links.forEach((link, i) => {
-        gsap.to(link, {
-          opacity: 1, y: 0, duration: 0.65, ease: "power3.out",
-          delay: i * 0.08,
-          scrollTrigger: { trigger: list, start: "top 82%", once: true },
-        });
-      });
-    }, section);
-
-    // Lens effect: hover num link escurece os outros
-    const onEnter = () => list.classList.add("has-hover");
-    const onLeave = () => list.classList.remove("has-hover");
-    links.forEach(l => l.addEventListener("mouseenter", onEnter));
-    list.addEventListener("mouseleave", onLeave);
-
-    return () => {
-      ctx.revert();
-      links.forEach(l => l.removeEventListener("mouseenter", onEnter));
-      list.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  useReveal(headerRef);
+  useReveal(listRef, 80);
 
   return (
-    <section id="explorar" className="explore" aria-label="Navegue pelo site" ref={sectionRef}>
+    <section id="explorar" className="explore" aria-label="Navegue pelo site">
       <div className="inner">
-        <div className="explore-head">
+        <div className="explore-head" ref={headerRef}>
           <span className="section-eyebrow">Navegue</span>
-          <h2 className="section-heading chroma">
+          <h2 className="section-heading">
             Explore a <span className="text-accent-nvg">Neovanguard</span>
           </h2>
+          <p className="section-sub">
+            Cada área num lugar próprio. Escolha por onde começar.
+          </p>
         </div>
 
         <div className="explore-list" ref={listRef}>
@@ -75,6 +36,7 @@ export default function ExploreSection() {
             <Link key={a.href} href={a.href} className={`explore-link${a.highlight ? " is-solucao" : ""}`}>
               <span className="explore-index" aria-hidden="true">{a.num}</span>
               <span className="explore-label">{a.label}</span>
+              <span className="explore-desc">{a.desc}</span>
               <span className="explore-arrow" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M12 5l7 7-7 7" />
