@@ -13,7 +13,7 @@ export function useReveal(ref: RefObject<HTMLElement | null>, delay = 0) {
   useIso(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    gsap.set(el, { opacity: 0, y: 28 });
+    gsap.set(el, { opacity: 0, y: 40 });
   }, [ref]);
 
   useEffect(() => {
@@ -21,19 +21,30 @@ export function useReveal(ref: RefObject<HTMLElement | null>, delay = 0) {
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       el.classList.add("is-visible");
+      gsap.set(el, { opacity: 1, y: 0 });
       return;
     }
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: "top 88%",
-      once: true,
-      onEnter: () =>
-        gsap.to(el, {
-          opacity: 1, y: 0,
-          duration: 0.75, ease: "power3.out",
-          delay: delay / 1000,
-        }),
-    });
-    return () => st.kill();
+    // Reveal SCRUBADO: o elemento sobe/aparece ligado à posição do scroll —
+    // fluxo contínuo ("um só movimento"), sem snap nem pin.
+    const off = Math.min(delay / 40, 8);
+    const tween = gsap.fromTo(
+      el,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          start: `top ${90 - off}%`,
+          end: `top ${52 - off}%`,
+          scrub: true,
+        },
+      }
+    );
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
   }, [ref, delay]);
 }
