@@ -44,7 +44,7 @@ export default function NoxzSection() {
       <span className="noxz-aurora noxz-aurora-b" aria-hidden="true" />
 
       <div className="inner">
-        <div className="noxz-section-header" ref={headerRef}>
+        <div className="noxz-section-header" ref={headerRef} data-parallax="0.12">
           <span className="noxz-badge">
             <span className="noxz-badge-pulse" aria-hidden="true" />
             Metodologia exclusiva NVG
@@ -58,7 +58,7 @@ export default function NoxzSection() {
           </p>
         </div>
 
-        <div className="noxz-section-grid" ref={gridRef}>
+        <div className="noxz-section-grid" ref={gridRef} data-skew>
           {CARDS.map((card) => (
             <article key={card.name} className="noxz-card">
               <span className="noxz-card-num" aria-hidden="true">{card.num}</span>

@@ -31,7 +31,7 @@ export default function ExemplosPage() {
 
       <section className="exemplos-grid-section">
         <div className="inner">
-          <div className="exemplos-grid">
+          <div className="exemplos-grid" data-skew>
             {TEMPLATES.map((t) => (
               <a
                 key={t.slug}
@@ -56,7 +56,7 @@ export default function ExemplosPage() {
             ))}
           </div>
 
-          <div className="exemplos-foot">
+          <div className="exemplos-foot" data-parallax="0.1">
             <p>Gostou de algum? A gente personaliza com a sua marca, textos e fotos.</p>
             <Link href="/solucao" className="btn-primary">Montar minha solução</Link>
           </div>

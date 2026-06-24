@@ -39,7 +39,7 @@ export default function DiferenciaisSection() {
   return (
     <section id="diferenciais" aria-label="Nossos diferenciais">
       <div className="inner">
-        <div ref={headerRef} className="diff-header">
+        <div ref={headerRef} className="diff-header" data-parallax="0.12">
           <h2 className="section-heading">
             Por que a <span className="text-accent-nvg">Neovanguard?</span>
           </h2>
@@ -48,7 +48,7 @@ export default function DiferenciaisSection() {
           </p>
         </div>
 
-        <div className="diff-rows" ref={rowsRef}>
+        <div className="diff-rows" ref={rowsRef} data-skew>
           {ITEMS.map((item, i) => (
             <DiffRow key={item.title} item={item} delay={i * 60} />
           ))}
