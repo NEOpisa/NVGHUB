@@ -6,6 +6,7 @@ import ChromeGate from "@/components/ChromeGate";
 import AmbientField from "@/components/AmbientField";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
+import ScrollJuice from "@/components/ScrollJuice";
 import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
 import MetaPixel from "@/components/MetaPixel";
@@ -82,6 +83,7 @@ export default function RootLayout({
         />
         <Preloader />
         <SmoothScroll />
+        <ScrollJuice />
         <ScrollToSection />
         <ClickFX />
         <AmbientField />

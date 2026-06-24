@@ -508,27 +508,8 @@ html.lenis body {
   to   { opacity: 1; transform: scale(1); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .hero-copy {
-      animation: hero-scroll-out linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 95%;
-    }
-    .logo-scene {
-      animation: hero-scroll-parallax linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-  }
-}
-@keyframes hero-scroll-out {
-  to { transform: translateY(-48px); opacity: 0.25; }
-}
-@keyframes hero-scroll-parallax {
-  from { transform: translateY(-26px); }
-  to   { transform: translateY(52px); }
-}
+/* Parallax do hero agora é GSAP scrub (cross-browser) — ver Hero.tsx.
+   O antigo CSS animation-timeline só rodava no Chrome/Edge. */
 .hero-scroll-hint {
   position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -2605,13 +2586,11 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   background: linear-gradient(90deg, var(--accent), var(--accent-light), #e879f9);
   border-radius: 2px;
 }
-@supports (animation-timeline: scroll()) {
-  .scroll-progress {
-    animation: scroll-progress-grow linear both;
-    animation-timeline: scroll(root);
-  }
-}
-@keyframes scroll-progress-grow { to { transform: scaleX(1); } }
+/* A barra de progresso agora é dirigida por GSAP (ScrollJuice.tsx) para rodar
+   em todos os navegadores, não só nos que têm animation-timeline. */
+
+/* Quando o Marquee assume o loop via GSAP (tier FULL), desliga o CSS. */
+.marquee-track--js { animation: none !important; }
 
 /* ── Ripple ao clicar (criado pelo ClickFX, animado por transform/opacity) ── */
 .click-ripple {
