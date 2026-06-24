@@ -1,24 +1,11 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { EMAIL_RE } from '@/lib/validation';
+import { createRateLimiter } from '@/lib/rateLimit';
 
 const MAX_LEN = { nome: 120, email: 180, mensagem: 4000 };
 
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-const RATE_LIMIT_MAX = 3;
-const lastRequests = new Map<string, number[]>();
-
-function isRateLimited(ip: string) {
-  const now = Date.now();
-  const timestamps = (lastRequests.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
-  if (timestamps.length >= RATE_LIMIT_MAX) {
-    lastRequests.set(ip, timestamps);
-    return true;
-  }
-  timestamps.push(now);
-  lastRequests.set(ip, timestamps);
-  return false;
-}
+const isRateLimited = createRateLimiter({ windowMs: 10 * 60 * 1000, max: 3 });
 
 function escapeHtml(s: string) {
   return s
@@ -60,6 +47,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Um dos campos passou do limite de tamanho.' }, { status: 400 });
   }
 
+  if (!process.env.RESEND_API_KEY) {
+    console.error('[contact] RESEND_API_KEY não configurada.');
+    return NextResponse.json({ error: 'Serviço indisponível no momento.' }, { status: 500 });
+  }
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {

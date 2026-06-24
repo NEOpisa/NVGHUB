@@ -19,3 +19,10 @@ export function trackCustom(event: string, options?: Record<string, unknown>) {
     window.fbq("trackCustom", event, options);
   }
 }
+
+/** Dispara um PageView padrão — usado em navegação client-side (App Router). */
+export function pageview() {
+  if (typeof window !== "undefined" && window.fbq) {
+    window.fbq("track", "PageView");
+  }
+}
