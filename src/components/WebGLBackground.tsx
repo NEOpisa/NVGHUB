@@ -39,33 +39,49 @@ const fragmentShader = `
   void main(){
     vec2 uv = vUv;
     float aspect = uRes.x / max(uRes.y, 1.0);
-    vec2 p = vec2(uv.x * aspect, uv.y);
+    vec2 p = vec2((uv.x - 0.5) * aspect + 0.5, uv.y);
     float t = uTime * 0.04;
     float scr = uScroll;
 
-    vec3 col = vec3(0.035, 0.035, 0.043);
+    vec3 col = vec3(0.034, 0.034, 0.043);
 
+    // nebulosa
     vec2 np = p * 1.5 + vec2(t, t * 0.4 + scr * 0.25);
     float n  = fbm(np);
     float n2 = fbm(np * 1.9 - vec2(t * 0.6, scr * 0.18));
-    float neb = smoothstep(0.40, 1.0, n * 0.6 + n2 * 0.5);
+    float neb = smoothstep(0.42, 1.0, n * 0.6 + n2 * 0.5);
     vec3 purple = vec3(0.486, 0.227, 0.929);
     vec3 violet = vec3(0.624, 0.431, 0.976);
     col += neb * 0.09 * mix(purple, violet, n2);
 
+    // glows reativos a scroll/mouse
     vec2 m = uMouse - 0.5;
     for (int i = 0; i < 2; i++){
       float fi = float(i);
-      vec2 gc = vec2(0.5 * aspect + 0.30 * aspect * sin(t * 1.2 + fi * 2.1),
+      vec2 gc = vec2(0.5 + 0.28 * sin(t * 1.2 + fi * 2.1),
                      0.46 + 0.20 * cos(t * 0.9 + fi * 3.0) - scr * 0.12);
-      gc += m * (0.06 + fi * 0.04) * vec2(aspect, 1.0);
-      float d = distance(p, gc);
-      float g = smoothstep(0.62, 0.0, d);
+      gc += m * (0.06 + fi * 0.04);
+      float d = distance(uv, gc);
+      float g = smoothstep(0.60, 0.0, d);
       col += g * g * 0.13 * mix(purple, violet, fi);
     }
 
-    float vig = smoothstep(1.25, 0.35, distance(uv, vec2(0.5)));
-    col *= 0.5 + 0.5 * vig;
+    // grade em perspectiva (faux-3D) na parte de baixo, reativa ao scroll
+    float horizon = 0.56;
+    float below = horizon - uv.y;
+    if (below > 0.0){
+      float dz = 0.10 / below;
+      float gx = (uv.x - 0.5) * dz * 3.2;
+      float gy = dz + t * 0.20 + scr * 1.2;
+      vec2 gg = abs(fract(vec2(gx, gy)) - 0.5);
+      float ln = smoothstep(0.06, 0.0, min(gg.x, gg.y));
+      float fade = smoothstep(0.0, 0.10, below) * smoothstep(3.2, 0.3, dz);
+      col += ln * fade * 0.16 * violet;
+    }
+
+    // vinheta + grão
+    float edge = distance(uv, vec2(0.5));
+    col *= 0.5 + 0.5 * smoothstep(1.25, 0.35, edge);
     col += (hash(uv * uRes + fract(t)) - 0.5) * 0.03;
 
     gl_FragColor = vec4(col, 1.0);
