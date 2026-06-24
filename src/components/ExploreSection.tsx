@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef, useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { splitReveal } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,11 +23,10 @@ export default function ExploreSection() {
     const s = sectionRef.current;
     if (!s || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const eyebrow = s.querySelector(".section-eyebrow");
-    const heading = s.querySelector(".section-heading");
     const sub     = s.querySelector(".section-sub");
     const links   = s.querySelectorAll(".explore-link");
     if (eyebrow) gsap.set(eyebrow, { opacity: 0, x: -20 });
-    if (heading) gsap.set(heading, { clipPath: "inset(0 0 110% 0)", y: 14 });
+    // heading: o reveal cinético (SplitText) cuida do estado inicial das linhas.
     if (sub)     gsap.set(sub,     { opacity: 0, y: 18 });
     // Links: cada um oculto + rotacionado levemente (efeito 3D)
     links.forEach(l => gsap.set(l, { opacity: 0, x: -30, rotateY: -6, transformOrigin: "left center", perspective: 600 }));
@@ -42,17 +42,16 @@ export default function ExploreSection() {
     const links   = s.querySelectorAll<HTMLElement>(".explore-link");
     const list    = s.querySelector<HTMLElement>(".explore-list");
 
+    let sr: ReturnType<typeof splitReveal> | undefined;
     const ctx = gsap.context(() => {
       // Eyebrow desliza
       if (eyebrow) {
         gsap.to(eyebrow, { opacity: 1, x: 0, duration: 0.50, ease: "power3.out",
           scrollTrigger: { trigger: s, start: "top 86%", once: true } });
       }
-      // Heading: clip de baixo (dramático)
+      // Heading: tipografia cinética — revela linha por linha (SplitText).
       if (heading) {
-        gsap.to(heading, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.80, ease: "power4.out",
-          delay: 0.08,
-          scrollTrigger: { trigger: s, start: "top 85%", once: true } });
+        sr = splitReveal(heading, { type: "lines", start: "top 85%" });
       }
       // Sub fade
       if (sub) {
@@ -71,7 +70,10 @@ export default function ExploreSection() {
       });
     }, s);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      sr?.split.revert();
+    };
   }, []);
 
   return (
