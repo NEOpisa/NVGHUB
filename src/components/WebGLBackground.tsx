@@ -190,8 +190,11 @@ export default function WebGLBackground() {
     setUseGL(ok);
   }, []);
 
-  // SSR + enquanto decide + fallback → AmbientField atual (DOM/CSS).
-  if (useGL !== true) return <AmbientField />;
+  // Enquanto decide (SSR + 1º paint): nada — o fundo escuro do body cobre, sem
+  // flash da "versão antiga" (o AmbientField não chega a aparecer e sair).
+  if (useGL === null) return null;
+  // Sem WebGL / reduced-motion → fallback CSS (AmbientField).
+  if (!useGL) return <AmbientField />;
 
   return (
     <div className="webgl-bg" aria-hidden="true">
