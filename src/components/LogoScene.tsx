@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
+import gsap from "gsap";
 
 const WHITE_POINTS: [number, number][] = [
   [48, 25],
@@ -49,28 +50,56 @@ function buildGeometry(points: [number, number][], depth: number) {
 
 function LogoMark() {
   const groupRef = useRef<THREE.Group>(null);
+  const whiteRef = useRef<THREE.Mesh>(null);
+  const purpleRef = useRef<THREE.Mesh>(null);
+  const built = useRef(0); // 0→1: quanto a logo já se montou (libera o mouse-look)
 
   const whiteGeo = useMemo(() => buildGeometry(WHITE_POINTS, 0.55), []);
   const purpleGeo = useMemo(() => buildGeometry(PURPLE_POINTS, 0.75), []);
+
+  // Montagem estilo igloo: as peças entram voando dos cantos (3D), girando, e se
+  // encaixam na forma final. O "olhar pro mouse" só entra depois de montar.
+  useEffect(() => {
+    const w = whiteRef.current;
+    const p = purpleRef.current;
+    if (!w || !p) return;
+    const prog = { v: 0 };
+    const tl = gsap.timeline({ onUpdate: () => (built.current = prog.v) });
+    tl.to(w.position, { x: 0, y: 0, z: -0.28, duration: 1.7, ease: "expo.out" }, 0.0)
+      .to(w.rotation, { x: 0, y: 0, z: 0, duration: 1.8, ease: "expo.out" }, 0.0)
+      .to(w.scale, { x: 1, y: 1, z: 1, duration: 1.3, ease: "back.out(1.5)" }, 0.1)
+      .to(p.position, { x: 0, y: 0, z: 0.34, duration: 1.7, ease: "expo.out" }, 0.3)
+      .to(p.rotation, { x: 0, y: 0, z: 0, duration: 1.8, ease: "expo.out" }, 0.3)
+      .to(p.scale, { x: 1, y: 1, z: 1, duration: 1.3, ease: "back.out(1.5)" }, 0.4)
+      .to(prog, { v: 1, duration: 1.9, ease: "power2.out" }, 0.0);
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
   useFrame((state) => {
     const g = groupRef.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    // "olha pro mouse": alvo de rotação puxado pelo cursor (lerp suave) +
-    // flutuação própria + leve roll = movimento complexo.
-    const tgtY = state.pointer.x * 0.9 + Math.sin(t * 0.3) * 0.22;
-    const tgtX = -state.pointer.y * 0.6 + Math.sin(t * 0.22) * 0.1;
+    const b = built.current; // o "olhar pro mouse" entra conforme a logo monta
+    const tgtY = (state.pointer.x * 0.9 + Math.sin(t * 0.3) * 0.22) * b;
+    const tgtX = (-state.pointer.y * 0.6 + Math.sin(t * 0.22) * 0.1) * b;
     g.rotation.y += (tgtY - g.rotation.y) * 0.07;
     g.rotation.x += (tgtX - g.rotation.x) * 0.07;
-    g.rotation.z = Math.sin(t * 0.15) * 0.06;
+    g.rotation.z = Math.sin(t * 0.15) * 0.06 * b;
   });
 
   return (
     <group ref={groupRef}>
       <Float speed={2} rotationIntensity={0.15} floatIntensity={0.9}>
 
-        <mesh geometry={whiteGeo} position={[0, 0, -0.28]}>
+        <mesh
+          ref={whiteRef}
+          geometry={whiteGeo}
+          position={[-3.4, 2.1, -2.8]}
+          rotation={[0.9, -1.4, 0.6]}
+          scale={0.08}
+        >
           <meshStandardMaterial
             color="#e8e8ee"
             metalness={0.85}
@@ -78,7 +107,13 @@ function LogoMark() {
           />
         </mesh>
 
-        <mesh geometry={purpleGeo} position={[0, 0, 0.34]}>
+        <mesh
+          ref={purpleRef}
+          geometry={purpleGeo}
+          position={[3.6, -2.3, 2.8]}
+          rotation={[-0.7, 1.5, -0.5]}
+          scale={0.08}
+        >
           <meshStandardMaterial
             color="#7c3aed"
             emissive="#5b21b6"
