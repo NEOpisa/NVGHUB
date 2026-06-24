@@ -54,7 +54,7 @@ export default function Home() {
               gente monta uma solução sob medida pro seu negócio.
             </p>
           </div>
-          <div className="home-cta-actions" ref={ctaActionsRef}>
+          <div className="home-cta-actions" ref={ctaActionsRef} data-parallax="0.1">
             <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
               <WhatsAppIcon />
               Falar pelo WhatsApp

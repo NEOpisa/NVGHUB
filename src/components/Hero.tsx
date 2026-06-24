@@ -173,7 +173,7 @@ export default function Hero() {
             </Magnetic>
           </div>
 
-          <div className="trust-signals">
+          <div className="trust-signals" data-skew>
             {["Entrega em até 16 dias úteis","Sem contrato mínimo","Suporte via WhatsApp"].map((t) => (
               <span key={t} className="trust-item"><CheckIcon />{t}</span>
             ))}
