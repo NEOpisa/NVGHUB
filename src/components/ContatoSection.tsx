@@ -52,7 +52,7 @@ export default function ContatoSection() {
     <section id="contato" aria-label="Contato">
       <div className="inner">
         <div ref={headerRef} data-parallax="0.1">
-          <h2 className="section-heading">
+          <h2 className="section-heading" data-split>
             Bora <span className="text-accent-nvg">começar?</span>
           </h2>
           <p className="section-sub">

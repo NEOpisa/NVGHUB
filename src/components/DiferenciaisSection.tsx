@@ -40,7 +40,7 @@ export default function DiferenciaisSection() {
     <section id="diferenciais" aria-label="Nossos diferenciais">
       <div className="inner">
         <div ref={headerRef} className="diff-header" data-parallax="0.12">
-          <h2 className="section-heading">
+          <h2 className="section-heading" data-split>
             Por que a <span className="text-accent-nvg">Neovanguard?</span>
           </h2>
           <p className="section-sub">
