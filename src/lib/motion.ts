@@ -216,6 +216,8 @@ export function splitReveal(
     mask: type === "lines" ? ("lines" as const) : undefined,
   });
   const parts = (split[type] ?? []) as Element[];
+  // desfaz o pre-hide do ScrollJuice ([data-split] fica opacity:0 antes do paint)
+  gsap.set(el, { opacity: 1 });
   gsap.set(parts, { yPercent: 115 });
   const tween = gsap.to(parts, {
     yPercent: 0,
