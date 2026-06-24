@@ -11,7 +11,6 @@ export default function AmbientField() {
       className={`ambient-field${minimal ? " ambient-field--minimal" : ""}`}
       aria-hidden="true"
     >
-      <div className="ambient-grain" />
       <div className="ambient-3d">
         <div className="ambient-3d-plane ambient-3d-floor" />
         <div className="ambient-3d-plane ambient-3d-ceiling" />
