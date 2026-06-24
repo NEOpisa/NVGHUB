@@ -95,8 +95,8 @@ export default function ServicesSection() {
         });
         gsap.fromTo(line,
           { backgroundPositionX: "100%" },
-          { backgroundPositionX: "0%", ease: "none",
-            scrollTrigger: { trigger: line, start: "top 85%", end: "top 40%", scrub: 0.8 } }
+          { backgroundPositionX: "0%", duration: 0.9, ease: "power2.out",
+            scrollTrigger: { trigger: line, start: "top 85%", once: true } }
         );
       });
 
