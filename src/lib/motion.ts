@@ -183,21 +183,25 @@ export function scrubReveal(
 
 // ── Pin + scroll horizontal: prende a seção e rola o track na horizontal ─────
 export function pinHorizontal(
-  section: Element,
+  pinEl: Element,
   track: HTMLElement,
-  opts: { extra?: number } = {}
+  opts: { start?: string; extra?: number } = {}
 ) {
-  const { extra = 0 } = opts;
-  const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + extra);
+  const { start = "top top", extra = 0 } = opts;
+  // distância = quanto o track passa além da janela visível (o viewport que o contém)
+  const distance = () => {
+    const visible = track.parentElement?.clientWidth ?? window.innerWidth;
+    return Math.max(0, track.scrollWidth - visible + extra);
+  };
   return gsap.to(track, {
     x: () => -distance(),
     ease: "none",
     scrollTrigger: {
-      trigger: section,
-      start: "top top",
+      trigger: pinEl,
+      start,
       end: () => "+=" + distance(),
       scrub: 1,
-      pin: true,
+      pin: pinEl,
       anticipatePin: 1,
       invalidateOnRefresh: true,
     },

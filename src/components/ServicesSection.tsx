@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CheckIcon } from "@/components/icons";
 import TiltCard from "@/components/TiltCard";
+import { pinHorizontal } from "@/lib/motion";
+import { MQ, motionEnabled } from "@/lib/motionConfig";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -47,7 +49,10 @@ const SERVICES = [
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [horizontal, setHorizontal] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -143,6 +148,29 @@ export default function ServicesSection() {
     return () => ctx.revert();
   }, []);
 
+  // Detecta o tier FULL (desktop, ponteiro fino): carrossel vira galeria horizontal.
+  useEffect(() => {
+    if (!motionEnabled()) return;
+    const mq = window.matchMedia(MQ.full);
+    const update = () => setHorizontal(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // Galeria horizontal pinned (só FULL); no mobile mantém o carrossel com setas.
+  useEffect(() => {
+    if (!horizontal) return;
+    const carousel = carouselRef.current;
+    const track = trackRef.current;
+    if (!carousel || !track) return;
+    const tween = pinHorizontal(carousel, track, { start: "center center" });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+  }, [horizontal]);
+
   const goTo = (idx: number) => setActiveIdx(((idx % SERVICES.length) + SERVICES.length) % SERVICES.length);
   const goPrev = () => goTo(activeIdx - 1);
   const goNext = () => goTo(activeIdx + 1);
@@ -171,7 +199,7 @@ export default function ServicesSection() {
   };
 
   return (
-    <section id="servicos" aria-label="Nossos serviços" ref={sectionRef}>
+    <section id="servicos" aria-label="Nossos serviços" ref={sectionRef} className={horizontal ? "services--scroll" : undefined}>
       <div className="inner">
         <header className="services-header" data-skew>
           <span className="section-eyebrow">Serviços</span>
@@ -185,6 +213,7 @@ export default function ServicesSection() {
 
         <div
           className="services-carousel"
+          ref={carouselRef}
           role="group"
           aria-roledescription="carrossel"
           aria-label="Carrossel de serviços"
@@ -208,7 +237,8 @@ export default function ServicesSection() {
           >
             <div
               className="carousel-track"
-              style={{ transform: `translateX(-${activeIdx * 100}%)` }}
+              ref={trackRef}
+              style={horizontal ? undefined : { transform: `translateX(-${activeIdx * 100}%)` }}
             >
               {SERVICES.map((svc, i) => (
                 <div

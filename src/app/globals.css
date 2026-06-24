@@ -682,6 +682,16 @@ html.lenis body {
   transition: background 200ms, width 200ms;
 }
 .services-scroll-dot:hover::before { background: var(--border-hover); }
+
+/* ── Serviços: galeria horizontal pinned (desktop / tier FULL) ──
+   O viewport recorta (overflow hidden, como já é) e o track scrubba na horizontal;
+   setas e dots somem. No mobile o carrossel normal continua. */
+.services--scroll .carousel-arrow,
+.services--scroll .services-scroll-dots { display: none; }
+.services--scroll .services-carousel { gap: 0; }
+.services--scroll .carousel-track { gap: 24px; transition: none; }
+.services--scroll .carousel-slide { flex: 0 0 auto; width: min(72vw, 420px); }
+.services--scroll .carousel-slide .tilt-card { width: 100%; margin: 0; }
 .services-scroll-dot.active::before { background: var(--accent); width: 24px; }
 .services-scroll-dot:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm);
