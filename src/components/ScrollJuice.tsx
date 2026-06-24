@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,8 @@ import { MQ, MOTION, motionEnabled } from "@/lib/motionConfig";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /**
  * Efeitos globais de scroll, RE-AVALIADOS a cada rota (App Router não remonta o
  * layout, então precisamos do pathname pra reescanear [data-parallax]/[data-skew]
@@ -16,6 +18,13 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export default function ScrollJuice() {
   const pathname = usePathname();
+
+  // Pré-esconde [data-split] ANTES do paint (só no tier FULL) pra o texto não
+  // piscar antes da entrada cinética. Em mobile/reduced fica visível normalmente.
+  useIso(() => {
+    if (!motionEnabled() || !window.matchMedia(MQ.full).matches) return;
+    gsap.set(gsap.utils.toArray<HTMLElement>("[data-split]"), { opacity: 0 });
+  }, [pathname]);
 
   useEffect(() => {
     if (!motionEnabled()) return;
