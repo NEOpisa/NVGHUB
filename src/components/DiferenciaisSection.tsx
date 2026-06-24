@@ -48,7 +48,7 @@ export default function DiferenciaisSection() {
           </p>
         </div>
 
-        <div className="diff-rows" ref={rowsRef} data-skew>
+        <div className="diff-rows" ref={rowsRef}>
           {ITEMS.map((item, i) => (
             <DiffRow key={item.title} item={item} delay={i * 60} />
           ))}

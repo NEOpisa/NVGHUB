@@ -44,7 +44,7 @@ export default function SobreSection() {
           </p>
         </div>
 
-        <div className="sobre-grid" ref={gridRef} data-skew>
+        <div className="sobre-grid" ref={gridRef}>
           {PILARES.map((p) => (
             <article key={p.title} className="sobre-card">
               <span className="sobre-card-num" aria-hidden="true">{p.num}</span>

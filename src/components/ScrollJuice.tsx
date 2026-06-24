@@ -13,7 +13,7 @@ const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
  * Efeitos globais de scroll, RE-AVALIADOS a cada rota (App Router não remonta o
- * layout, então precisamos do pathname pra reescanear [data-parallax]/[data-skew]
+ * layout, então precisamos do pathname pra reescanear [data-parallax]/[data-split]
  * das páginas navegadas client-side). Barra de progresso cross-browser + juice.
  */
 export default function ScrollJuice() {

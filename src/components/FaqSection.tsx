@@ -43,7 +43,7 @@ export default function FaqSection() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
       <div className="inner faq-inner">
-        <h1 className="section-heading faq-heading" data-skew data-split>
+        <h1 className="section-heading faq-heading" data-split>
           Perguntas <span className="text-accent-nvg">frequentes</span>
         </h1>
         <div className="faq-list">

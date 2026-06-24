@@ -31,7 +31,7 @@ export default function ExemplosPage() {
 
       <section className="exemplos-grid-section">
         <div className="inner">
-          <div className="exemplos-grid" data-skew>
+          <div className="exemplos-grid">
             {TEMPLATES.map((t) => (
               <a
                 key={t.slug}
