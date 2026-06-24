@@ -39,26 +39,47 @@ export default function Preloader() {
       return;
     }
 
+    // "Útil": espera DE VERDADE as fontes + todos os recursos da página
+    // (window.load), em vez de um timer fixo. A barra sobe até 90% por tempo e
+    // só completa quando carregou. Min 0.7s (não pisca) e failsafe de 5s.
+    let ready = false;
+    const loadP =
+      document.readyState === "complete"
+        ? Promise.resolve()
+        : new Promise<void>((r) =>
+            window.addEventListener("load", () => r(), { once: true })
+          );
+    const fontsP = document.fonts?.ready ?? Promise.resolve();
+    Promise.all([loadP, fontsP]).then(() => {
+      ready = true;
+    });
+
     const start = performance.now();
-    const DURATION = 1672;
+    const MIN = 700;
+    const MAX = 5000;
     let raf = 0;
 
     const tick = (now: number) => {
-      const linear = Math.min((now - start) / DURATION, 1);
-      const eased = 1 - Math.pow(1 - linear, 3);
-      const pct = Math.round(eased * 100);
+      const elapsed = now - start;
+      let pct: number;
+      if ((ready && elapsed >= MIN) || elapsed >= MAX) {
+        pct = 100;
+      } else {
+        const t = Math.min(elapsed / 1600, 1);
+        pct = Math.round((1 - Math.pow(1 - t, 3)) * 90);
+      }
       if (counterRef.current) counterRef.current.textContent = `${pct}%`;
-      if (barRef.current) barRef.current.style.transform = `scaleX(${eased})`;
+      if (barRef.current) barRef.current.style.transform = `scaleX(${pct / 100})`;
       if (statusRef.current && pct >= 100) {
         statusRef.current.textContent = "Pronto para explorar";
       }
-      if (linear < 1) {
-        raf = requestAnimationFrame(tick);
-      } else {
+      if (pct >= 100) {
         window.setTimeout(() => {
           setDone(true);
           reveal();
-        }, 167);
+        }, 150);
+      } else {
+        raf = requestAnimationFrame(tick);
       }
     };
     raf = requestAnimationFrame(tick);

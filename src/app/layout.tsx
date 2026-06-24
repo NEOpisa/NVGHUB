@@ -6,6 +6,8 @@ import AmbientField from "@/components/AmbientField";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollJuice from "@/components/ScrollJuice";
+import PageTransition from "@/components/PageTransition";
+import FpsMeter from "@/components/FpsMeter";
 import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
 import MetaPixel from "@/components/MetaPixel";
@@ -81,6 +83,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
         <Preloader />
+        <PageTransition />
         <SmoothScroll />
         <ScrollJuice />
         <ScrollToSection />
@@ -92,6 +95,7 @@ export default function RootLayout({
         <Footer />
         <div className="site-frame" aria-hidden="true" />
         <MetaPixel />
+        <FpsMeter />
         <Analytics />
       </body>
     </html>
