@@ -51,8 +51,8 @@ export default function ContatoSection() {
   return (
     <section id="contato" aria-label="Contato">
       <div className="inner">
-        <div ref={headerRef}>
-          <h2 className="section-heading">
+        <div ref={headerRef} data-parallax="0.1">
+          <h2 className="section-heading" data-split>
             Bora <span className="text-accent-nvg">começar?</span>
           </h2>
           <p className="section-sub">
@@ -62,7 +62,7 @@ export default function ContatoSection() {
 
         <div className="contact-wrap" ref={wrapRef}>
 
-          <div className="contact-info">
+          <div className="contact-info" data-skew>
             <div>
               <div className="contact-info-title">Prefere pelo WhatsApp?</div>
               <p className="contact-info-text" style={{ marginTop: "10px" }}>

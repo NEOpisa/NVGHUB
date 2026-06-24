@@ -22,6 +22,7 @@ export default function Home() {
       <Marquee />
       <ServicesSection />
       <Marquee
+        reverse
         items={[
           "Entrega em 16 dias úteis",
           "Sem contrato mínimo",
@@ -44,7 +45,7 @@ export default function Home() {
 
       <section className="home-cta" aria-label="Vamos começar">
         <div className="inner home-cta-inner">
-          <div className="home-cta-copy" ref={ctaCopyRef}>
+          <div className="home-cta-copy" ref={ctaCopyRef} data-skew>
             <h2 className="section-heading">
               Pronto para tirar a ideia <span className="text-accent-nvg">do papel?</span>
             </h2>
@@ -53,7 +54,7 @@ export default function Home() {
               gente monta uma solução sob medida pro seu negócio.
             </p>
           </div>
-          <div className="home-cta-actions" ref={ctaActionsRef}>
+          <div className="home-cta-actions" ref={ctaActionsRef} data-parallax="0.1">
             <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
               <WhatsAppIcon />
               Falar pelo WhatsApp

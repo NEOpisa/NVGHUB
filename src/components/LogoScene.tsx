@@ -128,7 +128,7 @@ export default function LogoScene() {
   return (
     <div className="logo-scene" aria-hidden="true" ref={wrapRef}>
       <Canvas
-        dpr={[1, 1.25]}
+        dpr={1}
         frameloop={active ? "always" : "never"}
         camera={{ position: [0, 0, 9], fov: 38 }}
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}

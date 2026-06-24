@@ -31,8 +31,8 @@ export default function SobreSection() {
   return (
     <section id="sobre" className="sobre" aria-label="Quem somos">
       <div className="inner">
-        <div className="sobre-head" ref={headerRef}>
-          <h2 className="section-heading">
+        <div className="sobre-head" ref={headerRef} data-parallax="0.12">
+          <h2 className="section-heading" data-split>
             Uma agência digital pensada como{" "}
             <span className="text-accent-nvg">um só ecossistema</span>
           </h2>
@@ -44,7 +44,7 @@ export default function SobreSection() {
           </p>
         </div>
 
-        <div className="sobre-grid" ref={gridRef}>
+        <div className="sobre-grid" ref={gridRef} data-skew>
           {PILARES.map((p) => (
             <article key={p.title} className="sobre-card">
               <span className="sobre-card-num" aria-hidden="true">{p.num}</span>
@@ -54,7 +54,7 @@ export default function SobreSection() {
           ))}
         </div>
 
-        <div className="sobre-method">
+        <div className="sobre-method" data-parallax="0.16">
           <div className="sobre-method-copy">
             <h3 className="sobre-method-title">
               Tudo isso vira execução no <span className="text-accent-nvg">Plano Noxz</span>

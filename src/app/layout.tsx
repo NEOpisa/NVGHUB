@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans, Orbitron } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ChromeGate from "@/components/ChromeGate";
-import AmbientField from "@/components/AmbientField";
+import WebGLBackground from "@/components/WebGLBackground";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
+import ScrollJuice from "@/components/ScrollJuice";
+import PageTransition from "@/components/PageTransition";
+import FpsMeter from "@/components/FpsMeter";
 import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
 import MetaPixel from "@/components/MetaPixel";
@@ -81,20 +83,19 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
         <Preloader />
+        <PageTransition />
         <SmoothScroll />
+        <ScrollJuice />
         <ScrollToSection />
         <ClickFX />
-        <AmbientField />
+        <WebGLBackground />
         <div className="scroll-progress" aria-hidden="true" />
-        <ChromeGate>
-          <Header />
-        </ChromeGate>
+        <Header />
         {children}
-        <ChromeGate>
-          <Footer />
-          <div className="site-frame" aria-hidden="true" />
-        </ChromeGate>
+        <Footer />
+        <div className="site-frame" aria-hidden="true" />
         <MetaPixel />
+        <FpsMeter />
         <Analytics />
       </body>
     </html>
