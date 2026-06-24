@@ -690,7 +690,7 @@ html.lenis body {
 .services--scroll .services-scroll-dots { display: none; }
 .services--scroll .services-carousel { gap: 0; }
 .services--scroll .carousel-track { gap: 24px; transition: none; }
-.services--scroll .carousel-slide { flex: 0 0 auto; width: min(72vw, 420px); }
+.services--scroll .carousel-slide { flex: 0 0 calc(50% - 12px); width: auto; }
 .services--scroll .carousel-slide .tilt-card { width: 100%; margin: 0; }
 .services-scroll-dot.active::before { background: var(--accent); width: 24px; }
 .services-scroll-dot:focus-visible {
