@@ -2602,6 +2602,25 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 /* Quando o Marquee assume o loop via GSAP (tier FULL), desliga o CSS. */
 .marquee-track--js { animation: none !important; }
 
+/* ── Transição "cortina" entre páginas, com a logo (PageTransition.tsx) ── */
+.page-transition {
+  position: fixed; inset: 0; z-index: 9999;
+  display: grid; place-items: center;
+  background: radial-gradient(120% 100% at 50% 35%, #15101f 0%, #0a0a0c 62%);
+  transform: translateY(-100%);
+  pointer-events: none;
+  will-change: transform;
+}
+.page-transition-logo { display: flex; align-items: center; gap: 12px; }
+.page-transition-logo img { width: 46px; height: auto; }
+.page-transition-word {
+  font-family: var(--ff-syne), system-ui, sans-serif;
+  font-weight: 700; letter-spacing: 0.04em;
+  font-size: clamp(20px, 3.4vw, 30px); color: #fff;
+}
+.page-transition-word b { color: var(--accent-light, #9f6ef9); }
+@media (prefers-reduced-motion: reduce) { .page-transition { display: none; } }
+
 /* ── Ripple ao clicar (criado pelo ClickFX, animado por transform/opacity) ── */
 .click-ripple {
   position: absolute; border-radius: var(--radius-sm); z-index: -1; pointer-events: none;
