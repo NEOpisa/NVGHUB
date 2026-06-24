@@ -200,7 +200,7 @@ export function pinHorizontal(
       trigger: pinEl,
       start,
       end: () => "+=" + distance(),
-      scrub: 1,
+      scrub: 0.3,
       pin: pinEl,
       anticipatePin: 1,
       invalidateOnRefresh: true,

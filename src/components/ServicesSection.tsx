@@ -301,9 +301,6 @@ export default function ServicesSection() {
           <Link href="/pacotes" className="btn-ghost">
             Ver tipos de solução
           </Link>
-        </div>
-
-        <div className="services-exemplos-row">
           <Link href="/exemplos" className="btn-ghost">
             <GalleryIcon />
             Ver exemplos de sites
