@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { parallax, splitReveal, velocitySkew } from "@/lib/motion";
-import { MQ, MOTION, motionEnabled } from "@/lib/motionConfig";
+import { parallax, splitReveal } from "@/lib/motion";
+import { MQ, motionEnabled } from "@/lib/motionConfig";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,14 +54,7 @@ export default function ScrollJuice() {
         const splits = gsap.utils
           .toArray<HTMLElement>("[data-split]")
           .map((el) => splitReveal(el, { type: "lines" }));
-        // "Juice" por velocidade nos [data-skew].
-        const skewTargets = gsap.utils.toArray<HTMLElement>("[data-skew]");
-        const killSkew = velocitySkew(skewTargets, {
-          maxSkew: MOTION.skew.max,
-          factor: MOTION.skew.factor,
-        });
         return () => {
-          killSkew();
           splits.forEach((s) => s.split.revert());
         };
       });
