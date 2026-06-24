@@ -2601,6 +2601,7 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 /* Quando o Marquee assume o loop via GSAP (tier FULL), desliga o CSS. */
 .marquee-track--js { animation: none !important; }
+.marquee--reverse .marquee-track { animation-direction: reverse; }
 
 /* ── Transição "cortina" entre páginas, com a logo (PageTransition.tsx) ── */
 .page-transition {

@@ -29,7 +29,7 @@ export default function ExploreSection() {
     // heading: o reveal cinético (SplitText) cuida do estado inicial das linhas.
     if (sub)     gsap.set(sub,     { opacity: 0, y: 18 });
     // Links: cada um oculto + rotacionado levemente (efeito 3D)
-    links.forEach(l => gsap.set(l, { opacity: 0, x: -30, rotateY: -6, transformOrigin: "left center", perspective: 600 }));
+    links.forEach(l => gsap.set(l, { opacity: 0, x: -24 }));
   }, []);
 
   useEffect(() => {
@@ -62,8 +62,8 @@ export default function ExploreSection() {
       // Links: surgem com rotação 3D lateral + x (efeito "virando para o usuário")
       links.forEach((link, i) => {
         gsap.to(link, {
-          opacity: 1, x: 0, rotateY: 0,
-          duration: 0.65, ease: "power3.out",
+          opacity: 1, x: 0,
+          duration: 0.6, ease: "power3.out",
           delay: i * 0.08,
           scrollTrigger: { trigger: list, start: "top 82%", once: true },
         });
@@ -79,14 +79,14 @@ export default function ExploreSection() {
   return (
     <section id="explorar" className="explore" aria-label="Navegue pelo site" ref={sectionRef}>
       <div className="inner">
-        <div className="explore-head" data-parallax="0.12">
+        <div className="explore-head">
           <span className="section-eyebrow">Navegue</span>
           <h2 className="section-heading">
             Explore a <span className="text-accent-nvg">Neovanguard</span>
           </h2>
           <p className="section-sub">Cada área num lugar próprio. Escolha por onde começar.</p>
         </div>
-        <div className="explore-list" data-skew>
+        <div className="explore-list">
           {AREAS.map((a) => (
             <Link key={a.href} href={a.href} className={`explore-link${a.highlight ? " is-solucao" : ""}`}>
               <span className="explore-index" aria-hidden="true">{a.num}</span>
