@@ -57,8 +57,13 @@ function LogoMark() {
     const g = groupRef.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    g.rotation.y = Math.sin(t * 0.35) * 0.38 + state.pointer.x * 0.45;
-    g.rotation.x = Math.sin(t * 0.22) * 0.1 + state.pointer.y * -0.25;
+    // "olha pro mouse": alvo de rotação puxado pelo cursor (lerp suave) +
+    // flutuação própria + leve roll = movimento complexo.
+    const tgtY = state.pointer.x * 0.9 + Math.sin(t * 0.3) * 0.22;
+    const tgtX = -state.pointer.y * 0.6 + Math.sin(t * 0.22) * 0.1;
+    g.rotation.y += (tgtY - g.rotation.y) * 0.07;
+    g.rotation.x += (tgtX - g.rotation.x) * 0.07;
+    g.rotation.z = Math.sin(t * 0.15) * 0.06;
   });
 
   return (

@@ -112,7 +112,7 @@ function Ambient() {
   });
 
   return (
-    <mesh frustumCulled={false}>
+    <mesh frustumCulled={false} renderOrder={-10}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         vertexShader={vertexShader}
@@ -122,6 +122,48 @@ function Ambient() {
         depthWrite={false}
       />
     </mesh>
+  );
+}
+
+// Campo de partículas 3D (profundidade), reativo a mouse e scroll — dá o
+// "movimento complexo" e transforma o fundo numa cena 3D de verdade.
+function Particles() {
+  const ref = useRef<THREE.Points>(null);
+  const positions = useMemo(() => {
+    const n = 700;
+    const arr = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      arr[i * 3] = (Math.random() - 0.5) * 20;
+      arr[i * 3 + 1] = (Math.random() - 0.5) * 13;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 12 - 2;
+    }
+    return arr;
+  }, []);
+
+  useFrame((state, delta) => {
+    const pts = ref.current;
+    if (!pts) return;
+    pts.rotation.y += delta * 0.02;
+    pts.position.x += (state.pointer.x * 0.7 - pts.position.x) * 0.03;
+    pts.position.y += (-state.pointer.y * 0.5 - pts.position.y) * 0.03;
+    pts.position.z = (window.scrollY / Math.max(window.innerHeight, 1)) * 2.2;
+  });
+
+  return (
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.04}
+        color="#9f6ef9"
+        transparent
+        opacity={0.7}
+        sizeAttenuation
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
   );
 }
 
@@ -156,9 +198,10 @@ export default function WebGLBackground() {
       <Canvas
         dpr={1}
         gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
-        camera={{ position: [0, 0, 1] }}
+        camera={{ position: [0, 0, 6], fov: 60 }}
       >
         <Ambient />
+        <Particles />
       </Canvas>
     </div>
   );
