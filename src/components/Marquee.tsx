@@ -17,7 +17,9 @@ function Row({ items }: { items: string[] }) {
         {sequence.map((item, i) => (
           <span className="marquee-item" key={`${item}-${i}`}>
             {item}
-            <span className="marquee-sep" aria-hidden="true">✦</span>
+            <span className="marquee-sep" aria-hidden="true">
+              ✦
+            </span>
           </span>
         ))}
       </div>
@@ -25,9 +27,19 @@ function Row({ items }: { items: string[] }) {
   );
 }
 
-export default function Marquee({ items = DEFAULT_ITEMS }: { items?: string[] }) {
+/**
+ * Marquee CSS puro (animação no compositor, zero JS por frame). O `reverse`
+ * só inverte a direção via classe — sem ticker/gsap, pra não custar FPS.
+ */
+export default function Marquee({
+  items = DEFAULT_ITEMS,
+  reverse = false,
+}: {
+  items?: string[];
+  reverse?: boolean;
+}) {
   return (
-    <div className="marquee" aria-hidden="true">
+    <div className={`marquee${reverse ? " marquee--reverse" : ""}`} aria-hidden="true">
       <Row items={items} />
     </div>
   );

@@ -18,7 +18,7 @@ export default function ExemplosPage() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
             Voltar para a Neovanguard
           </Link>
-          <h1 className="section-heading">
+          <h1 className="section-heading" data-split>
             Veja sites <span className="text-accent-nvg">de verdade</span>, prontos pra usar
           </h1>
           <p className="section-sub">
@@ -31,7 +31,7 @@ export default function ExemplosPage() {
 
       <section className="exemplos-grid-section">
         <div className="inner">
-          <div className="exemplos-grid">
+          <div className="exemplos-grid" data-skew>
             {TEMPLATES.map((t) => (
               <a
                 key={t.slug}
@@ -56,7 +56,7 @@ export default function ExemplosPage() {
             ))}
           </div>
 
-          <div className="exemplos-foot">
+          <div className="exemplos-foot" data-parallax="0.1">
             <p>Gostou de algum? A gente personaliza com a sua marca, textos e fotos.</p>
             <Link href="/solucao" className="btn-primary">Montar minha solução</Link>
           </div>

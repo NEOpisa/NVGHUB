@@ -508,27 +508,8 @@ html.lenis body {
   to   { opacity: 1; transform: scale(1); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .hero-copy {
-      animation: hero-scroll-out linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 95%;
-    }
-    .logo-scene {
-      animation: hero-scroll-parallax linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-  }
-}
-@keyframes hero-scroll-out {
-  to { transform: translateY(-48px); opacity: 0.25; }
-}
-@keyframes hero-scroll-parallax {
-  from { transform: translateY(-26px); }
-  to   { transform: translateY(52px); }
-}
+/* Parallax do hero agora é GSAP scrub (cross-browser) — ver Hero.tsx.
+   O antigo CSS animation-timeline só rodava no Chrome/Edge. */
 .hero-scroll-hint {
   position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -701,6 +682,16 @@ html.lenis body {
   transition: background 200ms, width 200ms;
 }
 .services-scroll-dot:hover::before { background: var(--border-hover); }
+
+/* ── Serviços: galeria horizontal pinned (desktop / tier FULL) ──
+   O viewport recorta (overflow hidden, como já é) e o track scrubba na horizontal;
+   setas e dots somem. No mobile o carrossel normal continua. */
+.services--scroll .carousel-arrow,
+.services--scroll .services-scroll-dots { display: none; }
+.services--scroll .services-carousel { gap: 0; }
+.services--scroll .carousel-track { gap: 24px; transition: none; }
+.services--scroll .carousel-slide { flex: 0 0 calc(50% - 12px); width: auto; }
+.services--scroll .carousel-slide .tilt-card { width: 100%; margin: 0; }
 .services-scroll-dot.active::before { background: var(--accent); width: 24px; }
 .services-scroll-dot:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm);
@@ -2605,13 +2596,39 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   background: linear-gradient(90deg, var(--accent), var(--accent-light), #e879f9);
   border-radius: 2px;
 }
-@supports (animation-timeline: scroll()) {
-  .scroll-progress {
-    animation: scroll-progress-grow linear both;
-    animation-timeline: scroll(root);
-  }
+/* A barra de progresso agora é dirigida por GSAP (ScrollJuice.tsx) para rodar
+   em todos os navegadores, não só nos que têm animation-timeline. */
+
+/* Quando o Marquee assume o loop via GSAP (tier FULL), desliga o CSS. */
+.marquee-track--js { animation: none !important; }
+.marquee--reverse .marquee-track { animation-direction: reverse; }
+
+/* ── Fundo WebGL único (WebGLBackground.tsx) — no lugar do AmbientField ── */
+.webgl-bg {
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none;
+  background: var(--bg);
 }
-@keyframes scroll-progress-grow { to { transform: scaleX(1); } }
+.webgl-bg canvas { display: block; }
+
+/* ── Transição "cortina" entre páginas, com a logo (PageTransition.tsx) ── */
+.page-transition {
+  position: fixed; inset: 0; z-index: 9999;
+  display: grid; place-items: center;
+  background: radial-gradient(120% 100% at 50% 35%, #15101f 0%, #0a0a0c 62%);
+  transform: translateY(-100%);
+  pointer-events: none;
+  will-change: transform;
+}
+.page-transition-logo { display: flex; align-items: center; gap: 12px; }
+.page-transition-logo img { width: 46px; height: auto; }
+.page-transition-word {
+  font-family: var(--ff-syne), system-ui, sans-serif;
+  font-weight: 700; letter-spacing: 0.04em;
+  font-size: clamp(20px, 3.4vw, 30px); color: #fff;
+}
+.page-transition-word b { color: var(--accent-light, #9f6ef9); }
+@media (prefers-reduced-motion: reduce) { .page-transition { display: none; } }
 
 /* ── Ripple ao clicar (criado pelo ClickFX, animado por transform/opacity) ── */
 .click-ripple {

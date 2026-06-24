@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { WhatsAppIcon, CheckIcon, InstagramIcon } from "@/components/icons";
 import Magnetic from "@/components/Magnetic";
 import HeroVisual from "@/components/HeroVisual";
 import { WA, IG } from "@/lib/constants";
+import { MQ } from "@/lib/motionConfig";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AREAS = [
   { num: "01", label: "Sua solução",          href: "/solucao" },
@@ -95,11 +99,34 @@ export default function Hero() {
     }
   }, []);
 
+  // Parallax de saída do hero ligado ao scroll (cross-browser; substitui o
+  // antigo CSS animation-timeline que só rodava no Chrome). Só no tier FULL.
+  useEffect(() => {
+    const s = ref.current;
+    if (!s) return;
+    const mm = gsap.matchMedia();
+    mm.add(MQ.full, () => {
+      const copy = s.querySelector(".hero-copy");
+      const visual = s.querySelector(".hero-visual");
+      if (copy)
+        gsap.to(copy, {
+          yPercent: -14, opacity: 0.2, ease: "none",
+          scrollTrigger: { trigger: s, start: "top top", end: "bottom top", scrub: true },
+        });
+      if (visual)
+        gsap.to(visual, {
+          yPercent: 24, ease: "none",
+          scrollTrigger: { trigger: s, start: "top top", end: "bottom top", scrub: true },
+        });
+    });
+    return () => mm.revert();
+  }, []);
+
   return (
     <section id="hero" ref={ref} aria-label="Apresentação da NEOVANGUARD">
       <div className="hero-glow-veil" aria-hidden="true" />
 
-      <nav className="hero-index" aria-label="Áreas do site">
+      <nav className="hero-index" aria-label="Áreas do site" data-parallax="0.12">
         {AREAS.map((a) => (
           <Link key={a.href} href={a.href} className="hero-index-link">
             <span className="hero-index-num">{a.num}</span>
@@ -146,7 +173,7 @@ export default function Hero() {
             </Magnetic>
           </div>
 
-          <div className="trust-signals">
+          <div className="trust-signals" data-skew>
             {["Entrega em até 16 dias úteis","Sem contrato mínimo","Suporte via WhatsApp"].map((t) => (
               <span key={t} className="trust-item"><CheckIcon />{t}</span>
             ))}
