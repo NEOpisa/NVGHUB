@@ -1583,6 +1583,8 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .magnetic {
   display: inline-block;
   transition: transform 0.35s var(--ease-premium);
+}
+.magnetic:hover {
   will-change: transform;
 }
 
@@ -1591,8 +1593,10 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   position: relative;
   transition: transform 0.3s var(--ease-out);
   transform-style: preserve-3d;
-  will-change: transform;
   height: 100%;
+}
+.tilt-card:hover {
+  will-change: transform;
 }
 .tilt-card > article { height: 100%; }
 .tilt-glare {
@@ -3332,13 +3336,10 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 }
 .menu-link:hover::after { opacity: 1; transform: translateX(0); }
 
-/* ── Motion: clip-path suporte ── */
-.section-heading,
-.hero-h1,
-.hero-brand,
-.services-fill .manifesto-line {
-  will-change: clip-path, transform;
-}
+/* ── Motion: clip-path suporte ──
+   will-change removido: estes elementos fazem o reveal de clip-path uma única
+   vez (GSAP/ScrollTrigger), então manter a dica de compositor permanente só
+   custava memória (camadas vivas) sem ganho após a animação. */
 
 /* Remove will-change após animação (o JS pode fazer isso, mas CSS garante) */
 @media (prefers-reduced-motion: no-preference) {
