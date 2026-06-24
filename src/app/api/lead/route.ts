@@ -1,23 +1,10 @@
 import { NextResponse } from "next/server";
 import { EMAIL_RE, isValidPhone } from "@/lib/validation";
+import { createRateLimiter } from "@/lib/rateLimit";
 
 const MAX_LEN = { nome: 120, email: 180, telefone: 40, tipo: 120 };
 
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-const RATE_LIMIT_MAX = 5;
-const lastRequests = new Map<string, number[]>();
-
-function isRateLimited(ip: string) {
-  const now = Date.now();
-  const timestamps = (lastRequests.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
-  if (timestamps.length >= RATE_LIMIT_MAX) {
-    lastRequests.set(ip, timestamps);
-    return true;
-  }
-  timestamps.push(now);
-  lastRequests.set(ip, timestamps);
-  return false;
-}
+const isRateLimited = createRateLimiter({ windowMs: 10 * 60 * 1000, max: 5 });
 
 type LeadItem = { label: string; price: number | null };
 

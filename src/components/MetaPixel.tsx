@@ -1,9 +1,25 @@
 "use client";
 
 import Script from "next/script";
-import { FB_PIXEL_ID } from "@/lib/fpixel";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { FB_PIXEL_ID, pageview } from "@/lib/fpixel";
 
 export default function MetaPixel() {
+  const pathname = usePathname();
+  const firstLoad = useRef(true);
+
+  // O <Script> dispara o 1º PageView no load. Em navegação client-side o pixel
+  // não re-dispara sozinho, então mandamos um PageView a cada troca de rota.
+  useEffect(() => {
+    if (!FB_PIXEL_ID) return;
+    if (firstLoad.current) {
+      firstLoad.current = false;
+      return;
+    }
+    pageview();
+  }, [pathname]);
+
   if (!FB_PIXEL_ID) return null;
   return (
     <>
