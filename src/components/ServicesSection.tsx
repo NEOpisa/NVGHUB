@@ -201,7 +201,7 @@ export default function ServicesSection() {
   return (
     <section id="servicos" aria-label="Nossos serviços" ref={sectionRef} className={horizontal ? "services--scroll" : undefined}>
       <div className="inner">
-        <header className="services-header" data-skew>
+        <header className="services-header">
           <span className="section-eyebrow">Serviços</span>
           <h2 className="services-fill">
             <span className="manifesto-line">Soluções digitais que entregam de verdade.</span>

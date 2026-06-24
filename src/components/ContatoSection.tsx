@@ -62,7 +62,7 @@ export default function ContatoSection() {
 
         <div className="contact-wrap" ref={wrapRef}>
 
-          <div className="contact-info" data-skew>
+          <div className="contact-info">
             <div>
               <div className="contact-info-title">Prefere pelo WhatsApp?</div>
               <p className="contact-info-text" style={{ marginTop: "10px" }}>

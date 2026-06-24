@@ -7,19 +7,7 @@
 export const MQ = {
   // Tier FULL: desktop, ponteiro fino, sem reduced-motion → show completo.
   full: "(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
-  // Tier LIGHT: telas pequenas / touch → versão enxuta.
-  light: "(max-width: 767px), (pointer: coarse)",
   reduced: "(prefers-reduced-motion: reduce)",
-} as const;
-
-export const MOTION = {
-  // Parallax: fração do tamanho do elemento deslocada ao longo do range (0..1).
-  parallax: { hero: 0.18, cards: 0.1, ambient: 0.3, deep: 0.42 },
-  // Velocity skew ("juice"): grau máx de skewY e fator por velocidade do scroll.
-  skew: { max: 6, factor: 0.0009 },
-  // Marquee reativo ao scroll: boost = px/s do scroll × fator (cap em maxScale).
-  marquee: { boost: 0.0015, maxScale: 3 },
-  reveal: { duration: 0.8, stagger: 0.06 },
 } as const;
 
 /**

@@ -58,7 +58,7 @@ export default function NoxzSection() {
           </p>
         </div>
 
-        <div className="noxz-section-grid" ref={gridRef} data-skew>
+        <div className="noxz-section-grid" ref={gridRef}>
           {CARDS.map((card) => (
             <article key={card.name} className="noxz-card">
               <span className="noxz-card-num" aria-hidden="true">{card.num}</span>

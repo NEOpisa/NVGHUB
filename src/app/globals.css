@@ -106,11 +106,6 @@ html.lenis body {
   /* promove o fundo a UMA camada GPU: pinta uma vez, não repinta ao rolar */
   transform: translateZ(0);
 }
-.ambient-grain {
-  position: absolute; inset: -100px;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
 /* ── Fundo 3D infinito (corredor de grade em perspectiva) ── */
 .ambient-3d {
   position: absolute; inset: 0;
@@ -2600,7 +2595,6 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
    em todos os navegadores, não só nos que têm animation-timeline. */
 
 /* Quando o Marquee assume o loop via GSAP (tier FULL), desliga o CSS. */
-.marquee-track--js { animation: none !important; }
 .marquee--reverse .marquee-track { animation-direction: reverse; }
 
 /* ── Fundo WebGL único (WebGLBackground.tsx) — no lugar do AmbientField ── */

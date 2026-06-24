@@ -31,7 +31,7 @@ export default function PricingSection() {
           </p>
         </div>
 
-        <div className="pricing-grid" ref={gridRef} data-skew>
+        <div className="pricing-grid" ref={gridRef}>
           {PACOTES.map((plan) => (
             <TiltCard key={plan.name} maxTilt={10}>
             <article
