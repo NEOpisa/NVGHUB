@@ -2603,6 +2603,14 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .marquee-track--js { animation: none !important; }
 .marquee--reverse .marquee-track { animation-direction: reverse; }
 
+/* ── Fundo WebGL único (WebGLBackground.tsx) — no lugar do AmbientField ── */
+.webgl-bg {
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none;
+  background: var(--bg);
+}
+.webgl-bg canvas { display: block; }
+
 /* ── Transição "cortina" entre páginas, com a logo (PageTransition.tsx) ── */
 .page-transition {
   position: fixed; inset: 0; z-index: 9999;
