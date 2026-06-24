@@ -78,7 +78,7 @@ export default function Marquee({
   }, [reverse]);
 
   return (
-    <div className="marquee" aria-hidden="true">
+    <div className="marquee" aria-hidden="true" data-parallax="0.08">
       <div className="marquee-row">
         <div className="marquee-track" ref={trackRef}>
           {sequence.map((item, i) => (

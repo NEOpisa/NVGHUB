@@ -79,14 +79,14 @@ export default function ExploreSection() {
   return (
     <section id="explorar" className="explore" aria-label="Navegue pelo site" ref={sectionRef}>
       <div className="inner">
-        <div className="explore-head">
+        <div className="explore-head" data-parallax="0.12">
           <span className="section-eyebrow">Navegue</span>
           <h2 className="section-heading">
             Explore a <span className="text-accent-nvg">Neovanguard</span>
           </h2>
           <p className="section-sub">Cada área num lugar próprio. Escolha por onde começar.</p>
         </div>
-        <div className="explore-list">
+        <div className="explore-list" data-skew>
           {AREAS.map((a) => (
             <Link key={a.href} href={a.href} className={`explore-link${a.highlight ? " is-solucao" : ""}`}>
               <span className="explore-index" aria-hidden="true">{a.num}</span>
