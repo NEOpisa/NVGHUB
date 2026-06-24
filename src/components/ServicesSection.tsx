@@ -173,7 +173,7 @@ export default function ServicesSection() {
   return (
     <section id="servicos" aria-label="Nossos serviços" ref={sectionRef}>
       <div className="inner">
-        <header className="services-header">
+        <header className="services-header" data-skew>
           <span className="section-eyebrow">Serviços</span>
           <h2 className="services-fill">
             <span className="manifesto-line">Soluções digitais que entregam de verdade.</span>
