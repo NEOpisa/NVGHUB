@@ -197,9 +197,10 @@ function BuildMark({
     });
 
     const tl = gsap.timeline({ onComplete: onBuilt });
-    // 1) wireframe desenha (giro lento)
+    // 1) wireframe desenha (giro lento que assenta DE FRENTE, y=0)
+    if (groupRef.current) groupRef.current.rotation.y = -Math.PI * 1.5;
     tl.to(wireOpacity, { current: 1, duration: 0.9, ease: "power2.out" }, 0.2);
-    tl.to(groupRef.current!.rotation, { y: Math.PI * 1.4, duration: 3.2, ease: "power2.inOut" }, 0);
+    tl.to(groupRef.current!.rotation, { y: 0, duration: 3.2, ease: "power3.out" }, 0);
     // 2) sólidos montam; wireframe some
     solidMeshes.forEach((m, i) => {
       const pivot = m.userData.pivot as THREE.Vector3;
