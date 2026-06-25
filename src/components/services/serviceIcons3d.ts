@@ -95,8 +95,8 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     const rows: [number, number][] = [[0.6, 0.34], [0.0, 0.6], [-0.6, 0.22]]; // [y, quanto pra fora]
     rows.forEach(([y, out]) => {
       const z = 0.45 + out;
-      addBoth(new THREE.BoxGeometry(1.5, 0.44, 0.52), metalParts, z, [0, y]); // corpo da gaveta
-      addBoth(new THREE.BoxGeometry(0.5, 0.09, 0.12), accentParts, z + 0.3, [0, y]); // puxador
+      add(new THREE.BoxGeometry(1.5, 0.44, 0.52), metalParts, [0, y, z]); // corpo da gaveta
+      add(new THREE.BoxGeometry(0.5, 0.09, 0.12), accentParts, [0, y, z + 0.3]); // puxador
     });
   } else if (kind === "seo") {
     // lupa: anel + cabo (simétricos) + lente (acento espelhado)
