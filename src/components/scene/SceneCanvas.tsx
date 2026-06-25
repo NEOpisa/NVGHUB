@@ -4,8 +4,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import AmbientField from "@/components/AmbientField";
+import { scene } from "@/components/scene/tunnel";
 
-// Quad em clip-space (cobre a tela inteira, sem depender da câmera).
+// Quad em clip-space (cobre a tela inteira, independente da câmera).
 const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -15,7 +16,7 @@ const vertexShader = `
 `;
 
 // Ambiente: base escura + nebulosa (fbm) + 2 glows roxos que driftam e reagem
-// ao scroll/mouse + vinheta + grão. Tudo num passe de fragment = barato na GPU.
+// ao scroll/mouse + grade faux-3D + vinheta + grão. Tudo num passe de fragment.
 const fragmentShader = `
   varying vec2 vUv;
   uniform float uTime;
@@ -45,7 +46,6 @@ const fragmentShader = `
 
     vec3 col = vec3(0.034, 0.034, 0.043);
 
-    // nebulosa
     vec2 np = p * 1.5 + vec2(t, t * 0.4 + scr * 0.25);
     float n  = fbm(np);
     float n2 = fbm(np * 1.9 - vec2(t * 0.6, scr * 0.18));
@@ -54,7 +54,6 @@ const fragmentShader = `
     vec3 violet = vec3(0.624, 0.431, 0.976);
     col += neb * 0.09 * mix(purple, violet, n2);
 
-    // glows reativos a scroll/mouse
     vec2 m = uMouse - 0.5;
     for (int i = 0; i < 2; i++){
       float fi = float(i);
@@ -66,7 +65,6 @@ const fragmentShader = `
       col += g * g * 0.13 * mix(purple, violet, fi);
     }
 
-    // grade em perspectiva (faux-3D) na parte de baixo, reativa ao scroll
     float horizon = 0.56;
     float below = horizon - uv.y;
     if (below > 0.0){
@@ -79,7 +77,6 @@ const fragmentShader = `
       col += ln * fade * 0.16 * violet;
     }
 
-    // vinheta + grão
     float edge = distance(uv, vec2(0.5));
     col *= 0.5 + 0.5 * smoothstep(1.25, 0.35, edge);
     col += (hash(uv * uRes + fract(t)) - 0.5) * 0.03;
@@ -125,8 +122,7 @@ function Ambient() {
   );
 }
 
-// Campo de partículas 3D (profundidade), reativo a mouse e scroll — dá o
-// "movimento complexo" e transforma o fundo numa cena 3D de verdade.
+// Campo de partículas 3D (profundidade), reativo a mouse e scroll.
 function Particles() {
   const ref = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
@@ -168,11 +164,13 @@ function Particles() {
 }
 
 /**
- * Fundo único em WebGL (estilo igloo): o "espaço" do site vira um shader na GPU
- * no lugar do AmbientField (camadas DOM). Mantém todo o conteúdo/SEO no DOM por
- * cima. Em reduced-motion ou sem suporte a WebGL, cai no AmbientField (CSS).
+ * CANVAS ÚNICO E PERSISTENTE do site. Renderiza o ambiente (shader + partículas)
+ * como camada base e, via <scene.Out/>, todos os itens 3D que as seções injetam
+ * com <SceneItem> — de modo que a cena "cresce" conforme se rola. O texto/forms
+ * continuam no DOM por cima (SEO). Em reduced-motion ou sem WebGL, cai no
+ * AmbientField (CSS).
  */
-export default function WebGLBackground() {
+export default function SceneCanvas() {
   const [useGL, setUseGL] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -190,10 +188,7 @@ export default function WebGLBackground() {
     setUseGL(ok);
   }, []);
 
-  // Enquanto decide (SSR + 1º paint): nada — o fundo escuro do body cobre, sem
-  // flash da "versão antiga" (o AmbientField não chega a aparecer e sair).
   if (useGL === null) return null;
-  // Sem WebGL / reduced-motion → fallback CSS (AmbientField).
   if (!useGL) return <AmbientField />;
 
   return (
@@ -205,6 +200,11 @@ export default function WebGLBackground() {
       >
         <Ambient />
         <Particles />
+        {/* luzes compartilhadas para os itens injetados pelas seções */}
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />
+        <pointLight position={[-6, -3, 4]} intensity={42} color="#7c3aed" />
+        <scene.Out />
       </Canvas>
     </div>
   );

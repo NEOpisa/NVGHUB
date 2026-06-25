@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans, Orbitron } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WebGLBackground from "@/components/WebGLBackground";
+import SceneCanvas from "@/components/scene/SceneCanvas";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollJuice from "@/components/ScrollJuice";
@@ -88,7 +88,7 @@ export default function RootLayout({
         <ScrollJuice />
         <ScrollToSection />
         <ClickFX />
-        <WebGLBackground />
+        <SceneCanvas />
         <div className="scroll-progress" aria-hidden="true" />
         <Header />
         {children}
