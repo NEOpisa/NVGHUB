@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import Button3D from "@/components/Button3D";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { WA, IG } from "@/lib/constants";
 
@@ -38,26 +38,24 @@ export default function MenuView() {
         <nav className="menu-nav" aria-label="Navegação principal">
           <span className="menu-nav-eyebrow" aria-hidden="true">Navegação</span>
           {NAV_LINKS.map(({ label, href }, i) => (
-            <Button3D
+            <Link
               key={href}
               href={href}
-              tone="ghost"
-              ariaCurrent={pathname === href}
               className={`menu-link${pathname === href ? " is-active" : ""}`}
             >
               <span className="menu-link-index" aria-hidden="true">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="menu-link-label">{label}</span>
-            </Button3D>
+            </Link>
           ))}
         </nav>
 
         <aside className="menu-aside">
-          <Button3D href="/solucao" tone="accent" className="menu-solucao-cta">
+          <Link href="/solucao" className="menu-solucao-cta">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" /></svg>
             <span className="menu-solucao-cta-label">Sua solução</span>
-          </Button3D>
+          </Link>
 
           <span className="menu-aside-label">Vamos conversar</span>
           <a href={WA} target="_blank" rel="noopener noreferrer" className="menu-contact">

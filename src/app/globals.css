@@ -3436,23 +3436,3 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   .menu-page .menu-link,
   .menu-page .menu-aside { animation: none; opacity: 1; transform: none; }
 }
-
-/* ── Botões com visual 3D no canvas (Button3D) ──
-   Quando o WebGL está ativo (body.gl-on), o fundo/borda/sombra do botão DOM
-   somem — quem desenha o "corpo" do botão é a placa 3D (ButtonPlate) atrás do
-   texto. O texto/ícone seguem no DOM (SEO/a11y). Sem WebGL, o botão mantém o
-   estilo normal (.btn-primary/.btn-ghost etc.). */
-body.gl-on .btn-3d {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-body.gl-on .btn-3d:hover {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-/* o pseudo-brilho/sheen interno desses botões é redundante com a placa */
-body.gl-on .btn-3d::before,
-body.gl-on .btn-3d::after { display: none !important; }
