@@ -9,6 +9,7 @@ import gsap from "gsap";
 import { useDomAnchor } from "@/components/scene/useDomAnchor";
 import { buildLogoChunks, type Chunk } from "@/components/scene/logoGeometry";
 import { txBus } from "@/components/scene/transitionBus";
+import { introWillPlay } from "@/components/scene/introState";
 
 // A entrada (peças voando + montando) só toca no 1º load/reload da página.
 // Esta flag vive no escopo do módulo: persiste entre navegações internas
@@ -43,12 +44,14 @@ export default function LogoItem({
 
   const mats = useMemo(() => {
     const white = new THREE.MeshStandardMaterial({
-      color: "#e8e8ee", metalness: 0.85, roughness: 0.28,
-      emissive: new THREE.Color("#b9a3ff"), emissiveIntensity: 0, transparent: true,
+      color: "#eef0ff", metalness: 0.96, roughness: 0.16,
+      emissive: new THREE.Color("#7c5cff"), emissiveIntensity: 0,
+      envMapIntensity: 1.4, transparent: true,
     });
     const purple = new THREE.MeshStandardMaterial({
-      color: "#7c3aed", metalness: 0.55, roughness: 0.3,
-      emissive: new THREE.Color("#a855f7"), emissiveIntensity: 0.9, transparent: true,
+      color: "#8b3df2", metalness: 0.82, roughness: 0.2,
+      emissive: new THREE.Color("#b14bff"), emissiveIntensity: 0.9,
+      envMapIntensity: 1.6, transparent: true,
     });
     const halo = new THREE.MeshBasicMaterial({
       color: "#d24bff", transparent: true, opacity: 0,
@@ -131,7 +134,9 @@ export default function LogoItem({
       tls.push(gtl);
     };
 
-    if (entrancePlayed) {
+    // Se a INTRO full-screen vai tocar, ela faz a entrada grandiosa — o hero só
+    // revela a marca já montada (loop). Evita entrada duplicada.
+    if (entrancePlayed || introWillPlay()) {
       entranceGroup.visible = false;
       loopGroup.visible = true;
       fade.current = 1;

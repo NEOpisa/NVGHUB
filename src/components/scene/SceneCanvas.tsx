@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import AmbientField from "@/components/AmbientField";
 import { scene } from "@/components/scene/tunnel";
@@ -213,6 +214,12 @@ export default function SceneCanvas() {
         <ambientLight intensity={0.5} />
         <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />
         <pointLight position={[-6, -3, 4]} intensity={42} color="#7c3aed" />
+        {/* reflexos pro metal dos itens 3D (gerado uma vez, sem rede) */}
+        <Environment resolution={64} frames={1}>
+          <Lightformer form="rect" intensity={1.8} position={[4, 3, 5]} scale={7} color="#b89bff" />
+          <Lightformer form="rect" intensity={1.0} position={[-5, -1, 3]} scale={6} color="#5b21b6" />
+          <Lightformer form="circle" intensity={1.4} position={[0, 5, -4]} scale={5} color="#ffffff" />
+        </Environment>
         <scene.Out />
       </Canvas>
     </div>
