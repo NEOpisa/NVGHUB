@@ -2349,7 +2349,18 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
    ════════════════════════════════════════════════ */
 
 /* ── Índice de áreas (home) ── */
-.explore { padding: var(--section-pad) 0; border-top: 1px solid var(--border); }
+.explore { padding: var(--section-pad) 0; border-top: 1px solid var(--border); position: relative; }
+
+/* Âncoras das cenas 3D por seção (o objeto vive no canvas global; o div só
+   marca o retângulo de tela). Decorativo, atrás do conteúdo, sem interação. */
+.section-scene { position: absolute; width: 360px; height: 360px; pointer-events: none; z-index: 0; }
+.section-scene-explore { top: 6%; right: 3%; }
+.section-scene-cta { bottom: 4%; right: 4%; }
+@media (max-width: 768px) {
+  .section-scene { width: 230px; height: 230px; opacity: 0.8; }
+  .section-scene-explore { top: 0; right: -8%; }
+  .section-scene-cta { bottom: 0; right: -6%; }
+}
 .explore-head { max-width: 640px; margin-bottom: clamp(32px, 5vw, 48px); }
 .explore-list {
   display: flex; flex-direction: column;
@@ -2403,6 +2414,8 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   padding: var(--section-pad) 0;
   border-top: 1px solid var(--border);
   background: var(--bg-2-veil);
+  position: relative;
+  overflow: hidden;
 }
 .home-cta-inner {
   display: flex; align-items: center; justify-content: space-between;

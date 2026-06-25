@@ -9,6 +9,7 @@ import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
 import Link from "next/link";
 import { useReveal } from "@/hooks/useReveal";
+import SectionScene from "@/components/scene/SectionScene";
 
 export default function Home() {
   const ctaCopyRef    = useRef<HTMLDivElement>(null);
@@ -44,6 +45,7 @@ export default function Home() {
       />
 
       <section className="home-cta" aria-label="Vamos começar">
+        <SectionScene variant="crystal" className="section-scene-cta" />
         <div className="inner home-cta-inner">
           <div className="home-cta-copy" ref={ctaCopyRef}>
             <h2 className="section-heading">

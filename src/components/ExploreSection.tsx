@@ -5,6 +5,7 @@ import { useRef, useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { splitReveal } from "@/lib/motion";
+import SectionScene from "@/components/scene/SectionScene";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,6 +79,7 @@ export default function ExploreSection() {
 
   return (
     <section id="explorar" className="explore" aria-label="Navegue pelo site" ref={sectionRef}>
+      <SectionScene variant="orbit" className="section-scene-explore" />
       <div className="inner">
         <div className="explore-head">
           <span className="section-eyebrow">Navegue</span>
