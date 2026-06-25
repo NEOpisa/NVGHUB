@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Button3D from "@/components/Button3D";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -51,25 +52,21 @@ export default function Header() {
 
         <div className="site-header-right">
           {onMenu ? (
-            <button
-              className="menu-toggle"
-              onClick={() => router.back()}
-              aria-label="Fechar menu"
-            >
+            <Button3D tone="ghost" className="menu-toggle" ariaLabel="Fechar menu" onClick={() => router.back()}>
               <span className="menu-toggle-label">Fechar</span>
               <span className="menu-toggle-icon" aria-hidden="true">
                 <span />
                 <span />
               </span>
-            </button>
+            </Button3D>
           ) : (
-            <Link href="/menu" className="menu-toggle" aria-label="Abrir menu">
+            <Button3D href="/menu" tone="ghost" className="menu-toggle" ariaLabel="Abrir menu">
               <span className="menu-toggle-label">Menu</span>
               <span className="menu-toggle-icon" aria-hidden="true">
                 <span />
                 <span />
               </span>
-            </Link>
+            </Button3D>
           )}
         </div>
       </div>
