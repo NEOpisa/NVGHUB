@@ -3376,3 +3376,51 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   .section-heading, .hero-h1, .hero-brand { clip-path: none !important; }
   .explore-link { opacity: 1 !important; transform: none !important; }
 }
+
+/* ════════════════════════════════════════════════
+   Canvas único — transição (portas) + rota /menu
+   ════════════════════════════════════════════════ */
+
+/* Camada da transição em WebGL: por cima de tudo, só visual (não bloqueia
+   cliques — a navegação acontece no DOM por baixo). */
+.page-transition-gl {
+  position: fixed; inset: 0; z-index: 1100;
+  pointer-events: none;
+}
+.page-transition-gl canvas { pointer-events: none !important; }
+
+/* Rota /menu — a navegação principal virou página, sobre o fundo variante do
+   canvas. Reaproveita as classes do antigo overlay, mas revela o conteúdo. */
+.menu-page {
+  position: relative; z-index: 1; min-height: 100svh;
+  display: grid; grid-template-columns: 1.5fr 1fr;
+  align-items: center; gap: clamp(32px, 5vw, 80px);
+  padding: 132px clamp(28px, 7vw, 120px) 64px;
+}
+.menu-page-inner {
+  display: contents;
+}
+.menu-page .menu-link {
+  animation: menu-link-in 0.6s var(--ease-premium) forwards;
+}
+.menu-page .menu-link:nth-child(1) { animation-delay: 0.10s; }
+.menu-page .menu-link:nth-child(2) { animation-delay: 0.16s; }
+.menu-page .menu-link:nth-child(3) { animation-delay: 0.22s; }
+.menu-page .menu-link:nth-child(4) { animation-delay: 0.28s; }
+.menu-page .menu-link:nth-child(5) { animation-delay: 0.34s; }
+.menu-page .menu-link:nth-child(6) { animation-delay: 0.40s; }
+.menu-page .menu-aside {
+  opacity: 0; animation: menu-aside-in 0.6s 0.34s var(--ease-out) forwards;
+}
+@keyframes menu-aside-in { to { opacity: 1; } }
+
+@media (max-width: 860px) {
+  .menu-page {
+    grid-template-columns: 1fr; align-content: center; gap: 36px;
+    padding: 116px clamp(28px, 8vw, 64px) 56px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-page .menu-link,
+  .menu-page .menu-aside { animation: none; opacity: 1; transform: none; }
+}

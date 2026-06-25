@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import AmbientField from "@/components/AmbientField";
@@ -23,6 +24,7 @@ const fragmentShader = `
   uniform float uScroll;
   uniform vec2 uMouse;
   uniform vec2 uRes;
+  uniform float uVariant; // 0 = padrão, 1 = variante (rota /menu)
 
   float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float noise(vec2 p){
@@ -44,15 +46,18 @@ const fragmentShader = `
     float t = uTime * 0.04;
     float scr = uScroll;
 
-    vec3 col = vec3(0.034, 0.034, 0.043);
+    // base escurece um tom na variante (/menu)
+    vec3 col = mix(vec3(0.034, 0.034, 0.043), vec3(0.046, 0.028, 0.066), uVariant);
 
-    vec2 np = p * 1.5 + vec2(t, t * 0.4 + scr * 0.25);
+    // variante: nebulosa mais densa e mais próxima (zoom), mais "presença"
+    vec2 np = p * mix(1.5, 1.85, uVariant) + vec2(t, t * 0.4 + scr * 0.25);
     float n  = fbm(np);
     float n2 = fbm(np * 1.9 - vec2(t * 0.6, scr * 0.18));
-    float neb = smoothstep(0.42, 1.0, n * 0.6 + n2 * 0.5);
+    float neb = smoothstep(mix(0.42, 0.34, uVariant), 1.0, n * 0.6 + n2 * 0.5);
     vec3 purple = vec3(0.486, 0.227, 0.929);
     vec3 violet = vec3(0.624, 0.431, 0.976);
-    col += neb * 0.09 * mix(purple, violet, n2);
+    vec3 magenta = vec3(0.71, 0.30, 0.93);
+    col += neb * mix(0.09, 0.15, uVariant) * mix(mix(purple, magenta, uVariant), violet, n2);
 
     vec2 m = uMouse - 0.5;
     for (int i = 0; i < 2; i++){
@@ -74,7 +79,7 @@ const fragmentShader = `
       vec2 gg = abs(fract(vec2(gx, gy)) - 0.5);
       float ln = smoothstep(0.06, 0.0, min(gg.x, gg.y));
       float fade = smoothstep(0.0, 0.10, below) * smoothstep(3.2, 0.3, dz);
-      col += ln * fade * 0.16 * violet;
+      col += ln * fade * mix(0.16, 0.28, uVariant) * mix(violet, magenta, uVariant);
     }
 
     float edge = distance(uv, vec2(0.5));
@@ -85,7 +90,7 @@ const fragmentShader = `
   }
 `;
 
-function Ambient() {
+function Ambient({ variant }: { variant: number }) {
   const { size } = useThree();
   const scroll = useRef(0);
   const uniforms = useMemo(
@@ -94,6 +99,7 @@ function Ambient() {
       uScroll: { value: 0 },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uRes: { value: new THREE.Vector2(1, 1) },
+      uVariant: { value: 0 },
     }),
     []
   );
@@ -106,6 +112,7 @@ function Ambient() {
     uniforms.uMouse.value.x += (state.pointer.x * 0.5 + 0.5 - uniforms.uMouse.value.x) * 0.05;
     uniforms.uMouse.value.y += (state.pointer.y * 0.5 + 0.5 - uniforms.uMouse.value.y) * 0.05;
     uniforms.uRes.value.set(size.width, size.height);
+    uniforms.uVariant.value += (variant - uniforms.uVariant.value) * 0.05;
   });
 
   return (
@@ -172,6 +179,8 @@ function Particles() {
  */
 export default function SceneCanvas() {
   const [useGL, setUseGL] = useState<boolean | null>(null);
+  const pathname = usePathname();
+  const variant = pathname === "/menu" ? 1 : 0;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -198,7 +207,7 @@ export default function SceneCanvas() {
         gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 6], fov: 60 }}
       >
-        <Ambient />
+        <Ambient variant={variant} />
         <Particles />
         {/* luzes compartilhadas para os itens injetados pelas seções */}
         <ambientLight intensity={0.5} />
