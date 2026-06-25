@@ -79,7 +79,7 @@ export default function ExploreSection() {
 
   return (
     <section id="explorar" className="explore" aria-label="Navegue pelo site" ref={sectionRef}>
-      <SectionScene variant="orbit" className="section-scene-explore" />
+      <SectionScene variant="rings" className="section-scene-explore" />
       <div className="inner">
         <div className="explore-head">
           <span className="section-eyebrow">Navegue</span>

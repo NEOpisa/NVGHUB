@@ -45,7 +45,7 @@ export default function Home() {
       />
 
       <section className="home-cta" aria-label="Vamos começar">
-        <SectionScene variant="crystal" className="section-scene-cta" />
+        <SectionScene variant="orb" className="section-scene-cta" />
         <div className="inner home-cta-inner">
           <div className="home-cta-copy" ref={ctaCopyRef}>
             <h2 className="section-heading">

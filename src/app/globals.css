@@ -2415,7 +2415,6 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   border-top: 1px solid var(--border);
   background: var(--bg-2-veil);
   position: relative;
-  overflow: hidden;
 }
 .home-cta-inner {
   display: flex; align-items: center; justify-content: space-between;

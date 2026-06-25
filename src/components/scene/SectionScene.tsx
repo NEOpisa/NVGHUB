@@ -13,7 +13,7 @@ const SectionObject = dynamic(() => import("@/components/scene/items/SectionObje
  * Posicione via `className` (ver `.section-scene-*` no globals.css).
  */
 export default function SectionScene({
-  variant = "crystal",
+  variant = "orb",
   className = "",
 }: {
   variant?: SectionVariant;
