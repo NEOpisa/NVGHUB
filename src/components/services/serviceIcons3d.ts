@@ -92,17 +92,20 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     c.lineTo(0.4, 0.55); c.lineTo(-0.1, -0.05); c.lineTo(-0.35, 0.2);
     addBoth(extrude(c, 0.08), accent, 0.15);
   } else {
-    // saas: robozinho (plataforma pronta) — cabeça + olhos + antena + corpo + braços.
-    add(new THREE.BoxGeometry(1.15, 0.9, 0.72), metal, [0, 0.72, 0]); // cabeça
-    addBoth(new THREE.CylinderGeometry(0.13, 0.13, 0.08, 22), accent, 0.37, [-0.27, 0.8], [Math.PI / 2, 0, 0]); // olho esq
-    addBoth(new THREE.CylinderGeometry(0.13, 0.13, 0.08, 22), accent, 0.37, [0.27, 0.8], [Math.PI / 2, 0, 0]); // olho dir
-    addBoth(new THREE.BoxGeometry(0.42, 0.08, 0.05), accent, 0.37, [0, 0.5]); // "boca"
-    add(new THREE.CylinderGeometry(0.035, 0.035, 0.38, 12), metal, [0, 1.32, 0]); // antena
-    add(new THREE.SphereGeometry(0.11, 16, 16), accent, [0, 1.52, 0]); // ponta da antena
-    add(new THREE.BoxGeometry(1.35, 1.15, 0.78), metal, [0, -0.4, 0]); // corpo
-    addBoth(new THREE.BoxGeometry(0.62, 0.5, 0.06), accent, 0.42, [0, -0.35]); // painel do peito
-    add(new THREE.BoxGeometry(0.3, 0.75, 0.3), metal, [-0.9, -0.4, 0]); // braço esq
-    add(new THREE.BoxGeometry(0.3, 0.75, 0.3), metal, [0.9, -0.4, 0]); // braço dir
+    // saas: FOGUETE (plataforma pronta / "em lançamento") — radialmente simétrico.
+    add(new THREE.CylinderGeometry(0.55, 0.55, 1.5, 30), metal, [0, 0.05, 0]); // corpo
+    add(new THREE.ConeGeometry(0.55, 0.7, 30), accent, [0, 1.15, 0]); // bico
+    // vigia (anel + lente), espelhada frente/trás
+    addBoth(new THREE.TorusGeometry(0.2, 0.05, 12, 28), metal, 0.55, [0, 0.35]);
+    addBoth(new THREE.CircleGeometry(0.18, 28), accent, 0.55, [0, 0.35]);
+    // 4 aletas radiais
+    const fin = new THREE.BoxGeometry(0.08, 0.6, 0.5);
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
+      add(fin, metal, [Math.sin(a) * 0.5, -0.72, Math.cos(a) * 0.5], [0, a, 0]);
+    }
+    // chama
+    add(new THREE.ConeGeometry(0.4, 0.7, 22), accent, [0, -1.25, 0], [Math.PI, 0, 0]);
   }
 
   g.userData.geos = geos;

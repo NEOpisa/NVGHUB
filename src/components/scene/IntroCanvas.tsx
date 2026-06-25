@@ -15,9 +15,9 @@ import {
 } from "@/components/scene/logoGeometry";
 
 /* ───────────────── Plexus (rede técnica de pontos + linhas) ───────────────── */
-const PX_N = 120;
-const PX_DIST = 1.7;
-const PX_MAX_SEG = 1500;
+const PX_N = 84;
+const PX_DIST = 1.8;
+const PX_MAX_SEG = 1000;
 const PX_BOX = new THREE.Vector3(10, 6.5, 5.5);
 
 function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
@@ -246,15 +246,15 @@ function Scene({ onBuilt }: { onBuilt: () => void }) {
       <directionalLight position={[5, 7, 6]} intensity={2.2} color="#cdbfff" />
       <pointLight position={[-6, -2, 4]} intensity={40} color="#7c3aed" />
       {/* reflexos pro metal da marca (gerado, sem rede) */}
-      <Environment resolution={128}>
+      <Environment resolution={96} frames={1}>
         <Lightformer form="rect" intensity={2} position={[3, 3, 4]} scale={6} color="#a98bff" />
         <Lightformer form="rect" intensity={1.2} position={[-4, -1, 2]} scale={5} color="#5b21b6" />
         <Lightformer form="circle" intensity={1.5} position={[0, 4, -3]} scale={4} color="#ffffff" />
       </Environment>
       <Plexus opacity={plexusOp} />
       <BuildMark wireOpacity={wireOp} onBuilt={onBuilt} />
-      <EffectComposer>
-        <Bloom intensity={1.25} luminanceThreshold={0.18} luminanceSmoothing={0.5} mipmapBlur />
+      <EffectComposer multisampling={0}>
+        <Bloom intensity={1.05} luminanceThreshold={0.2} luminanceSmoothing={0.5} mipmapBlur />
       </EffectComposer>
     </>
   );
@@ -295,7 +295,7 @@ export default function IntroCanvas({
   return (
     <div className="intro-overlay" ref={overlayRef} aria-hidden="true">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={1}
         gl={{ antialias: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 8.2], fov: 55 }}
       >
