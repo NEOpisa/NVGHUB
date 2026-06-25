@@ -15,8 +15,8 @@ import { txBus } from "@/components/scene/transitionBus";
 // (não repete a entrada), mas zera num reload de verdade.
 let entrancePlayed = false;
 
-// Loop: +35% sobre o baseline e depois +50% no "delay" pedido (1.9s → ~3.85s).
-const LOOP_DUR = 1.9 * 1.35 * 1.5;
+// Loop: +35% sobre o baseline e dois ajustes de +50% no "delay" (1.9s → ~5.77s).
+const LOOP_DUR = 1.9 * 1.35 * 1.5 * 1.5;
 
 /**
  * A marca NV 3D — item da cena global, ancorado ao `.hero-visual`.
