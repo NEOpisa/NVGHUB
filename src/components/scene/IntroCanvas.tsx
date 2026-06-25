@@ -123,15 +123,18 @@ function BuildMark({
   const glow = useRef(0);
 
   const mats = useMemo(() => {
-    const white = new THREE.MeshStandardMaterial({
-      color: "#eef0ff", metalness: 0.95, roughness: 0.18,
+    const white = new THREE.MeshPhysicalMaterial({
+      color: "#eef0ff", metalness: 1.0, roughness: 0.1,
       emissive: new THREE.Color("#7c5cff"), emissiveIntensity: 0.25,
-      envMapIntensity: 1.4, transparent: true, opacity: 0,
-    });
-    const purple = new THREE.MeshStandardMaterial({
-      color: "#8b3df2", metalness: 0.8, roughness: 0.22,
-      emissive: new THREE.Color("#a855f7"), emissiveIntensity: 0.9,
       envMapIntensity: 1.6, transparent: true, opacity: 0,
+      clearcoat: 1, clearcoatRoughness: 0.06,
+      iridescence: 0.35, iridescenceIOR: 1.3, iridescenceThicknessRange: [120, 420],
+    });
+    const purple = new THREE.MeshPhysicalMaterial({
+      color: "#8b3df2", metalness: 0.92, roughness: 0.14,
+      emissive: new THREE.Color("#a855f7"), emissiveIntensity: 0.9,
+      envMapIntensity: 1.8, transparent: true, opacity: 0,
+      clearcoat: 1, clearcoatRoughness: 0.1,
     });
     const wire = new THREE.LineBasicMaterial({
       color: "#b9a8ff", transparent: true, opacity: 0,
@@ -143,7 +146,7 @@ function BuildMark({
   const wireframe = useMemo(() => {
     const make = (pts: [number, number][], depth: number) => {
       const geo = buildGeometry(pts, depth);
-      const edges = new THREE.EdgesGeometry(geo, 18);
+      const edges = new THREE.EdgesGeometry(geo, 30);
       geo.dispose();
       return edges;
     };
@@ -217,7 +220,7 @@ function BuildMark({
     mats.white.emissiveIntensity = 0.25 + g * 0.8;
     mats.purple.emissiveIntensity = 0.9 + g * 1.6;
     // marca menor no mobile
-    if (groupRef.current) groupRef.current.scale.setScalar(state.size.width < 768 ? 0.72 : 1.15);
+    if (groupRef.current) groupRef.current.scale.setScalar(state.size.width < 768 ? 0.34 : 1.15);
   });
 
   return (
