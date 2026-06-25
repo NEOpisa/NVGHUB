@@ -7,6 +7,7 @@ import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollJuice from "@/components/ScrollJuice";
 import PageTransition from "@/components/PageTransition";
+import TransitionCanvas from "@/components/scene/TransitionCanvas";
 import FpsMeter from "@/components/FpsMeter";
 import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
@@ -84,6 +85,7 @@ export default function RootLayout({
         />
         <Preloader />
         <PageTransition />
+        <TransitionCanvas />
         <SmoothScroll />
         <ScrollJuice />
         <ScrollToSection />

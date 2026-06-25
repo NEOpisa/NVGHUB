@@ -10,6 +10,7 @@ const ROUTES = [
   { path: "/faq", priority: 0.7 },
   { path: "/contato", priority: 0.8 },
   { path: "/exemplos", priority: 0.6 },
+  { path: "/menu", priority: 0.3 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
