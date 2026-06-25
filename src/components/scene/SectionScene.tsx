@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import SceneItem from "@/components/scene/SceneItem";
 import type { SectionVariant } from "@/components/scene/items/SectionObject";
+import { MQ } from "@/lib/motionConfig";
 
 const SectionObject = dynamic(() => import("@/components/scene/items/SectionObject"), { ssr: false });
 
@@ -21,8 +22,16 @@ export default function SectionScene({
 }) {
   const anchorRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  // Tier leve: sem canvas global no mobile → não monta o objeto 3D de seção
+  // (evita carregar o chunk e observar à toa). Só roda no tier FULL (desktop).
+  const [heavy, setHeavy] = useState(false);
 
   useEffect(() => {
+    setHeavy(window.matchMedia(MQ.full).matches);
+  }, []);
+
+  useEffect(() => {
+    if (!heavy) return;
     const el = anchorRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -36,13 +45,15 @@ export default function SectionScene({
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, []);
+  }, [heavy]);
 
   return (
     <div className={`section-scene ${className}`} ref={anchorRef} aria-hidden="true">
-      <SceneItem>
-        <SectionObject anchorRef={anchorRef} variant={variant} enabled={active} />
-      </SceneItem>
+      {heavy && (
+        <SceneItem>
+          <SectionObject anchorRef={anchorRef} variant={variant} enabled={active} />
+        </SceneItem>
+      )}
     </div>
   );
 }

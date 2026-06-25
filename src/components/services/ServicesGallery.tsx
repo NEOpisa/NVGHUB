@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { MQ } from "@/lib/motionConfig";
 
 const ServicesGalleryCanvas = dynamic(
   () => import("@/components/services/ServicesGalleryCanvas"),
@@ -29,15 +30,17 @@ export default function ServicesGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const [running, setRunning] = useState(false);
-  const [reduced, setReduced] = useState(false);
+  // `lite`: mobile/coarse-pointer/reduced-motion → lista estática (sem o canvas
+  // CRT 3D nem o scroll fixo de 500vh). Site leve e UX de scroll sã no celular.
+  const [lite, setLite] = useState(true);
 
   useEffect(() => {
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    setLite(!window.matchMedia(MQ.full).matches);
   }, []);
 
   // Scroll "pinned" (sticky): mapeia o progresso da seção no índice do serviço.
   useEffect(() => {
-    if (reduced) return;
+    if (lite) return;
     const section = sectionRef.current;
     if (!section) return;
 
@@ -66,10 +69,10 @@ export default function ServicesGallery() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [reduced]);
+  }, [lite]);
 
-  // Fallback acessível (reduced-motion): lista estática dos serviços.
-  if (reduced) {
+  // Tier leve (mobile/reduced-motion): lista estática dos serviços.
+  if (lite) {
     return (
       <section id="servicos" aria-label="Nossos serviços" className="services-fallback">
         <div className="inner">

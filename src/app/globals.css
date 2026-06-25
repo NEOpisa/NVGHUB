@@ -2415,11 +2415,19 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 /* ── Banda de CTA no fim da home ── */
 .home-cta {
   padding: var(--section-pad) 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--accent-border);
   background:
-    radial-gradient(ellipse 72% 82% at 68% 32%, rgba(124,58,237,0.13), transparent 60%),
-    rgba(10,10,10,0.30);
+    radial-gradient(ellipse 58% 92% at 20% 48%, rgba(124,58,237,0.22), transparent 62%),
+    radial-gradient(ellipse 80% 100% at 82% 28%, rgba(124,58,237,0.12), transparent 70%),
+    linear-gradient(180deg, rgba(22,17,33,0.65), rgba(13,13,13,0.55));
   position: relative;
+}
+/* Realce sutil na borda superior (separa do marquee acima) */
+.home-cta::after {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+  opacity: 0.5; pointer-events: none;
 }
 .home-cta-inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -3539,3 +3547,151 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .services-fallback-list h3 { font-family: var(--font-display); font-size: 20px; }
 .services-fallback-list p { color: var(--text-secondary); margin: 6px 0; }
 .services-fallback-list span { font-family: var(--font-mono); font-size: 12px; color: var(--accent-light); }
+
+/* ============================================================
+   Seção Ecossistema — "Capilares de Crescimento" (camadas)
+   ============================================================ */
+.eco {
+  padding: var(--section-pad) 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.section-scene-eco { top: 4%; right: 4%; }
+@media (max-width: 768px) {
+  .section-scene-eco { top: 0; right: -8%; }
+}
+
+.eco-header { max-width: 680px; margin-bottom: clamp(36px, 5vw, 56px); }
+
+.eco-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+/* Trilho vertical que conecta as camadas (o "ecossistema" ligado) */
+.eco-stack::before {
+  content: "";
+  position: absolute;
+  left: clamp(26px, 4vw, 40px);
+  top: 28px;
+  bottom: 28px;
+  width: 2px;
+  background: linear-gradient(180deg,
+    var(--accent-light), var(--accent) 50%, transparent);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.eco-layer {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(56px, 9vw, 84px) 1fr;
+  grid-template-areas:
+    "num head"
+    "num desc"
+    "num caps";
+  column-gap: clamp(16px, 3vw, 28px);
+  row-gap: 8px;
+  padding: clamp(20px, 3vw, 28px);
+  background: linear-gradient(120deg, var(--surface), var(--accent-subtle) 220%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.eco-layer:hover {
+  border-color: var(--accent-border);
+  transform: translateX(6px);
+  box-shadow: 0 0 32px var(--accent-glow);
+}
+
+.eco-layer-num {
+  grid-area: num;
+  font-family: var(--font-mono);
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-light);
+  align-self: start;
+  position: relative;
+  z-index: 1;
+}
+
+.eco-layer-head { grid-area: head; display: flex; flex-direction: column; gap: 4px; }
+.eco-layer-tier {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+.eco-layer-title {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 2.4vw, 24px);
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+.eco-layer-desc {
+  grid-area: desc;
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.eco-capilares {
+  grid-area: caps;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.eco-capilar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.eco-capilar-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-light);
+  box-shadow: 0 0 6px var(--accent-light);
+}
+
+@media (max-width: 600px) {
+  .eco-stack::before { left: 18px; }
+  .eco-layer {
+    grid-template-columns: 1fr;
+    grid-template-areas: "num" "head" "desc" "caps";
+    row-gap: 10px;
+  }
+  .eco-layer-num { font-size: 26px; }
+}
+
+/* ============================================================
+   Densidade mobile — UI ~20% menor no celular (pedido do cliente).
+   Lever único: a base rem encolhe (~81%), então toda tipografia/clamp/
+   spacing em rem acompanha. Ajuste `html font-size` aqui para calibrar.
+   ============================================================ */
+@media (max-width: 640px) {
+  html { font-size: 13px; }            /* 13/16 ≈ 81% → conteúdo ~19% menor */
+  :root {
+    --section-pad: 60px;
+    --section-pad-mobile: 60px;
+    --gutter: 22px;
+  }
+  /* header mais compacto */
+  .site-header-inner { height: 54px; padding: 0 16px; }
+  .menu-toggle { padding: 8px 13px; font-size: 11px; gap: 9px; }
+  .menu-toggle-label { min-width: 36px; }
+  .nav-logo { width: 32px; height: auto; }
+  .wordmark-text { font-size: 12.5px; letter-spacing: 0.18em; }
+  /* alvos de toque continuam ≥ 40px mesmo com a UI menor */
+  .menu-toggle { min-height: 40px; }
+}
