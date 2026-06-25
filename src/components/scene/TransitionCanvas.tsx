@@ -106,30 +106,30 @@ function DarkLogo({ onActive }: { onActive: (a: boolean) => void }) {
 
         coverTl = gsap.timeline({ onComplete: () => txBus.emit("covered") });
         if (backdropRef.current) {
-          coverTl.to(backdropRef.current.material as THREE.Material, { opacity: 0.97, duration: 0.5, ease: "power2.out" }, 0);
+          coverTl.to(backdropRef.current.material as THREE.Material, { opacity: 0.97, duration: 0.28, ease: "power2.out" }, 0);
         }
         coverTl
-          .to(group.position, { x: 0, y: 0, z: 0, duration: 0.7, ease: "power3.inOut" }, 0)
-          .to(group.scale, { x: 0.92, y: 0.92, z: 0.92, duration: 0.7, ease: "power3.inOut" }, 0)
-          .to(group.rotation, { y: 0, duration: 0.7, ease: "power3.out" }, 0)
-          .to(glow, { current: 1, duration: 0.6, ease: "power2.out" }, 0.1);
+          .to(group.position, { x: 0, y: 0, z: 0, duration: 0.4, ease: "power3.out" }, 0)
+          .to(group.scale, { x: 0.92, y: 0.92, z: 0.92, duration: 0.4, ease: "power3.out" }, 0)
+          .to(group.rotation, { y: 0, duration: 0.4, ease: "power3.out" }, 0)
+          .to(glow, { current: 1, duration: 0.35, ease: "power2.out" }, 0.05);
         meshes.forEach((m) => {
           const pivot = m.userData.pivot as THREE.Vector3;
-          coverTl!.to(m.position, { x: pivot.x, y: pivot.y, z: pivot.z, duration: 0.6, ease: "power3.out" }, 0.05);
+          coverTl!.to(m.position, { x: pivot.x, y: pivot.y, z: pivot.z, duration: 0.34, ease: "power3.out" }, 0.03);
         });
-        if (!fromHero) coverTl.to([mats.white, mats.purple], { opacity: 1, duration: 0.4 }, 0);
+        if (!fromHero) coverTl.to([mats.white, mats.purple], { opacity: 1, duration: 0.25 }, 0);
       } else if (e === "reveal") {
         coverTl?.kill();
         const tl = gsap.timeline({ onComplete: () => onActive(false) });
         meshes.forEach((m) => {
           const pivot = m.userData.pivot as THREE.Vector3;
           const dir = m.userData.dir as THREE.Vector3;
-          tl.to(m.position, { x: pivot.x + dir.x * 3, y: pivot.y + dir.y * 3, z: pivot.z + dir.z * 3, duration: 0.7, ease: "power2.in" }, 0);
+          tl.to(m.position, { x: pivot.x + dir.x * 3, y: pivot.y + dir.y * 3, z: pivot.z + dir.z * 3, duration: 0.4, ease: "power2.in" }, 0);
         });
-        tl.to([mats.white, mats.purple], { opacity: 0, duration: 0.6, ease: "power2.in" }, 0.1);
-        tl.to(glow, { current: 0, duration: 0.5 }, 0);
+        tl.to([mats.white, mats.purple], { opacity: 0, duration: 0.34, ease: "power2.in" }, 0.06);
+        tl.to(glow, { current: 0, duration: 0.3 }, 0);
         if (backdropRef.current) {
-          tl.to(backdropRef.current.material as THREE.Material, { opacity: 0, duration: 0.7, ease: "power2.inOut" }, 0.1);
+          tl.to(backdropRef.current.material as THREE.Material, { opacity: 0, duration: 0.42, ease: "power2.inOut" }, 0.06);
         }
       }
     });

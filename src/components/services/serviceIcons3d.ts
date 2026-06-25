@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 /** Retângulo arredondado centrado (para extrudar placas/telas). */
-export function roundedRectShape(w: number, h: number, r: number) {
+function roundedRectShape(w: number, h: number, r: number) {
   const s = new THREE.Shape();
   const x = -w / 2, y = -h / 2;
   s.moveTo(x + r, y);
