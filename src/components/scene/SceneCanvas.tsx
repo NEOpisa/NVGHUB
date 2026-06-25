@@ -197,6 +197,12 @@ export default function SceneCanvas() {
     setUseGL(ok);
   }, []);
 
+  // Marca no <body> que o WebGL está ativo: o CSS dos botões 3D só zera o fundo
+  // DOM quando há canvas pra desenhar a placa (senão mantém o visual de fallback).
+  useEffect(() => {
+    document.body.classList.toggle("gl-on", useGL === true);
+  }, [useGL]);
+
   if (useGL === null) return null;
   if (!useGL) return <AmbientField />;
 

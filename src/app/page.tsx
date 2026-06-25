@@ -7,7 +7,7 @@ import ServicesSection from "@/components/ServicesSection";
 import ExploreSection from "@/components/ExploreSection";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
-import Link from "next/link";
+import Button3D from "@/components/Button3D";
 import { useReveal } from "@/hooks/useReveal";
 
 export default function Home() {
@@ -55,13 +55,13 @@ export default function Home() {
             </p>
           </div>
           <div className="home-cta-actions" ref={ctaActionsRef} data-parallax="0.1">
-            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
+            <Button3D href={WA} external tone="whats" className="btn-primary btn-whatsapp">
               <WhatsAppIcon />
               Falar pelo WhatsApp
-            </a>
-            <Link href="/pacotes" className="btn-ghost">
+            </Button3D>
+            <Button3D href="/pacotes" tone="ghost" className="btn-ghost">
               Ver tipos de solução
-            </Link>
+            </Button3D>
           </div>
         </div>
       </section>
