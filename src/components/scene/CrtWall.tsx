@@ -22,16 +22,17 @@ export default function CrtWall() {
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const crt = buildCrt("#6e54b0", true);
+        // espalhadas: espaçamento maior, jitter forte e bastante variação de profundidade
         crt.group.position.set(
-          (c - (cols - 1) / 2) * 3.1 + (Math.random() - 0.5) * 0.7,
-          (r - (rows - 1) / 2) * 2.7 + (Math.random() - 0.5) * 0.5,
-          -10 - Math.random() * 3.5
+          (c - (cols - 1) / 2) * 5.2 + (Math.random() - 0.5) * 3.0,
+          (r - (rows - 1) / 2) * 4.4 + (Math.random() - 0.5) * 2.4,
+          -9 - Math.random() * 12
         );
-        crt.group.scale.setScalar(0.7 + Math.random() * 0.25);
-        crt.group.rotation.set((Math.random() - 0.5) * 0.18, (Math.random() - 0.5) * 0.32, 0);
-        crt.uniforms.uOn.value = 0.32 + Math.random() * 0.28;
+        crt.group.scale.setScalar(0.6 + Math.random() * 0.5);
+        crt.group.rotation.set((Math.random() - 0.5) * 0.3, (Math.random() - 0.5) * 0.5, 0);
+        crt.uniforms.uOn.value = 0.3 + Math.random() * 0.3;
         group.add(crt.group);
-        tvs.push({ crt, phase: Math.random() * 10, nextStatic: 1 + Math.random() * 5 });
+        tvs.push({ crt, phase: Math.random() * 10, nextStatic: 1 + Math.random() * 6 });
       }
     }
     return { group, tvs };
