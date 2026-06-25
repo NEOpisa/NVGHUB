@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -137,7 +137,9 @@ export default function TransitionCanvas() {
         frameloop={active ? "always" : "never"}
         gl={{ antialias: false, alpha: true }}
       >
-        <Doors onActive={setActive} />
+        <Suspense fallback={null}>
+          <Doors onActive={setActive} />
+        </Suspense>
       </Canvas>
     </div>
   );

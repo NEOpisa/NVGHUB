@@ -3383,11 +3383,15 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 
 /* Camada da transição em WebGL: por cima de tudo, só visual (não bloqueia
    cliques — a navegação acontece no DOM por baixo). */
+.page-transition-gl,
+.page-transition-gl * {
+  /* só visual: NUNCA intercepta clique (o wrapper do R3F também não) — senão
+     a camada full-screen bloquearia toda a navegação do site. */
+  pointer-events: none !important;
+}
 .page-transition-gl {
   position: fixed; inset: 0; z-index: 1100;
-  pointer-events: none;
 }
-.page-transition-gl canvas { pointer-events: none !important; }
 
 /* Rota /menu — a navegação principal virou página, sobre o fundo variante do
    canvas. Reaproveita as classes do antigo overlay, mas revela o conteúdo. */
@@ -3396,6 +3400,14 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   display: grid; grid-template-columns: 1.5fr 1fr;
   align-items: center; gap: clamp(32px, 5vw, 80px);
   padding: 132px clamp(28px, 7vw, 120px) 64px;
+}
+/* Escurece o fundo do canvas atrás do menu, pra leitura (a variante da cena
+   continua aparecendo por baixo do véu). */
+.menu-page::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 40%, rgba(8, 8, 11, 0.55), rgba(6, 5, 12, 0.86) 75%),
+    rgba(5, 4, 10, 0.55);
 }
 .menu-page-inner {
   display: contents;
