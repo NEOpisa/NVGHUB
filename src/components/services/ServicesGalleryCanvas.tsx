@@ -43,8 +43,8 @@ function Stage({ active }: { active: number }) {
     icons.forEach((g, i) => { g.visible = i === active; });
     const g = icons[active];
     if (!g) return;
-    gsap.fromTo(g.scale, { x: 0.4, y: 0.4, z: 0.4 }, { x: 1, y: 1, z: 1, duration: 0.8, ease: "back.out(1.7)" });
-    gsap.fromTo(spin, { current: spin.current - Math.PI * 1.2 }, { current: spin.current, duration: 0.9, ease: "power3.out" });
+    gsap.fromTo(g.scale, { x: 0.55, y: 0.55, z: 0.55 }, { x: 1, y: 1, z: 1, duration: 0.4, ease: "back.out(2)" });
+    gsap.fromTo(spin, { current: spin.current - Math.PI * 0.8 }, { current: spin.current, duration: 0.45, ease: "power3.out" });
   }, [active, icons]);
 
   useFrame((state, delta) => {

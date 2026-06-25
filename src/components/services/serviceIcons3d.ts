@@ -62,15 +62,15 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     add(new THREE.BoxGeometry(0.5, 0.22, 0.3), metal, [0, -1.0, 0]);
     add(new THREE.BoxGeometry(1.0, 0.1, 0.3), metal, [0, -1.12, 0]);
   } else if (kind === "system") {
-    // sistema: pilha de discos (banco de dados/painel) — radialmente simétrico,
-    // gira bem de qualquer lado, sem face "errada".
-    const disc = (h: number) => new THREE.CylinderGeometry(1.0, 1.0, h, 48);
-    add(disc(0.34), accent, [0, 0.66, 0]);
-    add(disc(0.34), metal, [0, 0, 0]);
-    add(disc(0.34), metal, [0, -0.66, 0]);
-    // anéis finos entre os discos (acento)
-    add(new THREE.TorusGeometry(1.0, 0.03, 10, 48), accent, [0, 0.33, 0], [Math.PI / 2, 0, 0]);
-    add(new THREE.TorusGeometry(1.0, 0.03, 10, 48), accent, [0, -0.33, 0], [Math.PI / 2, 0, 0]);
+    // sistema: armário com GAVETAS ABERTAS (painel/gestão). As gavetas saem pra
+    // frente e são espelhadas atrás (sempre mostra o lado certo ao girar).
+    add(new THREE.BoxGeometry(1.7, 1.9, 0.9), metal); // chassi
+    const rows: [number, number][] = [[0.6, 0.34], [0.0, 0.6], [-0.6, 0.22]]; // [y, quanto pra fora]
+    rows.forEach(([y, out]) => {
+      const z = 0.45 + out;
+      addBoth(new THREE.BoxGeometry(1.5, 0.44, 0.52), metal, z, [0, y]); // corpo da gaveta
+      addBoth(new THREE.BoxGeometry(0.5, 0.09, 0.12), accent, z + 0.3, [0, y]); // puxador
+    });
   } else if (kind === "seo") {
     // lupa: anel + cabo (simétricos) + lente (acento espelhado)
     add(new THREE.TorusGeometry(0.85, 0.16, 20, 48), metal, [0, 0.2, 0]);
@@ -92,10 +92,17 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     c.lineTo(0.4, 0.55); c.lineTo(-0.1, -0.05); c.lineTo(-0.35, 0.2);
     addBoth(extrude(c, 0.08), accent, 0.15);
   } else {
-    // saas: tela + cubos 3D (já corretos de qualquer ângulo)
-    add(extrude(roundedRectShape(2.4, 1.5, 0.16), 0.18), metal);
-    add(new THREE.BoxGeometry(0.6, 0.6, 0.6), accent, [0.55, 0.45, 0], [0.4, 0.6, 0]);
-    add(new THREE.BoxGeometry(0.34, 0.34, 0.34), metal, [-0.6, -0.35, 0], [0.5, 0.3, 0.2]);
+    // saas: robozinho (plataforma pronta) — cabeça + olhos + antena + corpo + braços.
+    add(new THREE.BoxGeometry(1.15, 0.9, 0.72), metal, [0, 0.72, 0]); // cabeça
+    addBoth(new THREE.CylinderGeometry(0.13, 0.13, 0.08, 22), accent, 0.37, [-0.27, 0.8], [Math.PI / 2, 0, 0]); // olho esq
+    addBoth(new THREE.CylinderGeometry(0.13, 0.13, 0.08, 22), accent, 0.37, [0.27, 0.8], [Math.PI / 2, 0, 0]); // olho dir
+    addBoth(new THREE.BoxGeometry(0.42, 0.08, 0.05), accent, 0.37, [0, 0.5]); // "boca"
+    add(new THREE.CylinderGeometry(0.035, 0.035, 0.38, 12), metal, [0, 1.32, 0]); // antena
+    add(new THREE.SphereGeometry(0.11, 16, 16), accent, [0, 1.52, 0]); // ponta da antena
+    add(new THREE.BoxGeometry(1.35, 1.15, 0.78), metal, [0, -0.4, 0]); // corpo
+    addBoth(new THREE.BoxGeometry(0.62, 0.5, 0.06), accent, 0.42, [0, -0.35]); // painel do peito
+    add(new THREE.BoxGeometry(0.3, 0.75, 0.3), metal, [-0.9, -0.4, 0]); // braço esq
+    add(new THREE.BoxGeometry(0.3, 0.75, 0.3), metal, [0.9, -0.4, 0]); // braço dir
   }
 
   g.userData.geos = geos;
