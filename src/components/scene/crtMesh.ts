@@ -125,23 +125,56 @@ export function buildCrt(accent = "#6e54b0", simple = false): Crt {
   faceGeo.center();
   add(faceGeo, bezel, [0, 0, 0.35]);
   add(new THREE.BoxGeometry(3.6, 2.9, 2.2), cabinet, [0, 0, -0.85]);
+  const ledMat = new THREE.MeshStandardMaterial({
+    color: "#241f3a", metalness: 0.3, roughness: 0.4,
+    emissive: new THREE.Color("#b14bff"), emissiveIntensity: 1.6,
+  });
+  mats.push(ledMat);
+
   if (!simple) {
-    add(new THREE.BoxGeometry(1.8, 1.5, 0.8), cabinet, [0, 0, -2.2]);
+    // tubo traseiro afunilado (corpo + neck)
+    add(new THREE.BoxGeometry(2.0, 1.7, 0.7), cabinet, [0, 0, -1.95]);
+    add(new THREE.BoxGeometry(1.4, 1.15, 0.7), cabinet, [0, 0, -2.45]);
     // base
     add(new THREE.BoxGeometry(2.6, 0.24, 1.5), cabinet, [0, -1.72, -0.5]);
     add(new THREE.BoxGeometry(2.9, 0.12, 1.7), trim, [0, -1.84, -0.5]);
-    // knobs (canto inferior direito da frente)
-    const knob = track(new THREE.CylinderGeometry(0.13, 0.13, 0.14, 20));
+    // knobs com tampa de acento (canto inferior direito da frente)
+    const knob = track(new THREE.CylinderGeometry(0.135, 0.16, 0.16, 32));
+    const cap = track(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 24));
     for (let i = 0; i < 3; i++) {
-      const o = new THREE.Mesh(knob, trim);
-      o.position.set(1.62, -0.9 + i * 0.42, 0.5);
-      o.rotation.x = Math.PI / 2;
-      group.add(o);
+      const k = new THREE.Mesh(knob, trim);
+      k.position.set(1.62, -0.92 + i * 0.42, 0.5);
+      k.rotation.x = Math.PI / 2;
+      group.add(k);
+      const c = new THREE.Mesh(cap, ledMat);
+      c.position.set(1.62, -0.92 + i * 0.42, 0.62);
+      c.rotation.x = Math.PI / 2;
+      group.add(c);
     }
-    // vents laterais
-    for (let i = 0; i < 5; i++) {
-      add(new THREE.BoxGeometry(0.05, 0.06, 1.4), trim, [1.84, 0.7 - i * 0.22, -0.85]);
+    // LED de power (emissivo)
+    add(track(new THREE.SphereGeometry(0.05, 20, 16)), ledMat, [1.62, 0.62, 0.56]);
+    // placa da marca + grade do alto-falante na faixa inferior
+    add(new THREE.BoxGeometry(0.7, 0.12, 0.04), trim, [-1.05, -1.32, 0.55]);
+    for (let i = 0; i < 6; i++) {
+      add(new THREE.BoxGeometry(0.045, 0.26, 0.04), trim, [-0.2 + i * 0.13, -1.32, 0.55]);
     }
+    // vents laterais (mais finos e numerosos)
+    for (let i = 0; i < 8; i++) {
+      add(new THREE.BoxGeometry(0.05, 0.045, 1.4), trim, [1.86, 0.85 - i * 0.16, -0.85]);
+    }
+    // antena em V no topo
+    const rod = track(new THREE.CylinderGeometry(0.018, 0.012, 1.6, 12));
+    const tip = track(new THREE.SphereGeometry(0.04, 16, 12));
+    [-1, 1].forEach((s) => {
+      const r = new THREE.Mesh(rod, trim);
+      r.position.set(s * 0.45, 1.95, -1.7);
+      r.rotation.z = s * 0.5;
+      group.add(r);
+      const t = new THREE.Mesh(tip, trim);
+      t.position.set(s * 1.05, 2.65, -1.7);
+      group.add(t);
+    });
+    add(new THREE.SphereGeometry(0.12, 20, 16), cabinet, [0, 1.45, -1.7]); // base da antena
   }
 
   // vidro/tela (shader) por cima do conteúdo

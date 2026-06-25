@@ -118,7 +118,7 @@ export default function ServicesGalleryCanvas({ active }: { active: number; runn
   return (
     <Canvas
       className="services-gl-canvas"
-      dpr={[1, 1.5]}
+      dpr={[1, 2]}
       frameloop="always"
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       camera={{ position: [0, 0, 6.4], fov: 45 }}

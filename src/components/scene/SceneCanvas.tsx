@@ -308,8 +308,8 @@ export default function SceneCanvas() {
   return (
     <div className="webgl-bg" aria-hidden="true">
       <Canvas
-        dpr={1}
-        gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
+        dpr={[1, 1.75]}
+        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 6], fov: 60 }}
       >
         <Ambient variant={variant} />
