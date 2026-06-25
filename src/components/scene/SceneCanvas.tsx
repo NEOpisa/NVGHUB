@@ -6,6 +6,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import AmbientField from "@/components/AmbientField";
+import CrtWall from "@/components/scene/CrtWall";
 import { scene } from "@/components/scene/tunnel";
 
 // Quad em clip-space (cobre a tela inteira, independente da câmera).
@@ -314,6 +315,7 @@ export default function SceneCanvas() {
       >
         <Ambient variant={variant} />
         <FlowField />
+        <CrtWall />
         {/* luzes compartilhadas para os itens injetados pelas seções */}
         <ambientLight intensity={0.5} />
         <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />
