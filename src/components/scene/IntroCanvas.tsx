@@ -21,28 +21,22 @@ const PX_MAX_SEG = 1500;
 const PX_BOX = new THREE.Vector3(10, 6.5, 5.5);
 
 function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
-  const N = PX_N;
-  const DIST = PX_DIST;
-  const MAX_SEG = PX_MAX_SEG;
-  const BOX = PX_BOX;
-
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const data = useMemo(() => {
-    const pos = new Float32Array(N * 3);
-    const vel = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * BOX.x;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * BOX.y;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * BOX.z;
+    const pos = new Float32Array(PX_N * 3);
+    const vel = new Float32Array(PX_N * 3);
+    for (let i = 0; i < PX_N; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * PX_BOX.x;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * PX_BOX.y;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * PX_BOX.z;
       vel[i * 3] = (Math.random() - 0.5) * 0.25;
       vel[i * 3 + 1] = (Math.random() - 0.5) * 0.25;
       vel[i * 3 + 2] = (Math.random() - 0.5) * 0.18;
     }
-    const segPos = new Float32Array(MAX_SEG * 2 * 3);
-    const segCol = new Float32Array(MAX_SEG * 2 * 3);
+    const segPos = new Float32Array(PX_MAX_SEG * 2 * 3);
+    const segCol = new Float32Array(PX_MAX_SEG * 2 * 3);
     return { pos, vel, segPos, segCol };
   }, []);
 
@@ -67,11 +61,11 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
     const dt = Math.min(delta, 0.05);
     const { pos, vel, segPos, segCol } = data;
     // drift + ricochete na caixa
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < PX_N; i++) {
       for (let a = 0; a < 3; a++) {
         const k = i * 3 + a;
         pos[k] += vel[k] * dt;
-        const lim = a === 0 ? BOX.x / 2 : a === 1 ? BOX.y / 2 : BOX.z / 2;
+        const lim = a === 0 ? PX_BOX.x / 2 : a === 1 ? PX_BOX.y / 2 : PX_BOX.z / 2;
         if (pos[k] > lim || pos[k] < -lim) vel[k] *= -1;
       }
     }
@@ -79,13 +73,13 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
 
     // conexões dentro do raio
     let seg = 0;
-    for (let i = 0; i < N && seg < MAX_SEG; i++) {
+    for (let i = 0; i < PX_N && seg < PX_MAX_SEG; i++) {
       const ix = pos[i * 3], iy = pos[i * 3 + 1], iz = pos[i * 3 + 2];
-      for (let j = i + 1; j < N && seg < MAX_SEG; j++) {
+      for (let j = i + 1; j < PX_N && seg < PX_MAX_SEG; j++) {
         const dx = ix - pos[j * 3], dy = iy - pos[j * 3 + 1], dz = iz - pos[j * 3 + 2];
         const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (d < DIST) {
-          const a = (1 - d / DIST) * (opacity.current ?? 0);
+        if (d < PX_DIST) {
+          const a = (1 - d / PX_DIST) * (opacity.current ?? 0);
           const o = seg * 6;
           segPos[o] = ix; segPos[o + 1] = iy; segPos[o + 2] = iz;
           segPos[o + 3] = pos[j * 3]; segPos[o + 4] = pos[j * 3 + 1]; segPos[o + 5] = pos[j * 3 + 2];
