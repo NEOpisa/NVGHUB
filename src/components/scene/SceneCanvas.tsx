@@ -6,7 +6,6 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import AmbientField from "@/components/AmbientField";
-import CrtWall from "@/components/scene/CrtWall";
 import { scene } from "@/components/scene/tunnel";
 
 // Quad em clip-space (cobre a tela inteira, independente da câmera).
@@ -56,10 +55,10 @@ const fragmentShader = `
     float n  = fbm(np);
     float n2 = fbm(np * 1.9 - vec2(t * 0.6, scr * 0.18));
     float neb = smoothstep(mix(0.42, 0.34, uVariant), 1.0, n * 0.6 + n2 * 0.5);
-    vec3 purple = vec3(0.34, 0.27, 0.50);
-    vec3 violet = vec3(0.46, 0.40, 0.62);
-    vec3 magenta = vec3(0.40, 0.28, 0.52);
-    col += neb * mix(0.075, 0.12, uVariant) * mix(mix(purple, magenta, uVariant), violet, n2);
+    vec3 purple = vec3(0.486, 0.227, 0.929);
+    vec3 violet = vec3(0.624, 0.431, 0.976);
+    vec3 magenta = vec3(0.71, 0.30, 0.93);
+    col += neb * mix(0.09, 0.15, uVariant) * mix(mix(purple, magenta, uVariant), violet, n2);
 
     vec2 m = uMouse - 0.5;
     for (int i = 0; i < 2; i++){
@@ -221,10 +220,10 @@ const flowFragment = `
     if (d > 0.5) discard;
     float a = smoothstep(0.5, 0.0, d);
     a *= a;
-    vec3 violet = vec3(0.42, 0.36, 0.60);
-    vec3 magenta = vec3(0.50, 0.34, 0.58);
+    vec3 violet = vec3(0.55, 0.35, 0.95);
+    vec3 magenta = vec3(0.80, 0.34, 0.95);
     vec3 col = mix(violet, magenta, vGlow);
-    gl_FragColor = vec4(col * mix(0.4, 1.0, vGlow), a * 0.8);
+    gl_FragColor = vec4(col * mix(0.4, 1.0, vGlow), a * 0.85);
   }
 `;
 
@@ -315,7 +314,6 @@ export default function SceneCanvas() {
       >
         <Ambient variant={variant} />
         <FlowField />
-        <CrtWall />
         {/* luzes compartilhadas para os itens injetados pelas seções */}
         <ambientLight intensity={0.5} />
         <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />

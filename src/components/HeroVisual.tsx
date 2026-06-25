@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import SceneItem from "@/components/scene/SceneItem";
 
-// O mascote CRT (NeoVision) vive na cena global (canvas único). Sob demanda.
-const CRTItem = dynamic(() => import("@/components/scene/items/CRTItem"), {
+// O item da logo vive na cena global (canvas único). Carregado sob demanda.
+const LogoItem = dynamic(() => import("@/components/scene/items/LogoItem"), {
   ssr: false,
 });
 
@@ -38,7 +38,7 @@ export default function HeroVisual() {
   return (
     <div className="logo-scene" ref={anchorRef} aria-hidden="true">
       <SceneItem>
-        <CRTItem anchorRef={anchorRef} enabled={active} />
+        <LogoItem anchorRef={anchorRef} enabled={active} />
       </SceneItem>
     </div>
   );

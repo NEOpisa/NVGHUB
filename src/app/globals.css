@@ -13,17 +13,17 @@
 
   --border:         #2a2a2a;
   --border-hover:   #3a3a3a;
-  --accent-border:  rgba(110,84,176,0.32);
+  --accent-border:  rgba(124,58,237,0.35);
 
   --text-primary:   #f0f0f0;
   --text-secondary: #a0a0a0;
   --text-muted:     #606060;
 
-  --accent:         #6e54b0;
-  --accent-hover:   #5a4488;
-  --accent-light:   #9a86c4;
-  --accent-glow:    rgba(110,84,176,0.22);
-  --accent-subtle:  rgba(110,84,176,0.12);
+  --accent:         #7c3aed;
+  --accent-hover:   #6d28d9;
+  --accent-light:   #9f6ef9;
+  --accent-glow:    rgba(124,58,237,0.24);
+  --accent-subtle:  rgba(124,58,237,0.12);
   --bg-veil:       rgba(13,13,13,0.55);
   --bg-2-veil:     rgba(10,10,10,0.6);
   --green:          #10b981;
@@ -38,7 +38,7 @@
 
   /* Holográfico — destaque "Sua solução" (texto na área Navegue) e foil
      (botão dedicado do menu). */
-  --holo-text: linear-gradient(110deg, #b9a9e0 0%, #6e54b0 28%, #d8d4e2 52%, #8a78c0 76%, #b9a9e0 100%);
+  --holo-text: linear-gradient(110deg, #c9a3ff 0%, #7c3aed 22%, #5ad1ff 44%, #8affc9 62%, #ffe08a 80%, #c9a3ff 100%);
   --holo-foil: repeating-linear-gradient(
     110deg,
     rgba(255, 120, 220, 0) 0%,
