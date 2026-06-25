@@ -130,40 +130,144 @@ function Ambient({ variant }: { variant: number }) {
   );
 }
 
-// Campo de partículas 3D (profundidade), reativo a mouse e scroll.
-function Particles() {
-  const ref = useRef<THREE.Points>(null);
-  const positions = useMemo(() => {
-    const n = 700;
-    const arr = new Float32Array(n * 3);
+/* ─── Campo de fluxo (curl noise) ─── correntes sedosas de partículas finas que
+   serpenteiam por um campo vetorial divergente-zero. Tudo na GPU: o vertex
+   shader desloca cada partícula pela curl de um ruído simplex animado. */
+const flowVertex = `
+  uniform float uTime;
+  uniform float uScroll;
+  uniform vec2 uMouse;
+  attribute float aSeed;
+  varying float vGlow;
+
+  // simplex 3D noise (Ashima / Stefan Gustavson)
+  vec4 permute(vec4 x){ return mod(((x*34.0)+1.0)*x, 289.0); }
+  vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159 - 0.85373472095314 * r; }
+  float snoise(vec3 v){
+    const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+    vec3 i  = floor(v + dot(v, C.yyy));
+    vec3 x0 = v - i + dot(i, C.xxx);
+    vec3 g = step(x0.yzx, x0.xyz);
+    vec3 l = 1.0 - g;
+    vec3 i1 = min(g.xyz, l.zxy);
+    vec3 i2 = max(g.xyz, l.zxy);
+    vec3 x1 = x0 - i1 + C.xxx;
+    vec3 x2 = x0 - i2 + C.yyy;
+    vec3 x3 = x0 - D.yyy;
+    i = mod(i, 289.0);
+    vec4 p = permute(permute(permute(
+              i.z + vec4(0.0, i1.z, i2.z, 1.0))
+            + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+            + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+    float n_ = 0.142857142857;
+    vec3 ns = n_ * D.wyz - D.xzx;
+    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+    vec4 x_ = floor(j * ns.z);
+    vec4 y_ = floor(j - 7.0 * x_);
+    vec4 x = x_ * ns.x + ns.yyyy;
+    vec4 y = y_ * ns.x + ns.yyyy;
+    vec4 h = 1.0 - abs(x) - abs(y);
+    vec4 b0 = vec4(x.xy, y.xy);
+    vec4 b1 = vec4(x.zw, y.zw);
+    vec4 s0 = floor(b0) * 2.0 + 1.0;
+    vec4 s1 = floor(b1) * 2.0 + 1.0;
+    vec4 sh = -step(h, vec4(0.0));
+    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
+    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
+    vec3 p0 = vec3(a0.xy, h.x);
+    vec3 p1 = vec3(a0.zw, h.y);
+    vec3 p2 = vec3(a1.xy, h.z);
+    vec3 p3 = vec3(a1.zw, h.w);
+    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+    p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+    m = m * m;
+    return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+  }
+  vec3 pot(vec3 p){
+    return vec3(snoise(p), snoise(p + vec3(31.4, 17.7, 4.3)), snoise(p + vec3(-12.1, 8.9, 22.2)));
+  }
+  vec3 curl(vec3 p){
+    const float e = 0.18;
+    vec3 dx = (pot(p + vec3(e,0.0,0.0)) - pot(p - vec3(e,0.0,0.0))) / (2.0*e);
+    vec3 dy = (pot(p + vec3(0.0,e,0.0)) - pot(p - vec3(0.0,e,0.0))) / (2.0*e);
+    vec3 dz = (pot(p + vec3(0.0,0.0,e)) - pot(p - vec3(0.0,0.0,e))) / (2.0*e);
+    return vec3(dy.z - dz.y, dz.x - dx.z, dx.y - dy.x);
+  }
+
+  void main(){
+    vec3 home = position;
+    float t = uTime * 0.05;
+    vec3 fp = home * 0.16 + vec3(0.0, 0.0, t) + uMouse.x * 0.1;
+    vec3 flow = curl(fp);
+    vec3 p = home + flow * 1.7 + vec3(uMouse * 0.4, 0.0);
+    p.y += uScroll * 0.5;
+    vGlow = clamp(length(flow.xy) * 0.7, 0.15, 1.0);
+    vec4 mv = modelViewMatrix * vec4(p, 1.0);
+    gl_Position = projectionMatrix * mv;
+    float s = mix(1.6, 4.8, aSeed);
+    gl_PointSize = s * (9.0 / -mv.z);
+  }
+`;
+
+const flowFragment = `
+  precision mediump float;
+  varying float vGlow;
+  void main(){
+    vec2 c = gl_PointCoord - 0.5;
+    float d = length(c);
+    if (d > 0.5) discard;
+    float a = smoothstep(0.5, 0.0, d);
+    a *= a;
+    vec3 violet = vec3(0.55, 0.35, 0.95);
+    vec3 magenta = vec3(0.80, 0.34, 0.95);
+    vec3 col = mix(violet, magenta, vGlow);
+    gl_FragColor = vec4(col * mix(0.4, 1.0, vGlow), a * 0.85);
+  }
+`;
+
+function FlowField() {
+  const scroll = useRef(0);
+  const { geometry, uniforms } = useMemo(() => {
+    const n = 1300;
+    const pos = new Float32Array(n * 3);
+    const seed = new Float32Array(n);
     for (let i = 0; i < n; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 20;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 13;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 12 - 2;
+      pos[i * 3] = (Math.random() - 0.5) * 16;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 11;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 9 - 1;
+      seed[i] = Math.random();
     }
-    return arr;
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
+    const u = {
+      uTime: { value: 0 },
+      uScroll: { value: 0 },
+      uMouse: { value: new THREE.Vector2(0, 0) },
+    };
+    return { geometry: g, uniforms: u };
   }, []);
 
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
   useFrame((state, delta) => {
-    const pts = ref.current;
-    if (!pts) return;
-    pts.rotation.y += delta * 0.02;
-    pts.position.x += (state.pointer.x * 0.7 - pts.position.x) * 0.03;
-    pts.position.y += (-state.pointer.y * 0.5 - pts.position.y) * 0.03;
-    pts.position.z = (window.scrollY / Math.max(window.innerHeight, 1)) * 2.2;
+    uniforms.uTime.value += Math.min(delta, 0.05);
+    const target = window.scrollY / Math.max(window.innerHeight, 1);
+    scroll.current += (target - scroll.current) * 0.06;
+    uniforms.uScroll.value = scroll.current;
+    uniforms.uMouse.value.x += (state.pointer.x - uniforms.uMouse.value.x) * 0.04;
+    uniforms.uMouse.value.y += (state.pointer.y - uniforms.uMouse.value.y) * 0.04;
   });
 
   return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.04}
-        color="#9f6ef9"
+    <points geometry={geometry}>
+      <shaderMaterial
+        vertexShader={flowVertex}
+        fragmentShader={flowFragment}
+        uniforms={uniforms}
         transparent
-        opacity={0.7}
-        sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
       />
@@ -209,7 +313,7 @@ export default function SceneCanvas() {
         camera={{ position: [0, 0, 6], fov: 60 }}
       >
         <Ambient variant={variant} />
-        <Particles />
+        <FlowField />
         {/* luzes compartilhadas para os itens injetados pelas seções */}
         <ambientLight intensity={0.5} />
         <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />
