@@ -1,6 +1,6 @@
 /**
- * Helpers de scroll-motion (compositor-only). Só o que está em uso hoje:
- * parallax, pinHorizontal (galeria horizontal) e splitReveal (tipografia cinética).
+ * Helpers de scroll-motion (compositor-only). Em uso hoje:
+ * parallax e splitReveal (tipografia cinética).
  */
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -23,33 +23,6 @@ export function parallax(
     scrollTrigger: { trigger: el, start, end, scrub: true },
   };
   return gsap.fromTo(el, from, to);
-}
-
-// ── Pin + scroll horizontal: prende a seção e rola o track na horizontal ─────
-export function pinHorizontal(
-  pinEl: Element,
-  track: HTMLElement,
-  opts: { start?: string; extra?: number } = {}
-) {
-  const { start = "top top", extra = 0 } = opts;
-  // distância = quanto o track passa além da janela visível (o viewport que o contém)
-  const distance = () => {
-    const visible = track.parentElement?.clientWidth ?? window.innerWidth;
-    return Math.max(0, track.scrollWidth - visible + extra);
-  };
-  return gsap.to(track, {
-    x: () => -distance(),
-    ease: "none",
-    scrollTrigger: {
-      trigger: pinEl,
-      start,
-      end: () => "+=" + distance(),
-      scrub: 0.3,
-      pin: pinEl,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    },
-  });
 }
 
 // ── Tipografia cinética: revela por linha/palavra (SplitText) ────────────────

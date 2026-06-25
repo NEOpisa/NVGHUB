@@ -22,7 +22,6 @@ const PX_BOX = new THREE.Vector3(10, 6.5, 5.5);
 
 function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const linesRef = useRef<THREE.LineSegments>(null);
 
   const data = useMemo(() => {
     const pos = new Float32Array(PX_N * 3);
@@ -105,7 +104,7 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
       <points ref={pointsRef} geometry={pointGeo}>
         <pointsMaterial size={0.05} color="#c6b9ff" transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
       </points>
-      <lineSegments ref={linesRef} geometry={lineGeo}>
+      <lineSegments geometry={lineGeo}>
         <lineBasicMaterial vertexColors transparent depthWrite={false} blending={THREE.AdditiveBlending} />
       </lineSegments>
     </group>
