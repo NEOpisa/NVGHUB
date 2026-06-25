@@ -43,15 +43,18 @@ export default function LogoItem({
   const suppressed = useRef(false); // forçado a sumir durante uma transição
 
   const mats = useMemo(() => {
-    const white = new THREE.MeshStandardMaterial({
-      color: "#eef0ff", metalness: 0.96, roughness: 0.16,
+    const white = new THREE.MeshPhysicalMaterial({
+      color: "#eef0ff", metalness: 1.0, roughness: 0.1,
       emissive: new THREE.Color("#7c5cff"), emissiveIntensity: 0,
-      envMapIntensity: 1.4, transparent: true,
-    });
-    const purple = new THREE.MeshStandardMaterial({
-      color: "#8b3df2", metalness: 0.82, roughness: 0.2,
-      emissive: new THREE.Color("#b14bff"), emissiveIntensity: 0.9,
       envMapIntensity: 1.6, transparent: true,
+      clearcoat: 1, clearcoatRoughness: 0.06,
+      iridescence: 0.35, iridescenceIOR: 1.3, iridescenceThicknessRange: [120, 420],
+    });
+    const purple = new THREE.MeshPhysicalMaterial({
+      color: "#8b3df2", metalness: 0.92, roughness: 0.14,
+      emissive: new THREE.Color("#b14bff"), emissiveIntensity: 0.9,
+      envMapIntensity: 1.8, transparent: true,
+      clearcoat: 1, clearcoatRoughness: 0.1,
     });
     const halo = new THREE.MeshBasicMaterial({
       color: "#d24bff", transparent: true, opacity: 0,

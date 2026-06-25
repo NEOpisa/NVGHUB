@@ -20,9 +20,9 @@ export function buildGeometry(points: [number, number][], depth: number) {
   const geo = new THREE.ExtrudeGeometry(shape, {
     depth,
     bevelEnabled: true,
-    bevelThickness: 0.07,
-    bevelSize: 0.05,
-    bevelSegments: 1,
+    bevelThickness: 0.06,
+    bevelSize: 0.045,
+    bevelSegments: 4,
   });
   geo.translate(0, 0, -depth / 2);
   return geo;
