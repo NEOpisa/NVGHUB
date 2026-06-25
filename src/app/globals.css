@@ -1178,7 +1178,10 @@ html.lenis body {
 
 /* ── Contato ── */
 #contato {
-  background: var(--bg-2-veil); padding: var(--section-pad) 0;
+  background:
+    radial-gradient(ellipse 80% 72% at 50% 14%, rgba(124,58,237,0.13), transparent 62%),
+    rgba(10,10,10,0.30);
+  padding: var(--section-pad) 0;
   border-top: 1px solid var(--border);
 }
 .contact-wrap {
@@ -2413,7 +2416,9 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .home-cta {
   padding: var(--section-pad) 0;
   border-top: 1px solid var(--border);
-  background: var(--bg-2-veil);
+  background:
+    radial-gradient(ellipse 72% 82% at 68% 32%, rgba(124,58,237,0.13), transparent 60%),
+    rgba(10,10,10,0.30);
   position: relative;
 }
 .home-cta-inner {
