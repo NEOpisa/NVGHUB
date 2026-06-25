@@ -3,21 +3,50 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
 import * as THREE from "three";
 import { useDomAnchor } from "@/components/scene/useDomAnchor";
 
-export type SectionVariant = "crystal" | "orbit" | "shards";
+export type SectionVariant = "orb" | "rings" | "halo";
+
+const pointVert = `
+  uniform float uSize;
+  uniform float uTime;
+  attribute float aGlow;
+  varying float vGlow;
+  void main(){
+    vGlow = aGlow;
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * mv;
+    float tw = 0.7 + 0.3 * sin(uTime * 1.5 + aGlow * 6.2831);
+    gl_PointSize = uSize * tw * (1.0 / -mv.z);
+  }
+`;
+const pointFrag = `
+  precision mediump float;
+  uniform float uOpacity;
+  varying float vGlow;
+  void main(){
+    vec2 c = gl_PointCoord - 0.5;
+    float d = length(c);
+    if (d > 0.5) discard;
+    float a = smoothstep(0.5, 0.0, d);
+    vec3 violet = vec3(0.55, 0.36, 0.96);
+    vec3 magenta = vec3(0.78, 0.27, 0.92);
+    vec3 col = mix(violet, magenta, vGlow);
+    gl_FragColor = vec4(col, a * a * uOpacity);
+  }
+`;
 
 /**
- * Objeto 3D decorativo de uma seção — item da cena global, ancorado a um
- * elemento DOM da seção (texto continua no DOM, SEO preservado). Flutua, gira
- * devagar, reage de leve ao mouse e some quando a seção sai de vista. Usa as
- * luzes/Environment compartilhados do SceneCanvas.
+ * Acento 3D de uma seção: um "campo de energia" — nuvem de pontos brilhantes
+ * (aditivos) numa casca esférica + anéis finos luminosos, girando devagar.
+ * Aditivo = só ADICIONA luz (nunca escurece a seção). Leve (pontos), sem
+ * geometria sólida pra não bugar/clipar. Ancorado ao DOM da seção; texto fica
+ * no DOM (SEO). Usa só materiais próprios (não depende de luz da cena).
  */
 export default function SectionObject({
   anchorRef,
-  variant = "crystal",
+  variant = "orb",
   enabled = true,
 }: {
   anchorRef: RefObject<HTMLElement | null>;
@@ -28,48 +57,60 @@ export default function SectionObject({
   const spin = useRef<THREE.Group>(null);
   const fade = useRef(0);
 
-  const { object, mats, geos } = useMemo(() => {
-    const metal = new THREE.MeshStandardMaterial({
-      color: "#eef0ff", metalness: 0.95, roughness: 0.18,
-      emissive: new THREE.Color("#7c3aed"), emissiveIntensity: 0.25,
-      envMapIntensity: 1.3, transparent: true, opacity: 0,
-    });
-    const accent = new THREE.MeshStandardMaterial({
-      color: "#8b3df2", metalness: 0.85, roughness: 0.22,
-      emissive: new THREE.Color("#b14bff"), emissiveIntensity: 0.9,
-      envMapIntensity: 1.5, transparent: true, opacity: 0,
-    });
+  const { object, pointsMat, ringMats, geos } = useMemo(() => {
     const object = new THREE.Group();
     const geos: THREE.BufferGeometry[] = [];
-    const add = (g: THREE.BufferGeometry, m: THREE.Material, pos?: [number, number, number], rot?: [number, number, number]) => {
-      const mesh = new THREE.Mesh(g, m);
-      if (pos) mesh.position.set(...pos);
-      if (rot) mesh.rotation.set(...rot);
-      object.add(mesh);
-      geos.push(g);
-    };
 
-    if (variant === "orbit") {
-      add(new THREE.IcosahedronGeometry(0.85, 0), metal);
-      add(new THREE.TorusGeometry(1.5, 0.06, 16, 80), accent, [0, 0, 0], [Math.PI / 2.2, 0, 0]);
-      add(new THREE.TorusGeometry(1.85, 0.045, 16, 90), accent, [0, 0, 0], [Math.PI / 1.7, 0.4, 0]);
-    } else if (variant === "shards") {
-      const oct = new THREE.OctahedronGeometry(0.5, 0);
-      geos.push(oct);
-      const place: [number, number, number][] = [[0, 0, 0], [1.2, 0.5, -0.4], [-1.0, -0.6, 0.3], [0.5, -1.1, 0.2], [-0.7, 0.9, -0.3]];
-      place.forEach((p, i) => {
-        const mesh = new THREE.Mesh(oct, i % 2 ? accent : metal);
-        mesh.position.set(...p);
-        mesh.scale.setScalar(i === 0 ? 1.3 : 0.7 + Math.random() * 0.4);
-        object.add(mesh);
-      });
-    } else {
-      // crystal: icosaedro facetado com um "anel" de acento
-      add(new THREE.IcosahedronGeometry(1.15, 0), metal);
-      add(new THREE.TorusGeometry(1.5, 0.05, 14, 80), accent, [0, 0, 0], [Math.PI / 2, 0, 0]);
+    // nuvem de pontos numa casca esférica (distribuição fibonacci + jitter)
+    const N = variant === "halo" ? 160 : 240;
+    const R = 1.35;
+    const pos = new Float32Array(N * 3);
+    const glow = new Float32Array(N);
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0; i < N; i++) {
+      const y = 1 - (i / (N - 1)) * 2;
+      const r = Math.sqrt(1 - y * y);
+      const th = golden * i;
+      const j = 0.9 + Math.random() * 0.22;
+      pos[i * 3] = Math.cos(th) * r * R * j;
+      pos[i * 3 + 1] = y * R * j;
+      pos[i * 3 + 2] = Math.sin(th) * r * R * j;
+      glow[i] = Math.random();
     }
+    const pg = new THREE.BufferGeometry();
+    pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    pg.setAttribute("aGlow", new THREE.BufferAttribute(glow, 1));
+    geos.push(pg);
+    const pointsMat = new THREE.ShaderMaterial({
+      vertexShader: pointVert, fragmentShader: pointFrag,
+      uniforms: { uSize: { value: 26 }, uTime: { value: 0 }, uOpacity: { value: 0 } },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const points = new THREE.Points(pg, pointsMat);
+    points.frustumCulled = false;
+    object.add(points);
 
-    return { object, mats: { metal, accent }, geos };
+    // anéis finos luminosos (aditivos)
+    const ringMats: THREE.MeshBasicMaterial[] = [];
+    const ringDefs = variant === "rings"
+      ? [[1.7, Math.PI / 2.1, 0], [2.0, Math.PI / 1.6, 0.5]]
+      : variant === "halo"
+        ? [[1.9, Math.PI / 2, 0]]
+        : [[1.75, Math.PI / 2.2, 0]];
+    ringDefs.forEach(([rad, rx, rz]) => {
+      const g = new THREE.TorusGeometry(rad, 0.012, 8, 96);
+      geos.push(g);
+      const m = new THREE.MeshBasicMaterial({
+        color: "#a98bff", transparent: true, opacity: 0,
+        blending: THREE.AdditiveBlending, depthWrite: false,
+      });
+      ringMats.push(m);
+      const ring = new THREE.Mesh(g, m);
+      ring.rotation.set(rx, 0, rz);
+      object.add(ring);
+    });
+
+    return { object, pointsMat, ringMats, geos };
   }, [variant]);
 
   useDomAnchor(groupRef, anchorRef, { z: 0, lerp: 0.1, enabled });
@@ -77,44 +118,43 @@ export default function SectionObject({
   useEffect(() => {
     return () => {
       geos.forEach((g) => g.dispose());
-      mats.metal.dispose();
-      mats.accent.dispose();
+      pointsMat.dispose();
+      ringMats.forEach((m) => m.dispose());
     };
-  }, [geos, mats]);
+  }, [geos, pointsMat, ringMats]);
 
   useFrame((state, delta) => {
+    pointsMat.uniforms.uTime.value += Math.min(delta, 0.05);
     const s = spin.current;
     if (s) {
-      s.rotation.y += delta * 0.25 + state.pointer.x * 0.002;
-      s.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.15;
+      s.rotation.y += delta * 0.18 + state.pointer.x * 0.0015;
+      s.rotation.x = Math.sin(state.clock.elapsedTime * 0.25) * 0.18;
     }
 
-    // fade pela visibilidade da âncora na viewport
+    // fade pela proximidade do centro da seção ao centro da viewport
     const el = anchorRef.current;
     let target = 0;
     if (el) {
       const r = el.getBoundingClientRect();
       const vh = Math.max(window.innerHeight, 1);
       const center = r.top + r.height / 2;
-      target = THREE.MathUtils.clamp(1 - Math.abs(center - vh / 2) / (vh * 0.8), 0, 1);
+      target = THREE.MathUtils.clamp(1 - Math.abs(center - vh / 2) / (vh * 0.85), 0, 1);
     }
     fade.current += (target - fade.current) * 0.1;
     const f = fade.current;
-    mats.metal.opacity = f;
-    mats.accent.opacity = f;
+    pointsMat.uniforms.uOpacity.value = f;
+    ringMats.forEach((m) => (m.opacity = f * 0.55));
     const root = groupRef.current;
     if (root) {
       root.visible = f > 0.01;
-      root.scale.setScalar((state.size.width < 768 ? 0.55 : 1) * (0.85 + f * 0.15));
+      root.scale.setScalar(state.size.width < 768 ? 0.6 : 1);
     }
   });
 
   return (
     <group ref={groupRef}>
       <group ref={spin}>
-        <Float speed={1.6} rotationIntensity={0.2} floatIntensity={0.8}>
-          <primitive object={object} />
-        </Float>
+        <primitive object={object} />
       </group>
     </group>
   );

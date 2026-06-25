@@ -230,7 +230,7 @@ const flowFragment = `
 function FlowField() {
   const scroll = useRef(0);
   const { geometry, uniforms } = useMemo(() => {
-    const n = 1300;
+    const n = 820;
     const pos = new Float32Array(n * 3);
     const seed = new Float32Array(n);
     for (let i = 0; i < n; i++) {
