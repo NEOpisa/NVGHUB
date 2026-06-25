@@ -120,7 +120,7 @@ export function buildCrt(accent = "#6e54b0", simple = false): Crt {
   const faceShape = roundedRect(3.7, 3.0, 0.26);
   faceShape.holes = [roundedRect(3.0, 2.3, 0.18) as unknown as THREE.Path];
   const faceGeo = new THREE.ExtrudeGeometry(faceShape, {
-    depth: 0.45, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.06, bevelSegments: 3, curveSegments: 16,
+    depth: 0.45, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.06, bevelSegments: 2, curveSegments: 10,
   });
   faceGeo.center();
   add(faceGeo, bezel, [0, 0, 0.35]);
@@ -139,8 +139,8 @@ export function buildCrt(accent = "#6e54b0", simple = false): Crt {
     add(new THREE.BoxGeometry(2.6, 0.24, 1.5), cabinet, [0, -1.72, -0.5]);
     add(new THREE.BoxGeometry(2.9, 0.12, 1.7), trim, [0, -1.84, -0.5]);
     // knobs com tampa de acento (canto inferior direito da frente)
-    const knob = track(new THREE.CylinderGeometry(0.135, 0.16, 0.16, 32));
-    const cap = track(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 24));
+    const knob = track(new THREE.CylinderGeometry(0.135, 0.16, 0.16, 18));
+    const cap = track(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 14));
     for (let i = 0; i < 3; i++) {
       const k = new THREE.Mesh(knob, trim);
       k.position.set(1.62, -0.92 + i * 0.42, 0.5);
@@ -152,7 +152,7 @@ export function buildCrt(accent = "#6e54b0", simple = false): Crt {
       group.add(c);
     }
     // LED de power (emissivo)
-    add(track(new THREE.SphereGeometry(0.05, 20, 16)), ledMat, [1.62, 0.62, 0.56]);
+    add(track(new THREE.SphereGeometry(0.05, 12, 8)), ledMat, [1.62, 0.62, 0.56]);
     // placa da marca + grade do alto-falante na faixa inferior
     add(new THREE.BoxGeometry(0.7, 0.12, 0.04), trim, [-1.05, -1.32, 0.55]);
     for (let i = 0; i < 6; i++) {
@@ -163,8 +163,8 @@ export function buildCrt(accent = "#6e54b0", simple = false): Crt {
       add(new THREE.BoxGeometry(0.05, 0.045, 1.4), trim, [1.86, 0.85 - i * 0.16, -0.85]);
     }
     // antena em V no topo
-    const rod = track(new THREE.CylinderGeometry(0.018, 0.012, 1.6, 12));
-    const tip = track(new THREE.SphereGeometry(0.04, 16, 12));
+    const rod = track(new THREE.CylinderGeometry(0.018, 0.012, 1.6, 8));
+    const tip = track(new THREE.SphereGeometry(0.04, 10, 8));
     [-1, 1].forEach((s) => {
       const r = new THREE.Mesh(rod, trim);
       r.position.set(s * 0.45, 1.95, -1.7);
@@ -174,11 +174,11 @@ export function buildCrt(accent = "#6e54b0", simple = false): Crt {
       t.position.set(s * 1.05, 2.65, -1.7);
       group.add(t);
     });
-    add(new THREE.SphereGeometry(0.12, 20, 16), cabinet, [0, 1.45, -1.7]); // base da antena
+    add(new THREE.SphereGeometry(0.12, 14, 10), cabinet, [0, 1.45, -1.7]); // base da antena
   }
 
   // vidro/tela (shader) por cima do conteúdo
-  const screen = add(track(new THREE.PlaneGeometry(3.0, 2.3, 28, 22)), screenMat, [0, 0, 0.34]);
+  const screen = add(track(new THREE.PlaneGeometry(3.0, 2.3, 16, 12)), screenMat, [0, 0, 0.34]);
   screen.renderOrder = 2;
 
   // conteúdo 3D dentro da tela (levemente recuado)

@@ -20,8 +20,8 @@ function roundedRectShape(w: number, h: number, r: number) {
 function extrude(shape: THREE.Shape, depth: number, holes?: THREE.Path[]) {
   if (holes) shape.holes = holes;
   const g = new THREE.ExtrudeGeometry(shape, {
-    depth, curveSegments: 28,
-    bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.045, bevelSegments: 7,
+    depth, curveSegments: 12,
+    bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.045, bevelSegments: 3,
   });
   g.center();
   return g;
@@ -100,10 +100,10 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     });
   } else if (kind === "seo") {
     // lupa: anel + cabo (simétricos) + lente (acento espelhado)
-    add(new THREE.TorusGeometry(0.85, 0.16, 48, 160), metalParts, [0, 0.2, 0]);
-    add(new THREE.CylinderGeometry(0.1, 0.1, 1.0, 48), metalParts, [0.75, -0.65, 0], [0, 0, Math.PI / 4]);
-    add(new THREE.SphereGeometry(0.12, 32, 24), metalParts, [1.18, -1.08, 0]); // ponta do cabo
-    addBoth(new THREE.CircleGeometry(0.7, 96), accentParts, 0.06, [0, 0.2]);
+    add(new THREE.TorusGeometry(0.85, 0.16, 20, 72), metalParts, [0, 0.2, 0]);
+    add(new THREE.CylinderGeometry(0.1, 0.1, 1.0, 20), metalParts, [0.75, -0.65, 0], [0, 0, Math.PI / 4]);
+    add(new THREE.SphereGeometry(0.12, 16, 12), metalParts, [1.18, -1.08, 0]); // ponta do cabo
+    addBoth(new THREE.CircleGeometry(0.7, 48), accentParts, 0.06, [0, 0.2]);
   } else if (kind === "support") {
     // escudo + check (espelhado)
     const s = new THREE.Shape();
@@ -121,23 +121,23 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     addBoth(extrude(c, 0.08), accentParts, 0.15);
   } else {
     // saas: FOGUETE (plataforma pronta / "em lançamento") — radialmente simétrico.
-    add(new THREE.CylinderGeometry(0.55, 0.55, 1.5, 72), metalParts, [0, 0.05, 0]); // corpo
-    add(new THREE.ConeGeometry(0.55, 0.7, 72), accentParts, [0, 1.15, 0]); // bico
-    add(new THREE.SphereGeometry(0.07, 24, 16), metalParts, [0, 1.52, 0]); // ponta do bico
+    add(new THREE.CylinderGeometry(0.55, 0.55, 1.5, 36), metalParts, [0, 0.05, 0]); // corpo
+    add(new THREE.ConeGeometry(0.55, 0.7, 36), accentParts, [0, 1.15, 0]); // bico
+    add(new THREE.SphereGeometry(0.07, 14, 10), metalParts, [0, 1.52, 0]); // ponta do bico
     // anéis estruturais do corpo (detalhe)
-    add(new THREE.TorusGeometry(0.55, 0.03, 16, 72), metalParts, [0, 0.55, 0], [Math.PI / 2, 0, 0]);
-    add(new THREE.TorusGeometry(0.55, 0.03, 16, 72), metalParts, [0, -0.45, 0], [Math.PI / 2, 0, 0]);
+    add(new THREE.TorusGeometry(0.55, 0.03, 10, 40), metalParts, [0, 0.55, 0], [Math.PI / 2, 0, 0]);
+    add(new THREE.TorusGeometry(0.55, 0.03, 10, 40), metalParts, [0, -0.45, 0], [Math.PI / 2, 0, 0]);
     // vigia (anel + lente), espelhada frente/trás
-    addBoth(new THREE.TorusGeometry(0.2, 0.05, 32, 96), metalParts, 0.55, [0, 0.35]);
-    addBoth(new THREE.CircleGeometry(0.18, 72), accentParts, 0.55, [0, 0.35]);
+    addBoth(new THREE.TorusGeometry(0.2, 0.05, 16, 48), metalParts, 0.55, [0, 0.35]);
+    addBoth(new THREE.CircleGeometry(0.18, 40), accentParts, 0.55, [0, 0.35]);
     // 4 aletas radiais
     for (let i = 0; i < 4; i++) {
       const a = (i / 4) * Math.PI * 2;
       add(new THREE.BoxGeometry(0.08, 0.6, 0.5), metalParts, [Math.sin(a) * 0.5, -0.72, Math.cos(a) * 0.5], [0, a, 0]);
     }
     // chama (dupla camada pra dar volume)
-    add(new THREE.ConeGeometry(0.4, 0.7, 48), accentParts, [0, -1.25, 0], [Math.PI, 0, 0]);
-    add(new THREE.ConeGeometry(0.2, 0.4, 32), metalParts, [0, -1.05, 0], [Math.PI, 0, 0]);
+    add(new THREE.ConeGeometry(0.4, 0.7, 28), accentParts, [0, -1.25, 0], [Math.PI, 0, 0]);
+    add(new THREE.ConeGeometry(0.2, 0.4, 20), metalParts, [0, -1.05, 0], [Math.PI, 0, 0]);
   }
 
   // mescla por material → 2 meshes no máximo

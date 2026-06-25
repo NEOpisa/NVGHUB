@@ -145,13 +145,14 @@ export default function Hero() {
           </div>
 
           <h1 className="hero-h1">
-            Tudo o que seu negócio precisa no digital,{" "}
-            <span className="text-gradient">conectado em um só lugar</span>
+            Ecossistemas digitais que impulsionam o{" "}
+            <span className="text-gradient">crescimento da sua empresa</span>
           </h1>
 
           <p className="hero-sub">
-            Sites, sistemas, SEO e suporte — operados como um único ecossistema.
-            Entrega em até <strong>16 dias úteis</strong>, suporte real, sem contrato mínimo.
+            Integramos design de alta performance, inteligência artificial e
+            automação para transformar sua presença online em uma{" "}
+            <strong>máquina de resultados</strong>.
           </p>
 
           <div className="cta-row">
@@ -161,8 +162,8 @@ export default function Hero() {
               </a>
             </Magnetic>
             <Magnetic strength={0.25}>
-              <Link href="/pacotes" className="btn-ghost">
-                Ver tipos de solução
+              <Link href="/solucao" className="btn-ghost">
+                Quero escalar minha empresa
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </Link>
             </Magnetic>
