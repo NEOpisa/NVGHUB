@@ -3436,3 +3436,12 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   .menu-page .menu-link,
   .menu-page .menu-aside { animation: none; opacity: 1; transform: none; }
 }
+
+/* ── Intro full-screen em canvas (IntroCanvas) ──
+   Cobre tudo na 1ª visita da home enquanto a marca é construída; some via fade
+   (GSAP no opacity) revelando o hero. Fundo escuro pré-paint pra não piscar. */
+.intro-overlay {
+  position: fixed; inset: 0; z-index: 1300;
+  background: #06050c;
+}
+.intro-overlay canvas { display: block; }
