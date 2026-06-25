@@ -211,11 +211,13 @@ function BuildMark({
     return () => void tl.kill();
   }, [solidMeshes, wireOpacity, onBuilt, mats, wireframe]);
 
-  useFrame(() => {
+  useFrame((state) => {
     mats.wire.opacity = wireOpacity.current ?? 0;
     const g = glow.current;
     mats.white.emissiveIntensity = 0.25 + g * 0.8;
     mats.purple.emissiveIntensity = 0.9 + g * 1.6;
+    // marca menor no mobile
+    if (groupRef.current) groupRef.current.scale.setScalar(state.size.width < 768 ? 0.72 : 1.15);
   });
 
   return (

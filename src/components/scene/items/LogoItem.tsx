@@ -228,7 +228,11 @@ export default function LogoItem({
     mats.white.opacity = f;
     mats.purple.opacity = f;
     const root = groupRef.current;
-    if (root) root.visible = f > 0.01;
+    if (root) {
+      root.visible = f > 0.01;
+      // menor no mobile (viewport estreita faz o mesmo tamanho-mundo ocupar mais tela)
+      root.scale.setScalar(state.size.width < 768 ? 0.27 : 0.62);
+    }
   });
 
   return (
