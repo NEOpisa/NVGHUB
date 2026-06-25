@@ -54,6 +54,8 @@ function Stage({ active }: { active: number }) {
     h.rotation.y = spin.current;
     h.rotation.x = Math.sin(state.clock.elapsedTime * 0.4) * 0.12;
     h.position.y = Math.sin(state.clock.elapsedTime * 0.7) * 0.12;
+    // ícones menores no mobile
+    h.scale.setScalar(state.size.width < 768 ? 0.62 : 1);
   });
 
   return (
