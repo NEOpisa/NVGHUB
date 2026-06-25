@@ -148,6 +148,19 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
   finalize(metalParts, metal);
   finalize(accentParts, accent);
 
+  // centraliza o ícone na origem (enquadra bem dentro da tela)
+  if (geos.length) {
+    const box = new THREE.Box3();
+    geos.forEach((geo) => {
+      geo.computeBoundingBox();
+      if (geo.boundingBox) box.union(geo.boundingBox);
+    });
+    if (!box.isEmpty()) {
+      const ctr = box.getCenter(new THREE.Vector3());
+      geos.forEach((geo) => geo.translate(-ctr.x, -ctr.y, -ctr.z));
+    }
+  }
+
   g.userData.geos = geos;
   return g;
 }
