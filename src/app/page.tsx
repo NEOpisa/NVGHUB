@@ -4,7 +4,6 @@ import { useRef } from "react";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import ServicesGallery from "@/components/services/ServicesGallery";
-import RadialNav from "@/components/services/RadialNav";
 import ExploreSection from "@/components/ExploreSection";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
@@ -22,7 +21,6 @@ export default function Home() {
       <Hero />
       <Marquee />
       <ServicesGallery />
-      <RadialNav />
       <Marquee
         reverse
         items={[

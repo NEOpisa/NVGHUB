@@ -16,11 +16,11 @@ function Stage({ active }: { active: number }) {
   const mats = useMemo(() => {
     const metal = new THREE.MeshStandardMaterial({
       color: "#cdbdf6", metalness: 0.95, roughness: 0.16, envMapIntensity: 1.5,
-      emissive: new THREE.Color("#3a2b66"), emissiveIntensity: 0.25,
+      emissive: new THREE.Color("#3a2b66"), emissiveIntensity: 0.25, side: THREE.DoubleSide,
     });
     const accent = new THREE.MeshStandardMaterial({
       color: "#a855f7", metalness: 0.6, roughness: 0.25, envMapIntensity: 1.3,
-      emissive: new THREE.Color("#b14bff"), emissiveIntensity: 1.1,
+      emissive: new THREE.Color("#b14bff"), emissiveIntensity: 1.1, side: THREE.DoubleSide,
     });
     return { metal, accent };
   }, []);
