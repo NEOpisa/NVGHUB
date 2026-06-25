@@ -7,60 +7,18 @@ import { Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { useDomAnchor } from "@/components/scene/useDomAnchor";
-import { WHITE_POINTS, PURPLE_POINTS, buildGeometry } from "@/components/scene/logoGeometry";
+import { buildLogoChunks } from "@/components/scene/logoGeometry";
+import { buildCrt } from "@/components/scene/crtMesh";
 import { txBus } from "@/components/scene/transitionBus";
 
 // A entrada "power-on" só toca no 1º load/reload (escopo de módulo).
 let powerOnPlayed = false;
 
-// Retângulo arredondado centrado (face/bezel da TV).
-function roundedRect(w: number, h: number, r: number) {
-  const s = new THREE.Shape();
-  const x = -w / 2, y = -h / 2;
-  s.moveTo(x + r, y);
-  s.lineTo(x + w - r, y);
-  s.quadraticCurveTo(x + w, y, x + w, y + r);
-  s.lineTo(x + w, y + h - r);
-  s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  s.lineTo(x + r, y + h);
-  s.quadraticCurveTo(x, y + h, x, y + h - r);
-  s.lineTo(x, y + r);
-  s.quadraticCurveTo(x, y, x + r, y);
-  return s;
-}
-
-const screenVert = `
-  varying vec2 vUv;
-  void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
-`;
-
-// Tela CRT: fósforo + scanlines + vinheta (curvatura) + banda de varredura + flicker.
-const screenFrag = `
-  varying vec2 vUv;
-  uniform float uTime;
-  uniform float uOn;
-  uniform float uFlick;
-  void main(){
-    vec2 uv = vUv;
-    vec2 c = uv * 2.0 - 1.0;
-    float r2 = dot(c, c);
-    float vig = smoothstep(1.6, 0.15, r2);          // escurece bordas (curvatura CRT)
-    float lines = 0.5 + 0.5 * sin(uv.y * 430.0);     // scanlines finas
-    float scan = mix(0.72, 1.0, lines);
-    float band = smoothstep(0.05, 0.0, abs(fract(uv.y - uTime * 0.12) - 0.5) - 0.015);
-    vec3 base = vec3(0.035, 0.030, 0.055);
-    vec3 glow = vec3(0.33, 0.25, 0.50);              // roxo sóbrio
-    vec3 col = base + glow * (0.55 * vig * scan + 0.22 * band * vig);
-    col *= uOn * (0.9 + 0.1 * uFlick);
-    gl_FragColor = vec4(col, 1.0);
-  }
-`;
-
 /**
- * Mascote NeoVision: uma TV CRT 3D (gabinete industrial sóbrio) exibindo o
- * símbolo NV na tela, com scanlines/curvatura/glow roxo sóbrio. Item da cena
- * global, ancorado ao `.hero-visual`. Entrada "power-on" só no 1º load; em loop
- * faz float + flicker ocasional. Some durante a transição (txBus "cover").
+ * Mascote NeoVision: uma TV CRT 3D (gabinete industrial sóbrio) com o símbolo NV
+ * em 3D girando DENTRO da tela, sob scanlines/curvatura/glow roxo sóbrio. Item da
+ * cena global, ancorado ao `.hero-visual`. Entrada "power-on" só no 1º load; em
+ * loop faz float + flicker/estática ocasional. Some na transição (txBus "cover").
  */
 export default function CRTItem({
   anchorRef,
@@ -73,83 +31,39 @@ export default function CRTItem({
   const lookRef = useRef<THREE.Group>(null);
   const on = useRef(0);
   const flick = useRef(1);
+  const stat = useRef(0);
+  const glow = useRef(0);
   const fade = useRef(1);
   const suppressed = useRef(false);
 
-  const screenUniforms = useMemo(
-    () => ({ uTime: { value: 0 }, uOn: { value: 0 }, uFlick: { value: 1 } }),
-    []
-  );
+  const { crt, logoGroup, logoMats, disposables } = useMemo(() => {
+    const crt = buildCrt("#6e54b0");
 
-  const { tv, mats, geos } = useMemo(() => {
-    const cabinet = new THREE.MeshPhysicalMaterial({
-      color: "#2a2a30", metalness: 0.25, roughness: 0.72,
-      clearcoat: 0.35, clearcoatRoughness: 0.5, transparent: true,
+    // símbolo NV 3D dentro da tela (marca montada, gira/flutua)
+    const white = new THREE.MeshPhysicalMaterial({
+      color: "#d2c8ee", metalness: 0.92, roughness: 0.16,
+      emissive: new THREE.Color("#6e54b0"), emissiveIntensity: 0.3,
+      envMapIntensity: 1.4, clearcoat: 1, clearcoatRoughness: 0.1,
     });
-    const bezel = new THREE.MeshPhysicalMaterial({
-      color: "#151519", metalness: 0.2, roughness: 0.6,
-      clearcoat: 0.5, clearcoatRoughness: 0.35, transparent: true,
+    const purple = new THREE.MeshPhysicalMaterial({
+      color: "#6e54b0", metalness: 0.85, roughness: 0.2,
+      emissive: new THREE.Color("#7a5fc4"), emissiveIntensity: 0.9,
+      envMapIntensity: 1.5, clearcoat: 1, clearcoatRoughness: 0.12,
     });
-    const trim = new THREE.MeshStandardMaterial({
-      color: "#c6c4cd", metalness: 0.4, roughness: 0.5, transparent: true,
+    const lp = buildLogoChunks(3, 2);
+    const logoGroup = new THREE.Group();
+    const disp: THREE.BufferGeometry[] = [];
+    [...lp.white.map((c) => ({ c, m: white })), ...lp.purple.map((c) => ({ c, m: purple }))].forEach(({ c, m }) => {
+      const mesh = new THREE.Mesh(c.geometry, m);
+      mesh.position.copy(c.pivot);
+      logoGroup.add(mesh);
+      disp.push(c.geometry);
     });
-    const nvWhite = new THREE.MeshStandardMaterial({
-      color: "#cdbff0", emissive: new THREE.Color("#7a5fc4"),
-      emissiveIntensity: 0.9, metalness: 0.3, roughness: 0.4, transparent: true,
-    });
-    const nvPurple = new THREE.MeshStandardMaterial({
-      color: "#6e54b0", emissive: new THREE.Color("#6e54b0"),
-      emissiveIntensity: 1.0, metalness: 0.3, roughness: 0.4, transparent: true,
-    });
-    const screenMat = new THREE.ShaderMaterial({
-      vertexShader: screenVert, fragmentShader: screenFrag,
-      uniforms: screenUniforms,
-    });
+    logoGroup.scale.setScalar(0.34);
+    crt.content.add(logoGroup);
 
-    const tv = new THREE.Group();
-    const geos: THREE.BufferGeometry[] = [];
-    const mesh = (g: THREE.BufferGeometry, m: THREE.Material, pos?: [number, number, number], rot?: [number, number, number]) => {
-      const o = new THREE.Mesh(g, m);
-      if (pos) o.position.set(...pos);
-      if (rot) o.rotation.set(...rot);
-      tv.add(o);
-      geos.push(g);
-      return o;
-    };
-
-    // corpo (caixa traseira) + face com furo da tela (bezel)
-    mesh(new THREE.BoxGeometry(2.9, 2.45, 1.9), cabinet, [0, 0, -1.0]);
-    const faceShape = roundedRect(3.1, 2.65, 0.22);
-    const hole = roundedRect(2.35, 1.85, 0.16) as unknown as THREE.Path;
-    faceShape.holes = [hole];
-    const faceGeo = new THREE.ExtrudeGeometry(faceShape, {
-      depth: 0.32, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3, curveSegments: 16,
-    });
-    faceGeo.center();
-    mesh(faceGeo, bezel, [0, 0, 0.06]);
-
-    // tela (fósforo) recuada + vidro NV à frente
-    mesh(new THREE.PlaneGeometry(2.3, 1.8), screenMat, [0, 0, 0.0]);
-
-    // símbolo NV na tela (emissivo)
-    const nv = new THREE.Group();
-    const w = buildGeometry(WHITE_POINTS, 0.1);
-    const p = buildGeometry(PURPLE_POINTS, 0.1);
-    geos.push(w, p);
-    nv.add(new THREE.Mesh(w, nvWhite), new THREE.Mesh(p, nvPurple));
-    nv.scale.setScalar(0.3);
-    nv.position.set(0, 0, 0.16);
-    tv.add(nv);
-
-    // detalhes: 2 knobs + base
-    const knob = new THREE.CylinderGeometry(0.12, 0.12, 0.12, 20);
-    geos.push(knob);
-    mesh(knob, trim, [1.3, -0.95, 0.22], [Math.PI / 2, 0, 0]);
-    mesh(knob, trim, [1.3, -0.55, 0.22], [Math.PI / 2, 0, 0]);
-    mesh(new THREE.BoxGeometry(1.6, 0.18, 1.0), cabinet, [0, -1.32, -0.4]);
-
-    return { tv, mats: { cabinet, bezel, trim, nvWhite, nvPurple, screenMat }, geos };
-  }, [screenUniforms]);
+    return { crt, logoGroup, logoMats: { white, purple }, disposables: disp };
+  }, []);
 
   useDomAnchor(groupRef, anchorRef, { z: 0, lerp: 0.12, enabled });
 
@@ -161,44 +75,53 @@ export default function CRTItem({
     return () => { off(); };
   }, []);
 
-  // entrada power-on (só 1º load): flicker → estabiliza
+  // power-on (só 1º load): flicker → estabiliza + squish vertical
   useLayoutEffect(() => {
     if (powerOnPlayed) { on.current = 1; return; }
     powerOnPlayed = true;
     const o = { v: 0 };
     const tl = gsap.timeline({ onUpdate: () => (on.current = o.v) });
-    tl.set(o, { v: 0.0 })
-      .to(o, { v: 0.6, duration: 0.06 }).to(o, { v: 0.05, duration: 0.05 })
-      .to(o, { v: 0.9, duration: 0.05 }).to(o, { v: 0.2, duration: 0.06 })
+    tl.to(o, { v: 0.6, duration: 0.06 }).to(o, { v: 0.04, duration: 0.05 })
+      .to(o, { v: 0.95, duration: 0.05 }).to(o, { v: 0.2, duration: 0.06 })
       .to(o, { v: 1.0, duration: 0.5, ease: "power2.out" });
-    if (lookRef.current) {
-      gsap.fromTo(lookRef.current.scale, { y: 0.02 }, { y: 1, duration: 0.5, ease: "back.out(1.6)" });
-    }
+    if (lookRef.current) gsap.fromTo(lookRef.current.scale, { y: 0.03 }, { y: 1, duration: 0.55, ease: "back.out(1.5)" });
     return () => void tl.kill();
   }, []);
 
   useEffect(() => {
     return () => {
-      geos.forEach((g) => g.dispose());
-      Object.values(mats).forEach((m) => m.dispose());
+      crt.dispose();
+      disposables.forEach((g) => g.dispose());
+      logoMats.white.dispose();
+      logoMats.purple.dispose();
     };
-  }, [geos, mats]);
+  }, [crt, disposables, logoMats]);
 
   useFrame((state, delta) => {
-    screenUniforms.uTime.value += Math.min(delta, 0.05);
-    // flicker ocasional
-    flick.current += ((Math.random() < 0.04 ? 0.3 + Math.random() * 0.7 : 1) - flick.current) * 0.25;
-    screenUniforms.uOn.value = on.current;
-    screenUniforms.uFlick.value = flick.current;
-    mats.nvWhite.emissiveIntensity = (0.5 + 0.6 * flick.current) * on.current;
-    mats.nvPurple.emissiveIntensity = (0.6 + 0.7 * flick.current) * on.current;
+    const t = state.clock.elapsedTime;
+    crt.uniforms.uTime.value += Math.min(delta, 0.05);
 
-    // mouse-look sutil
+    // flicker + estática ocasional (glitch retrô)
+    flick.current += ((Math.random() < 0.04 ? 0.35 + Math.random() * 0.65 : 1) - flick.current) * 0.3;
+    if (stat.current < 0.01 && Math.random() < 0.004) stat.current = 0.6;
+    stat.current *= 0.82;
+    crt.uniforms.uOn.value = on.current;
+    crt.uniforms.uFlick.value = flick.current;
+    crt.uniforms.uStatic.value = stat.current;
+
+    // logo 3D viva dentro da tela: gira devagar + reage ao mouse + glow pulsa
+    glow.current = 0.5 + 0.5 * Math.sin(t * 0.8);
+    logoMats.white.emissiveIntensity = (0.25 + glow.current * 0.5) * on.current;
+    logoMats.purple.emissiveIntensity = (0.7 + glow.current * 0.7) * on.current;
+    logoGroup.rotation.y = Math.sin(t * 0.4) * 0.5 + state.pointer.x * 0.3;
+    logoGroup.rotation.x = Math.sin(t * 0.3) * 0.12 - state.pointer.y * 0.15;
+    logoGroup.position.y = Math.sin(t * 0.9) * 0.06;
+
+    // mouse-look sutil da TV inteira
     const g = lookRef.current;
     if (g) {
-      const t = state.clock.elapsedTime;
-      const tgtY = state.pointer.x * 0.35 + Math.sin(t * 0.25) * 0.08;
-      const tgtX = -state.pointer.y * 0.22 + Math.sin(t * 0.2) * 0.05;
+      const tgtY = state.pointer.x * 0.3 + Math.sin(t * 0.22) * 0.06;
+      const tgtX = -state.pointer.y * 0.18 + Math.sin(t * 0.18) * 0.04;
       g.rotation.y += (tgtY - g.rotation.y) * 0.06;
       g.rotation.x += (tgtX - g.rotation.x) * 0.06;
     }
@@ -213,22 +136,25 @@ export default function CRTItem({
     }
     fade.current += (target - fade.current) * (suppressed.current ? 0.3 : 0.15);
     const f = fade.current;
-    [mats.cabinet, mats.bezel, mats.trim, mats.nvWhite, mats.nvPurple].forEach((m) => (m.opacity = f));
+    crt.cabinetMats.forEach((m) => (m.opacity = f));
+    (logoMats.white as THREE.Material).opacity = f;
+    (logoMats.purple as THREE.Material).opacity = f;
+    logoMats.white.transparent = logoMats.purple.transparent = true;
     const root = groupRef.current;
     if (root) {
       root.visible = f > 0.01;
-      root.scale.setScalar(state.size.width < 768 ? 0.34 : 0.6);
+      root.scale.setScalar(state.size.width < 768 ? 0.3 : 0.5);
     }
   });
 
   return (
-    <group ref={groupRef} scale={0.6}>
+    <group ref={groupRef} scale={0.5}>
       <group ref={lookRef}>
-        <Float speed={1.4} rotationIntensity={0.12} floatIntensity={0.7}>
-          <primitive object={tv} />
+        <Float speed={1.3} rotationIntensity={0.1} floatIntensity={0.6}>
+          <primitive object={crt.group} />
         </Float>
       </group>
-      <Sparkles count={14} scale={[7, 6, 5]} size={1.6} speed={0.2} opacity={0.25} color="#8a78c0" />
+      <Sparkles count={14} scale={[8, 7, 5]} size={1.6} speed={0.2} opacity={0.22} color="#8a78c0" />
     </group>
   );
 }
