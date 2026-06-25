@@ -29,8 +29,9 @@ export type ServiceKind = "site" | "system" | "seo" | "support" | "saas";
 
 /**
  * Constrói o ÍCONE 3D extrudado de um serviço (metal NVGHUB + acento emissivo).
- * Retorna um THREE.Group; o chamador controla visibilidade/rotação. As geometrias
- * ficam em `userData.geos` para descarte.
+ * Os detalhes "de frente" (telas/checks/acentos) são ESPELHADOS na traseira pra
+ * que, girando, o ícone sempre mostre o lado certo. Geometrias em
+ * `userData.geos` para descarte; materiais devem ser DoubleSide.
  */
 export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accent: THREE.Material): THREE.Group {
   const g = new THREE.Group();
@@ -42,28 +43,41 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     g.add(m);
     geos.push(geo);
   };
+  // detalhe plano nas DUAS faces (frente +z e traseira -z, espelhado)
+  const addBoth = (geo: THREE.BufferGeometry, mat: THREE.Material, z: number, xy: [number, number] = [0, 0], rot: [number, number, number] = [0, 0, 0]) => {
+    add(geo, mat, [xy[0], xy[1], z], rot);
+    const back = new THREE.Mesh(geo, mat);
+    back.position.set(xy[0], xy[1], -z);
+    back.rotation.set(rot[0], rot[1], rot[2]);
+    back.scale.z = -1; // espelha o detalhe pra face traseira
+    g.add(back);
+  };
 
   if (kind === "site") {
-    // monitor: moldura + tela (acento) + base
+    // monitor: moldura + tela (acento, visível pelos dois lados) + base
     const frame = roundedRectShape(2.4, 1.6, 0.16);
     const hole = roundedRectShape(2.0, 1.2, 0.1) as unknown as THREE.Path;
     add(extrude(frame, 0.22, [hole]), metal);
-    add(new THREE.BoxGeometry(2.0, 1.2, 0.06), accent, [0, 0, 0.02]);
+    addBoth(new THREE.BoxGeometry(2.0, 1.2, 0.05), accent, 0.04);
     add(new THREE.BoxGeometry(0.5, 0.22, 0.3), metal, [0, -1.0, 0]);
     add(new THREE.BoxGeometry(1.0, 0.1, 0.3), metal, [0, -1.12, 0]);
   } else if (kind === "system") {
-    // camadas: 3 placas empilhadas com leve giro
-    for (let i = 0; i < 3; i++) {
-      add(extrude(roundedRectShape(2.0, 2.0, 0.3), 0.12), i === 1 ? accent : metal,
-        [0, (i - 1) * 0.42, 0], [0, 0, (i - 1) * 0.14]);
-    }
+    // sistema: pilha de discos (banco de dados/painel) — radialmente simétrico,
+    // gira bem de qualquer lado, sem face "errada".
+    const disc = (h: number) => new THREE.CylinderGeometry(1.0, 1.0, h, 48);
+    add(disc(0.34), accent, [0, 0.66, 0]);
+    add(disc(0.34), metal, [0, 0, 0]);
+    add(disc(0.34), metal, [0, -0.66, 0]);
+    // anéis finos entre os discos (acento)
+    add(new THREE.TorusGeometry(1.0, 0.03, 10, 48), accent, [0, 0.33, 0], [Math.PI / 2, 0, 0]);
+    add(new THREE.TorusGeometry(1.0, 0.03, 10, 48), accent, [0, -0.33, 0], [Math.PI / 2, 0, 0]);
   } else if (kind === "seo") {
-    // lupa: anel + cabo
+    // lupa: anel + cabo (simétricos) + lente (acento espelhado)
     add(new THREE.TorusGeometry(0.85, 0.16, 20, 48), metal, [0, 0.2, 0]);
     add(new THREE.CylinderGeometry(0.1, 0.1, 1.0, 16), metal, [0.75, -0.65, 0], [0, 0, Math.PI / 4]);
-    add(new THREE.CircleGeometry(0.7, 32), accent, [0, 0.2, -0.02]);
+    addBoth(new THREE.CircleGeometry(0.7, 32), accent, 0.06, [0, 0.2]);
   } else if (kind === "support") {
-    // escudo
+    // escudo + check (espelhado)
     const s = new THREE.Shape();
     s.moveTo(0, 1.2);
     s.quadraticCurveTo(1.1, 0.9, 1.1, 0.3);
@@ -73,16 +87,15 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     s.lineTo(-1.1, 0.3);
     s.quadraticCurveTo(-1.1, 0.9, 0, 1.2);
     add(extrude(s, 0.26), metal);
-    // "check" interno
     const c = new THREE.Shape();
     c.moveTo(-0.45, 0.05); c.lineTo(-0.1, -0.35); c.lineTo(0.5, 0.4);
     c.lineTo(0.4, 0.55); c.lineTo(-0.1, -0.05); c.lineTo(-0.35, 0.2);
-    add(extrude(c, 0.18), accent, [0, 0, 0.16]);
+    addBoth(extrude(c, 0.08), accent, 0.15);
   } else {
-    // saas: tela + cubo flutuante (acento)
+    // saas: tela + cubos 3D (já corretos de qualquer ângulo)
     add(extrude(roundedRectShape(2.4, 1.5, 0.16), 0.18), metal);
-    add(new THREE.BoxGeometry(0.6, 0.6, 0.6), accent, [0.55, 0.45, 0.5], [0.4, 0.6, 0]);
-    add(new THREE.BoxGeometry(0.32, 0.32, 0.32), metal, [-0.6, -0.35, 0.5], [0.5, 0.3, 0.2]);
+    add(new THREE.BoxGeometry(0.6, 0.6, 0.6), accent, [0.55, 0.45, 0], [0.4, 0.6, 0]);
+    add(new THREE.BoxGeometry(0.34, 0.34, 0.34), metal, [-0.6, -0.35, 0], [0.5, 0.3, 0.2]);
   }
 
   g.userData.geos = geos;
