@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
@@ -101,7 +101,7 @@ function Ambient({ variant }: { variant: number }) {
       uRes: { value: new THREE.Vector2(1, 1) },
       uVariant: { value: 0 },
     }),
-    []
+    [],
   );
 
   useFrame((state, delta) => {
@@ -109,8 +109,10 @@ function Ambient({ variant }: { variant: number }) {
     const target = window.scrollY / Math.max(window.innerHeight, 1);
     scroll.current += (target - scroll.current) * 0.06;
     uniforms.uScroll.value = scroll.current;
-    uniforms.uMouse.value.x += (state.pointer.x * 0.5 + 0.5 - uniforms.uMouse.value.x) * 0.05;
-    uniforms.uMouse.value.y += (state.pointer.y * 0.5 + 0.5 - uniforms.uMouse.value.y) * 0.05;
+    uniforms.uMouse.value.x +=
+      (state.pointer.x * 0.5 + 0.5 - uniforms.uMouse.value.x) * 0.05;
+    uniforms.uMouse.value.y +=
+      (state.pointer.y * 0.5 + 0.5 - uniforms.uMouse.value.y) * 0.05;
     uniforms.uRes.value.set(size.width, size.height);
     uniforms.uVariant.value += (variant - uniforms.uVariant.value) * 0.05;
   });
@@ -229,7 +231,7 @@ const flowFragment = `
 function FlowField() {
   const scroll = useRef(0);
   const { geometry, uniforms } = useMemo(() => {
-    const n = 500;
+    const n = 260;
     const pos = new Float32Array(n * 3);
     const seed = new Float32Array(n);
     for (let i = 0; i < n; i++) {
@@ -254,8 +256,10 @@ function FlowField() {
     const target = window.scrollY / Math.max(window.innerHeight, 1);
     scroll.current += (target - scroll.current) * 0.06;
     uniforms.uScroll.value = scroll.current;
-    uniforms.uMouse.value.x += (state.pointer.x - uniforms.uMouse.value.x) * 0.04;
-    uniforms.uMouse.value.y += (state.pointer.y - uniforms.uMouse.value.y) * 0.04;
+    uniforms.uMouse.value.x +=
+      (state.pointer.x - uniforms.uMouse.value.x) * 0.04;
+    uniforms.uMouse.value.y +=
+      (state.pointer.y - uniforms.uMouse.value.y) * 0.04;
   });
 
   return (
@@ -280,25 +284,60 @@ function FlowField() {
 export default function SceneCanvasGL() {
   const pathname = usePathname();
   const variant = pathname === "/menu" ? 1 : 0;
+  const [running, setRunning] = useState(true);
+
+  useEffect(() => {
+    const update = () => setRunning(!document.hidden);
+    update();
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
 
   return (
     <div className="webgl-bg" aria-hidden="true">
       <Canvas
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+        dpr={[1, 1.2]}
+        frameloop={running ? "always" : "never"}
+        gl={{
+          antialias: false,
+          alpha: false,
+          powerPreference: "high-performance",
+        }}
         camera={{ position: [0, 0, 6], fov: 60 }}
       >
         <Ambient variant={variant} />
         <FlowField />
         {/* luzes compartilhadas para os itens injetados pelas seções */}
         <ambientLight intensity={0.5} />
-        <directionalLight position={[6, 8, 6]} intensity={2.4} color="#ffffff" />
+        <directionalLight
+          position={[6, 8, 6]}
+          intensity={2.4}
+          color="#ffffff"
+        />
         <pointLight position={[-6, -3, 4]} intensity={42} color="#7c3aed" />
         {/* reflexos pro metal dos itens 3D (gerado uma vez, sem rede) */}
         <Environment resolution={64} frames={1}>
-          <Lightformer form="rect" intensity={1.8} position={[4, 3, 5]} scale={7} color="#b89bff" />
-          <Lightformer form="rect" intensity={1.0} position={[-5, -1, 3]} scale={6} color="#5b21b6" />
-          <Lightformer form="circle" intensity={1.4} position={[0, 5, -4]} scale={5} color="#ffffff" />
+          <Lightformer
+            form="rect"
+            intensity={1.8}
+            position={[4, 3, 5]}
+            scale={7}
+            color="#b89bff"
+          />
+          <Lightformer
+            form="rect"
+            intensity={1.0}
+            position={[-5, -1, 3]}
+            scale={6}
+            color="#5b21b6"
+          />
+          <Lightformer
+            form="circle"
+            intensity={1.4}
+            position={[0, 5, -4]}
+            scale={5}
+            color="#ffffff"
+          />
         </Environment>
         <scene.Out />
       </Canvas>

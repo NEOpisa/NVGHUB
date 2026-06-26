@@ -6607,6 +6607,14 @@ body.site-loaded .hero-enter-5 {
    Ajustes finais (mobile): hero + logo 3D centralizados e estáveis
    ============================================================ */
 @media (max-width: 1024px) {
+    .inner {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+    }
+
     #hero {
         min-height: 100svh;
         overflow: hidden;
@@ -6617,6 +6625,9 @@ body.site-loaded .hero-enter-5 {
         grid-template-columns: 1fr;
         gap: 20px;
         align-items: start;
+        padding-inline: 0 !important;
+        width: 100%;
+        max-width: none;
     }
 
     #hero .hero-visual {
@@ -6645,11 +6656,27 @@ body.site-loaded .hero-enter-5 {
         padding-top: 320px;
         align-items: center;
         text-align: center;
+        width: 100%;
     }
 
     #hero .hero-sub {
         max-width: 34ch;
         margin-inline: auto;
+    }
+
+    .eco .inner,
+    .services-mobile .inner,
+    .solucoes-bridge,
+    .home-cta .inner {
+        width: 100%;
+        max-width: none;
+    }
+
+    .eco-layer,
+    .svc-carousel,
+    .svc-card {
+        width: 100%;
+        min-width: 0;
     }
 
     #hero .cta-row {
