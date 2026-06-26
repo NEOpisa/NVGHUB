@@ -41,6 +41,11 @@ export default function LogoItem({
   const glow = useRef(0);
   const fade = useRef(1);
   const suppressed = useRef(false); // forçado a sumir durante uma transição
+  // Visibilidade dirigida pelo IntersectionObserver do hero (prop `enabled`),
+  // não por getBoundingClientRect a cada frame — evita layout-thrash e o
+  // "flash" da logo reaparecendo no embalo do scroll.
+  const enabledRef = useRef(enabled);
+  useEffect(() => { enabledRef.current = enabled; }, [enabled]);
 
   const mats = useMemo(() => {
     const white = new THREE.MeshPhysicalMaterial({
@@ -218,15 +223,8 @@ export default function LogoItem({
     mats.purple.emissiveIntensity = 0.9 + gl * 1.9;
     mats.halo.opacity = Math.min(gl, 1) * 0.6;
 
-    const el = anchorRef.current;
-    let target = 1;
-    if (suppressed.current) {
-      target = 0;
-    } else if (el) {
-      const vh = Math.max(window.innerHeight, 1);
-      target = THREE.MathUtils.clamp(el.getBoundingClientRect().bottom / (vh * 0.5), 0, 1);
-    }
-    fade.current += (target - fade.current) * (suppressed.current ? 0.3 : 0.15);
+    const target = suppressed.current || !enabledRef.current ? 0 : 1;
+    fade.current += (target - fade.current) * (suppressed.current ? 0.3 : 0.12);
     const f = fade.current;
     mats.white.opacity = f;
     mats.purple.opacity = f;

@@ -3497,29 +3497,34 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 }
 .services-hud .services-eyebrow {
   grid-column: 1 / -1;
-  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--accent-light);
 }
-.hud-tl { grid-column: 1; align-self: start; display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
-.hud-code { font-size: 11px; letter-spacing: 0.22em; color: var(--text-muted); }
-.hud-title {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(26px, 4vw, 50px); line-height: 1.05; letter-spacing: -0.02em;
-  color: var(--text-primary); max-width: 12ch;
+.services-hud .services-eyebrow::before {
+  content: ""; width: 26px; height: 1px;
+  background: linear-gradient(90deg, var(--accent-light), transparent);
 }
-.hud-tr { grid-column: 2; justify-self: end; align-self: start; margin-top: 18px; }
+.hud-tl { grid-column: 1; align-self: start; display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.hud-code { font-size: 11px; letter-spacing: 0.24em; color: var(--text-muted); }
+.hud-title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(30px, 4.6vw, 58px); line-height: 1.0; letter-spacing: -0.035em;
+  color: var(--text-primary); max-width: 13ch; text-wrap: balance;
+}
+.hud-tr { grid-column: 2; justify-self: end; align-self: start; margin-top: 22px; }
 .hud-metric {
-  font-size: 12px; letter-spacing: 0.14em; color: var(--accent-light);
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.16em; color: var(--accent-light);
   border: 1px solid var(--accent-border); border-radius: 999px;
-  padding: 6px 14px; background: var(--accent-subtle);
+  padding: 7px 16px; background: var(--accent-subtle);
 }
 .hud-bl { grid-column: 1; grid-row: 3; align-self: end; display: flex; gap: 22px; align-items: baseline; }
 .hud-date { font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); }
-.hud-explore { font-size: 12px; letter-spacing: 0.2em; color: var(--text-secondary); }
+.hud-explore { font-size: 11.5px; letter-spacing: 0.22em; color: var(--accent-light); opacity: 0.85; }
 .hud-desc {
   grid-column: 2; grid-row: 3; align-self: end; justify-self: end;
-  max-width: 34ch; text-align: right; font-family: var(--font-body);
-  font-size: 14px; line-height: 1.55; color: var(--text-secondary);
+  max-width: 36ch; text-align: right; font-family: var(--font-body);
+  font-size: 15px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty;
 }
 /* troca suave do conteúdo do HUD */
 .hud-title, .hud-code, .hud-metric, .hud-desc {
@@ -3586,11 +3591,11 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 .eco-layer {
   position: relative;
   display: grid;
-  grid-template-columns: clamp(56px, 9vw, 84px) 1fr;
+  grid-template-columns: clamp(48px, 8vw, 76px) 1fr clamp(84px, 12vw, 124px);
   grid-template-areas:
-    "num head"
-    "num desc"
-    "num caps";
+    "num head icon"
+    "num desc icon"
+    "num caps icon";
   column-gap: clamp(16px, 3vw, 28px);
   row-gap: 8px;
   padding: clamp(20px, 3vw, 28px);
@@ -3598,6 +3603,13 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.eco-layer-icon {
+  grid-area: icon;
+  align-self: center;
+  justify-self: end;
+  width: clamp(84px, 12vw, 124px);
+  height: clamp(84px, 12vw, 124px);
 }
 .eco-layer:hover {
   border-color: var(--accent-border);
@@ -3667,11 +3679,20 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
 @media (max-width: 600px) {
   .eco-stack::before { left: 18px; }
   .eco-layer {
-    grid-template-columns: 1fr;
-    grid-template-areas: "num" "head" "desc" "caps";
+    grid-template-columns: 1fr clamp(62px, 20vw, 88px);
+    grid-template-areas:
+      "num  icon"
+      "head icon"
+      "desc desc"
+      "caps caps";
     row-gap: 10px;
   }
   .eco-layer-num { font-size: 26px; }
+  .eco-layer-icon {
+    width: clamp(62px, 20vw, 88px);
+    height: clamp(62px, 20vw, 88px);
+    align-self: start;
+  }
 }
 
 /* ============================================================
@@ -3695,3 +3716,100 @@ body.site-loaded .hero-enter-5 { transition-delay: 0.64s; }
   /* alvos de toque continuam ≥ 40px mesmo com a UI menor */
   .menu-toggle { min-height: 40px; }
 }
+
+/* ============================================================
+   Ícone 3D em canvas leve (ecossistema + carrossel de soluções)
+   ============================================================ */
+.icon-canvas { position: relative; width: 100%; height: 100%; }
+.icon-canvas canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* ============================================================
+   Ponte Ecossistema → Soluções (a transição que "traz os ícones")
+   ============================================================ */
+.solucoes-bridge {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: clamp(28px, 5vw, 56px) 0 clamp(8px, 2vw, 18px);
+  position: relative;
+}
+.solucoes-bridge-line {
+  width: 2px; height: clamp(36px, 6vw, 72px);
+  background: linear-gradient(180deg, transparent, var(--accent-light));
+  opacity: 0.6;
+}
+.solucoes-bridge-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--accent-light);
+}
+.solucoes-bridge-arrow {
+  font-size: 18px; color: var(--accent-light);
+  animation: bridge-bob 1.8s var(--ease-out) infinite;
+}
+@keyframes bridge-bob { 0%,100% { transform: translateY(0); opacity: 0.7; } 50% { transform: translateY(5px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .solucoes-bridge-arrow { animation: none; } }
+
+/* a galeria flui da ponte: sem borda própria no topo */
+.services-gl, .services-mobile { border-top: none; }
+
+/* ============================================================
+   Soluções no MOBILE — carrossel com setas (sem scroll de 500vh)
+   ============================================================ */
+.services-mobile { padding: clamp(40px, 9vh, 72px) 0 clamp(48px, 11vh, 88px); }
+.services-mobile-title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(1.6rem, 7vw, 2.2rem); line-height: 1.05; letter-spacing: -0.03em;
+  margin: 12px 0 clamp(20px, 6vw, 32px); max-width: 16ch; text-wrap: balance;
+}
+.svc-carousel {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+}
+.svc-arrow {
+  flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--accent-light);
+  border: 1px solid var(--accent-border); background: var(--accent-subtle);
+  cursor: pointer; transition: background 200ms, transform 200ms, box-shadow 200ms;
+}
+.svc-arrow:hover, .svc-arrow:active {
+  background: var(--accent); color: #fff; transform: scale(1.06);
+  box-shadow: 0 0 22px var(--accent-glow);
+}
+.svc-stage {
+  flex: 1 1 auto; height: clamp(180px, 52vw, 240px);
+  position: relative;
+}
+.svc-mobile-icon { width: 100%; height: 100%; }
+.svc-card {
+  margin-top: clamp(14px, 4vw, 22px);
+  display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center;
+}
+.svc-code { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.24em; color: var(--text-muted); }
+.svc-title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(1.25rem, 6vw, 1.6rem); line-height: 1.1; letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.svc-metric {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em;
+  color: var(--accent-light); border: 1px solid var(--accent-border); border-radius: 999px;
+  padding: 6px 14px; background: var(--accent-subtle);
+}
+.svc-desc {
+  font-size: 14px; line-height: 1.6; color: var(--text-secondary);
+  max-width: 42ch; text-wrap: pretty;
+}
+.svc-dots {
+  display: flex; gap: 9px; justify-content: center; margin-top: clamp(18px, 5vw, 26px);
+}
+.svc-dot {
+  width: 9px; height: 9px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--border-hover); background: transparent;
+  transition: background 220ms, border-color 220ms, transform 220ms;
+}
+.svc-dot.is-active { background: var(--accent-light); border-color: var(--accent-light); transform: scale(1.15); }
+
+/* ============================================================
+   Mobile: a página TERMINA nos serviços → esconde o footer global
+   (a classe só é aplicada no tier mobile pelo page.tsx)
+   ============================================================ */
+body.home-end-services footer { display: none; }
