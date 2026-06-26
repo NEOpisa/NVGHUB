@@ -48,7 +48,7 @@ export default function EcossistemaSection() {
       className="eco"
       aria-label="O ecossistema Neovanguard"
     >
-      <SectionScene variant="rings" className="section-scene-eco" />
+      <SectionScene variant="halo" className="section-scene-eco" />
       <div className="inner">
         <div ref={headerRef} className="eco-header" data-parallax="0.1">
           <span className="section-eyebrow">Ecossistema</span>

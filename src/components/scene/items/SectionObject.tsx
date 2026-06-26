@@ -139,6 +139,14 @@ export default function SectionObject({
   }, [geos, pointsMat, ringMats]);
 
   useFrame((state, delta) => {
+    const root = groupRef.current;
+
+    // Se não está ativo e já invisível, evita trabalho por frame.
+    if (!enabled && fade.current < 0.01) {
+      if (root) root.visible = false;
+      return;
+    }
+
     pointsMat.uniforms.uTime.value += Math.min(delta, 0.05);
     const s = spin.current;
     if (s) {
@@ -153,7 +161,7 @@ export default function SectionObject({
     const f = fade.current;
     pointsMat.uniforms.uOpacity.value = f;
     ringMats.forEach((m) => (m.opacity = f * 0.55));
-    const root = groupRef.current;
+
     if (root) {
       root.visible = f > 0.01;
       root.scale.setScalar(state.size.width < 768 ? 0.6 : 1);

@@ -12,6 +12,7 @@ import FpsMeter from "@/components/FpsMeter";
 import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
 import MetaPixel from "@/components/MetaPixel";
+import ViewportProbe from "@/components/ViewportProbe";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
@@ -202,6 +203,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
+        <ViewportProbe />
         <Preloader />
         <PageTransition />
         <TransitionCanvas />
