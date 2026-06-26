@@ -6615,7 +6615,7 @@ body.site-loaded .hero-enter-5 {
     #hero .hero-grid {
         position: relative;
         grid-template-columns: 1fr;
-        gap: 22px;
+        gap: 20px;
         align-items: start;
     }
 
@@ -6623,8 +6623,8 @@ body.site-loaded .hero-enter-5 {
         position: absolute !important;
         left: 50% !important;
         right: auto !important;
-        top: clamp(64px, 14vw, 116px) !important;
-        width: min(82vw, 300px) !important;
+        top: 72px !important;
+        width: min(80vw, 320px) !important;
         margin: 0 !important;
         transform: translateX(-50%) !important;
         opacity: 0.95;
@@ -6635,14 +6635,14 @@ body.site-loaded .hero-enter-5 {
     #hero .hero-visual .logo-scene {
         width: 100%;
         max-width: 100%;
-        max-height: min(40vh, 270px);
+        max-height: min(40vh, 280px);
         aspect-ratio: 1;
     }
 
     #hero .hero-copy {
         position: relative;
         z-index: 2;
-        padding-top: clamp(280px, 58vw, 380px);
+        padding-top: 320px;
         align-items: center;
         text-align: center;
     }
@@ -6652,11 +6652,68 @@ body.site-loaded .hero-enter-5 {
         margin-inline: auto;
     }
 
+    #hero .cta-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+        gap: 10px;
+    }
+
+    #hero .cta-row > * {
+        width: 100%;
+    }
+
+    #hero .cta-row a,
+    #hero .cta-row button {
+        width: 100%;
+        justify-content: center;
+    }
+
     #hero .hero-bar {
         position: static;
-        margin-top: 18px;
+        margin-top: 16px;
         justify-content: center;
         padding: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    #hero .hero-visual {
+        top: 64px !important;
+        width: min(84vw, 292px) !important;
+    }
+
+    #hero .hero-visual .logo-scene {
+        max-height: min(38vh, 246px);
+    }
+
+    #hero .hero-copy {
+        padding-top: 286px;
+    }
+}
+
+@media (max-width: 479px) {
+    #hero .hero-visual {
+        top: 56px !important;
+        width: min(88vw, 264px) !important;
+    }
+
+    #hero .hero-visual .logo-scene {
+        max-height: min(34vh, 220px);
+    }
+
+    #hero .hero-copy {
+        padding-top: 246px;
+        gap: 18px;
+    }
+
+    #hero .hero-brand {
+        transform: scale(0.96);
+        transform-origin: top center;
+    }
+
+    #hero .hero-h1 {
+        max-width: 13.6ch;
     }
 }
 
@@ -6689,19 +6746,7 @@ body.site-loaded .hero-enter-5 {
 
 @media (max-width: 768px) {
     #hero .cta-row {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    #hero .cta-row > * {
-        width: 100%;
-    }
-
-    #hero .cta-row a,
-    #hero .cta-row button {
-        width: 100%;
-        justify-content: center;
+        grid-template-columns: 1fr;
     }
 
     #hero .trust-signals {
