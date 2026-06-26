@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ServicesGalleryCanvas = dynamic(
   () => import("@/components/services/ServicesGalleryCanvas"),
-  { ssr: false }
+  { ssr: false },
 );
 
 export type Service = {
@@ -24,11 +24,46 @@ export type Service = {
 };
 
 export const SERVICES: Service[] = [
-  { kind: "site", code: "SRV_CD_01", title: "Site Profissional", metric: "ENTREGA · 16d", date: "© 2026", desc: "Landing ou site institucional responsivo, otimizado para SEO local e carregamento rápido. Feito para converter visitante em cliente." },
-  { kind: "system", code: "SRV_CD_02", title: "Sistema para Negócio", metric: "PAINEL · INCLUSO", date: "© 2026", desc: "Cardápio digital, agendamento online ou catálogo interativo com painel de controle." },
-  { kind: "seo", code: "SRV_CD_03", title: "SEO & Presença Digital", metric: "RESULTADO · 30–60d", date: "© 2026", desc: "Apareça no Google local com Google Meu Negócio configurado e palavras-chave do seu segmento." },
-  { kind: "support", code: "SRV_CD_04", title: "Manutenção & Suporte", metric: "RESPOSTA · 3h", date: "© 2026", desc: "Suporte real via WhatsApp, atualizações e monitoramento. Você chama, a gente resolve." },
-  { kind: "saas", code: "SRV_CD_05", title: "SaaS para seu segmento", metric: "STATUS · EM BREVE", date: "© 2026", desc: "Plataforma pronta para clínicas e restaurantes — sem desenvolvimento customizado." },
+  {
+    kind: "site",
+    code: "SRV_CD_01",
+    title: "Site Profissional",
+    metric: "ENTREGA · 16d",
+    date: "© 2026",
+    desc: "Landing ou site institucional responsivo, otimizado para SEO local e carregamento rápido. Feito para converter visitante em cliente.",
+  },
+  {
+    kind: "system",
+    code: "SRV_CD_02",
+    title: "Sistema para Negócio",
+    metric: "PAINEL · INCLUSO",
+    date: "© 2026",
+    desc: "Cardápio digital, agendamento online ou catálogo interativo com painel de controle.",
+  },
+  {
+    kind: "seo",
+    code: "SRV_CD_03",
+    title: "SEO & Presença Digital",
+    metric: "RESULTADO · 30–60d",
+    date: "© 2026",
+    desc: "Apareça no Google local com Google Meu Negócio configurado e palavras-chave do seu segmento.",
+  },
+  {
+    kind: "support",
+    code: "SRV_CD_04",
+    title: "Manutenção & Suporte",
+    metric: "RESPOSTA · 3h",
+    date: "© 2026",
+    desc: "Suporte real via WhatsApp, atualizações e monitoramento. Você chama, a gente resolve.",
+  },
+  {
+    kind: "saas",
+    code: "SRV_CD_05",
+    title: "SaaS para seu segmento",
+    metric: "STATUS · EM BREVE",
+    date: "© 2026",
+    desc: "Plataforma pronta para clínicas e restaurantes — sem desenvolvimento customizado.",
+  },
 ];
 
 export default function ServicesGallery() {
@@ -50,11 +85,10 @@ export default function ServicesGallery() {
     const section = sectionRef.current;
     if (!section) return;
 
-    const io = new IntersectionObserver(
-      ([e]) => setRunning(e.isIntersecting && !document.hidden),
-      { threshold: 0 }
-    );
-    io.observe(section);
+    setRunning(!document.hidden);
+
+    const onVisibility = () => setRunning(!document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
 
     let raf = 0;
     const onScroll = () => {
@@ -74,19 +108,30 @@ export default function ServicesGallery() {
     // Transição de entrada: o palco dos ícones surge (escala + fade) conforme a
     // seção entra — é o "vir os ícones" logo após o ecossistema.
     let tween: gsap.core.Tween | undefined;
-    if (stageRef.current && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (
+      stageRef.current &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       tween = gsap.fromTo(
         stageRef.current,
         { autoAlpha: 0, scale: 0.82, y: 40 },
         {
-          autoAlpha: 1, scale: 1, y: 0, ease: "power2.out",
-          scrollTrigger: { trigger: section, start: "top 78%", end: "top 22%", scrub: true },
-        }
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 78%",
+            end: "top 22%",
+            scrub: true,
+          },
+        },
       );
     }
 
     return () => {
-      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
       tween?.scrollTrigger?.kill();
@@ -100,25 +145,46 @@ export default function ServicesGallery() {
     const go = (dir: number) =>
       setActive((i) => (i + dir + SERVICES.length) % SERVICES.length);
     return (
-      <section id="servicos" aria-label="Nossas soluções" className="services-mobile">
+      <section
+        id="servicos"
+        aria-label="Nossas soluções"
+        className="services-mobile"
+      >
         {/* indexável p/ SEO/leitores de tela */}
         <ul className="sr-only">
           {SERVICES.map((s) => (
-            <li key={s.kind}><h3>{s.title}</h3><p>{s.desc}</p></li>
+            <li key={s.kind}>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </li>
           ))}
         </ul>
         <div className="inner">
           <span className="section-eyebrow">Soluções</span>
-          <h2 className="services-mobile-title">As peças que a gente entrega.</h2>
+          <h2 className="services-mobile-title">
+            As peças que a gente entrega.
+          </h2>
 
           <div className="svc-carousel">
-            <button className="svc-arrow" onClick={() => go(-1)} aria-label="Solução anterior">
+            <button
+              className="svc-arrow"
+              onClick={() => go(-1)}
+              aria-label="Solução anterior"
+            >
               <Chevron dir="left" />
             </button>
             <div className="svc-stage">
-              <IconCanvas variant="service" kind={svc.kind} className="svc-mobile-icon" />
+              <IconCanvas
+                variant="service"
+                kind={svc.kind}
+                className="svc-mobile-icon"
+              />
             </div>
-            <button className="svc-arrow" onClick={() => go(1)} aria-label="Próxima solução">
+            <button
+              className="svc-arrow"
+              onClick={() => go(1)}
+              aria-label="Próxima solução"
+            >
               <Chevron dir="right" />
             </button>
           </div>
@@ -159,7 +225,10 @@ export default function ServicesGallery() {
     >
       <ul className="sr-only">
         {SERVICES.map((s) => (
-          <li key={s.kind}><h3>{s.title}</h3><p>{s.desc}</p></li>
+          <li key={s.kind}>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+          </li>
         ))}
       </ul>
 
@@ -187,7 +256,10 @@ export default function ServicesGallery() {
 
           <div className="services-progress">
             {SERVICES.map((s, i) => (
-              <span key={s.kind} className={`services-progress-dot${i === active ? " is-active" : ""}`} />
+              <span
+                key={s.kind}
+                className={`services-progress-dot${i === active ? " is-active" : ""}`}
+              />
             ))}
           </div>
         </div>
@@ -198,9 +270,22 @@ export default function ServicesGallery() {
 
 function Chevron({ dir }: { dir: "left" | "right" }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {dir === "left" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {dir === "left" ? (
+        <path d="M15 18l-6-6 6-6" />
+      ) : (
+        <path d="M9 18l6-6-6-6" />
+      )}
     </svg>
   );
 }

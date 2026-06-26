@@ -6,7 +6,9 @@ import { introWillPlay, markIntroDone } from "@/components/scene/introState";
 
 // A intro é pesada (three + postprocessing) — carrega sob demanda, só quando vai
 // tocar (1ª visita na home). Fica fora do bundle inicial.
-const IntroCanvas = dynamic(() => import("@/components/scene/IntroCanvas"), { ssr: false });
+const IntroCanvas = dynamic(() => import("@/components/scene/IntroCanvas"), {
+  ssr: false,
+});
 
 /**
  * Gate da abertura do site. Na 1ª visita da home (com WebGL e sem reduced-motion)
@@ -45,14 +47,23 @@ export default function Preloader() {
     const loadP =
       document.readyState === "complete"
         ? Promise.resolve()
-        : new Promise<void>((r) => window.addEventListener("load", () => r(), { once: true }));
+        : new Promise<void>((r) =>
+            window.addEventListener("load", () => r(), { once: true }),
+          );
     const fontsP = document.fonts?.ready ?? Promise.resolve();
     Promise.all([loadP, fontsP]).then(() => {
       const wait = Math.max(0, 600 - (performance.now() - start));
-      window.setTimeout(() => { if (!cancelled) setReady(true); }, wait);
+      window.setTimeout(() => {
+        if (!cancelled) setReady(true);
+      }, wait);
     });
-    const fs = window.setTimeout(() => { if (!cancelled) setReady(true); }, 6000);
-    return () => { cancelled = true; clearTimeout(fs); };
+    const fs = window.setTimeout(() => {
+      if (!cancelled) setReady(true);
+    }, 6000);
+    return () => {
+      cancelled = true;
+      clearTimeout(fs);
+    };
   }, []);
 
   const handleComplete = () => {
@@ -61,5 +72,5 @@ export default function Preloader() {
   };
 
   if (!show || done) return null;
-  return <IntroCanvas ready={ready} onComplete={handleComplete} />;
+  return <IntroCanvas ready={ready} onCompleteAction={handleComplete} />;
 }

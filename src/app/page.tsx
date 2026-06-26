@@ -14,7 +14,7 @@ import { useReveal } from "@/hooks/useReveal";
 import SectionScene from "@/components/scene/SectionScene";
 
 export default function Home() {
-  const ctaCopyRef    = useRef<HTMLDivElement>(null);
+  const ctaCopyRef = useRef<HTMLDivElement>(null);
   const ctaActionsRef = useRef<HTMLDivElement>(null);
   useReveal(ctaCopyRef);
   useReveal(ctaActionsRef, 150);
@@ -28,10 +28,6 @@ export default function Home() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
-  useEffect(() => {
-    document.body.classList.toggle("home-end-services", isMobile);
-    return () => document.body.classList.remove("home-end-services");
-  }, [isMobile]);
 
   return (
     <main id="main" className="home">
@@ -76,15 +72,25 @@ export default function Home() {
             <div className="inner home-cta-inner">
               <div className="home-cta-copy" ref={ctaCopyRef}>
                 <h2 className="section-heading">
-                  Pronto para tirar a ideia <span className="text-accent-nvg">do papel?</span>
+                  Pronto para tirar a ideia{" "}
+                  <span className="text-accent-nvg">do papel?</span>
                 </h2>
                 <p className="section-sub">
-                  Sem contrato mínimo, sem letra miúda. Conte o que você precisa e a
-                  gente monta uma solução sob medida pro seu negócio.
+                  Sem contrato mínimo, sem letra miúda. Conte o que você precisa
+                  e a gente monta uma solução sob medida pro seu negócio.
                 </p>
               </div>
-              <div className="home-cta-actions" ref={ctaActionsRef} data-parallax="0.1">
-                <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary btn-whatsapp">
+              <div
+                className="home-cta-actions"
+                ref={ctaActionsRef}
+                data-parallax="0.1"
+              >
+                <a
+                  href={WA}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary btn-whatsapp"
+                >
                   <WhatsAppIcon />
                   Falar pelo WhatsApp
                 </a>

@@ -19,19 +19,34 @@ export default function HeroVisual() {
 
   useEffect(() => {
     const el = anchorRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting && !document.hidden),
-      { threshold: 0.05 }
-    );
-    io.observe(el);
-    const onVisibility = () => {
-      if (document.hidden) setActive(false);
+    const hero = el?.closest("#hero") as HTMLElement | null;
+    if (!el || !hero) return;
+
+    const update = () => {
+      const rect = hero.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const visible = rect.bottom > 0 && rect.top < vh;
+      setActive(visible && !document.hidden);
     };
+
+    update();
+
+    const io = new IntersectionObserver(() => update(), { threshold: 0 });
+    io.observe(hero);
+
+    const onVisibility = () => update();
+    const onScroll = () => update();
+    const onResize = () => update();
+
     document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+
     return () => {
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 

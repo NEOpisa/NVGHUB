@@ -3,8 +3,6 @@
 import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import SectionScene from "@/components/scene/SectionScene";
-import IconCanvas from "@/components/services/IconCanvas";
-import type { EcoKind } from "@/components/services/ecoIcons3d";
 
 type Layer = {
   num: string;
@@ -12,7 +10,6 @@ type Layer = {
   title: string;
   desc: string;
   capilares: string[];
-  icon: EcoKind;
 };
 
 // Não é uma lista de "serviços" — é a arquitetura do ecossistema.
@@ -24,7 +21,6 @@ const LAYERS: Layer[] = [
     title: "Dados, IA & Automação",
     desc: "A camada que aprende e age sozinha. Tira o trabalho repetitivo da sua mão e transforma cada interação em decisão.",
     capilares: ["IA aplicada", "Analytics", "Automação de processos"],
-    icon: "inteligencia",
   },
   {
     num: "02",
@@ -32,7 +28,6 @@ const LAYERS: Layer[] = [
     title: "Integrações & Atendimento",
     desc: "O sistema nervoso. Conecta site, CRM e WhatsApp para que nenhum lead se perca entre uma ferramenta e outra.",
     capilares: ["CRM", "WhatsApp", "Integrações (APIs)"],
-    icon: "conexao",
   },
   {
     num: "01",
@@ -40,7 +35,6 @@ const LAYERS: Layer[] = [
     title: "Arquitetura de Conversão",
     desc: "A fundação. Infraestrutura web rápida, segura e encontrável — feita para transformar visita em cliente, não só para existir.",
     capilares: ["Velocidade", "SEO técnico", "Cloud"],
-    icon: "base",
   },
 ];
 
@@ -49,7 +43,11 @@ export default function EcossistemaSection() {
   useReveal(headerRef);
 
   return (
-    <section id="ecossistema" className="eco" aria-label="O ecossistema Neovanguard">
+    <section
+      id="ecossistema"
+      className="eco"
+      aria-label="O ecossistema Neovanguard"
+    >
       <SectionScene variant="rings" className="section-scene-eco" />
       <div className="inner">
         <div ref={headerRef} className="eco-header" data-parallax="0.1">
@@ -81,7 +79,9 @@ function EcoLayer({ layer, delay }: { layer: Layer; delay: number }) {
 
   return (
     <div className="eco-layer" ref={ref}>
-      <span className="eco-layer-num" aria-hidden="true">{layer.num}</span>
+      <span className="eco-layer-num" aria-hidden="true">
+        {layer.num}
+      </span>
       <div className="eco-layer-head">
         <span className="eco-layer-tier">{layer.tier}</span>
         <h3 className="eco-layer-title">{layer.title}</h3>
@@ -95,7 +95,6 @@ function EcoLayer({ layer, delay }: { layer: Layer; delay: number }) {
           </li>
         ))}
       </ul>
-      <IconCanvas variant="eco" kind={layer.icon} className="eco-layer-icon" />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
@@ -52,7 +52,13 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
     return g;
   }, [data]);
 
-  useEffect(() => () => { pointGeo.dispose(); lineGeo.dispose(); }, [pointGeo, lineGeo]);
+  useEffect(
+    () => () => {
+      pointGeo.dispose();
+      lineGeo.dispose();
+    },
+    [pointGeo, lineGeo],
+  );
 
   const violet = new THREE.Color("#8a6ef0");
 
@@ -64,7 +70,8 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
       for (let a = 0; a < 3; a++) {
         const k = i * 3 + a;
         pos[k] += vel[k] * dt;
-        const lim = a === 0 ? PX_BOX.x / 2 : a === 1 ? PX_BOX.y / 2 : PX_BOX.z / 2;
+        const lim =
+          a === 0 ? PX_BOX.x / 2 : a === 1 ? PX_BOX.y / 2 : PX_BOX.z / 2;
         if (pos[k] > lim || pos[k] < -lim) vel[k] *= -1;
       }
     }
@@ -73,15 +80,23 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
     // conexões dentro do raio
     let seg = 0;
     for (let i = 0; i < PX_N && seg < PX_MAX_SEG; i++) {
-      const ix = pos[i * 3], iy = pos[i * 3 + 1], iz = pos[i * 3 + 2];
+      const ix = pos[i * 3],
+        iy = pos[i * 3 + 1],
+        iz = pos[i * 3 + 2];
       for (let j = i + 1; j < PX_N && seg < PX_MAX_SEG; j++) {
-        const dx = ix - pos[j * 3], dy = iy - pos[j * 3 + 1], dz = iz - pos[j * 3 + 2];
+        const dx = ix - pos[j * 3],
+          dy = iy - pos[j * 3 + 1],
+          dz = iz - pos[j * 3 + 2];
         const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
         if (d < PX_DIST) {
           const a = (1 - d / PX_DIST) * (opacity.current ?? 0);
           const o = seg * 6;
-          segPos[o] = ix; segPos[o + 1] = iy; segPos[o + 2] = iz;
-          segPos[o + 3] = pos[j * 3]; segPos[o + 4] = pos[j * 3 + 1]; segPos[o + 5] = pos[j * 3 + 2];
+          segPos[o] = ix;
+          segPos[o + 1] = iy;
+          segPos[o + 2] = iz;
+          segPos[o + 3] = pos[j * 3];
+          segPos[o + 4] = pos[j * 3 + 1];
+          segPos[o + 5] = pos[j * 3 + 2];
           for (let c = 0; c < 2; c++) {
             segCol[o + c * 3] = violet.r * a;
             segCol[o + c * 3 + 1] = violet.g * a;
@@ -96,16 +111,30 @@ function Plexus({ opacity }: { opacity: React.RefObject<number> }) {
     lineGeo.attributes.color.needsUpdate = true;
 
     const op = opacity.current ?? 0;
-    if (pointsRef.current) (pointsRef.current.material as THREE.PointsMaterial).opacity = op * 0.8;
+    if (pointsRef.current)
+      (pointsRef.current.material as THREE.PointsMaterial).opacity = op * 0.8;
   });
 
   return (
     <group>
       <points ref={pointsRef} geometry={pointGeo}>
-        <pointsMaterial size={0.05} color="#c6b9ff" transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
+        <pointsMaterial
+          size={0.05}
+          color="#c6b9ff"
+          transparent
+          opacity={0}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+          sizeAttenuation
+        />
       </points>
       <lineSegments geometry={lineGeo}>
-        <lineBasicMaterial vertexColors transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+        <lineBasicMaterial
+          vertexColors
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
       </lineSegments>
     </group>
   );
@@ -124,21 +153,38 @@ function BuildMark({
 
   const mats = useMemo(() => {
     const white = new THREE.MeshPhysicalMaterial({
-      color: "#eef0ff", metalness: 1.0, roughness: 0.1,
-      emissive: new THREE.Color("#7c5cff"), emissiveIntensity: 0.25,
-      envMapIntensity: 1.6, transparent: true, opacity: 0,
-      clearcoat: 1, clearcoatRoughness: 0.06,
-      iridescence: 0.35, iridescenceIOR: 1.3, iridescenceThicknessRange: [120, 420],
+      color: "#eef0ff",
+      metalness: 1.0,
+      roughness: 0.1,
+      emissive: new THREE.Color("#7c5cff"),
+      emissiveIntensity: 0.25,
+      envMapIntensity: 1.6,
+      transparent: true,
+      opacity: 0,
+      clearcoat: 1,
+      clearcoatRoughness: 0.06,
+      iridescence: 0.35,
+      iridescenceIOR: 1.3,
+      iridescenceThicknessRange: [120, 420],
     });
     const purple = new THREE.MeshPhysicalMaterial({
-      color: "#8b3df2", metalness: 0.92, roughness: 0.14,
-      emissive: new THREE.Color("#a855f7"), emissiveIntensity: 0.9,
-      envMapIntensity: 1.8, transparent: true, opacity: 0,
-      clearcoat: 1, clearcoatRoughness: 0.1,
+      color: "#8b3df2",
+      metalness: 0.92,
+      roughness: 0.14,
+      emissive: new THREE.Color("#a855f7"),
+      emissiveIntensity: 0.9,
+      envMapIntensity: 1.8,
+      transparent: true,
+      opacity: 0,
+      clearcoat: 1,
+      clearcoatRoughness: 0.1,
     });
     const wire = new THREE.LineBasicMaterial({
-      color: "#b9a8ff", transparent: true, opacity: 0,
-      depthWrite: false, blending: THREE.AdditiveBlending,
+      color: "#b9a8ff",
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
     return { white, purple, wire };
   }, []);
@@ -150,7 +196,10 @@ function BuildMark({
       geo.dispose();
       return edges;
     };
-    return { white: make(WHITE_POINTS, 0.55), purple: make(PURPLE_POINTS, 0.75) };
+    return {
+      white: make(WHITE_POINTS, 0.55),
+      purple: make(PURPLE_POINTS, 0.75),
+    };
   }, []);
 
   const { solidGroup, solidMeshes, geos } = useMemo(() => {
@@ -162,11 +211,18 @@ function BuildMark({
         m.userData.dir = c.dir;
         return m;
       });
-    const lp = buildLogoChunks(4, 3);
-    const solidMeshes = [...make(lp.white, mats.white), ...make(lp.purple, mats.purple)];
+    const lp = buildLogoChunks(4, 4);
+    const solidMeshes = [
+      ...make(lp.white, mats.white),
+      ...make(lp.purple, mats.purple),
+    ];
     const solidGroup = new THREE.Group();
     solidMeshes.forEach((m) => solidGroup.add(m));
-    return { solidGroup, solidMeshes, geos: solidMeshes.map((m) => m.geometry) };
+    return {
+      solidGroup,
+      solidMeshes,
+      geos: solidMeshes.map((m) => m.geometry),
+    };
   }, [mats]);
 
   useEffect(() => {
@@ -174,7 +230,9 @@ function BuildMark({
       geos.forEach((g) => g.dispose());
       wireframe.white.dispose();
       wireframe.purple.dispose();
-      mats.white.dispose(); mats.purple.dispose(); mats.wire.dispose();
+      mats.white.dispose();
+      mats.purple.dispose();
+      mats.wire.dispose();
     };
   }, [geos, wireframe, mats]);
 
@@ -184,11 +242,17 @@ function BuildMark({
       const pivot = m.userData.pivot as THREE.Vector3;
       const dir = m.userData.dir as THREE.Vector3;
       gsap.set(m.position, {
-        x: pivot.x + dir.x * (6 + Math.random() * 4) + (Math.random() - 0.5) * 4,
-        y: pivot.y + dir.y * (6 + Math.random() * 4) + (Math.random() - 0.5) * 4,
+        x:
+          pivot.x + dir.x * (6 + Math.random() * 4) + (Math.random() - 0.5) * 4,
+        y:
+          pivot.y + dir.y * (6 + Math.random() * 4) + (Math.random() - 0.5) * 4,
         z: pivot.z + dir.z * 4 + (Math.random() - 0.5) * 5,
       });
-      gsap.set(m.rotation, { x: Math.random() * 6, y: Math.random() * 6, z: Math.random() * 6 });
+      gsap.set(m.rotation, {
+        x: Math.random() * 6,
+        y: Math.random() * 6,
+        z: Math.random() * 6,
+      });
       gsap.set(m.scale, { x: 0.15, y: 0.15, z: 0.15 });
     });
 
@@ -196,20 +260,42 @@ function BuildMark({
     // 1) wireframe desenha (giro lento que assenta DE FRENTE, y=0)
     if (groupRef.current) groupRef.current.rotation.y = -Math.PI * 1.5;
     tl.to(wireOpacity, { current: 1, duration: 0.9, ease: "power2.out" }, 0.2);
-    tl.to(groupRef.current!.rotation, { y: 0, duration: 3.2, ease: "power3.out" }, 0);
+    tl.to(
+      groupRef.current!.rotation,
+      { y: 0, duration: 3.2, ease: "power3.out" },
+      0,
+    );
     // 2) sólidos montam; wireframe some
     solidMeshes.forEach((m, i) => {
       const pivot = m.userData.pivot as THREE.Vector3;
       const at = 1.4 + i * 0.08;
-      tl.to(m.position, { x: pivot.x, y: pivot.y, z: pivot.z, duration: 1.4, ease: "expo.out" }, at);
-      tl.to(m.rotation, { x: 0, y: 0, z: 0, duration: 1.5, ease: "expo.out" }, at);
-      tl.to(m.scale, { x: 1, y: 1, z: 1, duration: 1.2, ease: "back.out(1.7)" }, at + 0.1);
+      tl.to(
+        m.position,
+        { x: pivot.x, y: pivot.y, z: pivot.z, duration: 1.4, ease: "expo.out" },
+        at,
+      );
+      tl.to(
+        m.rotation,
+        { x: 0, y: 0, z: 0, duration: 1.5, ease: "expo.out" },
+        at,
+      );
+      tl.to(
+        m.scale,
+        { x: 1, y: 1, z: 1, duration: 1.2, ease: "back.out(1.7)" },
+        at + 0.1,
+      );
     });
-    tl.to([mats.white, mats.purple], { opacity: 1, duration: 0.6, ease: "power2.out" }, 1.5);
+    tl.to(
+      [mats.white, mats.purple],
+      { opacity: 1, duration: 0.6, ease: "power2.out" },
+      1.5,
+    );
     tl.to(wireOpacity, { current: 0, duration: 0.8, ease: "power2.in" }, 2.4);
     // 3) flash de brilho ao encaixar
-    tl.to(glow, { current: 1.6, duration: 0.25, ease: "power2.out" }, 3.0)
-      .to(glow, { current: 0.4, duration: 0.9, ease: "power2.out" });
+    tl.to(glow, { current: 1.6, duration: 0.25, ease: "power2.out" }, 3.0).to(
+      glow,
+      { current: 0.4, duration: 0.9, ease: "power2.out" },
+    );
 
     return () => void tl.kill();
   }, [solidMeshes, wireOpacity, onBuilt, mats, wireframe]);
@@ -220,7 +306,8 @@ function BuildMark({
     mats.white.emissiveIntensity = 0.25 + g * 0.8;
     mats.purple.emissiveIntensity = 0.9 + g * 1.6;
     // marca menor no mobile
-    if (groupRef.current) groupRef.current.scale.setScalar(state.size.width < 768 ? 0.34 : 1.15);
+    if (groupRef.current)
+      groupRef.current.scale.setScalar(state.size.width < 768 ? 0.34 : 1.15);
   });
 
   return (
@@ -238,9 +325,18 @@ function Scene({ onBuilt }: { onBuilt: () => void }) {
   const { camera } = useThree();
 
   useEffect(() => {
-    gsap.to(plexusOp, { current: 1, duration: 1.0, ease: "power2.out", delay: 0.1 });
+    gsap.to(plexusOp, {
+      current: 1,
+      duration: 1.0,
+      ease: "power2.out",
+      delay: 0.1,
+    });
     // câmera empurra de leve (dramatiza a construção)
-    gsap.fromTo(camera.position, { z: 8.2 }, { z: 6, duration: 3.6, ease: "power2.inOut" });
+    gsap.fromTo(
+      camera.position,
+      { z: 8.2 },
+      { z: 6, duration: 3.6, ease: "power2.inOut" },
+    );
   }, [camera]);
 
   return (
@@ -250,15 +346,38 @@ function Scene({ onBuilt }: { onBuilt: () => void }) {
       <directionalLight position={[5, 7, 6]} intensity={2.2} color="#cdbfff" />
       <pointLight position={[-6, -2, 4]} intensity={40} color="#7c3aed" />
       {/* reflexos pro metal da marca (gerado, sem rede) */}
-      <Environment resolution={96} frames={1}>
-        <Lightformer form="rect" intensity={2} position={[3, 3, 4]} scale={6} color="#a98bff" />
-        <Lightformer form="rect" intensity={1.2} position={[-4, -1, 2]} scale={5} color="#5b21b6" />
-        <Lightformer form="circle" intensity={1.5} position={[0, 4, -3]} scale={4} color="#ffffff" />
+      <Environment resolution={96} frames={2}>
+        <Lightformer
+          form="rect"
+          intensity={3}
+          position={[3, 3, 4]}
+          scale={6}
+          color="#a98bff"
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.4}
+          position={[-4, -1, 2]}
+          scale={5}
+          color="#5b21b6"
+        />
+        <Lightformer
+          form="circle"
+          intensity={2}
+          position={[0, 4, -3]}
+          scale={4}
+          color="#ffffff"
+        />
       </Environment>
       <Plexus opacity={plexusOp} />
       <BuildMark wireOpacity={wireOp} onBuilt={onBuilt} />
       <EffectComposer multisampling={0}>
-        <Bloom intensity={1.05} luminanceThreshold={0.2} luminanceSmoothing={0.5} mipmapBlur />
+        <Bloom
+          intensity={1.5}
+          luminanceThreshold={0.5}
+          luminanceSmoothing={0.5}
+          mipmapBlur
+        />
       </EffectComposer>
     </>
   );
@@ -271,17 +390,17 @@ function Scene({ onBuilt }: { onBuilt: () => void }) {
  */
 export default function IntroCanvas({
   ready,
-  onComplete,
+  onCompleteAction,
 }: {
   ready: boolean;
-  onComplete: () => void;
+  onCompleteAction: () => void;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const readyRef = useRef(ready);
   const builtRef = useRef(false);
   const doneRef = useRef(false);
 
-  const tryFinish = () => {
+  const tryFinish = useCallback(() => {
     if (!builtRef.current || !readyRef.current || doneRef.current) return;
     doneRef.current = true;
     gsap.to(overlayRef.current, {
@@ -289,12 +408,14 @@ export default function IntroCanvas({
       duration: 0.85,
       ease: "power2.inOut",
       delay: 0.5,
-      onComplete,
+      onComplete: onCompleteAction,
     });
-  };
+  }, [onCompleteAction]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { readyRef.current = ready; tryFinish(); }, [ready]);
+  useEffect(() => {
+    readyRef.current = ready;
+    tryFinish();
+  }, [ready, tryFinish]);
 
   return (
     <div className="intro-overlay" ref={overlayRef} aria-hidden="true">
@@ -303,7 +424,12 @@ export default function IntroCanvas({
         gl={{ antialias: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 8.2], fov: 55 }}
       >
-        <Scene onBuilt={() => { builtRef.current = true; tryFinish(); }} />
+        <Scene
+          onBuilt={() => {
+            builtRef.current = true;
+            tryFinish();
+          }}
+        />
       </Canvas>
     </div>
   );

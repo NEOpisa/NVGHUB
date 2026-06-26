@@ -26,11 +26,19 @@ export default function Header() {
     setHideBrand(true);
     const io = new IntersectionObserver(
       ([entry]) => setHideBrand(entry.isIntersecting),
-      { rootMargin: "-45% 0px -45% 0px" }
+      { rootMargin: "-45% 0px -45% 0px" },
     );
     io.observe(hero);
     return () => io.disconnect();
   }, [pathname]);
+
+  const handleCloseMenu = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.push("/");
+  };
 
   return (
     <header
@@ -42,8 +50,19 @@ export default function Header() {
       ].join(" ")}
     >
       <div className="site-header-inner">
-        <Link href="/" className="wordmark" aria-label="NEOVANGUARD — página inicial">
-          <img src="/logo.png" alt="" aria-hidden width={43} height={32} className="nav-logo" />
+        <Link
+          href="/"
+          className="wordmark"
+          aria-label="NEOVANGUARD — página inicial"
+        >
+          <img
+            src="/logo.png"
+            alt=""
+            aria-hidden
+            width={43}
+            height={32}
+            className="nav-logo"
+          />
           <span className="wordmark-text">
             NEO<b>VANGUARD</b>
           </span>
@@ -53,7 +72,7 @@ export default function Header() {
           {onMenu ? (
             <button
               className="menu-toggle"
-              onClick={() => router.back()}
+              onClick={handleCloseMenu}
               aria-label="Fechar menu"
             >
               <span className="menu-toggle-label">Fechar</span>
