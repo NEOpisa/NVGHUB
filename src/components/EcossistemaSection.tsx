@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import SectionScene from "@/components/scene/SectionScene";
+import IconCanvas from "@/components/services/IconCanvas";
+import type { EcoKind } from "@/components/services/ecoIcons3d";
 
 type Layer = {
   num: string;
@@ -10,6 +12,7 @@ type Layer = {
   title: string;
   desc: string;
   capilares: string[];
+  icon: EcoKind;
 };
 
 // Não é uma lista de "serviços" — é a arquitetura do ecossistema.
@@ -21,6 +24,7 @@ const LAYERS: Layer[] = [
     title: "Dados, IA & Automação",
     desc: "A camada que aprende e age sozinha. Tira o trabalho repetitivo da sua mão e transforma cada interação em decisão.",
     capilares: ["IA aplicada", "Analytics", "Automação de processos"],
+    icon: "inteligencia",
   },
   {
     num: "02",
@@ -28,6 +32,7 @@ const LAYERS: Layer[] = [
     title: "Integrações & Atendimento",
     desc: "O sistema nervoso. Conecta site, CRM e WhatsApp para que nenhum lead se perca entre uma ferramenta e outra.",
     capilares: ["CRM", "WhatsApp", "Integrações (APIs)"],
+    icon: "conexao",
   },
   {
     num: "01",
@@ -35,6 +40,7 @@ const LAYERS: Layer[] = [
     title: "Arquitetura de Conversão",
     desc: "A fundação. Infraestrutura web rápida, segura e encontrável — feita para transformar visita em cliente, não só para existir.",
     capilares: ["Velocidade", "SEO técnico", "Cloud"],
+    icon: "base",
   },
 ];
 
@@ -89,6 +95,7 @@ function EcoLayer({ layer, delay }: { layer: Layer; delay: number }) {
           </li>
         ))}
       </ul>
+      <IconCanvas variant="eco" kind={layer.icon} className="eco-layer-icon" />
     </div>
   );
 }
