@@ -6378,43 +6378,45 @@ body.site-loaded .hero-enter-5 {
 }
 
 /* ============================================================
-   Densidade mobile — UI ~20% menor no celular (pedido do cliente).
-   Lever único: a base rem encolhe (~81%), então toda tipografia/clamp/
-   spacing em rem acompanha. Ajuste `html font-size` aqui para calibrar.
+   Densidade mobile — escala ~25% menor.
    ============================================================ */
-@media (max-width: 640px) {
+@media (max-width: 1024px) {
     html {
-        font-size: 13px;
-    } /* 13/16 ≈ 81% → conteúdo ~19% menor */
+        font-size: 12px;
+    } /* 12/16 = 75% */
+
     :root {
-        --section-pad: 60px;
-        --section-pad-mobile: 60px;
-        --gutter: 22px;
+        --section-pad: 72px;
+        --section-pad-mobile: 56px;
+        --gutter: 18px;
     }
-    /* header mais compacto */
+
     .site-header-inner {
-        height: 54px;
-        padding: 0 16px;
+        height: 56px;
+        padding: 0 14px;
     }
-    .menu-toggle {
-        padding: 8px 13px;
-        font-size: 11px;
-        gap: 9px;
-    }
-    .menu-toggle-label {
-        min-width: 36px;
-    }
-    .nav-logo {
-        width: 32px;
-        height: auto;
-    }
-    .wordmark-text {
-        font-size: 12.5px;
-        letter-spacing: 0.18em;
-    }
-    /* alvos de toque continuam ≥ 40px mesmo com a UI menor */
+
     .menu-toggle {
         min-height: 40px;
+        padding: 8px 12px;
+        font-size: 11px;
+        gap: 8px;
+    }
+
+    .wordmark-text {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+    }
+}
+
+@media (max-width: 640px) {
+    html {
+        font-size: 11px;
+    }
+
+    .nav-logo {
+        width: 30px;
+        height: auto;
     }
 }
 

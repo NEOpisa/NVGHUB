@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, Plus_Jakarta_Sans, Orbitron } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -38,6 +38,14 @@ const orbitron = Orbitron({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -67,7 +75,12 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   openGraph: {
     title: "Neovanguard — Agência de Soluções Digitais",
@@ -77,12 +90,20 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     siteName: "Neovanguard",
     url: SITE_URL,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Neovanguard — Agência de Soluções Digitais" }],
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Neovanguard — Agência de Soluções Digitais",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Neovanguard — Agência de Soluções Digitais",
-    description: "Sites, sistemas, SEO e suporte como um só ecossistema. 100% remoto, sem contrato mínimo.",
+    description:
+      "Sites, sistemas, SEO e suporte como um só ecossistema. 100% remoto, sem contrato mínimo.",
     images: ["/og.png"],
   },
 };
@@ -117,11 +138,50 @@ const JSON_LD = {
       },
       sameAs: [IG],
       makesOffer: [
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Site Profissional", description: "Landing pages e sites institucionais responsivos, otimizados para SEO local." } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Sistema para Negócio", description: "Cardápio digital, agendamento online e catálogos com painel de controle." } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "SEO & Presença Digital", description: "Google Meu Negócio e otimização para aparecer nas buscas locais." } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Manutenção & Suporte", description: "Suporte via WhatsApp, atualizações e monitoramento contínuo." } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "SaaS por segmento", description: "Plataformas prontas para clínicas e restaurantes." } },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Site Profissional",
+            description:
+              "Landing pages e sites institucionais responsivos, otimizados para SEO local.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Sistema para Negócio",
+            description:
+              "Cardápio digital, agendamento online e catálogos com painel de controle.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "SEO & Presença Digital",
+            description:
+              "Google Meu Negócio e otimização para aparecer nas buscas locais.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Manutenção & Suporte",
+            description:
+              "Suporte via WhatsApp, atualizações e monitoramento contínuo.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "SaaS por segmento",
+            description: "Plataformas prontas para clínicas e restaurantes.",
+          },
+        },
       ],
     },
   ],
@@ -133,7 +193,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${syne.variable} ${jakarta.variable} ${orbitron.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${syne.variable} ${jakarta.variable} ${orbitron.variable}`}
+    >
       <body>
         <script
           type="application/ld+json"

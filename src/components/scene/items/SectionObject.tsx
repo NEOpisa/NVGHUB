@@ -62,7 +62,8 @@ export default function SectionObject({
     const geos: THREE.BufferGeometry[] = [];
 
     // nuvem de pontos numa casca esférica (distribuição fibonacci + jitter)
-    const N = variant === "halo" ? 160 : 240;
+    // reduzida para aliviar GPU/CPU na seção ecossistema (desktop).
+    const N = variant === "rings" ? 120 : variant === "halo" ? 100 : 160;
     const R = 1.35;
     const pos = new Float32Array(N * 3);
     const glow = new Float32Array(N);
@@ -82,9 +83,16 @@ export default function SectionObject({
     pg.setAttribute("aGlow", new THREE.BufferAttribute(glow, 1));
     geos.push(pg);
     const pointsMat = new THREE.ShaderMaterial({
-      vertexShader: pointVert, fragmentShader: pointFrag,
-      uniforms: { uSize: { value: 26 }, uTime: { value: 0 }, uOpacity: { value: 0 } },
-      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      vertexShader: pointVert,
+      fragmentShader: pointFrag,
+      uniforms: {
+        uSize: { value: 26 },
+        uTime: { value: 0 },
+        uOpacity: { value: 0 },
+      },
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
     const points = new THREE.Points(pg, pointsMat);
     points.frustumCulled = false;
@@ -92,17 +100,24 @@ export default function SectionObject({
 
     // anéis finos luminosos (aditivos)
     const ringMats: THREE.MeshBasicMaterial[] = [];
-    const ringDefs = variant === "rings"
-      ? [[1.7, Math.PI / 2.1, 0], [2.0, Math.PI / 1.6, 0.5]]
-      : variant === "halo"
-        ? [[1.9, Math.PI / 2, 0]]
-        : [[1.75, Math.PI / 2.2, 0]];
+    const ringDefs =
+      variant === "rings"
+        ? [
+            [1.7, Math.PI / 2.1, 0],
+            [2.0, Math.PI / 1.6, 0.5],
+          ]
+        : variant === "halo"
+          ? [[1.9, Math.PI / 2, 0]]
+          : [[1.75, Math.PI / 2.2, 0]];
     ringDefs.forEach(([rad, rx, rz]) => {
-      const g = new THREE.TorusGeometry(rad, 0.012, 8, 96);
+      const g = new THREE.TorusGeometry(rad, 0.012, 8, 64);
       geos.push(g);
       const m = new THREE.MeshBasicMaterial({
-        color: "#a98bff", transparent: true, opacity: 0,
-        blending: THREE.AdditiveBlending, depthWrite: false,
+        color: "#a98bff",
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
       });
       ringMats.push(m);
       const ring = new THREE.Mesh(g, m);
@@ -131,15 +146,9 @@ export default function SectionObject({
       s.rotation.x = Math.sin(state.clock.elapsedTime * 0.25) * 0.18;
     }
 
-    // fade pela proximidade do centro da seção ao centro da viewport
-    const el = anchorRef.current;
-    let target = 0;
-    if (el) {
-      const r = el.getBoundingClientRect();
-      const vh = Math.max(window.innerHeight, 1);
-      const center = r.top + r.height / 2;
-      target = THREE.MathUtils.clamp(1 - Math.abs(center - vh / 2) / (vh * 0.85), 0, 1);
-    }
+    // Fade dirigido por visibilidade (IntersectionObserver no SectionScene)
+    // para evitar getBoundingClientRect a cada frame (layout thrash).
+    const target = enabled ? 1 : 0;
     fade.current += (target - fade.current) * 0.1;
     const f = fade.current;
     pointsMat.uniforms.uOpacity.value = f;
