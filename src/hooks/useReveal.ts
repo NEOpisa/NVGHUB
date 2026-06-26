@@ -24,21 +24,22 @@ export function useReveal(ref: RefObject<HTMLElement | null>, delay = 0) {
       gsap.set(el, { opacity: 1, y: 0 });
       return;
     }
-    // Reveal SCRUBADO: o elemento sobe/aparece ligado à posição do scroll —
-    // fluxo contínuo ("um só movimento"), sem snap nem pin.
-    const off = Math.min(delay / 40, 8);
+    // Reveal play-once: dispara ao entrar na viewport e COMPLETA sempre — mesmo
+    // em seções no fim da página (onde não há scroll restante pra um scrub
+    // chegar ao fim) ou já visíveis no load. `once` + start a 85% garante isso.
     const tween = gsap.fromTo(
       el,
       { opacity: 0, y: 40 },
       {
         opacity: 1,
         y: 0,
-        ease: "none",
+        duration: 0.7,
+        ease: "power3.out",
+        delay: delay / 1000,
         scrollTrigger: {
           trigger: el,
-          start: `top ${90 - off}%`,
-          end: `top ${52 - off}%`,
-          scrub: true,
+          start: "top 85%",
+          once: true,
         },
       }
     );

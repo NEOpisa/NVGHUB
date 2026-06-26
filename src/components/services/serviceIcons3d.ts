@@ -27,6 +27,38 @@ function extrude(shape: THREE.Shape, depth: number, holes?: THREE.Path[]) {
   return g;
 }
 
+/** Engrenagem (cog) — dentes trapezoidais + furo central. */
+function gearShape(teeth: number, rOuter: number, toothDepth: number, rHole: number) {
+  const s = new THREE.Shape();
+  const rInner = rOuter - toothDepth;
+  const steps = teeth * 4; // 4 pontos por dente: base→sobe→topo→desce
+  for (let i = 0; i <= steps; i++) {
+    const phase = i % 4;
+    const r = phase === 0 || phase === 3 ? rInner : rOuter;
+    // estreita o topo do dente p/ dar o formato trapezoidal clássico
+    const a = ((i / steps) * Math.PI * 2) + (phase === 1 ? 0.04 : phase === 2 ? -0.04 : 0);
+    const x = Math.cos(a) * r, y = Math.sin(a) * r;
+    if (i === 0) s.moveTo(x, y); else s.lineTo(x, y);
+  }
+  const hole = new THREE.Path();
+  hole.absarc(0, 0, rHole, 0, Math.PI * 2, true);
+  s.holes.push(hole);
+  return s;
+}
+
+/** Raio (lightning bolt) — polígono em Z, dois braços. */
+function boltShape() {
+  const s = new THREE.Shape();
+  const p: [number, number][] = [
+    [0.34, 1.18], [-0.48, 0.12], [0.04, 0.12],
+    [-0.30, -1.18], [0.50, -0.04], [-0.02, -0.04],
+  ];
+  s.moveTo(p[0][0], p[0][1]);
+  for (let i = 1; i < p.length; i++) s.lineTo(p[i][0], p[i][1]);
+  s.closePath();
+  return s;
+}
+
 export type ServiceKind = "site" | "system" | "seo" | "support" | "saas";
 
 /**
@@ -90,14 +122,11 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     add(new THREE.BoxGeometry(0.5, 0.22, 0.3), metalParts, [0, -1.0, 0]);
     add(new THREE.BoxGeometry(1.0, 0.1, 0.3), metalParts, [0, -1.12, 0]);
   } else if (kind === "system") {
-    // sistema: armário com GAVETAS ABERTAS (painel/gestão).
-    add(new THREE.BoxGeometry(1.7, 1.9, 0.9), metalParts); // chassi
-    const rows: [number, number][] = [[0.6, 0.34], [0.0, 0.6], [-0.6, 0.22]]; // [y, quanto pra fora]
-    rows.forEach(([y, out]) => {
-      const z = 0.45 + out;
-      add(new THREE.BoxGeometry(1.5, 0.44, 0.52), metalParts, [0, y, z]); // corpo da gaveta
-      add(new THREE.BoxGeometry(0.5, 0.09, 0.12), accentParts, [0, y, z + 0.3]); // puxador
-    });
+    // sistema: ENGRENAGEM (cog) — sistema/automação. Corpo metal + miolo acento.
+    add(extrude(gearShape(9, 1.05, 0.22, 0.34), 0.5), metalParts);
+    // cubo central emissivo (miolo) nas duas faces, em volta do furo
+    addBoth(new THREE.RingGeometry(0.34, 0.56, 32), accentParts, 0.27);
+    add(new THREE.CylinderGeometry(0.3, 0.3, 0.58, 28), accentParts, [0, 0, 0], [Math.PI / 2, 0, 0]); // eixo
   } else if (kind === "seo") {
     // lupa: anel + cabo (simétricos) + lente (acento espelhado)
     add(new THREE.TorusGeometry(0.85, 0.16, 20, 72), metalParts, [0, 0.2, 0]);
@@ -120,24 +149,17 @@ export function buildServiceIcon(kind: ServiceKind, metal: THREE.Material, accen
     c.lineTo(0.4, 0.55); c.lineTo(-0.1, -0.05); c.lineTo(-0.35, 0.2);
     addBoth(extrude(c, 0.08), accentParts, 0.15);
   } else {
-    // saas: FOGUETE (plataforma pronta / "em lançamento") — radialmente simétrico.
-    add(new THREE.CylinderGeometry(0.55, 0.55, 1.5, 36), metalParts, [0, 0.05, 0]); // corpo
-    add(new THREE.ConeGeometry(0.55, 0.7, 36), accentParts, [0, 1.15, 0]); // bico
-    add(new THREE.SphereGeometry(0.07, 14, 10), metalParts, [0, 1.52, 0]); // ponta do bico
-    // anéis estruturais do corpo (detalhe)
-    add(new THREE.TorusGeometry(0.55, 0.03, 10, 40), metalParts, [0, 0.55, 0], [Math.PI / 2, 0, 0]);
-    add(new THREE.TorusGeometry(0.55, 0.03, 10, 40), metalParts, [0, -0.45, 0], [Math.PI / 2, 0, 0]);
-    // vigia (anel + lente), espelhada frente/trás
-    addBoth(new THREE.TorusGeometry(0.2, 0.05, 16, 48), metalParts, 0.55, [0, 0.35]);
-    addBoth(new THREE.CircleGeometry(0.18, 40), accentParts, 0.55, [0, 0.35]);
-    // 4 aletas radiais
-    for (let i = 0; i < 4; i++) {
-      const a = (i / 4) * Math.PI * 2;
-      add(new THREE.BoxGeometry(0.08, 0.6, 0.5), metalParts, [Math.sin(a) * 0.5, -0.72, Math.cos(a) * 0.5], [0, a, 0]);
-    }
-    // chama (dupla camada pra dar volume)
-    add(new THREE.ConeGeometry(0.4, 0.7, 28), accentParts, [0, -1.25, 0], [Math.PI, 0, 0]);
-    add(new THREE.ConeGeometry(0.2, 0.4, 20), metalParts, [0, -1.05, 0], [Math.PI, 0, 0]);
+    // saas: RAIO (lightning) — plataforma pronta / energia / "instantâneo".
+    // Núcleo emissivo (acento) + moldura metálica levemente maior atrás.
+    add(extrude(boltShape(), 0.30), accentParts);          // núcleo que brilha
+    const frame = boltShape();
+    const frameGeo = new THREE.ExtrudeGeometry(frame, {
+      depth: 0.16, curveSegments: 8,
+      bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.09, bevelSegments: 2,
+    });
+    frameGeo.center();
+    frameGeo.scale(1.14, 1.08, 1);
+    add(frameGeo, metalParts, [0, 0, -0.02]);               // contorno metálico atrás
   }
 
   // mescla por material → 2 meshes no máximo
