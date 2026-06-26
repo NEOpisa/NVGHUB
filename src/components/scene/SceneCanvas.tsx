@@ -3,28 +3,32 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import AmbientField from "@/components/AmbientField";
-import { MQ } from "@/lib/motionConfig";
 
-// O canvas WebGL (three/fiber/drei) vive num chunk separado, carregado só no
-// tier FULL. Mantém `three` fora do bundle inicial — mobile baixa zero Three.js.
-const SceneCanvasGL = dynamic(() => import("@/components/scene/SceneCanvasGL"), {
-  ssr: false,
-});
+// O canvas WebGL (three/fiber/drei) vive num chunk separado.
+// É carregado sob demanda quando há suporte, inclusive no mobile,
+// para permitir a logo 3D no hero.
+const SceneCanvasGL = dynamic(
+  () => import("@/components/scene/SceneCanvasGL"),
+  {
+    ssr: false,
+  },
+);
 
 /**
- * Decide o fundo do site por tier:
- *  - FULL (desktop, ponteiro fino, sem reduced-motion) + WebGL → camada 3D.
- *  - Mobile / coarse-pointer / reduced-motion / sem WebGL → AmbientField (CSS,
- *    leve e animado). O texto/forms continuam no DOM por cima (SEO).
+ * Decide o fundo do site por capacidade:
+ *  - Com WebGL e sem reduced-motion → camada 3D global.
+ *  - Sem WebGL (ou com reduced-motion) → AmbientField CSS leve.
+ * O conteúdo principal continua no DOM por cima (SEO/acessibilidade).
  */
 export default function SceneCanvas() {
   const [useGL, setUseGL] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!window.matchMedia(MQ.full).matches) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setUseGL(false);
       return;
     }
+
     let ok = false;
     try {
       const c = document.createElement("canvas");
