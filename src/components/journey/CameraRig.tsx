@@ -4,8 +4,8 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { intro } from "@/components/scene/introState";
-import { journey } from "./journeyState";
-import { sampleCamera } from "./path";
+import { journey, rangeN } from "./journeyState";
+import { sampleCamera, WORLD } from "./path";
 
 const _pos = new THREE.Vector3();
 const _look = new THREE.Vector3();
@@ -23,6 +23,7 @@ const _introLook = new THREE.Vector3(0, 0.1, 0.8);
 export default function CameraRig() {
   const mouse = useRef({ x: 0, y: 0 });
   const introAmt = useRef(intro.active ? 1 : 0);
+  const mobK = useRef(0); // 0 = desktop · 1 = retrato (mobile)
 
   useFrame((state, dt) => {
     journey.smooth = THREE.MathUtils.damp(
@@ -31,7 +32,28 @@ export default function CameraRig() {
       5,
       dt,
     );
-    const fov = sampleCamera(journey.smooth, _pos, _look);
+    const sm = journey.smooth;
+    let fov = sampleCamera(sm, _pos, _look);
+
+    // retrato + capítulo SOLUÇÕES: as estações vão pro centro (ServicesRing)
+    // — a mira e a posição da câmera acompanham, e o FOV abre um pouco pra
+    // compensar o corredor estreito (senão o ícone ativo parece longe demais)
+    const cam0 = state.camera as THREE.PerspectiveCamera;
+    const portrait = cam0.aspect < 0.8 ? 1 : 0;
+    mobK.current = THREE.MathUtils.damp(mobK.current, portrait, 6, dt);
+    const svcK =
+      mobK.current *
+      Math.min(rangeN(sm, 0.46, 0.52), 1 - rangeN(sm, 0.72, 0.78));
+    if (svcK > 0.002) {
+      const xF = THREE.MathUtils.lerp(1, WORLD.svcMobileX, svcK);
+      _pos.x *= xF;
+      _look.x *= xF;
+      // mira sobe só metade da elevação das estações: o ícone ativo fica
+      // acima do centro da tela, longe do card de texto ancorado embaixo
+      _look.y += svcK * WORLD.svcMobileLift * 0.5;
+      const comp = THREE.MathUtils.clamp(1.05 / cam0.aspect, 1, 1.25);
+      fov *= THREE.MathUtils.lerp(1, comp, svcK);
+    }
 
     // parallax sutil de mouse por cima da trajetória
     const k = Math.min(dt * 3, 1);

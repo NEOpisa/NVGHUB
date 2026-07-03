@@ -192,6 +192,9 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       // rail: capítulo ativo
       const chapter = p < 0.18 ? 0 : p < 0.47 ? 1 : p < 0.77 ? 2 : 3;
       railItems.forEach((r, i) => r.classList.toggle("is-on", i === chapter));
+
+      // capítulo final: o mini-footer já assina © — some a marca d'água
+      els.root!.classList.toggle("jy-at-end", p > 0.86);
     };
     raf = requestAnimationFrame(loop);
     return () => {
@@ -450,13 +453,11 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       {/* trilho de capítulos + dica de scroll (só no modo GL) */}
       {!staticMode && (
         <>
-          {/* moldura HUD fina (estética kprverse) */}
+          {/* moldura HUD fina (estética kprverse) — só a assinatura da
+              esquerda inferior; some no capítulo final (o mini-footer assina) */}
           <div className="jy-frame" aria-hidden="true">
-            <span className="jy-frame-label jy-frame-tl">
-              NVG <i>{"//"}</i> ecossistema digital
-            </span>
             <span className="jy-frame-label jy-frame-bl">
-              © {new Date().getFullYear()} neovanguard
+              NVG <i>{"//"}</i> © {new Date().getFullYear()} neovanguard
             </span>
           </div>
           <nav className="jy-rail" aria-label="Capítulos da página">

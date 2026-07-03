@@ -11,6 +11,10 @@ export const WORLD = {
   serviceZ: [-27, -32, -37, -42, -47],
   serviceX: [2.1, -2.1, 2.1, -2.1, 2.1],
   serviceY: [0.15, -0.1, 0.2, -0.15, 0.05],
+  /* retrato: fator que puxa as estações (e a mira da câmera) pro centro,
+     e elevação que sobe os ícones — o card de texto vive embaixo */
+  svcMobileX: 0.3,
+  svcMobileLift: 0.8,
   tunnelStart: -51.5,
   tunnelEnd: -64,
   tunnelCount: 14,
@@ -35,9 +39,14 @@ const WAYPOINTS: WP[] = [
   { t: 0.2, pos: [2.6, 1.1, -2.0], look: [0, 0.3, -16], fov: 58 },
   { t: 0.32, pos: [3.0, 1.7, -11], look: [0, 0.3, -16], fov: 57 },
   { t: 0.44, pos: [-2.6, 1.3, -14], look: [0, 0.3, -16.5], fov: 56 },
-  { t: 0.51, pos: [-0.8, 0.2, -22], look: [1.4, 0.1, -28.5], fov: 60 },
-  { t: 0.59, pos: [0.9, -0.1, -31], look: [-1.4, 0.15, -38], fov: 60 },
-  { t: 0.67, pos: [-0.8, 0.2, -41], look: [1.4, 0, -47.5], fov: 60 },
+  /* SOLUÇÕES: um waypoint por estação, no meio da janela em que ela está
+     ativa (troca a cada Δt=0.044 a partir de 0.5) — a câmera serpenteia
+     PERTO (~4.6 un.) e olha direto pro ícone ativo, nunca pro lado oposto */
+  { t: 0.522, pos: [-0.5, 0.35, -23.2], look: [2.1, 0.15, -27], fov: 56 },
+  { t: 0.566, pos: [0.5, 0.1, -28.2], look: [-2.1, -0.1, -32], fov: 56 },
+  { t: 0.61, pos: [-0.5, 0.35, -33.2], look: [2.1, 0.2, -37], fov: 56 },
+  { t: 0.654, pos: [0.5, 0.1, -38.2], look: [-2.1, -0.15, -42], fov: 56 },
+  { t: 0.698, pos: [-0.5, 0.3, -43.2], look: [2.1, 0.05, -47], fov: 56 },
   { t: 0.74, pos: [0, 0.1, -49.5], look: [0, 0, -58], fov: 63 },
   { t: 0.84, pos: [0, 0, -58.5], look: [1.2, 0.1, -67.5], fov: 60 },
   { t: 0.93, pos: [-0.5, 0.25, -62.5], look: [1.7, 0.1, -67.5], fov: 55 },

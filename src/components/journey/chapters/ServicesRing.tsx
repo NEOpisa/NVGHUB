@@ -153,20 +153,21 @@ export default function ServicesRing() {
     const l = rangeN(sm, CH.services.start, 0.72);
     const active = Math.min(4, Math.floor(l * 5));
 
-    // retrato (mobile): estações menores e mais perto do centro —
-    // sem isso os ícones estouram as bordas do enquadramento estreito.
+    // retrato (mobile): estações um pouco menores, perto do centro e ELEVADAS
+    // — o card de texto vive embaixo; a câmera (CameraRig) acompanha a mira
+    // e abre o FOV, então o ícone ativo fica grande e legível, não distante.
     const portrait = state.viewport.aspect < 0.8;
     mobK.current = THREE.MathUtils.damp(mobK.current, portrait ? 1 : 0, 6, dt);
     const mk = mobK.current;
-    const mobileStationScale = 0.175; // metade do ajuste mobile anterior: 0.35 → 0.175
-    const mobileXFactor = 0.12; // ±2.1 → ±0.25, mais próximo do centro
+    const mobileStationScale = 0.5;
     const stScale = THREE.MathUtils.lerp(1, mobileStationScale, mk);
-    const xK = THREE.MathUtils.lerp(1, mobileXFactor, mk);
+    const xK = THREE.MathUtils.lerp(1, WORLD.svcMobileX, mk);
 
     for (let i = 0; i < icons.length; i++) {
       const st = stationRefs.current[i];
       if (st) {
         st.position.x = WORLD.serviceX[i] * xK;
+        st.position.y = mk * WORLD.svcMobileLift;
         st.scale.setScalar(stScale);
       }
       const ig = iconRefs.current[i];
@@ -220,6 +221,7 @@ export default function ServicesRing() {
     }
 
     if (light.current) {
+      light.current.position.y = 0.8 + mk * WORLD.svcMobileLift;
       light.current.position.x = THREE.MathUtils.damp(
         light.current.position.x,
         WORLD.serviceX[active] * xK,

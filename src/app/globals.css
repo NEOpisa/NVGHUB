@@ -7961,14 +7961,15 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     font-style: normal;
     color: rgba(139, 92, 246, 0.8);
 }
-.jy-frame-tl {
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-}
 .jy-frame-bl {
     bottom: 10px;
     left: 16px;
+    transition: opacity 0.5s ease;
+}
+/* capítulo final: o mini-footer da jornada já assina o © — a marca d'água
+   da esquerda inferior sai de cena pra não duplicar */
+.jy-overlay.jy-at-end .jy-frame-bl {
+    opacity: 0;
 }
 body:not(.site-loaded) .jy-frame {
     opacity: 0;
@@ -8178,8 +8179,19 @@ body:not(.site-loaded) .jy-hero-copy {
         flex-direction: column;
         align-items: stretch;
     }
+    /* soluções no retrato: card compacto ancorado embaixo — o ícone 3D
+       (elevado pelo ServicesRing) fica com a metade de cima da tela */
     .jy-svc-stack {
-        min-height: 240px;
+        min-height: 200px;
+    }
+    .jy-svc {
+        padding: 16px 16px 18px;
+    }
+    .jy-svc-head {
+        margin-bottom: 10px;
+    }
+    .jy-svc-desc {
+        font-size: 0.86rem;
     }
     .jy-exp-desc {
         display: none;
