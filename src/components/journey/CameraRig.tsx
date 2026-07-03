@@ -44,11 +44,13 @@ export default function CameraRig() {
     const ia = introAmt.current;
     if (ia > 0.002) {
       const t = state.clock.elapsedTime;
-      const ang = Math.sin(t * 0.2) * 0.55;
-      const r = 9.8 - intro.build * 2.1; // aproxima conforme desenha
+      // órbita AMPLA (±54°) + arco vertical: o volume da marca se revela
+      // por paralaxe de verdade, não só de frente
+      const ang = Math.sin(t * 0.24) * 0.95;
+      const r = 10.4 - intro.build * 3.0; // dolly-in forte conforme desenha
       _introPos.set(
         Math.sin(ang) * r,
-        0.4 + Math.sin(t * 0.31) * 0.22,
+        0.4 + Math.sin(t * 0.31) * 0.4,
         Math.cos(ang) * r + 0.8,
       );
       _pos.lerp(_introPos, ia);

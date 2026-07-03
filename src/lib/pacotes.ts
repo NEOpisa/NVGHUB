@@ -77,16 +77,16 @@ export const PACOTES: Pacote[] = [
   },
   {
     name: "SaaS",
-    tagline: "Solução escalável em desenvolvimento",
+    tagline: "Plataforma pronta pro seu segmento, por assinatura",
     featured: false,
-    badge: "Em breve",
-    badgeVariant: "alt",
+    badge: "Novo",
     features: [
-      "Plataforma pronta pro seu segmento",
-      "Sem desenvolvimento customizado",
+      "Plataforma pronta para clínicas e restaurantes",
+      "No ar em até 5 dias úteis",
       "Atualizações e suporte contínuo inclusos",
-      "Preço e detalhes revelados em breve",
+      "Sem desenvolvimento customizado",
+      "Cancele quando quiser",
     ],
-    cta: "Entrar na lista de espera",
+    cta: "Ativar meu SaaS",
   },
 ];

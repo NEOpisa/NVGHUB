@@ -63,6 +63,40 @@ const PERGUNTAS: Pergunta[] = [
 
 const TOTAL = PERGUNTAS.length;
 
+/** rota sugerida a partir do OBJETIVO (refinada pelo ramo) — o diagnóstico
+ *  devolve algo concreto, não só um "fale com a gente" */
+function recomendar(respostas: Record<string, string>): {
+  pacote: string;
+  motivo: string;
+  extra?: string;
+} {
+  const objetivo = respostas.objetivo ?? "";
+  const ramo = respostas.ramo ?? "";
+  const saasRamo = ramo === "Saúde & Beleza" || ramo === "Alimentação";
+  if (objetivo.startsWith("Vender"))
+    return {
+      pacote: "E-commerce",
+      motivo: "Loja virtual completa com carrinho, Pix e painel do lojista.",
+    };
+  if (objetivo.startsWith("Automatizar"))
+    return {
+      pacote: "Sistema",
+      motivo: "Agendamento, cardápio ou catálogo com painel de controle.",
+      extra: saasRamo
+        ? "Seu ramo também se encaixa no nosso SaaS pronto — no ar em 5 dias."
+        : undefined,
+    };
+  if (objetivo.startsWith("Ser encontrado"))
+    return {
+      pacote: "Presença",
+      motivo: "SEO local + Google Meu Negócio pra aparecer nas buscas.",
+    };
+  return {
+    pacote: "Presença",
+    motivo: "Landing completa e encontrável — presença de verdade, rápido.",
+  };
+}
+
 export default function SolucaoQuiz() {
   const headerRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
@@ -86,20 +120,23 @@ export default function SolucaoQuiz() {
     setPasso(0);
   };
 
-  // Deriva itens + link do WhatsApp só quando as respostas mudam (uma única
-  // varredura de PERGUNTAS) e mantém a referência estável de `itens` p/ o modal.
-  const { itens, waHref } = useMemo(() => {
+  // Deriva itens + recomendação + link do WhatsApp só quando as respostas
+  // mudam, mantendo a referência estável de `itens` p/ o modal.
+  const { itens, waHref, rec, respondidas } = useMemo(() => {
     const respondidas = PERGUNTAS.filter((p) => respostas[p.id]);
+    const rec = recomendar(respostas);
     const mensagemWA = [
       "Olá! Acabei de fazer o diagnóstico no site da Neovanguard.",
       "",
       ...respondidas.map((p) => `• ${p.resumo}: ${respostas[p.id]}`),
       "",
-      "Quero montar a minha solução sob medida.",
+      `O site sugeriu o pacote ${rec.pacote}. Quero montar a minha solução sob medida.`,
     ].join("\n");
     return {
       itens: respondidas.map((p) => ({ label: `${p.resumo}: ${respostas[p.id]}`, price: null })),
       waHref: `${WA}?text=${encodeURIComponent(mensagemWA)}`,
+      rec,
+      respondidas,
     };
   }, [respostas]);
 
@@ -129,24 +166,41 @@ export default function SolucaoQuiz() {
                 </>
               )}
             </span>
+            {/* trilho SEGMENTADO: um traço por pergunta, o atual pulsa */}
             <div className="quiz-progress-track">
-              <div className="quiz-progress-fill" style={{ width: `${progresso}%` }} />
+              {PERGUNTAS.map((p, i) => (
+                <span
+                  key={p.id}
+                  className={`quiz-progress-seg${
+                    i < passo || finalizado
+                      ? " is-done"
+                      : i === passo
+                        ? " is-now"
+                        : ""
+                  }`}
+                />
+              ))}
             </div>
+            <span className="quiz-progress-pct">{progresso}%</span>
           </div>
 
           {!finalizado && pergunta ? (
             <div className="quiz-step" key={pergunta.id}>
               <h4 className="quiz-question">{pergunta.q}</h4>
               <div className="quiz-options">
-                {pergunta.opcoes.map((op) => {
+                {pergunta.opcoes.map((op, oi) => {
                   const ativo = respostas[pergunta.id] === op.label;
                   return (
                     <button
                       key={op.label}
                       type="button"
                       className={`quiz-option${ativo ? " ativo" : ""}`}
+                      style={{ animationDelay: `${oi * 55}ms` }}
                       onClick={() => escolher(pergunta.id, op.label)}
                     >
+                      <span className="quiz-option-key" aria-hidden="true">
+                        {String.fromCharCode(65 + oi)}
+                      </span>
                       <span className="quiz-option-icon" aria-hidden="true">{op.icon}</span>
                       <span className="quiz-option-label">{op.label}</span>
                       <span className="quiz-option-arrow" aria-hidden="true">
@@ -170,9 +224,33 @@ export default function SolucaoQuiz() {
               <div className="quiz-final-badge" aria-hidden="true">
                 <CheckIcon size={21} strokeWidth={2.4} />
               </div>
-              <h4 className="quiz-final-title">Temos a solução certa pra você.</h4>
+              <h4 className="quiz-final-title">Diagnóstico concluído.</h4>
+
+              {/* readout do terminal: o que você respondeu */}
+              <div className="quiz-readout" aria-hidden="true">
+                {respondidas.map((p) => (
+                  <span key={p.id} className="quiz-readout-line">
+                    <i>{"// "}</i>
+                    {p.resumo.toLowerCase()} <b>▸ {respostas[p.id]}</b>
+                  </span>
+                ))}
+              </div>
+
+              {/* rota sugerida pelo diagnóstico */}
+              <div className="quiz-rec">
+                <span className="quiz-rec-label">Rota sugerida</span>
+                <span className="quiz-rec-name">{rec.pacote}</span>
+                <p className="quiz-rec-why">{rec.motivo}</p>
+                {rec.extra && <p className="quiz-rec-extra">{rec.extra}</p>}
+                <Link href="/pacotes" className="quiz-rec-link">
+                  Ver o pacote {rec.pacote}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                </Link>
+              </div>
+
               <p className="quiz-final-sub">
-                Com base no que você respondeu, a gente monta a sua solução sob medida — no ritmo e no orçamento que cabem no seu negócio. Bora conversar?
+                A gente fecha os detalhes com você no atendimento — no ritmo e no
+                orçamento que cabem no seu negócio. Bora conversar?
               </p>
 
               <div className="quiz-final-actions">

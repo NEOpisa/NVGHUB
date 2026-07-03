@@ -25,6 +25,7 @@ export default function PricingSection() {
     <div id="precos" className="comprar-part comprar-part--divider" aria-label="Tipos de solução">
       <div className="inner">
         <div ref={headerRef} className="comprar-part-head" data-parallax="0.12">
+          <span className="section-eyebrow">Soluções</span>
           <h3 className="comprar-part-title" data-split>Tipos de solução que a gente entrega</h3>
           <p className="section-sub">
             Da vitrine digital à loja virtual completa — veja o que dá pra fazer e a gente monta o seu sob medida.

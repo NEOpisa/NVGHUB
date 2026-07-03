@@ -60,8 +60,8 @@ const SERVICES = [
   {
     code: "SRV_05",
     title: "SaaS para seu segmento",
-    metric: "STATUS · EM BREVE",
-    desc: "Plataforma pronta para clínicas e restaurantes — sem desenvolvimento customizado.",
+    metric: "NO AR · 5d",
+    desc: "Plataforma pronta para clínicas e restaurantes, por assinatura — sem desenvolvimento customizado.",
   },
 ];
 
@@ -397,32 +397,33 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               </Magnetic>
             </div>
           </div>
+          {/* painel de EMBARQUE: linhas mono + hairlines, zero caixas */}
           <div className="jy-exp-list">
+            <div className="jy-exp-cols" aria-hidden="true">
+              <span>rota</span>
+              <span>destino</span>
+              <span>status</span>
+            </div>
             {AREAS.map((a, i) => (
               <Link
                 key={a.href}
                 href={a.href}
-                className="jy-exp-link"
+                className={`jy-exp-link${a.href === "/solucao" ? " is-holo" : ""}`}
                 style={{ transitionDelay: `${i * 70}ms` }}
               >
-                <span className="jy-exp-num">{a.num}</span>
+                <span className="jy-exp-num" aria-hidden="true">
+                  RT_{a.num}
+                </span>
                 <span className="jy-exp-body">
                   <span className="jy-exp-label">{a.label}</span>
                   <span className="jy-exp-desc">{a.desc}</span>
                 </span>
-                <span className="jy-exp-arrow" aria-hidden="true">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
+                <span className="jy-exp-go" aria-hidden="true">
+                  <span className="jy-exp-go-idle">
+                    <i className="jy-exp-dot" />
+                    pronto
+                  </span>
+                  <span className="jy-exp-go-hover">embarcar ›</span>
                 </span>
               </Link>
             ))}

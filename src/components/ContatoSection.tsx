@@ -52,6 +52,7 @@ export default function ContatoSection() {
     <section id="contato" aria-label="Contato">
       <div className="inner">
         <div ref={headerRef} data-parallax="0.1">
+          <span className="section-eyebrow">Contato</span>
           <h2 className="section-heading" data-split>
             Bora <span className="text-accent-nvg">começar?</span>
           </h2>

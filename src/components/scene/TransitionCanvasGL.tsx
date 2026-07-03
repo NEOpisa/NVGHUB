@@ -21,25 +21,24 @@ function screenToWorld(cx: number, cy: number, camera: THREE.Camera, z: number) 
 }
 
 /**
- * A transição entre páginas é a MARCA NV 3D (mesma do hero), em versão ESCURA e
- * com glow escuro: as peças se juntam no meio da tela (cover) e se dispersam ao
- * revelar a nova área (reveal). Se a navegação parte do hero, a logo "sai" da
- * posição do hero e voa pro centro (a logo do hero some via txBus → handoff).
+ * A transição entre páginas é a MARCA NV 3D INTEIRA (nada de cacos): ela surge
+ * no meio da tela (vindo da posição do hero, se a navegação parte de lá),
+ * pulsa com glow violeta enquanto a rota troca e se dissolve ao revelar a nova
+ * área — mesma linguagem obsidian/violeta da jornada.
  */
-function DarkLogo({ onActive }: { onActive: (a: boolean) => void }) {
+function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
   const { camera } = useThree();
-  const groupRef = useRef<THREE.Group>(null);
   const backdropRef = useRef<THREE.Mesh>(null);
   const glow = useRef(0);
 
   const mats = useMemo(() => {
     const white = new THREE.MeshStandardMaterial({
-      color: "#16121f", metalness: 0.7, roughness: 0.4,
-      emissive: new THREE.Color("#4c3d78"), emissiveIntensity: 0.3, transparent: true, opacity: 0,
+      color: "#2a2438", metalness: 0.85, roughness: 0.32,
+      emissive: new THREE.Color("#6d5bb8"), emissiveIntensity: 0.35, transparent: true, opacity: 0,
     });
     const purple = new THREE.MeshStandardMaterial({
-      color: "#241640", metalness: 0.5, roughness: 0.45,
-      emissive: new THREE.Color("#6d28d9"), emissiveIntensity: 0.5, transparent: true, opacity: 0,
+      color: "#3b2566", metalness: 0.7, roughness: 0.36,
+      emissive: new THREE.Color("#8b5cf6"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
     });
     const halo = new THREE.MeshBasicMaterial({
       color: "#8b5cf6", transparent: true, opacity: 0,
@@ -48,27 +47,26 @@ function DarkLogo({ onActive }: { onActive: (a: boolean) => void }) {
     return { white, purple, halo };
   }, []);
 
-  const { group, meshes, geos } = useMemo(() => {
-    const make = (chunks: ReturnType<typeof buildLogoChunks>["white"], mat: THREE.Material) =>
-      chunks.map((c) => {
-        const mesh = new THREE.Mesh(c.geometry, mat);
-        mesh.userData.pivot = c.pivot;
-        mesh.userData.dir = c.dir;
-        const halo = new THREE.Mesh(c.geometry, mats.halo);
-        halo.scale.setScalar(1.25);
-        mesh.add(halo);
-        return mesh;
-      });
-    const lp = buildLogoChunks(3, 2); // 5 cacos
-    const meshes = [...make(lp.white, mats.white), ...make(lp.purple, mats.purple)];
+  // logo inteira: 1 peça branca + 1 roxa, sempre MONTADAS no pivô
+  const { group, geos } = useMemo(() => {
+    const built = buildLogoChunks(1, 1);
     const group = new THREE.Group();
-    meshes.forEach((m) => group.add(m));
-    const geos = meshes.map((m) => m.geometry);
-    return { group, meshes, geos };
+    const geos: THREE.BufferGeometry[] = [];
+    [...built.white.map((c) => ({ c, mat: mats.white })),
+     ...built.purple.map((c) => ({ c, mat: mats.purple }))].forEach(({ c, mat }) => {
+      const mesh = new THREE.Mesh(c.geometry, mat);
+      mesh.position.copy(c.pivot);
+      const halo = new THREE.Mesh(c.geometry, mats.halo);
+      halo.scale.setScalar(1.05);
+      mesh.add(halo);
+      group.add(mesh);
+      geos.push(c.geometry);
+    });
+    return { group, geos };
   }, [mats]);
 
   useEffect(() => {
-    let coverTl: gsap.core.Timeline | null = null;
+    let tl: gsap.core.Timeline | null = null;
     const setOpacity = (o: number) => {
       mats.white.opacity = o;
       mats.purple.opacity = o;
@@ -76,68 +74,67 @@ function DarkLogo({ onActive }: { onActive: (a: boolean) => void }) {
 
     const off = txBus.on((e) => {
       if (e === "cover") {
-        coverTl?.kill();
+        tl?.kill();
         onActive(true);
 
-        // origem: posição do hero (se visível) ou o centro
+        // origem: posição do hero (se visível) ou fora da tela, embaixo à
+        // esquerda — a marca VOA girando até o centro, e só então a rota troca
         const heroEl = document.querySelector<HTMLElement>(".logo-scene");
         let fromHero = false;
-        let start = new THREE.Vector3(0, 0, 0);
+        let start = new THREE.Vector3(-7.5, -4.5, -1.5);
         if (heroEl) {
           const r = heroEl.getBoundingClientRect();
           if (r.bottom > 0 && r.top < window.innerHeight) {
-            const c = screenToWorld(r.left + r.width / 2, r.top + r.height / 2, camera, 0);
-            start = c;
+            start = screenToWorld(r.left + r.width / 2, r.top + r.height / 2, camera, 0);
             fromHero = true;
           }
         }
         gsap.set(group.position, { x: start.x, y: start.y, z: start.z });
-        gsap.set(group.scale, { x: 0.62, y: 0.62, z: 0.62 });
-        gsap.set(group.rotation, { x: 0, y: fromHero ? 0 : -0.6, z: 0 });
-
-        // peças: do hero começam montadas; senão levemente dispersas
-        meshes.forEach((m) => {
-          const pivot = m.userData.pivot as THREE.Vector3;
-          const dir = m.userData.dir as THREE.Vector3;
-          const sp = fromHero ? 0 : 1.6;
-          gsap.set(m.position, { x: pivot.x + dir.x * sp, y: pivot.y + dir.y * sp, z: pivot.z + dir.z * sp });
+        gsap.set(group.scale, {
+          x: fromHero ? 0.62 : 0.3,
+          y: fromHero ? 0.62 : 0.3,
+          z: fromHero ? 0.62 : 0.3,
+        });
+        gsap.set(group.rotation, {
+          x: fromHero ? 0 : 0.5,
+          y: fromHero ? -1.8 : -3.4,
+          z: fromHero ? 0 : -1.1,
         });
         setOpacity(fromHero ? 1 : 0);
 
-        coverTl = gsap.timeline({ onComplete: () => txBus.emit("covered") });
+        tl = gsap.timeline({ onComplete: () => txBus.emit("covered") });
         if (backdropRef.current) {
-          coverTl.to(backdropRef.current.material as THREE.Material, { opacity: 0.97, duration: 0.28, ease: "power2.out" }, 0);
+          tl.to(backdropRef.current.material as THREE.Material, { opacity: 0.97, duration: 0.34, ease: "power2.out" }, 0);
         }
-        coverTl
-          .to(group.position, { x: 0, y: 0, z: 0, duration: 0.4, ease: "power3.out" }, 0)
-          .to(group.scale, { x: 0.92, y: 0.92, z: 0.92, duration: 0.4, ease: "power3.out" }, 0)
-          .to(group.rotation, { y: 0, duration: 0.4, ease: "power3.out" }, 0)
-          .to(glow, { current: 1, duration: 0.35, ease: "power2.out" }, 0.05);
-        meshes.forEach((m) => {
-          const pivot = m.userData.pivot as THREE.Vector3;
-          coverTl!.to(m.position, { x: pivot.x, y: pivot.y, z: pivot.z, duration: 0.34, ease: "power3.out" }, 0.03);
-        });
-        if (!fromHero) coverTl.to([mats.white, mats.purple], { opacity: 1, duration: 0.25 }, 0);
+        tl
+          // voo em arco: sobe além do centro e assenta
+          .to(group.position, { x: 0, y: 0.5, z: 0.2, duration: 0.42, ease: "power2.out" }, 0)
+          .to(group.position, { y: 0, z: 0, duration: 0.3, ease: "power2.inOut" }, 0.42)
+          // gira o caminho inteiro até "encaixar" de frente
+          .to(group.rotation, { x: 0, y: 0, z: 0, duration: 0.72, ease: "power3.out" }, 0)
+          .to(group.scale, { x: 0.92, y: 0.92, z: 0.92, duration: 0.65, ease: "back.out(1.4)" }, 0.05)
+          .to(glow, { current: 1, duration: 0.4, ease: "power2.out" }, 0.15);
+        if (!fromHero) tl.to([mats.white, mats.purple], { opacity: 1, duration: 0.26, ease: "power2.out" }, 0);
       } else if (e === "reveal") {
-        coverTl?.kill();
-        const tl = gsap.timeline({ onComplete: () => onActive(false) });
-        meshes.forEach((m) => {
-          const pivot = m.userData.pivot as THREE.Vector3;
-          const dir = m.userData.dir as THREE.Vector3;
-          tl.to(m.position, { x: pivot.x + dir.x * 3, y: pivot.y + dir.y * 3, z: pivot.z + dir.z * 3, duration: 0.4, ease: "power2.in" }, 0);
-        });
-        tl.to([mats.white, mats.purple], { opacity: 0, duration: 0.34, ease: "power2.in" }, 0.06);
-        tl.to(glow, { current: 0, duration: 0.3 }, 0);
+        tl?.kill();
+        tl = gsap.timeline({ onComplete: () => onActive(false) });
+        tl
+          // sai VOANDO por cima da câmera, girando no próprio eixo
+          .to(group.position, { x: 1.6, y: 2.2, z: 4.6, duration: 0.5, ease: "power2.in" }, 0)
+          .to(group.rotation, { y: 1.6, z: 0.7, duration: 0.5, ease: "power2.in" }, 0)
+          .to(group.scale, { x: 1.25, y: 1.25, z: 1.25, duration: 0.5, ease: "power2.in" }, 0)
+          .to([mats.white, mats.purple], { opacity: 0, duration: 0.3, ease: "power2.in" }, 0.16)
+          .to(glow, { current: 0, duration: 0.32 }, 0.1);
         if (backdropRef.current) {
-          tl.to(backdropRef.current.material as THREE.Material, { opacity: 0, duration: 0.42, ease: "power2.inOut" }, 0.06);
+          tl.to(backdropRef.current.material as THREE.Material, { opacity: 0, duration: 0.44, ease: "power2.inOut" }, 0.1);
         }
       }
     });
     return () => {
       off();
-      coverTl?.kill();
+      tl?.kill();
     };
-  }, [camera, group, meshes, mats, onActive]);
+  }, [camera, group, mats, onActive]);
 
   useEffect(() => {
     return () => {
@@ -148,23 +145,29 @@ function DarkLogo({ onActive }: { onActive: (a: boolean) => void }) {
     };
   }, [geos, mats]);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const gl = glow.current;
-    mats.white.emissiveIntensity = 0.3 + gl * 0.5;
-    mats.purple.emissiveIntensity = 0.5 + gl * 0.9;
-    mats.halo.opacity = gl * 0.35 * mats.purple.opacity;
-    group.rotation.z += delta * 0.05 * gl;
+    const t = state.clock.elapsedTime;
+    // respiração do glow enquanto a cortina está fechada
+    const breathe = 0.5 + 0.5 * Math.sin(t * 4.2);
+    mats.white.emissiveIntensity = 0.35 + gl * (0.4 + breathe * 0.25);
+    mats.purple.emissiveIntensity = 0.8 + gl * (0.7 + breathe * 0.5);
+    mats.halo.opacity = gl * (0.22 + breathe * 0.16) * mats.purple.opacity;
+    // cortina fechada: a marca continua girando devagar (nunca estática)
+    group.rotation.z += delta * 0.12 * gl;
+    group.rotation.y += Math.sin(t * 0.8) * delta * 0.14 * gl;
+    group.rotation.x += Math.cos(t * 0.6) * delta * 0.06 * gl;
   });
 
   return (
-    <group ref={groupRef}>
+    <group>
       <mesh ref={backdropRef} position={[0, 0, -2]} renderOrder={-1}>
         <planeGeometry args={[40, 30]} />
         <meshBasicMaterial color="#06050c" transparent opacity={0} depthWrite={false} />
       </mesh>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[4, 6, 6]} intensity={1.6} color="#b89bff" />
-      <pointLight position={[-5, -2, 4]} intensity={28} color="#7c3aed" />
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[4, 6, 6]} intensity={1.8} color="#b89bff" />
+      <pointLight position={[-5, -2, 4]} intensity={30} color="#7c3aed" />
       <primitive object={group} />
     </group>
   );
@@ -181,7 +184,7 @@ export default function TransitionCanvasGL() {
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 6], fov: 60 }}
       >
-        <DarkLogo onActive={setActive} />
+        <TransitionLogo onActive={setActive} />
       </Canvas>
     </div>
   );

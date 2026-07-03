@@ -161,11 +161,12 @@ export default function HeroLogo() {
     g.visible = sm < 0.26;
     if (!g.visible) return;
 
-    // build: persegue o gate com taxa limitada (o desenho tem ritmo próprio)
+    // build: persegue o gate com taxa limitada (o desenho tem ritmo próprio,
+    // mas rápido — a intro inteira fecha em ~1s depois do palco montar)
     if (intro.active) {
-      build.current = Math.min(intro.build, build.current + dt * 0.85);
+      build.current = Math.min(intro.build, build.current + dt * 1.6);
     } else if (started.current && build.current < 1) {
-      build.current = Math.min(1, build.current + dt * 1.0);
+      build.current = Math.min(1, build.current + dt * 1.4);
     }
 
     const t = state.clock.elapsedTime;
@@ -252,8 +253,9 @@ export default function HeroLogo() {
       let tgtY: number;
       let tgtX: number;
       if (inIntro) {
-        tgtY = Math.sin(t * 0.26) * 0.6;
-        tgtX = Math.sin(t * 0.19) * 0.2 - 0.06;
+        // turntable largo: soma com a órbita da câmera pro máximo de volume
+        tgtY = Math.sin(t * 0.26) * 0.85;
+        tgtX = Math.sin(t * 0.19) * 0.3 - 0.08;
       } else {
         tgtY = (state.pointer.x * 0.7 + Math.sin(t * 0.3) * 0.18) * b + dep * 1.6;
         tgtX = (-state.pointer.y * 0.45 + Math.sin(t * 0.22) * 0.08) * b;

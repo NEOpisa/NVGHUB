@@ -1,4 +1,5 @@
 import PricingSection from "@/components/PricingSection";
+import BlueprintStage from "@/components/BlueprintStage";
 import { pageMetadata } from "@/lib/seo";
 import { PACOTES } from "@/lib/pacotes";
 import { SITE_URL } from "@/lib/constants";
@@ -32,6 +33,7 @@ export default function PacotesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(offerCatalogLd) }}
       />
+      <BlueprintStage code="soluções" index="02" />
       <section className="comprar-area" aria-label="Tipos de solução">
         <PricingSection />
       </section>

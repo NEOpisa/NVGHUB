@@ -1,6 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
 import SobreSection from "@/components/SobreSection";
 import DiferenciaisSection from "@/components/DiferenciaisSection";
+import InstitucionalSection from "@/components/InstitucionalSection";
+import BlueprintStage from "@/components/BlueprintStage";
 
 export const metadata = pageMetadata({
   title: "Quem somos — Neovanguard",
@@ -12,7 +14,9 @@ export const metadata = pageMetadata({
 export default function SobrePage() {
   return (
     <main id="main">
+      <BlueprintStage code="quem somos" index="01" />
       <SobreSection />
+      <InstitucionalSection />
       <DiferenciaisSection />
     </main>
   );

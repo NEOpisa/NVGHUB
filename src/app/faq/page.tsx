@@ -1,4 +1,5 @@
 import FaqSection from "@/components/FaqSection";
+import BlueprintStage from "@/components/BlueprintStage";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -11,6 +12,7 @@ export const metadata = pageMetadata({
 export default function FaqPage() {
   return (
     <main id="main">
+      <BlueprintStage code="perguntas frequentes" index="06" />
       <FaqSection />
     </main>
   );

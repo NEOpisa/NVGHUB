@@ -1,5 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import NoxzSection from "@/components/NoxzSection";
+import BlueprintStage from "@/components/BlueprintStage";
 
 export const metadata = pageMetadata({
   title: "Metodologia — Plano Noxz",
@@ -11,6 +12,7 @@ export const metadata = pageMetadata({
 export default function MetodologiaPage() {
   return (
     <main id="main">
+      <BlueprintStage code="plano noxz" index="05" />
       <NoxzSection />
     </main>
   );

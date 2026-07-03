@@ -1306,21 +1306,45 @@ html.lenis body {
     color: var(--accent-light);
     font-weight: 700;
 }
+/* trilho SEGMENTADO: um traço por pergunta */
 .quiz-progress-track {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+}
+.quiz-progress-seg {
     flex: 1;
     height: 2px;
     background: var(--border);
-    overflow: hidden;
+    transition: background 380ms, box-shadow 380ms;
 }
-.quiz-progress-fill {
-    height: 100%;
+.quiz-progress-seg.is-done {
     background: var(--accent-light);
-    transition: width 420ms var(--ease-out);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+}
+.quiz-progress-seg.is-now {
+    background: linear-gradient(90deg, var(--accent), var(--border));
+    animation: quizSegPulse 1.6s ease-in-out infinite;
+}
+@keyframes quizSegPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+.quiz-progress-pct {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--accent-light);
+    white-space: nowrap;
 }
 
 .quiz-step,
 .quiz-final {
     animation: quiz-in 340ms var(--ease-out);
+}
+/* opções entram em cascata a cada passo (delay inline por opção) */
+.quiz-step .quiz-option {
+    animation: quiz-in 380ms var(--ease-out) backwards;
 }
 @keyframes quiz-in {
     from {
@@ -1331,6 +1355,126 @@ html.lenis body {
         opacity: 1;
         transform: none;
     }
+}
+/* tecla mono da opção (A · B · C) */
+.quiz-option-key {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border: 1px solid var(--accent-border);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--accent-light);
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.quiz-option:hover .quiz-option-key,
+.quiz-option.ativo .quiz-option-key {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+/* readout do diagnóstico (terminal) */
+.quiz-readout {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 16px auto 0;
+    padding: 12px 16px;
+    max-width: 420px;
+    text-align: left;
+    border: 1px solid var(--border);
+    background: rgba(139, 92, 246, 0.04);
+}
+.quiz-readout-line {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+}
+.quiz-readout-line i {
+    font-style: normal;
+    color: var(--accent);
+}
+.quiz-readout-line b {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* rota sugerida */
+.quiz-rec {
+    margin: 18px auto 0;
+    max-width: 420px;
+    padding: 18px 16px 16px;
+    border: 1px solid var(--accent-border);
+    background:
+        linear-gradient(180deg, rgba(139, 92, 246, 0.1), transparent 65%);
+    position: relative;
+}
+.quiz-rec::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+    animation: jyTickPulse 3.2s ease-in-out infinite;
+}
+.quiz-rec-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+}
+.quiz-rec-label::before {
+    content: "// ";
+    color: var(--accent);
+}
+.quiz-rec-name {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-top: 6px;
+    text-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+}
+.quiz-rec-why {
+    margin: 6px 0 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+}
+.quiz-rec-extra {
+    margin: 8px 0 0;
+    font-size: 12.5px;
+    color: var(--accent-light);
+}
+.quiz-rec-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    border-bottom: 1px solid var(--accent-border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s, gap 0.2s;
+}
+.quiz-rec-link:hover {
+    color: #fff;
+    border-color: var(--accent);
+    gap: 10px;
 }
 
 .quiz-question {
@@ -5221,75 +5365,163 @@ body.jy-past-hero .site-header .nav-logo {
 }
 
 /* ===== FAQ ===== */
+/* ── FAQ terminal blueprint: registros Q_XX + abertura em grid ── */
 .faq-section {
     padding: 72px 0;
 }
 .faq-inner {
-    max-width: 820px;
+    max-width: 860px;
 }
-.faq-heading {
+.faq-head {
     text-align: center;
     margin-bottom: 40px;
+}
+.faq-heading {
+    margin-bottom: 6px;
+}
+.faq-meta {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 12px;
 }
 .faq-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 .faq-item {
-    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 0 20px;
     transition:
-        border-color 200ms,
-        background 200ms;
+        border-color 220ms,
+        background-color 220ms,
+        transform 220ms var(--ease-out);
 }
-.faq-item[open] {
+.faq-item.is-open {
     border-color: var(--accent-border);
-    background: var(--surface-raised);
+    transform: translateX(4px);
 }
 .faq-item:hover {
     border-color: var(--border-hover);
 }
 .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
     list-style: none;
     cursor: pointer;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
     align-items: center;
-    justify-content: space-between;
     gap: 16px;
-    padding: 20px 0;
+    padding: 18px 20px;
+    text-align: left;
     font-weight: 600;
     font-size: 16px;
     color: var(--text-primary);
 }
-.faq-question::-webkit-details-marker {
-    display: none;
-}
-.faq-question::after {
-    content: "+";
-    flex-shrink: 0;
-    font-size: 22px;
-    line-height: 1;
-    font-weight: 400;
+.faq-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
     color: var(--accent-light);
-    transition: transform 200ms;
+    transition: color 0.25s;
 }
-.faq-item[open] .faq-question::after {
-    transform: rotate(45deg);
+.faq-item.is-open .faq-code {
+    color: #fff;
+    text-shadow: 0 0 14px rgba(139, 92, 246, 0.8);
+}
+.faq-tag {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(200, 190, 255, 0.55);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    padding: 3px 9px;
+    white-space: nowrap;
+}
+/* toggle "+" desenhado com duas barras de 1px — vira "×" ao abrir */
+.faq-toggle {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+.faq-toggle::before,
+.faq-toggle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    background: var(--accent-light);
+    transition: transform 0.32s var(--ease-out), background 0.25s;
+}
+.faq-toggle::before {
+    width: 14px;
+    height: 1px;
+}
+.faq-toggle::after {
+    width: 1px;
+    height: 14px;
+}
+.faq-item.is-open .faq-toggle::before {
+    transform: rotate(135deg);
+}
+.faq-item.is-open .faq-toggle::after {
+    transform: rotate(135deg);
 }
 .faq-question:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 4px;
-    border-radius: 6px;
+}
+/* abertura suave: grid 0fr→1fr (sem max-height mágico) */
+.faq-answer-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s var(--ease-out);
+}
+.faq-item.is-open .faq-answer-wrap {
+    grid-template-rows: 1fr;
+}
+.faq-answer-inner {
+    overflow: hidden;
 }
 .faq-answer {
-    margin: 0;
-    padding: 0 0 20px;
+    margin: 0 20px 18px;
+    padding: 12px 0 0 16px;
+    border-left: 1px solid rgba(139, 92, 246, 0.4);
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.65;
     font-size: 15px;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.35s ease 0.12s, transform 0.35s var(--ease-out) 0.12s;
+}
+.faq-item.is-open .faq-answer {
+    opacity: 1;
+    transform: translateY(0);
+}
+.faq-a-prefix {
+    font-family: var(--font-mono);
+    color: var(--accent);
+}
+.faq-foot {
+    margin-top: 36px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+.faq-foot p {
+    color: var(--text-secondary);
+    font-size: 14.5px;
+    margin: 0;
 }
 @media (max-width: 640px) {
     .faq-section {
@@ -5297,6 +5529,16 @@ body.jy-past-hero .site-header .nav-logo {
     }
     .faq-question {
         font-size: 15px;
+        gap: 12px;
+        padding: 16px 14px;
+    }
+    .faq-tag {
+        display: none;
+    }
+    .faq-foot {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
     }
 }
 
@@ -5604,6 +5846,16 @@ body.jy-past-hero .site-header .nav-logo {
 .menu-solucao-cta:hover::before {
     opacity: 1;
     animation: holo-sweep 1.7s linear infinite;
+}
+/* rótulo iridescente no hover — mesmo brilho da linha "Sua solução" da home */
+.menu-solucao-cta:hover .menu-solucao-cta-label {
+    background: var(--holo-text);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: holo-sweep 2.4s linear infinite;
 }
 /* brilho laminado: gloss diagonal varrendo */
 .menu-solucao-cta::after {
@@ -7033,9 +7285,7 @@ body.jy-past-hero .site-header .nav-logo {
 }
 /* cantoneiras tick que se DESENHAM quando o site libera, e pulsam */
 .jy-hero-copy::before,
-.jy-hero-copy::after,
-.jy-exp-list::before,
-.jy-exp-list::after {
+.jy-hero-copy::after {
     content: "";
     position: absolute;
     width: 16px;
@@ -7045,15 +7295,13 @@ body.jy-past-hero .site-header .nav-logo {
         height 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
     animation: jyTickPulse 3.2s ease-in-out infinite;
 }
-.jy-hero-copy::before,
-.jy-exp-list::before {
+.jy-hero-copy::before {
     top: -1px;
     left: -1px;
     border-top: 2px solid var(--jy-accent);
     border-left: 2px solid var(--jy-accent);
 }
-.jy-hero-copy::after,
-.jy-exp-list::after {
+.jy-hero-copy::after {
     bottom: -1px;
     right: -1px;
     border-bottom: 2px solid var(--jy-accent);
@@ -7404,6 +7652,20 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-explore {
     justify-content: center;
 }
+/* scrim de leitura: escurece atrás do texto sem matar o 3D nas bordas */
+.jy-explore::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+        ellipse 85% 75% at 50% 52%,
+        rgba(5, 4, 8, 0.82) 0%,
+        rgba(5, 4, 8, 0.55) 55%,
+        transparent 100%
+    );
+}
 .jy-h2-xl {
     font-size: clamp(2.2rem, 5vw, 4rem);
     line-height: 1.04;
@@ -7429,18 +7691,31 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     margin: 0 auto;
     width: 100%;
 }
+/* ── painel de EMBARQUE: linhas mono sobre hairlines — zero caixas ── */
 .jy-exp-list {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: clamp(10px, 2vh, 18px) clamp(12px, 1.6vw, 22px);
-    background: var(--jy-panel-bg);
-    border: 1px solid var(--jy-line);
-    animation: jyPanelBreathe 5s ease-in-out infinite;
+}
+.jy-exp-cols {
+    display: grid;
+    grid-template-columns: minmax(72px, auto) 1fr auto;
+    column-gap: clamp(14px, 2.4vw, 28px);
+    padding: 0 8px 10px;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.5);
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(210, 202, 255, 0.7);
+}
+.jy-exp-cols span:last-child {
+    text-align: right;
 }
 .jy-exp-link {
+    position: relative;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(72px, auto) 1fr auto;
     column-gap: clamp(14px, 2.4vw, 28px);
     align-items: center;
     padding: clamp(12px, 2vh, 20px) 8px;
@@ -7452,24 +7727,43 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
         border-color 0.3s,
         background 0.3s;
 }
+/* varredura de luz que cruza a linha no hover */
+.jy-exp-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, #a78bfa, rgba(139, 92, 246, 0));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.jy-exp-link:hover::after {
+    transform: scaleX(1);
+}
 /* stagger de entrada dirigido pelo capítulo (is-live) */
 .jy-explore:not(.is-live) .jy-exp-link {
     opacity: 0;
     transform: translateX(-30px);
 }
 .jy-exp-link:hover {
-    border-color: rgba(139, 92, 246, 0.55);
     background: linear-gradient(
         90deg,
-        rgba(139, 92, 246, 0.1),
+        rgba(139, 92, 246, 0.08),
         transparent 70%
     );
 }
 .jy-exp-num {
     font-family: var(--ff-mono), monospace;
-    font-size: clamp(0.8rem, 1.4vw, 1rem);
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(139, 92, 246, 0.65);
+    font-size: clamp(0.66rem, 1.1vw, 0.78rem);
+    letter-spacing: 0.14em;
+    color: #a78bfa;
+    transition: color 0.3s;
+}
+.jy-exp-link:hover .jy-exp-num {
+    color: #c4b5fd;
 }
 .jy-exp-body {
     display: flex;
@@ -7493,7 +7787,7 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 }
 .jy-exp-desc {
     font-size: 0.82rem;
-    color: rgba(240, 240, 240, 0.65);
+    color: rgba(240, 240, 240, 0.85);
     max-height: 0;
     opacity: 0;
     overflow: hidden;
@@ -7503,19 +7797,94 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     max-height: 40px;
     opacity: 1;
 }
-.jy-exp-arrow {
+/* coluna STATUS: "● pronto" ⇄ "embarcar ›" (swap animado no hover) */
+.jy-exp-go {
+    position: relative;
     display: grid;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    color: #a78bfa;
-    transition: transform 0.3s, background 0.3s, border-color 0.3s;
+    justify-items: end;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
-.jy-exp-link:hover .jy-exp-arrow {
-    transform: translateX(6px) rotate(-45deg);
-    background: rgba(139, 92, 246, 0.2);
-    border-color: rgba(139, 92, 246, 0.8);
+.jy-exp-go-idle,
+.jy-exp-go-hover {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition:
+        opacity 0.3s ease,
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.jy-exp-go-idle {
+    color: rgba(240, 240, 240, 0.8);
+}
+.jy-exp-go-hover {
+    color: #c4b5fd;
+    opacity: 0;
+    transform: translateY(8px);
+}
+.jy-exp-link:hover .jy-exp-go-idle {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+.jy-exp-link:hover .jy-exp-go-hover {
+    opacity: 1;
+    transform: translateY(0);
+}
+.jy-exp-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.9);
+    animation: jyDotBlink 2.2s ease-in-out infinite;
+}
+@keyframes jyDotBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+/* "Sua solução": FOIL holográfico policromático no hover (mesmo brilho do
+   botão dedicado do /menu — holo-sweep + texto iridescente) */
+.jy-exp-link.is-holo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--holo-foil);
+    background-size: 220% 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.jy-exp-link.is-holo:hover::before {
+    opacity: 1;
+    animation: holo-sweep 1.7s linear infinite;
+}
+.jy-exp-link.is-holo > * {
+    position: relative;
+    z-index: 1;
+}
+.jy-exp-link.is-holo:hover .jy-exp-label {
+    background: var(--holo-text);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    animation: holo-sweep 2.4s linear infinite;
+}
+.jy-exp-link.is-holo:hover .jy-exp-go-hover {
+    background: var(--holo-text);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: holo-sweep 2.4s linear infinite;
 }
 
 /* mini-footer integrado ao capítulo final */
@@ -7716,39 +8085,8 @@ body:not(.site-loaded) .jy-frame {
     margin-top: 28px;
 }
 
-/* ── abertura: loading disfarçado sobre o canvas da jornada ──
-   fundo sólido enquanto o 3D baixa → transparente quando a logo começa a
-   se construir no canvas → HUD sai no handoff pro hero */
-.warp-intro {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    background: #08060e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.35s ease, opacity 0.5s ease;
-}
-.warp-intro.is-revealed {
-    background: transparent;
-}
-.warp-intro.is-leaving {
-    opacity: 0;
-    pointer-events: none;
-}
-.warp-intro-ui {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-.warp-intro-ui-bottom {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: clamp(28px, 8vh, 72px);
-}
+/* ── abertura 100% 3D: a marca se desenha DENTRO do canvas da jornada;
+   nenhum HUD em DOM — só o scroll-lock enquanto toca ── */
 /* trava o scroll enquanto a intro toca */
 html.intro-lock,
 body.intro-lock {
@@ -7764,55 +8102,14 @@ body:not(.site-loaded) .site-header {
 body:not(.site-loaded) .jy-hint {
     opacity: 0 !important;
 }
-/* o painel do hero só aparece com o site liberado (a intro é só a logo) */
+/* o painel do hero só aparece com o site liberado (a intro é só a logo);
+   pointer-events: sem o overlay da intro, o texto invisível não pode clicar */
 body:not(.site-loaded) .jy-hero-copy {
     opacity: 0;
+    pointer-events: none;
 }
 .jy-hero-copy {
     transition: opacity 0.8s ease 0.2s;
-}
-.warp-intro-brand {
-    font-family: var(--ff-grotesk), sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    font-size: 0.95rem;
-    color: #f0f0f0;
-}
-.warp-intro-brand b {
-    color: #8b5cf6;
-}
-.warp-intro-label {
-    font-size: 0.62rem;
-    letter-spacing: 0.34em;
-    text-transform: uppercase;
-    color: rgba(240, 240, 240, 0.45);
-    margin-top: 8px;
-}
-.warp-intro-pct {
-    font-family: var(--ff-mono), monospace;
-    font-size: 1.35rem;
-    color: #f0f0f0;
-}
-.warp-intro-data {
-    font-family: var(--ff-mono), monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.26em;
-    color: rgba(200, 190, 255, 0.45);
-    margin-top: 6px;
-}
-/* linha de progresso de 1px — o traço do plotter */
-.warp-intro-bar {
-    width: 240px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.12);
-    overflow: visible;
-}
-.warp-intro-bar-fill {
-    display: block;
-    height: 100%;
-    background: linear-gradient(90deg, #8b5cf6, #e6e9f6);
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.9);
-    transition: width 0.25s ease;
 }
 
 /* ── canvas 3D do /menu ── */
@@ -7887,8 +8184,517 @@ body:not(.site-loaded) .jy-hero-copy {
     .jy-exp-desc {
         display: none;
     }
-    .jy-exp-arrow {
-        width: 34px;
-        height: 34px;
+    .jy-exp-cols {
+        display: none;
+    }
+    .jy-exp-go {
+        font-size: 0.6rem;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BLUEPRINT OBSIDIAN — páginas internas (body.bp-page)
+   A mesma linguagem da jornada da home aplicada a todo o resto do
+   site: obsidian #050408, um só violeta, hairlines de 1px, mono
+   labels, cantoneiras tick e atmosfera SEMPRE em movimento.
+   ══════════════════════════════════════════════════════════════════ */
+body.bp-page {
+    /* re-tokenização: superfícies viram vidro violeta sobre obsidian */
+    --bg: #050408;
+    --bg-2: #07050d;
+    --surface: rgba(139, 92, 246, 0.045);
+    --surface-raised: rgba(139, 92, 246, 0.08);
+    --surface-interactive: rgba(139, 92, 246, 0.1);
+    --border: rgba(167, 139, 250, 0.14);
+    --border-hover: rgba(139, 92, 246, 0.45);
+    --bg-veil: rgba(5, 4, 8, 0.55);
+    --bg-2-veil: rgba(5, 4, 8, 0.4);
+    /* sem background aqui: o fundo do body pintaria POR CIMA de elementos
+       com z-index negativo — o .bp-stage opaco é quem cobre o viewport */
+}
+
+/* ── palco fixo atrás de tudo ── */
+.bp-stage {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: #050408;
+    pointer-events: none;
+}
+/* nebulosa violeta: dois corpos em deriva perpétua */
+.bp-nebula {
+    position: absolute;
+    width: 68vmax;
+    height: 68vmax;
+    border-radius: 50%;
+    filter: blur(70px);
+    will-change: transform;
+}
+.bp-nebula-a {
+    top: -28vmax;
+    left: -16vmax;
+    background: radial-gradient(
+        circle,
+        rgba(139, 92, 246, 0.16) 0%,
+        rgba(109, 40, 217, 0.07) 42%,
+        transparent 68%
+    );
+    animation: bpDriftA 46s ease-in-out infinite alternate;
+}
+.bp-nebula-b {
+    bottom: -30vmax;
+    right: -18vmax;
+    background: radial-gradient(
+        circle,
+        rgba(124, 58, 237, 0.13) 0%,
+        rgba(139, 92, 246, 0.05) 45%,
+        transparent 70%
+    );
+    animation: bpDriftB 58s ease-in-out infinite alternate;
+}
+@keyframes bpDriftA {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(9vmax, 6vmax, 0) scale(1.14); }
+    to   { transform: translate3d(3vmax, 12vmax, 0) scale(0.94); }
+}
+@keyframes bpDriftB {
+    from { transform: translate3d(0, 0, 0) scale(1.05); }
+    50%  { transform: translate3d(-8vmax, -5vmax, 0) scale(0.92); }
+    to   { transform: translate3d(-2vmax, -11vmax, 0) scale(1.12); }
+}
+/* grade blueprint de 1px deslizando devagar */
+.bp-grid {
+    position: absolute;
+    inset: -80px;
+    background-image:
+        linear-gradient(rgba(167, 139, 250, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(167, 139, 250, 0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, #000 30%, transparent 100%);
+    animation: bpGridPan 70s linear infinite;
+}
+@keyframes bpGridPan {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(72px, 72px, 0); }
+}
+/* linha de varredura descendo em loop (o scan do plotter) */
+.bp-scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 4%,
+        rgba(139, 92, 246, 0.35) 50%,
+        transparent 96%
+    );
+    box-shadow: 0 0 14px rgba(139, 92, 246, 0.35);
+    animation: bpScan 11s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes bpScan {
+    0%   { transform: translateY(-4vh); opacity: 0; }
+    6%   { opacity: 0.9; }
+    88%  { opacity: 0.9; }
+    100% { transform: translateY(104vh); opacity: 0; }
+}
+.bp-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 120% 100% at 50% 30%,
+        transparent 55%,
+        rgba(0, 0, 0, 0.5) 100%
+    );
+}
+/* número fantasma do capítulo — respira no canto */
+.bp-ghost {
+    position: absolute;
+    right: clamp(8px, 4vw, 60px);
+    bottom: -0.18em;
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 700;
+    font-size: clamp(9rem, 24vw, 22rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(139, 92, 246, 0.1);
+    animation: bpGhostBreathe 7s ease-in-out infinite;
+    user-select: none;
+}
+@keyframes bpGhostBreathe {
+    0%, 100% { opacity: 0.55; transform: translateY(0); }
+    50%      { opacity: 1; transform: translateY(-8px); }
+}
+
+/* ── moldura HUD fixa: monta SOBRE a linha do .site-frame global
+   (mesma inset via --frame) — só cantoneiras pulsantes + labels mono ── */
+.bp-frame {
+    position: fixed;
+    inset: var(--frame, clamp(8px, 1.1vw, 14px));
+    pointer-events: none;
+    z-index: 151;
+}
+.bp-frame::before,
+.bp-frame::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+}
+.bp-frame::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid rgba(139, 92, 246, 0.55);
+    border-left: 2px solid rgba(139, 92, 246, 0.55);
+    animation: jyTickPulse 3.2s ease-in-out infinite;
+}
+.bp-frame::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.55);
+    border-right: 2px solid rgba(139, 92, 246, 0.55);
+    animation: jyTickPulse 3.2s ease-in-out 1.6s infinite;
+}
+.bp-frame-label {
+    position: absolute;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(200, 190, 255, 0.4);
+    white-space: nowrap;
+    background: rgba(5, 4, 8, 0.7);
+    padding: 0 10px;
+}
+.bp-frame-label i {
+    font-style: normal;
+    color: rgba(139, 92, 246, 0.8);
+}
+.bp-frame-tl {
+    top: -0.4em;
+    left: clamp(16px, 4vw, 42px);
+}
+.bp-frame-br {
+    bottom: -0.4em;
+    right: clamp(16px, 4vw, 42px);
+}
+@media (max-width: 760px) {
+    .bp-frame { display: none; }
+    .bp-ghost { font-size: 8rem; }
+}
+
+/* ── painéis: cantoneiras tick nos cards (linguagem dos painéis 3D) ── */
+body.bp-page .sobre-card,
+body.bp-page .pricing-card,
+body.bp-page .noxz-card,
+body.bp-page .quiz-final,
+body.bp-page .contact-info,
+body.bp-page .contact-form,
+body.bp-page .exemplo-card,
+body.bp-page .faq-item {
+    background-color: var(--surface);
+    background-image:
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
+        linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65));
+    background-repeat: no-repeat;
+    background-size:
+        12px 1px, 1px 12px,
+        12px 1px, 1px 12px,
+        12px 1px, 1px 12px,
+        12px 1px, 1px 12px;
+    background-position:
+        left top, left top,
+        right top, right top,
+        left bottom, left bottom,
+        right bottom, right bottom;
+    backdrop-filter: blur(6px);
+}
+body.bp-page .faq-item {
+    backdrop-filter: none;
+}
+
+/* eyebrow no estilo da jornada: sem caixa, só o mono tracked */
+body.bp-page .section-eyebrow {
+    border: none;
+    padding: 0;
+    background: transparent;
+    letter-spacing: 0.3em;
+}
+
+/* headings ganham a régua de medição embaixo (hairline + tick) */
+body.bp-page .section-heading {
+    position: relative;
+}
+
+/* hover vivo: borda acende + lift (tudo se mexe) */
+body.bp-page .sobre-card:hover,
+body.bp-page .noxz-card:hover,
+body.bp-page .pricing-card:hover,
+body.bp-page .exemplo-card:hover {
+    border-color: var(--border-hover);
+    box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.12),
+        0 18px 50px rgba(5, 4, 8, 0.8),
+        0 0 34px rgba(139, 92, 246, 0.1);
+}
+
+/* números/labels mono já existentes ficam mais "terminal" */
+body.bp-page .sobre-card-num::before,
+body.bp-page .noxz-card-num::before {
+    content: "// ";
+    color: rgba(139, 92, 246, 0.7);
+}
+
+/* FAQ: hairline viva */
+body.bp-page .faq-item.is-open,
+body.bp-page .faq-item:hover {
+    border-color: var(--border-hover);
+}
+
+/* formulário de contato: inputs viram campos de terminal */
+body.bp-page .form-input,
+body.bp-page .form-textarea {
+    background: rgba(139, 92, 246, 0.04);
+    border: 1px solid var(--border);
+    transition: border-color 0.22s, box-shadow 0.22s, background 0.22s;
+}
+body.bp-page .form-input:focus,
+body.bp-page .form-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.35), 0 0 24px rgba(139, 92, 246, 0.12);
+    background: rgba(139, 92, 246, 0.07);
+}
+body.bp-page .form-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+}
+body.bp-page .form-label::before {
+    content: "// ";
+    color: rgba(139, 92, 246, 0.7);
+}
+
+/* quiz: opções como linhas de blueprint */
+body.bp-page .quiz-option {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 2px solid rgba(139, 92, 246, 0.4);
+}
+body.bp-page .quiz-option:hover,
+body.bp-page .quiz-option.ativo {
+    border-left-color: var(--accent);
+    background: rgba(139, 92, 246, 0.09);
+}
+
+/* conteúdo entra ACIMA do palco; véus antigos ficam transparentes */
+body.bp-page main {
+    position: relative;
+    z-index: 1;
+}
+
+/* reduced motion: atmosfera congela, nada some */
+@media (prefers-reduced-motion: reduce) {
+    .bp-nebula, .bp-grid, .bp-scan, .bp-ghost,
+    .bp-frame::before, .bp-frame::after {
+        animation: none;
+    }
+    .bp-scan { display: none; }
+}
+
+/* ── polish global: seleção, scrollbar e detalhes vivos ── */
+::selection {
+    background: rgba(139, 92, 246, 0.45);
+    color: #fff;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.45) transparent;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.4);
+    border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.7);
+}
+
+/* ── institucional (/sobre): manifesto + processo + compromissos ── */
+.inst {
+    padding: clamp(56px, 8vw, 110px) 0;
+}
+.inst-manifesto {
+    max-width: 880px;
+    margin-bottom: clamp(56px, 8vw, 96px);
+}
+.inst-claim {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.6vw + 0.5rem, 2.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin: 0;
+}
+.inst-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 22px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    color: var(--accent-light);
+}
+.inst-h2 {
+    max-width: 22ch;
+}
+.inst-etapas-head {
+    margin-bottom: clamp(28px, 4vw, 44px);
+}
+.inst-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+/* trilho vertical do processo */
+.inst-timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(
+        180deg,
+        rgba(139, 92, 246, 0.6),
+        rgba(139, 92, 246, 0.12)
+    );
+}
+.inst-etapa {
+    position: relative;
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: clamp(16px, 3vw, 36px);
+    padding: 18px 0 18px 34px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.25s;
+}
+.inst-etapa:hover {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.06), transparent 60%);
+}
+/* nó do trilho: pulsa */
+.inst-etapa::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 26px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+    animation: jyDotBlink 2.6s ease-in-out infinite;
+}
+.inst-etapa-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--accent-light);
+    padding-top: 4px;
+}
+.inst-etapa-top {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+}
+.inst-etapa-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--text-primary);
+    margin: 0;
+}
+.inst-etapa-dur {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+.inst-etapa-desc {
+    margin: 6px 0 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 62ch;
+}
+.inst-comp {
+    margin-top: clamp(56px, 8vw, 96px);
+}
+.inst-comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+}
+.inst-comp-card {
+    position: relative;
+    padding: 24px 22px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.25s, transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+.inst-comp-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 44px rgba(5, 4, 8, 0.7), 0 0 30px rgba(139, 92, 246, 0.08);
+}
+.inst-comp-check {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--accent-border);
+    color: var(--accent-light);
+    margin-bottom: 14px;
+}
+.inst-comp-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+.inst-comp-desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+@media (max-width: 760px) {
+    .inst-etapa {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    .inst-comp-grid {
+        grid-template-columns: 1fr;
     }
 }

@@ -1,5 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import SolucaoQuiz from "@/components/SolucaoQuiz";
+import BlueprintStage from "@/components/BlueprintStage";
 
 export const metadata = pageMetadata({
   title: "Sua solução sob medida — Neovanguard",
@@ -11,6 +12,7 @@ export const metadata = pageMetadata({
 export default function SolucaoPage() {
   return (
     <main id="main">
+      <BlueprintStage code="diagnóstico" index="03" />
       <section className="comprar-area" aria-label="Sua solução sob medida">
         <SolucaoQuiz />
       </section>

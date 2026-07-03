@@ -83,6 +83,25 @@ function cornerFractions(points: [number, number][]) {
   return { local, fr };
 }
 
+/** costelas de PROFUNDIDADE: conectores frente↔trás em intervalos regulares
+ *  do perímetro (além dos vértices) — o volume fica legível de qualquer
+ *  ângulo da órbita da câmera */
+function buildRibs(front: Float32Array, back: Float32Array, n: number, step: number) {
+  const count = Math.floor(n / step) + 1;
+  const pos = new Float32Array(count * 6);
+  for (let i = 0; i < count; i++) {
+    const idx = Math.min(i * step, n) * 3;
+    pos.set(
+      [front[idx], front[idx + 1], front[idx + 2], back[idx], back[idx + 1], back[idx + 2]],
+      i * 6,
+    );
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setDrawRange(0, 0);
+  return { geo: g, count };
+}
+
 /** arestas verticais (frente↔trás) em cada vértice, ordenadas pelo traço */
 function buildRisers(points: [number, number][], hd: number) {
   const { local, fr } = cornerFractions(points);
@@ -230,6 +249,9 @@ export default function BlueprintLogo({
   // arestas verticais (o VOLUME nascendo)
   const wRisers = useMemo(() => buildRisers(WHITE_POINTS, HD_W), []);
   const pRisers = useMemo(() => buildRisers(PURPLE_POINTS, HD_P), []);
+  // costelas de profundidade em intervalos regulares do perímetro
+  const wRibs = useMemo(() => buildRibs(wFront, wBack, N_WHITE, 14), [wFront, wBack]);
+  const pRibs = useMemo(() => buildRibs(pFront, pBack, N_PURPLE, 12), [pFront, pBack]);
 
   const whiteMat = useMemo(
     () =>
@@ -270,6 +292,17 @@ export default function BlueprintLogo({
         color: "#cfc8f0",
         transparent: true,
         opacity: 0.55,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      }),
+    [],
+  );
+  const ribMat = useMemo(
+    () =>
+      new THREE.LineBasicMaterial({
+        color: "#8b5cf6",
+        transparent: true,
+        opacity: 0.22,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
@@ -347,10 +380,12 @@ export default function BlueprintLogo({
       pGhost: new THREE.Line(pGhostGeo, ghostMat),
       wRiserL: new THREE.LineSegments(wRisers.geo, riserMat),
       pRiserL: new THREE.LineSegments(pRisers.geo, riserMat),
+      wRibL: new THREE.LineSegments(wRibs.geo, ribMat),
+      pRibL: new THREE.LineSegments(pRibs.geo, ribMat),
       wBeads: new THREE.Points(wFrontGeo, beadMatW),
       pBeads: new THREE.Points(pFrontGeo, beadMatP),
     }),
-    [wFrontGeo, wBackGeo, pFrontGeo, pBackGeo, wGhostGeo, pGhostGeo, wRisers, pRisers, whiteMat, backMat, purpleMat, ghostMat, riserMat, beadMatW, beadMatP],
+    [wFrontGeo, wBackGeo, pFrontGeo, pBackGeo, wGhostGeo, pGhostGeo, wRisers, pRisers, wRibs, pRibs, whiteMat, backMat, purpleMat, ghostMat, riserMat, ribMat, beadMatW, beadMatP],
   );
 
   const whiteHead = useRef<THREE.Group>(null);
@@ -366,11 +401,13 @@ export default function BlueprintLogo({
       );
       wRisers.geo.dispose();
       pRisers.geo.dispose();
-      [whiteMat, purpleMat, backMat, riserMat, ghostMat, calloutMat, beadMatW, beadMatP, scanBarMat].forEach(
+      wRibs.geo.dispose();
+      pRibs.geo.dispose();
+      [whiteMat, purpleMat, backMat, riserMat, ribMat, ghostMat, calloutMat, beadMatW, beadMatP, scanBarMat].forEach(
         (m) => m.dispose(),
       );
     },
-    [wFrontGeo, wBackGeo, pFrontGeo, pBackGeo, wGhostGeo, pGhostGeo, wRisers, pRisers, whiteMat, purpleMat, backMat, riserMat, ghostMat, calloutMat, beadMatW, beadMatP, scanBarMat],
+    [wFrontGeo, wBackGeo, pFrontGeo, pBackGeo, wGhostGeo, pGhostGeo, wRisers, pRisers, wRibs, pRibs, whiteMat, purpleMat, backMat, riserMat, ribMat, ghostMat, calloutMat, beadMatW, beadMatP, scanBarMat],
   );
 
   useFrame((state) => {
@@ -399,12 +436,17 @@ export default function BlueprintLogo({
       if (pRisers.fractions[i] <= pBackPh) pc++;
     pRisers.geo.setDrawRange(0, pc * 2);
 
+    // costelas de profundidade acompanham o traço traseiro
+    wRibs.geo.setDrawRange(0, Math.floor(wBackPh * wRibs.count) * 2);
+    pRibs.geo.setDrawRange(0, Math.floor(pBackPh * pRibs.count) * 2);
+
     // o traço CINTILA enquanto desenha (laser vivo)
     const flicker = 0.82 + 0.18 * Math.sin(t * 26) * Math.sin(t * 7.3);
     whiteMat.opacity = fade * (wPhase < 1 ? flicker : 0.9);
     purpleMat.opacity = fade * (pPhase < 1 ? flicker : 0.9);
     backMat.opacity = fade * 0.38;
     riserMat.opacity = fade * (0.4 + 0.2 * Math.sin(t * 3.2));
+    ribMat.opacity = fade * (0.16 + 0.1 * Math.sin(t * 2.6 + 1.3));
     beadMatW.opacity = fade * 0.85 * flicker;
     beadMatP.opacity = fade * 0.85 * flicker;
     ghostMat.opacity = fade * (0.07 + 0.04 * Math.sin(t * 2.2));
@@ -464,6 +506,8 @@ export default function BlueprintLogo({
       <primitive object={objs.pBackL} />
       <primitive object={objs.wRiserL} />
       <primitive object={objs.pRiserL} />
+      <primitive object={objs.wRibL} />
+      <primitive object={objs.pRibL} />
       <primitive object={objs.wFrontL} />
       <primitive object={objs.pFrontL} />
       <primitive object={objs.wBeads} />

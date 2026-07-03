@@ -8,7 +8,6 @@ import {
 } from "next/font/google";
 import Header from "@/components/Header";
 import FooterGate from "@/components/FooterGate";
-import SceneCanvas from "@/components/scene/SceneCanvas";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollJuice from "@/components/ScrollJuice";
@@ -112,21 +111,13 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     siteName: "Neovanguard",
     url: SITE_URL,
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Neovanguard — Agência de Soluções Digitais",
-      },
-    ],
+    // imagem OG: gerada pelo app/opengraph-image.tsx (Blueprint Obsidian)
   },
   twitter: {
     card: "summary_large_image",
     title: "Neovanguard — Agência de Soluções Digitais",
     description:
       "Sites, sistemas, SEO e suporte como um só ecossistema. 100% remoto, sem contrato mínimo.",
-    images: ["/og.png"],
   },
 };
 
@@ -232,7 +223,8 @@ export default function RootLayout({
         <ScrollJuice />
         <ScrollToSection />
         <ClickFX />
-        <SceneCanvas />
+        {/* fundo das páginas internas: BlueprintStage (por página) — o antigo
+            SceneCanvas global saiu junto com a linguagem antiga */}
         <div className="scroll-progress" aria-hidden="true" />
         <Header />
         {children}

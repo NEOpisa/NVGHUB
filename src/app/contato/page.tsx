@@ -1,5 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import ContatoSection from "@/components/ContatoSection";
+import BlueprintStage from "@/components/BlueprintStage";
 
 export const metadata = pageMetadata({
   title: "Contato — Neovanguard",
@@ -11,6 +12,7 @@ export const metadata = pageMetadata({
 export default function ContatoPage() {
   return (
     <main id="main">
+      <BlueprintStage code="contato" index="07" />
       <ContatoSection />
     </main>
   );

@@ -32,6 +32,7 @@ export default function SobreSection() {
     <section id="sobre" className="sobre" aria-label="Quem somos">
       <div className="inner">
         <div className="sobre-head" ref={headerRef} data-parallax="0.12">
+          <span className="section-eyebrow">Quem somos</span>
           <h2 className="section-heading" data-split>
             Uma agência digital pensada como{" "}
             <span className="text-accent-nvg">um só ecossistema</span>
