@@ -21,10 +21,12 @@ const KINDS: ServiceKind[] = ["site", "system", "seo", "support", "saas"];
  */
 export default function ServicesRing() {
   const group = useRef<THREE.Group>(null);
+  const stationRefs = useRef<(THREE.Group | null)[]>([]);
   const iconRefs = useRef<(THREE.Group | null)[]>([]);
   const padRefs = useRef<(THREE.Group | null)[]>([]);
   const gemRefs = useRef<(THREE.Mesh | null)[]>([]);
   const light = useRef<THREE.PointLight>(null);
+  const mobK = useRef(0); // 0 = desktop · 1 = retrato (mobile)
 
   const metal = useMemo(
     () =>
@@ -135,7 +137,20 @@ export default function ServicesRing() {
     const l = rangeN(sm, CH.services.start, 0.72);
     const active = Math.min(4, Math.floor(l * 5));
 
+    // retrato (mobile): estações METADE do tamanho e mais perto do centro —
+    // sem isso os ícones estouram as bordas do enquadramento estreito
+    const portrait = state.viewport.aspect < 0.8;
+    mobK.current = THREE.MathUtils.damp(mobK.current, portrait ? 1 : 0, 6, dt);
+    const mk = mobK.current;
+    const stScale = 1 - 0.5 * mk; // 1 → 0.5
+    const xK = 1 - 0.58 * mk; // ±2.1 → ±0.88
+
     for (let i = 0; i < icons.length; i++) {
+      const st = stationRefs.current[i];
+      if (st) {
+        st.position.x = WORLD.serviceX[i] * xK;
+        st.scale.setScalar(stScale);
+      }
       const ig = iconRefs.current[i];
       if (!ig) continue;
       const on = i === active;
@@ -174,7 +189,7 @@ export default function ServicesRing() {
     if (light.current) {
       light.current.position.x = THREE.MathUtils.damp(
         light.current.position.x,
-        WORLD.serviceX[active],
+        WORLD.serviceX[active] * xK,
         4,
         dt,
       );
@@ -190,13 +205,20 @@ export default function ServicesRing() {
   return (
     <group ref={group}>
       {icons.map((icon, i) => (
-        <group key={KINDS[i]}>
+        // estação inteira: escala/posição ajustadas por viewport no useFrame
+        <group
+          key={KINDS[i]}
+          ref={(el) => {
+            stationRefs.current[i] = el;
+          }}
+          position={[WORLD.serviceX[i], 0, WORLD.serviceZ[i]]}
+        >
           {/* ícone levitando */}
           <group
             ref={(el) => {
               iconRefs.current[i] = el;
             }}
-            position={[WORLD.serviceX[i], WORLD.serviceY[i], WORLD.serviceZ[i]]}
+            position={[0, WORLD.serviceY[i], 0]}
             scale={0.72}
           >
             <primitive object={icon} />
@@ -213,7 +235,7 @@ export default function ServicesRing() {
             ref={(el) => {
               padRefs.current[i] = el;
             }}
-            position={[WORLD.serviceX[i], WORLD.serviceY[i] - 1.55, WORLD.serviceZ[i]]}
+            position={[0, WORLD.serviceY[i] - 1.55, 0]}
           >
             <mesh
               geometry={ringGeo}
