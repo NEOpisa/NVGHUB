@@ -69,10 +69,25 @@ export default function ServicesRing() {
     [],
   );
   const discGeo = useMemo(() => new THREE.CircleGeometry(1.3, 48), []);
+  // fio de luz vertical (linguagem hairline) — substitui o antigo cone
+  // volumétrico, que de perto parecia um copo translúcido
   const beamGeo = useMemo(
-    () => new THREE.CylinderGeometry(0.9, 1.25, 3.4, 24, 1, true),
+    () => new THREE.CylinderGeometry(0.016, 0.016, 3.3, 6, 1, true),
     [],
   );
+  // gradiente radial pro brilho do chão morrer suave (sem borda dura)
+  const glowTex = useMemo(() => {
+    const c = document.createElement("canvas");
+    c.width = c.height = 128;
+    const g = c.getContext("2d")!;
+    const grad = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0, "rgba(255,255,255,0.9)");
+    grad.addColorStop(0.45, "rgba(255,255,255,0.3)");
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(c);
+  }, []);
   const gemGeo = useMemo(() => new THREE.BoxGeometry(1.9, 1.9, 1.9), []);
   const padMats = useMemo(
     () =>
@@ -85,17 +100,18 @@ export default function ServicesRing() {
           depthWrite: false,
         }),
         disc: new THREE.MeshBasicMaterial({
-          color: "#4c1d95",
+          color: "#6d28d9",
+          map: glowTex,
           transparent: true,
-          opacity: 0.14,
+          opacity: 0.18,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
           side: THREE.DoubleSide,
         }),
         beam: new THREE.MeshBasicMaterial({
-          color: "#8b5cf6",
+          color: "#a78bfa",
           transparent: true,
-          opacity: 0.05,
+          opacity: 0.12,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
           side: THREE.DoubleSide,
@@ -109,7 +125,7 @@ export default function ServicesRing() {
           depthWrite: false,
         }),
       })),
-    [],
+    [glowTex],
   );
 
   useEffect(
@@ -122,6 +138,7 @@ export default function ServicesRing() {
       discGeo.dispose();
       beamGeo.dispose();
       gemGeo.dispose();
+      glowTex.dispose();
       padMats.forEach((p) => {
         p.ring.dispose();
         p.disc.dispose();
@@ -138,6 +155,7 @@ export default function ServicesRing() {
       discGeo,
       beamGeo,
       gemGeo,
+      glowTex,
       padMats,
     ],
   );
@@ -196,13 +214,13 @@ export default function ServicesRing() {
         );
         m.disc.opacity = THREE.MathUtils.damp(
           m.disc.opacity,
-          on ? 0.3 : 0.1,
+          on ? 0.55 : 0.16,
           5,
           dt,
         );
         m.beam.opacity = THREE.MathUtils.damp(
           m.beam.opacity,
-          on ? 0.13 : 0.03,
+          on ? 0.85 : 0.14,
           5,
           dt,
         );
