@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { journey, clamp01 } from "./journeyState";
 import JourneyOverlay from "./JourneyOverlay";
+import ChapterSnap from "./ChapterSnap";
 
 const JourneyCanvas = dynamic(() => import("./JourneyCanvas"), { ssr: false });
 
@@ -55,6 +56,7 @@ export default function Journey() {
   return (
     <div ref={wrap} className={`jy-wrap${isStatic ? " jy-wrap-static" : ""}`}>
       {mode === "gl" && <JourneyCanvas />}
+      {mode === "gl" && <ChapterSnap wrap={wrap} />}
       <JourneyOverlay staticMode={isStatic} />
     </div>
   );
