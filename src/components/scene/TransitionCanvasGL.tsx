@@ -34,15 +34,15 @@ function DarkLogo({ onActive }: { onActive: (a: boolean) => void }) {
 
   const mats = useMemo(() => {
     const white = new THREE.MeshStandardMaterial({
-      color: "#23232b", metalness: 0.7, roughness: 0.4,
-      emissive: new THREE.Color("#3a2f55"), emissiveIntensity: 0.3, transparent: true, opacity: 0,
+      color: "#16121f", metalness: 0.7, roughness: 0.4,
+      emissive: new THREE.Color("#4c3d78"), emissiveIntensity: 0.3, transparent: true, opacity: 0,
     });
     const purple = new THREE.MeshStandardMaterial({
-      color: "#2c1556", metalness: 0.5, roughness: 0.45,
-      emissive: new THREE.Color("#4a1d7a"), emissiveIntensity: 0.5, transparent: true, opacity: 0,
+      color: "#241640", metalness: 0.5, roughness: 0.45,
+      emissive: new THREE.Color("#6d28d9"), emissiveIntensity: 0.5, transparent: true, opacity: 0,
     });
     const halo = new THREE.MeshBasicMaterial({
-      color: "#5b1e8a", transparent: true, opacity: 0,
+      color: "#8b5cf6", transparent: true, opacity: 0,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     return { white, purple, halo };

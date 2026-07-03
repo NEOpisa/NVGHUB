@@ -18,28 +18,31 @@
 
     --border: #2a2a2a;
     --border-hover: #3a3a3a;
-    --accent-border: rgba(124, 58, 237, 0.35);
+    --accent-border: rgba(139, 92, 246, 0.35);
 
     --text-primary: #f0f0f0;
     --text-secondary: #a0a0a0;
     --text-muted: #606060;
 
-    --accent: #7c3aed;
-    --accent-hover: #6d28d9;
-    --accent-light: #9f6ef9;
-    --accent-glow: rgba(124, 58, 237, 0.24);
-    --accent-subtle: rgba(124, 58, 237, 0.12);
+    /* Blueprint Obsidian: matiz único violeta em todo o site */
+    --accent: #8b5cf6;
+    --accent-hover: #7c3aed;
+    --accent-light: #a78bfa;
+    --accent-glow: rgba(139, 92, 246, 0.24);
+    --accent-subtle: rgba(139, 92, 246, 0.12);
     --bg-veil: rgba(13, 13, 13, 0.55);
     --bg-2-veil: rgba(10, 10, 10, 0.6);
     --green: #10b981;
-    --font-display: var(--ff-syne), ui-sans-serif, sans-serif;
-    --font-mono: var(--ff-orbitron), monospace;
+    /* tipografia Blueprint: grotesca técnica + mono terminal */
+    --font-display: var(--ff-grotesk), ui-sans-serif, sans-serif;
+    --font-mono: var(--ff-mono), monospace;
     --font-body: var(--ff-jakarta), ui-sans-serif, sans-serif;
     --font-orbitron: var(--ff-orbitron), monospace;
-    --radius-sm: 6px;
-    --radius: 10px;
-    --radius-lg: 16px;
-    --radius-xl: 16px;
+    /* precisão: cantos retos */
+    --radius-sm: 0px;
+    --radius: 0px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
 
     /* Holográfico — destaque "Sua solução" (texto na área Navegue) e foil
      (botão dedicado do menu). */
@@ -276,12 +279,6 @@ html.lenis body {
     text-decoration: none;
     flex-shrink: 0;
 }
-.nav-logo {
-    height: 32px;
-    width: auto;
-    filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.4));
-    display: block;
-}
 .wordmark-text {
     font-family: var(--font-mono);
     font-weight: 700;
@@ -474,23 +471,28 @@ html.lenis body {
     }
 }
 
-/* ── Section typography ── */
+/* ── Section typography — labels em MONO (linguagem Blueprint) ── */
 .section-eyebrow {
     display: inline-block;
-    border-radius: var(--radius-sm);
+    border-radius: 0;
     border: 1px solid var(--accent-border);
-    background: var(--accent-subtle);
+    background: transparent;
     color: var(--accent-light);
     padding: 4px 14px;
+    font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-weight: 500;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     margin-bottom: 20px;
 }
+.section-eyebrow::before {
+    content: "// ";
+    color: var(--accent);
+}
 .section-heading {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 600;
     font-size: clamp(2.25rem, 4vw + 0.5rem, 3.5rem);
     letter-spacing: -0.03em;
     color: var(--text-primary);
@@ -569,7 +571,7 @@ html.lenis body {
     opacity: 1;
 }
 
-/* ── Buttons ── */
+/* ── Buttons — cantos cortados (linguagem bloquinho) ── */
 .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -577,7 +579,11 @@ html.lenis body {
     background: var(--accent);
     color: #fff;
     padding: 13px 26px;
-    border-radius: var(--radius);
+    border-radius: 0;
+    clip-path: polygon(
+        10px 0, 100% 0, 100% calc(100% - 10px),
+        calc(100% - 10px) 100%, 0 100%, 0 10px
+    );
     font-family: var(--font-body);
     font-size: 14px;
     font-weight: 600;
@@ -591,7 +597,8 @@ html.lenis body {
 }
 .btn-primary:hover {
     background: var(--accent-hover);
-    box-shadow: 0 0 24px rgba(124, 58, 237, 0.45);
+    /* glow interno — o clip-path corta sombras externas */
+    box-shadow: inset 0 0 22px rgba(255, 255, 255, 0.18);
     transform: translateY(-1px);
 }
 .btn-ghost {
@@ -602,7 +609,11 @@ html.lenis body {
     background: transparent;
     color: var(--text-primary);
     padding: 13px 26px;
-    border-radius: var(--radius);
+    border-radius: 0;
+    clip-path: polygon(
+        10px 0, 100% 0, 100% calc(100% - 10px),
+        calc(100% - 10px) 100%, 0 100%, 0 10px
+    );
     font-family: var(--font-body);
     font-size: 14px;
     font-weight: 600;
@@ -625,7 +636,11 @@ html.lenis body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border-radius: var(--radius-sm);
+    border-radius: 0;
+    clip-path: polygon(
+        6px 0, 100% 0, 100% calc(100% - 6px),
+        calc(100% - 6px) 100%, 0 100%, 0 6px
+    );
     border: 1px solid var(--accent-border);
     background: var(--accent-subtle);
     color: var(--accent-light);
@@ -3614,7 +3629,8 @@ body.site-loaded .hero-enter-5 {
     border-bottom: 1px solid transparent;
     transition:
         background 300ms,
-        border-color 300ms;
+        border-color 300ms,
+        opacity 0.6s ease 0.2s;
 }
 .site-header.is-scrolled {
     border-bottom-color: rgba(42, 42, 42, 0.6);
@@ -5131,17 +5147,45 @@ body.site-loaded .hero-enter-5 {
     gap: 18px;
 }
 
-/* header: wordmark + logo só aparecem quando o hero não está visível */
+/* header: wordmark + logo entram em cena quando o visitante SAI do hero —
+   a marca "sobe" do palco 3D para o header (deslize + desfoque + pop) */
 .site-header .wordmark {
     transition:
-        opacity 360ms var(--ease-out),
-        transform 360ms var(--ease-out);
+        opacity 480ms var(--ease-out),
+        transform 480ms var(--ease-out),
+        filter 480ms var(--ease-out);
+}
+.site-header .nav-logo {
+    height: 26px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.45));
+    transition: transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
 }
 .site-header.brand-hidden .wordmark {
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-6px);
+    transform: translateY(10px);
+    filter: blur(5px);
     pointer-events: none;
+}
+.site-header.brand-hidden .nav-logo {
+    transform: scale(0.6) rotate(-20deg);
+}
+/* na jornada da home, quem manda é o progresso do scroll (overlay fixo);
+   !important: vence qualquer transição/estado intermediário do gate */
+body.jy-past-hero .site-header {
+    opacity: 1 !important;
+}
+body.jy-past-hero .site-header .wordmark {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+    pointer-events: auto;
+}
+body.jy-past-hero .site-header .nav-logo {
+    transform: none;
 }
 
 /* hero 20% menor (título, logo, sub, marca, espaçamentos) */
@@ -6425,11 +6469,6 @@ body.site-loaded .hero-enter-5 {
     html {
         font-size: 11px;
     }
-
-    .nav-logo {
-        width: 30px;
-        height: auto;
-    }
 }
 
 /* ============================================================
@@ -6831,5 +6870,1025 @@ body.site-loaded .hero-enter-5 {
 
     #hero .trust-signals {
         justify-content: center;
+    }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   JORNADA 3D DA HOME (journey/*) — canvas único + overlay storytelling
+   ════════════════════════════════════════════════════════════════════ */
+
+.jy-wrap {
+    position: relative;
+    height: 700vh; /* comprimento da viagem */
+}
+.jy-wrap-static {
+    height: auto;
+}
+
+.jy-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--bg, #0d0d0d);
+}
+.jy-canvas canvas {
+    display: block;
+}
+
+/* ── overlay ── */
+.jy-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    /* linguagem BLUEPRINT: painéis escuros de precisão, borda de 1px e
+       cantoneiras tick vivas — herdados por todos os painéis da jornada */
+    --jy-panel-bg: rgba(5, 4, 10, 0.72);
+    --jy-line: rgba(255, 255, 255, 0.08);
+    --jy-accent: #8b5cf6;
+}
+/* respiração sutil das bordas dos painéis */
+@keyframes jyPanelBreathe {
+    50% {
+        border-color: rgba(139, 92, 246, 0.26);
+    }
+}
+/* cantoneiras pulsando */
+@keyframes jyTickPulse {
+    50% {
+        opacity: 0.45;
+    }
+}
+
+.jy-sec {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    will-change: transform, opacity;
+    padding: clamp(72px, 10vh, 120px) clamp(20px, 6vw, 96px);
+}
+
+/* ── tipografia da jornada ── */
+.jy-h1 {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 600;
+    /* 50% do tamanho antigo — o protagonismo é da logo 3D */
+    font-size: clamp(1.35rem, 2.6vw, 2.2rem);
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+    color: #ffffff;
+    max-width: 22ch;
+    margin: 0 0 0.8rem;
+    text-shadow: 0 2px 14px rgba(5, 4, 8, 0.55);
+}
+.jy-h2 {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 3.6vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: #ffffff;
+    margin: 0 0 0.9rem;
+    text-shadow: 0 2px 14px rgba(5, 4, 8, 0.55);
+}
+.jy-sub {
+    font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+    line-height: 1.6;
+    color: rgba(240, 240, 240, 0.85);
+    max-width: 44ch;
+    margin: 0 0 1.2rem;
+    text-shadow: 0 1px 8px rgba(5, 4, 8, 0.55);
+}
+.jy-sub-sm {
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    line-height: 1.6;
+    color: rgba(240, 240, 240, 0.8);
+    max-width: 46ch;
+    margin: 0 0 1.4rem;
+    text-shadow: 0 1px 8px rgba(5, 4, 8, 0.55);
+}
+
+/* ── tipografia técnica (igloo): micro-labels em MONO tracked ── */
+.jy-rail-label,
+.jy-hint,
+.jy-trust-item,
+.jy-brand-tag,
+.jy-eco-tier,
+.jy-svc-metric,
+.jy-tags li,
+.jy-cta-foot-links a,
+.jy-cta-copy {
+    font-family: var(--ff-mono), monospace;
+}
+.jy-sec .section-eyebrow {
+    font-family: var(--ff-mono), monospace;
+    background: transparent;
+    border-color: rgba(139, 92, 246, 0.35);
+    letter-spacing: 0.22em;
+    clip-path: none;
+}
+.jy-sec .section-eyebrow::before {
+    content: "// ";
+    color: #8b5cf6;
+}
+
+/* anotações de medição no canvas (crosshair + linha-guia + etiqueta) */
+.jy-callout-wrap {
+    pointer-events: none !important;
+}
+.jy-callout {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+    color: rgba(220, 214, 245, 0.9);
+    text-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+    transition: opacity 0.3s ease;
+}
+
+/* ── HERO ── */
+.jy-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: clamp(20px, 4vw, 60px);
+    max-width: 1250px;
+    margin: 0 auto;
+    width: 100%;
+}
+/* painel de precisão atrás do texto — legibilidade sobre o 3D */
+.jy-hero-copy {
+    position: relative;
+    max-width: 470px;
+    padding: clamp(18px, 3vh, 28px) clamp(18px, 2vw, 28px);
+    background: var(--jy-panel-bg);
+    border: 1px solid var(--jy-line);
+    animation: jyPanelBreathe 5s ease-in-out infinite;
+}
+/* cantoneiras tick que se DESENHAM quando o site libera, e pulsam */
+.jy-hero-copy::before,
+.jy-hero-copy::after,
+.jy-exp-list::before,
+.jy-exp-list::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    transition:
+        width 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.6s,
+        height 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
+    animation: jyTickPulse 3.2s ease-in-out infinite;
+}
+.jy-hero-copy::before,
+.jy-exp-list::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--jy-accent);
+    border-left: 2px solid var(--jy-accent);
+}
+.jy-hero-copy::after,
+.jy-exp-list::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--jy-accent);
+    border-right: 2px solid var(--jy-accent);
+}
+body:not(.site-loaded) .jy-hero-copy::before,
+body:not(.site-loaded) .jy-hero-copy::after {
+    width: 0;
+    height: 0;
+}
+.jy-hero .jy-h1 {
+    max-width: 20ch;
+}
+.jy-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+.jy-brand img {
+    width: 28px;
+    height: auto;
+}
+.jy-brand-name {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    color: #f0f0f0;
+}
+.jy-brand-name b {
+    color: #8b5cf6;
+}
+.jy-brand-sep {
+    width: 1px;
+    height: 18px;
+    background: rgba(240, 240, 240, 0.25);
+}
+.jy-brand-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: rgba(240, 240, 240, 0.6);
+}
+.jy-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1.1rem;
+}
+/* hero 50%: botões compactos dentro do painel */
+.jy-hero .btn-primary,
+.jy-hero .btn-ghost {
+    padding: 9px 16px;
+    font-size: 12.5px;
+    gap: 7px;
+}
+.jy-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+.jy-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    color: rgba(240, 240, 240, 0.75);
+}
+.jy-trust-item svg {
+    color: #8b5cf6;
+}
+
+/* entrada do hero (após o preloader liberar) — subida com desfoque */
+.jy-enter {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+}
+body.site-loaded .jy-enter {
+    animation: jyEnter 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+body.site-loaded .jy-d1 { animation-delay: 0.05s; }
+body.site-loaded .jy-d2 { animation-delay: 0.18s; }
+body.site-loaded .jy-d3 { animation-delay: 0.34s; }
+body.site-loaded .jy-d4 { animation-delay: 0.48s; }
+body.site-loaded .jy-d5 { animation-delay: 0.62s; }
+@keyframes jyEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* ── numeral fantasma gigante de cada capítulo (presença tipográfica) ── */
+.jy-ghost {
+    position: absolute;
+    right: clamp(10px, 5vw, 90px);
+    bottom: 4vh;
+    font-family: var(--ff-mono), monospace;
+    font-weight: 500;
+    font-size: clamp(7rem, 24vw, 21rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.07);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    user-select: none;
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(6vh);
+}
+.jy-sec.is-live .jy-ghost {
+    transform: translateY(0);
+    animation: jyGhostDrift 9s ease-in-out 1.2s infinite;
+}
+@keyframes jyGhostDrift {
+    50% {
+        transform: translateY(-1.6vh);
+    }
+}
+.jy-ghost-top {
+    bottom: auto;
+    top: 8vh;
+}
+.jy-ghost-center {
+    right: auto;
+    left: clamp(10px, 4vw, 70px);
+}
+
+/* ── bracket HUD nos títulos: amarra o texto ao cenário 3D ── */
+.jy-eco-head,
+.jy-exp-head {
+    position: relative;
+    padding-left: clamp(14px, 1.6vw, 22px);
+}
+.jy-eco-head::before,
+.jy-exp-head::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 3px;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(139, 92, 246, 0.85) 0 7px,
+        transparent 7px 11px
+    );
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+    /* os traços FLUEM ao longo da barra */
+    animation: jyDashFlow 2.6s linear infinite;
+}
+@keyframes jyDashFlow {
+    to {
+        background-position: 0 11px;
+    }
+}
+.jy-eco-head::after,
+.jy-exp-head::after {
+    content: "";
+    position: absolute;
+    inset: -18px -24px;
+    z-index: -1;
+    background: radial-gradient(
+        110% 110% at 12% 50%,
+        rgba(8, 6, 14, 0.7),
+        transparent 72%
+    );
+    pointer-events: none;
+}
+
+/* ── ECOSSISTEMA ── */
+.jy-eco .jy-eco-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 80px);
+    align-items: center;
+    max-width: 1250px;
+    margin: 0 auto;
+    width: 100%;
+}
+.jy-eco-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.jy-eco-card {
+    display: flex;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--jy-line);
+    border-left: 2px solid rgba(139, 92, 246, 0.4);
+    background: var(--jy-panel-bg);
+    opacity: 0;
+    transform: translateX(36px);
+    transition:
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s;
+}
+.jy-eco-card.is-on {
+    opacity: 1;
+    transform: translateX(0);
+    border-left-color: var(--jy-accent);
+}
+.jy-eco-num {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.9rem;
+    color: #8b5cf6;
+    padding-top: 3px;
+}
+.jy-eco-tier {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(139, 92, 246, 0.85);
+}
+.jy-eco-title {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 4px 0 6px;
+}
+.jy-eco-desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(240, 240, 240, 0.78);
+    margin: 0 0 10px;
+}
+.jy-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.jy-tags li {
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: rgba(240, 240, 240, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(139, 92, 246, 0.08);
+    padding: 3px 10px;
+}
+
+/* ── SOLUÇÕES ── */
+.jy-services {
+    align-items: flex-end;
+}
+.jy-svc-inner {
+    max-width: 1250px;
+    margin: 0 auto;
+    width: 100%;
+    padding-bottom: clamp(24px, 6vh, 64px);
+}
+.jy-svc-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+.jy-svc-counter {
+    font-family: var(--ff-mono), monospace;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    color: #f0f0f0;
+}
+.jy-svc-counter em {
+    font-style: normal;
+    font-size: 0.5em;
+    color: rgba(240, 240, 240, 0.4);
+}
+.jy-svc-stack {
+    position: relative;
+    min-height: clamp(180px, 26vh, 260px);
+    max-width: 560px;
+}
+.jy-svc {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+    transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    padding: 22px 24px;
+    border: 1px solid var(--jy-line);
+    border-top: 2px solid rgba(139, 92, 246, 0.45);
+    background: var(--jy-panel-bg);
+}
+.jy-svc.is-on {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+.jy-svc-code {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: rgba(139, 92, 246, 0.8);
+}
+.jy-svc-title {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 8px 0 4px;
+}
+.jy-svc-metric {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: rgba(240, 240, 240, 0.65);
+    margin-bottom: 10px;
+}
+.jy-svc-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(240, 240, 240, 0.8);
+    margin: 0;
+    max-width: 46ch;
+}
+.jy-svc-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+/* marcadores de progresso — pulsam quando ativos */
+.jy-svc-dot {
+    width: 10px;
+    height: 2px;
+    background: rgba(240, 240, 240, 0.18);
+    transition: background 0.3s, width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.jy-svc-dot.is-on {
+    background: var(--jy-accent);
+    width: 28px;
+    animation: jyDotPulse 1.6s ease-in-out infinite;
+}
+@keyframes jyDotPulse {
+    50% {
+        box-shadow: 0 0 14px rgba(139, 92, 246, 1);
+    }
+}
+
+/* ── EXPLORE — capítulo FINAL: grande tipografia + footer integrado ── */
+.jy-explore {
+    justify-content: center;
+}
+.jy-h2-xl {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.04;
+}
+.jy-exp-head .jy-cta-row {
+    margin-top: 1.4rem;
+    margin-bottom: 0;
+}
+.jy-explore .jy-cta-foot {
+    position: absolute;
+    left: clamp(20px, 6vw, 96px);
+    right: clamp(20px, 6vw, 96px);
+    bottom: clamp(14px, 3vh, 30px);
+    margin-top: 0;
+    padding-top: 14px;
+}
+.jy-exp-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+    max-width: 1250px;
+    margin: 0 auto;
+    width: 100%;
+}
+.jy-exp-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(10px, 2vh, 18px) clamp(12px, 1.6vw, 22px);
+    background: var(--jy-panel-bg);
+    border: 1px solid var(--jy-line);
+    animation: jyPanelBreathe 5s ease-in-out infinite;
+}
+.jy-exp-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: clamp(14px, 2.4vw, 28px);
+    align-items: center;
+    padding: clamp(12px, 2vh, 20px) 8px;
+    border-bottom: 1px solid rgba(240, 240, 240, 0.1);
+    text-decoration: none;
+    transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s,
+        background 0.3s;
+}
+/* stagger de entrada dirigido pelo capítulo (is-live) */
+.jy-explore:not(.is-live) .jy-exp-link {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+.jy-exp-link:hover {
+    border-color: rgba(139, 92, 246, 0.55);
+    background: linear-gradient(
+        90deg,
+        rgba(139, 92, 246, 0.1),
+        transparent 70%
+    );
+}
+.jy-exp-num {
+    font-family: var(--ff-mono), monospace;
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(139, 92, 246, 0.65);
+}
+.jy-exp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.jy-exp-label {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 3vw, 2.3rem);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #f0f0f0;
+    transition: color 0.3s, text-shadow 0.3s, letter-spacing 0.3s;
+}
+.jy-exp-link:hover .jy-exp-label {
+    color: #c4b5fd;
+    letter-spacing: 0.03em;
+    text-shadow: 0 0 26px rgba(139, 92, 246, 0.55);
+}
+.jy-exp-desc {
+    font-size: 0.82rem;
+    color: rgba(240, 240, 240, 0.65);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.35s ease;
+}
+.jy-exp-link:hover .jy-exp-desc {
+    max-height: 40px;
+    opacity: 1;
+}
+.jy-exp-arrow {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    color: #a78bfa;
+    transition: transform 0.3s, background 0.3s, border-color 0.3s;
+}
+.jy-exp-link:hover .jy-exp-arrow {
+    transform: translateX(6px) rotate(-45deg);
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.8);
+}
+
+/* mini-footer integrado ao capítulo final */
+.jy-cta-foot {
+    margin-top: clamp(28px, 6vh, 60px);
+    padding-top: 18px;
+    border-top: 1px solid rgba(240, 240, 240, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+.jy-cta-foot-links {
+    display: flex;
+    gap: clamp(14px, 3vw, 28px);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.jy-cta-foot-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(240, 240, 240, 0.68);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.jy-cta-foot-links a:hover {
+    color: #8b5cf6;
+}
+.jy-cta-copy {
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: rgba(240, 240, 240, 0.35);
+}
+
+/* ── moldura HUD fina (kprverse): borda 1px + cantoneiras + micro-labels ── */
+.jy-frame {
+    position: absolute;
+    inset: clamp(10px, 1.4vw, 18px);
+    border: 1px solid rgba(200, 190, 255, 0.12);
+    pointer-events: none;
+}
+.jy-frame::before,
+.jy-frame::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+}
+.jy-frame::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid rgba(139, 92, 246, 0.55);
+    border-left: 2px solid rgba(139, 92, 246, 0.55);
+    animation: jyTickPulse 3.2s ease-in-out infinite;
+}
+.jy-frame::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.55);
+    border-right: 2px solid rgba(139, 92, 246, 0.55);
+    animation: jyTickPulse 3.2s ease-in-out 1.6s infinite;
+}
+.jy-frame-label {
+    position: absolute;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(200, 190, 255, 0.4);
+    white-space: nowrap;
+}
+.jy-frame-label i {
+    font-style: normal;
+    color: rgba(139, 92, 246, 0.8);
+}
+.jy-frame-tl {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.jy-frame-bl {
+    bottom: 10px;
+    left: 16px;
+}
+body:not(.site-loaded) .jy-frame {
+    opacity: 0;
+}
+.jy-frame {
+    transition: opacity 0.8s ease 0.4s;
+}
+
+/* ── trilho de capítulos ── */
+.jy-rail {
+    position: absolute;
+    right: clamp(14px, 2.4vw, 34px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    pointer-events: auto;
+}
+.jy-rail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+.jy-rail-dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(240, 240, 240, 0.25);
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.jy-rail-item.is-on .jy-rail-dot {
+    background: #8b5cf6;
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.9);
+    transform: scale(1.3);
+}
+.jy-rail-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(240, 240, 240, 0);
+    transition: color 0.3s;
+}
+.jy-rail-item:hover .jy-rail-label,
+.jy-rail-item.is-on .jy-rail-label {
+    color: rgba(240, 240, 240, 0.7);
+}
+
+/* ── dica de scroll: seta pulsando ── */
+.jy-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(240, 240, 240, 0.6);
+    transition: opacity 0.3s;
+}
+.jy-hint-arrow {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    color: #a78bfa;
+    animation: jyArrow 1.6s ease-in-out infinite;
+}
+@keyframes jyArrow {
+    0%, 100% { transform: translateY(0); opacity: 0.55; box-shadow: 0 0 0 rgba(139, 92, 246, 0); }
+    50% { transform: translateY(7px); opacity: 1; box-shadow: 0 0 18px rgba(139, 92, 246, 0.45); }
+}
+
+/* ── modo estático (sem WebGL / reduced-motion) ── */
+.jy-static {
+    position: static;
+    pointer-events: auto;
+}
+.jy-static .jy-sec {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    min-height: 70vh;
+}
+.jy-static .jy-enter {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+.jy-static .jy-eco-card,
+.jy-static .jy-svc {
+    opacity: 1;
+    transform: none;
+    position: relative;
+}
+.jy-static .jy-svc-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: none;
+    min-height: 0;
+}
+.jy-static .jy-cta-foot {
+    position: static;
+    margin-top: 28px;
+}
+
+/* ── abertura: loading disfarçado sobre o canvas da jornada ──
+   fundo sólido enquanto o 3D baixa → transparente quando a logo começa a
+   se construir no canvas → HUD sai no handoff pro hero */
+.warp-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: #08060e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.35s ease, opacity 0.5s ease;
+}
+.warp-intro.is-revealed {
+    background: transparent;
+}
+.warp-intro.is-leaving {
+    opacity: 0;
+    pointer-events: none;
+}
+.warp-intro-ui {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.warp-intro-ui-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(28px, 8vh, 72px);
+}
+/* trava o scroll enquanto a intro toca */
+html.intro-lock,
+body.intro-lock {
+    overflow: hidden;
+    height: 100dvh;
+}
+/* header só aparece com o site liberado */
+body:not(.site-loaded) .site-header {
+    opacity: 0;
+    pointer-events: none;
+}
+/* !important: o driver rAF escreve opacity inline na dica */
+body:not(.site-loaded) .jy-hint {
+    opacity: 0 !important;
+}
+/* o painel do hero só aparece com o site liberado (a intro é só a logo) */
+body:not(.site-loaded) .jy-hero-copy {
+    opacity: 0;
+}
+.jy-hero-copy {
+    transition: opacity 0.8s ease 0.2s;
+}
+.warp-intro-brand {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    font-size: 0.95rem;
+    color: #f0f0f0;
+}
+.warp-intro-brand b {
+    color: #8b5cf6;
+}
+.warp-intro-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(240, 240, 240, 0.45);
+    margin-top: 8px;
+}
+.warp-intro-pct {
+    font-family: var(--ff-mono), monospace;
+    font-size: 1.35rem;
+    color: #f0f0f0;
+}
+.warp-intro-data {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.26em;
+    color: rgba(200, 190, 255, 0.45);
+    margin-top: 6px;
+}
+/* linha de progresso de 1px — o traço do plotter */
+.warp-intro-bar {
+    width: 240px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: visible;
+}
+.warp-intro-bar-fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #e6e9f6);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.9);
+    transition: width 0.25s ease;
+}
+
+/* ── canvas 3D do /menu ── */
+.menu-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--bg, #0d0d0d);
+}
+.menu-canvas canvas {
+    display: block;
+}
+
+/* ── responsivo ── */
+@media (max-width: 900px) {
+    .jy-eco .jy-eco-inner {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        align-content: center;
+    }
+    .jy-eco-head .jy-sub-sm {
+        display: none;
+    }
+    .jy-eco-card {
+        padding: 12px 14px;
+    }
+    .jy-eco-desc {
+        display: none;
+    }
+    .jy-rail-label {
+        display: none;
+    }
+    .jy-exp-inner {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        align-content: center;
+    }
+    .jy-exp-head .jy-sub-sm {
+        display: none;
+    }
+}
+@media (max-width: 640px) {
+    .jy-sec {
+        padding: 84px 18px 48px;
+    }
+    /* retrato: a logo 3D fica ACIMA do texto (o canvas a reposiciona) */
+    .jy-hero {
+        align-items: flex-end;
+    }
+    .jy-hero-grid {
+        grid-template-columns: 1fr;
+    }
+    .jy-hero-space {
+        display: none;
+    }
+    .jy-hero-copy {
+        max-width: none;
+        padding: 16px 14px;
+    }
+    .jy-cta-row .btn-ghost {
+        width: 100%;
+        justify-content: center;
+    }
+    .jy-cta-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .jy-svc-stack {
+        min-height: 240px;
+    }
+    .jy-exp-desc {
+        display: none;
+    }
+    .jy-exp-arrow {
+        width: 34px;
+        height: 34px;
     }
 }

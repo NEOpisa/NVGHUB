@@ -59,8 +59,8 @@ export default function Header() {
             src="/logo.png"
             alt=""
             aria-hidden
-            width={43}
-            height={32}
+            width={36}
+            height={27}
             className="nav-logo"
           />
           <span className="wordmark-text">

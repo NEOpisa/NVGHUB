@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import AmbientField from "@/components/AmbientField";
 
 // O canvas WebGL (three/fiber/drei) vive num chunk separado.
@@ -21,6 +22,7 @@ const SceneCanvasGL = dynamic(
  * O conteúdo principal continua no DOM por cima (SEO/acessibilidade).
  */
 export default function SceneCanvas() {
+  const pathname = usePathname();
   const [useGL, setUseGL] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -39,6 +41,8 @@ export default function SceneCanvas() {
     setUseGL(ok);
   }, []);
 
+  // Home e /menu têm canvas próprios (jornada 3D / MenuCanvas) — não duplicar.
+  if (pathname === "/" || pathname === "/menu") return null;
   if (useGL === null) return null;
   if (!useGL) return <AmbientField />;
   return <SceneCanvasGL />;

@@ -2,9 +2,15 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter, usePathname } from "next/navigation";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { WA, IG } from "@/lib/constants";
+
+// Canvas 3D do menu — mesma linguagem visual da jornada da home.
+const MenuCanvas = dynamic(() => import("@/components/journey/MenuCanvas"), {
+  ssr: false,
+});
 
 const NAV_LINKS = [
   { label: "Início", href: "/" },
@@ -34,6 +40,7 @@ export default function MenuView() {
 
   return (
     <main className="menu-page" aria-label="Menu de navegação">
+      <MenuCanvas />
       <div className="menu-page-inner">
         <nav className="menu-nav" aria-label="Navegação principal">
           <span className="menu-nav-eyebrow" aria-hidden="true">

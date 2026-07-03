@@ -1,7 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, Plus_Jakarta_Sans, Orbitron } from "next/font/google";
+import {
+  Syne,
+  Plus_Jakarta_Sans,
+  Orbitron,
+  Space_Grotesk,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import FooterGate from "@/components/FooterGate";
 import SceneCanvas from "@/components/scene/SceneCanvas";
 import Preloader from "@/components/Preloader";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -36,6 +42,21 @@ const orbitron = Orbitron({
   subsets: ["latin"],
   weight: ["700"],
   variable: "--ff-orbitron",
+  display: "swap",
+});
+
+// tipografia da jornada (linguagem igloo): grotesca técnica + mono terminal
+const grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--ff-grotesk",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--ff-mono",
   display: "swap",
 });
 
@@ -196,7 +217,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${syne.variable} ${jakarta.variable} ${orbitron.variable}`}
+      className={`${syne.variable} ${jakarta.variable} ${orbitron.variable} ${grotesk.variable} ${plexMono.variable}`}
     >
       <body>
         <script
@@ -215,7 +236,7 @@ export default function RootLayout({
         <div className="scroll-progress" aria-hidden="true" />
         <Header />
         {children}
-        <Footer />
+        <FooterGate />
         <div className="site-frame" aria-hidden="true" />
         <MetaPixel />
         <FpsMeter />

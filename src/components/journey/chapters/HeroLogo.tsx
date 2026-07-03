@@ -1,0 +1,301 @@
+"use client";
+
+import { useEffect, useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Sparkles } from "@react-three/drei";
+import * as THREE from "three";
+import { intro } from "@/components/scene/introState";
+import { buildLogoChunks, type Chunk } from "@/components/scene/logoGeometry";
+import BlueprintLogo from "../blueprint/BlueprintLogo";
+import { journey, rangeN } from "../journeyState";
+
+/**
+ * Estação HERO + palco da INTRO — linguagem BLUEPRINT:
+ * 1. o contorno da marca se DESENHA em traços de luz (loading disfarçado);
+ * 2. o metal MATERIALIZA de baixo pra cima (clipping plane subindo atrás da
+ *    barra de scan) com flash ao completar;
+ * 3. a marca migra para a composição do hero e entra no LOOP do site antigo
+ *    (cacos respirando + flutuação + halo pulsando).
+ * Ao rolar, a marca "desimprime" (clipping desce) e o blueprint reaparece.
+ */
+
+// posição da marca na composição do hero (paisagem / retrato)
+const HERO_POS = { x: 3.1, y: 0.15, s: 0.92 };
+const HERO_POS_PORTRAIT = { x: 0, y: 1.9, s: 0.5 };
+// posição durante a intro: centro da tela
+const INTRO_POS = { x: 0, y: 0.1, s: 0.62 };
+// respiração dos cacos (drift do loop antigo)
+const LOOP_AMT = 0.3;
+const LOOP_SPEED = 0.55;
+// bounds locais da marca em y (para o clipping da materialização)
+const LOGO_MIN_Y = -2.5;
+const LOGO_MAX_Y = 2.45;
+
+const _wp = new THREE.Vector3();
+const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+
+export default function HeroLogo() {
+  const root = useRef<THREE.Group>(null);
+  const lookRef = useRef<THREE.Group>(null);
+  const floatRef = useRef<THREE.Group>(null);
+  const realGroup = useRef<THREE.Group>(null);
+  const build = useRef(0);
+  const fillSm = useRef(0); // materialização suavizada
+  const prevFill = useRef(0);
+  const flashT = useRef(10); // tempo desde o flash de conclusão
+  const started = useRef(false);
+  const pos = useRef(
+    intro.active ? { ...INTRO_POS, z: 0.8 } : { ...HERO_POS, z: 0 },
+  );
+
+  // plano de clipping da materialização (mantém y <= constant, em mundo)
+  const clipPlane = useMemo(
+    () => new THREE.Plane(new THREE.Vector3(0, -1, 0), -999),
+    [],
+  );
+
+  // logo REAL em cacos (mesma construção do LogoItem antigo) + halo + juntas
+  const { chunks, meshes, whiteMat, purpleMat, haloMat, seamMat, disposables } =
+    useMemo(() => {
+      const whiteMat = new THREE.MeshPhysicalMaterial({
+        color: "#eef0ff",
+        metalness: 1.0,
+        roughness: 0.1,
+        emissive: new THREE.Color("#8b5cf6"),
+        emissiveIntensity: 0.06,
+        envMapIntensity: 1.6,
+        clearcoat: 1,
+        clearcoatRoughness: 0.06,
+        iridescence: 0.35,
+        iridescenceIOR: 1.3,
+        iridescenceThicknessRange: [120, 420],
+        clippingPlanes: [clipPlane],
+      });
+      const purpleMat = new THREE.MeshPhysicalMaterial({
+        color: "#8b5cf6",
+        metalness: 0.92,
+        roughness: 0.14,
+        emissive: new THREE.Color("#a78bfa"),
+        emissiveIntensity: 0.9,
+        envMapIntensity: 1.8,
+        clearcoat: 1,
+        clearcoatRoughness: 0.1,
+        clippingPlanes: [clipPlane],
+      });
+      const haloMat = new THREE.MeshBasicMaterial({
+        color: "#a78bfa",
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        clippingPlanes: [clipPlane],
+      });
+      // juntas luminosas sobre o metal (as "seams" do igloo)
+      const seamMat = new THREE.LineBasicMaterial({
+        color: "#cfc8f0",
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        clippingPlanes: [clipPlane],
+      });
+
+      const built = buildLogoChunks(1, 1);
+      const chunks: Chunk[] = [...built.white, ...built.purple];
+      const disposables: THREE.BufferGeometry[] = [];
+      const meshes = chunks.map((c, i) => {
+        const mat = i < built.white.length ? whiteMat : purpleMat;
+        const mesh = new THREE.Mesh(c.geometry, mat);
+        mesh.position.copy(c.pivot);
+        disposables.push(c.geometry);
+        const edges = new THREE.EdgesGeometry(c.geometry, 24);
+        mesh.add(new THREE.LineSegments(edges, seamMat));
+        disposables.push(edges);
+        if (i >= built.white.length) {
+          const halo = new THREE.Mesh(c.geometry, haloMat);
+          halo.scale.setScalar(1.04);
+          mesh.add(halo);
+        }
+        return mesh;
+      });
+      return { chunks, meshes, whiteMat, purpleMat, haloMat, seamMat, disposables };
+    }, [clipPlane]);
+
+  useEffect(
+    () => () => {
+      disposables.forEach((g) => g.dispose());
+      whiteMat.dispose();
+      purpleMat.dispose();
+      haloMat.dispose();
+      seamMat.dispose();
+    },
+    [disposables, whiteMat, purpleMat, haloMat, seamMat],
+  );
+
+  // avisa o gate: o palco 3D está pronto (ele revela o fundo e solta o build)
+  useEffect(() => {
+    intro.canvasReady = true;
+  }, []);
+
+  // sem intro: começa a desenhar quando o site é liberado
+  useEffect(() => {
+    if (intro.active) return;
+    if (document.body.classList.contains("site-loaded")) {
+      started.current = true;
+      return;
+    }
+    const obs = new MutationObserver(() => {
+      if (document.body.classList.contains("site-loaded")) {
+        obs.disconnect();
+        started.current = true;
+      }
+    });
+    obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
+  useFrame((state, dt) => {
+    const g = root.current;
+    if (!g) return;
+    const sm = journey.smooth;
+    g.visible = sm < 0.26;
+    if (!g.visible) return;
+
+    // build: persegue o gate com taxa limitada (o desenho tem ritmo próprio)
+    if (intro.active) {
+      build.current = Math.min(intro.build, build.current + dt * 0.85);
+    } else if (started.current && build.current < 1) {
+      build.current = Math.min(1, build.current + dt * 1.0);
+    }
+
+    const t = state.clock.elapsedTime;
+    const scatter = rangeN(sm, 0.055, 0.19);
+
+    // materialização: sobe com o fim do build, DESCE com o scroll (desimprime)
+    const fillTarget = Math.min(
+      rangeN(build.current, 0.82, 1),
+      clamp01(1 - scatter * 1.25),
+    );
+    fillSm.current = THREE.MathUtils.damp(fillSm.current, fillTarget, 6, dt);
+    const fill = fillSm.current;
+
+    // flash de conclusão (dispara quando o fill fecha)
+    if (fill >= 0.995 && prevFill.current < 0.995) flashT.current = 0;
+    prevFill.current = fill;
+    flashT.current += dt;
+    const flash = Math.exp(-flashT.current * 3.5) * 2.2;
+
+    // clipping em espaço de MUNDO: acompanha posição/escala do grupo
+    const rg = realGroup.current;
+    if (rg) {
+      rg.visible = fill > 0.002;
+      rg.getWorldPosition(_wp);
+      const s = pos.current.s;
+      clipPlane.constant =
+        _wp.y + (LOGO_MIN_Y + (LOGO_MAX_Y - LOGO_MIN_Y) * fill) * s;
+
+      // LOOP do site antigo: brilho respira + cacos derivam pivô±dir
+      const loopAmp = rangeN(build.current, 0.96, 1) * (1 - scatter);
+      const breathe = 0.5 + 0.5 * Math.sin(t * LOOP_SPEED * 2);
+      whiteMat.emissiveIntensity = 0.06 + breathe * 0.3 * loopAmp + flash * 0.4;
+      purpleMat.emissiveIntensity = 0.8 + breathe * 1.3 * loopAmp + flash;
+      haloMat.opacity = loopAmp * breathe * 0.35 + flash * 0.15;
+      // juntas de luz do metal: acendem com a materialização e respiram
+      seamMat.opacity = fill * (0.14 + breathe * 0.14) + flash * 0.25;
+
+      for (let i = 0; i < meshes.length; i++) {
+        const c = chunks[i];
+        const drift =
+          Math.sin(t * LOOP_SPEED * 2 + i * 1.9) *
+          LOOP_AMT *
+          (0.8 + (i % 3) * 0.15) *
+          loopAmp;
+        meshes[i].position.set(
+          c.pivot.x + c.dir.x * drift,
+          c.pivot.y + c.dir.y * drift,
+          c.pivot.z + c.dir.z * drift,
+        );
+      }
+    }
+
+    // flutuação do conjunto (Float do hero antigo), só com a marca montada
+    const fg = floatRef.current;
+    if (fg) {
+      const amp = rangeN(build.current, 0.96, 1) * (1 - scatter);
+      fg.position.y = Math.sin(t * 1.1) * 0.16 * amp;
+      fg.rotation.z = Math.sin(t * 0.7) * 0.045 * amp;
+      fg.rotation.x = Math.cos(t * 0.9) * 0.03 * amp;
+    }
+
+    // migração: centro (intro) → composição do hero (handoff/done)
+    const portrait = state.viewport.aspect < 0.8;
+    const heroTarget = portrait ? HERO_POS_PORTRAIT : HERO_POS;
+    const inIntro = intro.active && intro.phase === "load";
+    const target = inIntro
+      ? { x: 0, y: INTRO_POS.y, s: portrait ? 0.4 : INTRO_POS.s, z: 0.8 }
+      : { x: heroTarget.x, y: heroTarget.y, s: heroTarget.s, z: 0 };
+    const k = Math.min(dt * (intro.phase === "handoff" ? 2.6 : 4), 1);
+    pos.current.x += (target.x - pos.current.x) * k;
+    pos.current.y += (target.y - pos.current.y) * k;
+    pos.current.s += (target.s - pos.current.s) * k;
+    pos.current.z += (target.z - pos.current.z) * k;
+
+    const dep = rangeN(sm, 0.055, 0.19);
+    g.position.set(pos.current.x, pos.current.y, pos.current.z + dep * 2.5);
+    g.scale.setScalar(pos.current.s);
+
+    // olhar: TURNTABLE 3D durante a intro (o volume se revela girando);
+    // depois, segue o ponteiro + deriva suave
+    const lg = lookRef.current;
+    if (lg) {
+      const b = build.current;
+      let tgtY: number;
+      let tgtX: number;
+      if (inIntro) {
+        tgtY = Math.sin(t * 0.26) * 0.6;
+        tgtX = Math.sin(t * 0.19) * 0.2 - 0.06;
+      } else {
+        tgtY = (state.pointer.x * 0.7 + Math.sin(t * 0.3) * 0.18) * b + dep * 1.6;
+        tgtX = (-state.pointer.y * 0.45 + Math.sin(t * 0.22) * 0.08) * b;
+      }
+      lg.rotation.y += (tgtY - lg.rotation.y) * 0.07;
+      lg.rotation.x += (tgtX - lg.rotation.x) * 0.07;
+      lg.rotation.z = Math.sin(t * 0.15) * 0.05 * b;
+    }
+  });
+
+  return (
+    <group ref={root}>
+      <group ref={lookRef}>
+        <group ref={floatRef}>
+          <BlueprintLogo
+            getBuild={() => build.current}
+            getFill={() => fillSm.current}
+            getFade={() =>
+              // forte durante o desenho; some quando o metal fecha;
+              // reaparece fantasmagórico enquanto a marca desimprime no scroll
+              Math.max(
+                1 - rangeN(build.current, 0.86, 1),
+                rangeN(journey.smooth, 0.055, 0.19) * 0.6,
+              ) * (1 - rangeN(journey.smooth, 0.16, 0.24))
+            }
+          />
+          <group ref={realGroup} visible={false}>
+            {meshes.map((m, i) => (
+              <primitive key={i} object={m} />
+            ))}
+          </group>
+        </group>
+      </group>
+      <Sparkles
+        count={16}
+        scale={[7, 6, 5]}
+        size={2.2}
+        speed={0.28}
+        opacity={0.35}
+        color="#a78bfa"
+      />
+      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#8b5cf6" />
+    </group>
+  );
+}
