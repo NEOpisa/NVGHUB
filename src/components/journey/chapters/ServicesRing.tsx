@@ -60,8 +60,14 @@ export default function ServicesRing() {
 
   // pedestal compartilhado: anel + disco + pilar de luz (materiais por ícone
   // para animar opacidade individualmente)
-  const ringGeo = useMemo(() => new THREE.TorusGeometry(1.35, 0.018, 8, 72), []);
-  const ring2Geo = useMemo(() => new THREE.TorusGeometry(1.05, 0.01, 8, 64), []);
+  const ringGeo = useMemo(
+    () => new THREE.TorusGeometry(1.35, 0.018, 8, 72),
+    [],
+  );
+  const ring2Geo = useMemo(
+    () => new THREE.TorusGeometry(1.05, 0.01, 8, 64),
+    [],
+  );
   const discGeo = useMemo(() => new THREE.CircleGeometry(1.3, 48), []);
   const beamGeo = useMemo(
     () => new THREE.CylinderGeometry(0.9, 1.25, 3.4, 24, 1, true),
@@ -123,7 +129,17 @@ export default function ServicesRing() {
         p.gem.dispose();
       });
     },
-    [icons, metal, accents, ringGeo, ring2Geo, discGeo, beamGeo, gemGeo, padMats],
+    [
+      icons,
+      metal,
+      accents,
+      ringGeo,
+      ring2Geo,
+      discGeo,
+      beamGeo,
+      gemGeo,
+      padMats,
+    ],
   );
 
   useFrame((state, dt) => {
@@ -137,13 +153,15 @@ export default function ServicesRing() {
     const l = rangeN(sm, CH.services.start, 0.72);
     const active = Math.min(4, Math.floor(l * 5));
 
-    // retrato (mobile): estações METADE do tamanho e mais perto do centro —
-    // sem isso os ícones estouram as bordas do enquadramento estreito
+    // retrato (mobile): estações menores e mais perto do centro —
+    // sem isso os ícones estouram as bordas do enquadramento estreito.
     const portrait = state.viewport.aspect < 0.8;
     mobK.current = THREE.MathUtils.damp(mobK.current, portrait ? 1 : 0, 6, dt);
     const mk = mobK.current;
-    const stScale = 1 - 0.5 * mk; // 1 → 0.5
-    const xK = 1 - 0.58 * mk; // ±2.1 → ±0.88
+    const mobileStationScale = 0.175; // metade do ajuste mobile anterior: 0.35 → 0.175
+    const mobileXFactor = 0.12; // ±2.1 → ±0.25, mais próximo do centro
+    const stScale = THREE.MathUtils.lerp(1, mobileStationScale, mk);
+    const xK = THREE.MathUtils.lerp(1, mobileXFactor, mk);
 
     for (let i = 0; i < icons.length; i++) {
       const st = stationRefs.current[i];
@@ -169,9 +187,24 @@ export default function ServicesRing() {
       if (pad) {
         pad.rotation.y += dt * (on ? 0.5 : 0.12);
         const m = padMats[i];
-        m.ring.opacity = THREE.MathUtils.damp(m.ring.opacity, on ? 0.85 : 0.3, 5, dt);
-        m.disc.opacity = THREE.MathUtils.damp(m.disc.opacity, on ? 0.3 : 0.1, 5, dt);
-        m.beam.opacity = THREE.MathUtils.damp(m.beam.opacity, on ? 0.13 : 0.03, 5, dt);
+        m.ring.opacity = THREE.MathUtils.damp(
+          m.ring.opacity,
+          on ? 0.85 : 0.3,
+          5,
+          dt,
+        );
+        m.disc.opacity = THREE.MathUtils.damp(
+          m.disc.opacity,
+          on ? 0.3 : 0.1,
+          5,
+          dt,
+        );
+        m.beam.opacity = THREE.MathUtils.damp(
+          m.beam.opacity,
+          on ? 0.13 : 0.03,
+          5,
+          dt,
+        );
       }
       const gem = gemRefs.current[i];
       if (gem) {
@@ -253,7 +286,11 @@ export default function ServicesRing() {
               material={padMats[i].disc}
               rotation={[-Math.PI / 2, 0, 0]}
             />
-            <mesh geometry={beamGeo} material={padMats[i].beam} position={[0, 1.7, 0]} />
+            <mesh
+              geometry={beamGeo}
+              material={padMats[i].beam}
+              position={[0, 1.7, 0]}
+            />
           </group>
         </group>
       ))}
