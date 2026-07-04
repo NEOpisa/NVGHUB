@@ -11,10 +11,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AREAS = [
   { num: "01", label: "Sua solução",          href: "/solucao",  desc: "Responda 3 perguntas e a gente monta o seu sob medida.", highlight: true },
-  { num: "02", label: "Pacotes",               href: "/pacotes",  desc: "Os tipos de solução que a gente entrega." },
-  { num: "03", label: "Quem somos",            href: "/sobre",    desc: "Quem somos, nossos números e a metodologia." },
-  { num: "04", label: "Perguntas frequentes",  href: "/faq",      desc: "Prazos, suporte e como a gente trabalha." },
-  { num: "05", label: "Contato",               href: "/contato",  desc: "Fale com a gente pelo WhatsApp ou formulário." },
+  { num: "02", label: "Quem somos",            href: "/sobre",    desc: "Quem somos, nossos números e a metodologia." },
+  { num: "03", label: "Perguntas frequentes",  href: "/faq",      desc: "Prazos, suporte e como a gente trabalha." },
+  { num: "04", label: "Contato",               href: "/contato",  desc: "Fale com a gente pelo WhatsApp ou formulário." },
 ];
 
 export default function ExploreSection() {

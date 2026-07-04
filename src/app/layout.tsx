@@ -146,7 +146,7 @@ const JSON_LD = {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer service",
-        telephone: "+5521969043544",
+        telephone: "+5519994425132",
         availableLanguage: ["pt-BR"],
       },
       sameAs: [IG],

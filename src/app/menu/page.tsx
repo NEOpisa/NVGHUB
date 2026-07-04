@@ -4,7 +4,7 @@ import MenuView from "@/app/menu/MenuView";
 export const metadata = pageMetadata({
   title: "Menu — Neovanguard",
   description:
-    "Navegue pela Neovanguard: pacotes, quem somos, perguntas frequentes, contato e sua solução.",
+    "Navegue pela Neovanguard: sua solução, quem somos, perguntas frequentes e contato.",
   path: "/menu",
 });
 

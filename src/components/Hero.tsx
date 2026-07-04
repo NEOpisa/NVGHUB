@@ -14,10 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AREAS = [
   { num: "01", label: "Sua solução", href: "/solucao" },
-  { num: "02", label: "Pacotes", href: "/pacotes" },
-  { num: "03", label: "Quem somos", href: "/sobre" },
-  { num: "04", label: "Perguntas frequentes", href: "/faq" },
-  { num: "05", label: "Contato", href: "/contato" },
+  { num: "02", label: "Quem somos", href: "/sobre" },
+  { num: "03", label: "Perguntas frequentes", href: "/faq" },
+  { num: "04", label: "Contato", href: "/contato" },
 ];
 
 export default function Hero() {

@@ -13,13 +13,12 @@ import { useEffect } from "react";
  * (superfícies violeta translúcidas, hairlines, cantos retos).
  */
 export default function BlueprintStage({
-  code,
   index,
 }: {
-  /** rótulo mono da rota, ex.: "quem somos" */
-  code: string;
   /** índice do "capítulo" no site, ex.: "01" */
   index: string;
+  /** (legado) rótulo mono da rota — não é mais exibido no canto */
+  code?: string;
 }) {
   useEffect(() => {
     document.body.classList.add("bp-page");
@@ -37,9 +36,6 @@ export default function BlueprintStage({
         <span className="bp-ghost">{index}</span>
       </div>
       <div className="bp-frame" aria-hidden="true">
-        <span className="bp-frame-label bp-frame-tl">
-          NVG <i>{"//"}</i> {code}
-        </span>
         <span className="bp-frame-label bp-frame-br">
           <i>{"//"}</i> SEC_{index} · © {new Date().getFullYear()} neovanguard
         </span>

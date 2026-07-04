@@ -48,7 +48,7 @@ const COMPROMISSOS = [
   },
   {
     title: "Sem letra miúda",
-    desc: "Pagamento único nos pacotes, sem contrato mínimo e sem taxa surpresa. O combinado é o que vale.",
+    desc: "Orçamento fechado por escrito antes de começar, sem contrato mínimo e sem taxa surpresa. O combinado é o que vale.",
   },
 ];
 

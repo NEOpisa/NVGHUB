@@ -8,12 +8,12 @@ import { WA } from "@/lib/constants";
 const FAQ: { q: string; a: string; tag: string }[] = [
   {
     q: "Em quanto tempo o site fica pronto?",
-    a: "Depende do pacote: a Vitrine sai em até 7 dias úteis, a Presença em até 16, o Sistema em até 26 e o E-commerce em até 35 dias úteis. O prazo é combinado e fechado antes de começar.",
+    a: "Depende do escopo do seu projeto — em geral entre 7 e 35 dias úteis. O prazo é definido no diagnóstico e fechado por escrito antes de começar.",
     tag: "Prazo",
   },
   {
     q: "Vocês têm contrato mínimo ou mensalidade?",
-    a: "Não. Os pacotes são de pagamento único, sem contrato mínimo e sem letra miúda. Você paga pelo que contratou e o site é seu.",
+    a: "Não tem contrato mínimo nem fidelidade. A entrega do projeto é um valor fechado, combinado antes de começar. A manutenção contínua (atualizações, suporte e melhorias) é opcional — você decide se quer, sem obrigação.",
     tag: "Contrato",
   },
   {
@@ -23,17 +23,17 @@ const FAQ: { q: string; a: string; tag: string }[] = [
   },
   {
     q: "Quanto custa um site?",
-    a: "O valor depende do que o seu negócio precisa. A gente monta uma solução sob medida e fecha tudo com você no atendimento, antes de começar — sem surpresa e sem letra miúda.",
+    a: "O valor depende do que o seu negócio precisa. A gente faz um diagnóstico, monta uma solução sob medida e fecha tudo com você antes de começar — sem surpresa e sem letra miúda.",
     tag: "Investimento",
   },
   {
     q: "Tem suporte depois que o site é entregue?",
-    a: "Sim. Cada pacote inclui de 2 a 5 meses de suporte, com atendimento direto pelo WhatsApp para dúvidas e ajustes.",
+    a: "Sim. Todo projeto já inclui um período de suporte pelo WhatsApp após a entrega, com resposta rápida para dúvidas e ajustes. Depois desse período, você pode seguir com a manutenção contínua se quiser.",
     tag: "Suporte",
   },
   {
     q: "Vocês cuidam do Google e do SEO?",
-    a: "Sim. A partir do pacote Presença incluímos SEO local básico e a configuração do Google Meu Negócio, para o seu negócio aparecer nas buscas.",
+    a: "Sim. Quando o seu objetivo é aparecer nas buscas, incluímos SEO local e a configuração do Google Meu Negócio para o seu negócio ser encontrado por quem procura na sua região.",
     tag: "SEO",
   },
 ];

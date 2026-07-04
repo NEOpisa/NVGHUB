@@ -7156,7 +7156,7 @@ body.jy-past-hero .site-header .nav-logo {
     pointer-events: none;
     /* linguagem BLUEPRINT: painéis escuros de precisão, borda de 1px e
        cantoneiras tick vivas — herdados por todos os painéis da jornada */
-    --jy-panel-bg: rgba(5, 4, 10, 0.72);
+    --jy-panel-bg: rgba(7, 6, 13, 0.97);
     --jy-line: rgba(255, 255, 255, 0.08);
     --jy-accent: #8b5cf6;
 }
@@ -7219,7 +7219,7 @@ body.jy-past-hero .site-header .nav-logo {
 .jy-sub-sm {
     font-size: clamp(0.95rem, 1.2vw, 1.05rem);
     line-height: 1.6;
-    color: rgba(240, 240, 240, 0.8);
+    color: rgba(240, 240, 240, 0.92);
     max-width: 46ch;
     margin: 0 0 1.4rem;
     text-shadow: 0 1px 8px rgba(5, 4, 8, 0.55);
@@ -7463,12 +7463,13 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-exp-head::after {
     content: "";
     position: absolute;
-    inset: -18px -24px;
+    inset: -60px -80px;
     z-index: -1;
     background: radial-gradient(
-        110% 110% at 12% 50%,
-        rgba(8, 6, 14, 0.7),
-        transparent 72%
+        closest-side at 50% 50%,
+        rgba(6, 5, 12, 0.85),
+        rgba(6, 5, 12, 0.6) 55%,
+        transparent 100%
     );
     pointer-events: none;
 }
@@ -7500,12 +7501,23 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     transition:
         opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
         transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.3s;
+        border-color 0.3s,
+        background 0.3s,
+        box-shadow 0.3s;
 }
 .jy-eco-card.is-on {
     opacity: 1;
     transform: translateX(0);
     border-left-color: var(--jy-accent);
+}
+/* hover vivo: borda acende + fundo violeta + glow (tudo se mexe) */
+.jy-eco-card.is-on:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    border-left-color: var(--jy-accent);
+    background: rgba(139, 92, 246, 0.1);
+    box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.15),
+        0 18px 44px -20px rgba(124, 58, 237, 0.6);
 }
 .jy-eco-num {
     font-family: var(--ff-mono), monospace;
@@ -7529,7 +7541,7 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-eco-desc {
     font-size: 0.88rem;
     line-height: 1.55;
-    color: rgba(240, 240, 240, 0.78);
+    color: rgba(240, 240, 240, 0.88);
     margin: 0 0 10px;
 }
 .jy-tags {
@@ -7543,9 +7555,9 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-tags li {
     font-size: 0.72rem;
     letter-spacing: 0.04em;
-    color: rgba(240, 240, 240, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(139, 92, 246, 0.08);
+    color: rgba(240, 240, 240, 0.88);
+    border: 1px solid rgba(167, 139, 250, 0.22);
+    background: rgba(139, 92, 246, 0.12);
     padding: 3px 10px;
 }
 
@@ -8377,8 +8389,7 @@ body.bp-page {
     text-transform: uppercase;
     color: rgba(200, 190, 255, 0.4);
     white-space: nowrap;
-    background: rgba(5, 4, 8, 0.7);
-    padding: 0 10px;
+    line-height: 1.5;
 }
 .bp-frame-label i {
     font-style: normal;
@@ -8389,8 +8400,9 @@ body.bp-page {
     left: clamp(16px, 4vw, 42px);
 }
 .bp-frame-br {
-    bottom: -0.4em;
-    right: clamp(16px, 4vw, 42px);
+    bottom: 4px;
+    left: clamp(16px, 4vw, 42px);
+    right: auto;
 }
 @media (max-width: 760px) {
     .bp-frame { display: none; }
@@ -8406,7 +8418,9 @@ body.bp-page .contact-info,
 body.bp-page .contact-form,
 body.bp-page .exemplo-card,
 body.bp-page .faq-item {
-    background-color: var(--surface);
+    /* fundo obsidian mais opaco: separa o texto da grade blueprint atrás
+       (antes usava --surface translúcido e o conteúdo ficava difícil de ler) */
+    background-color: rgba(11, 8, 19, 0.86);
     background-image:
         linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
         linear-gradient(rgba(139, 92, 246, 0.65), rgba(139, 92, 246, 0.65)),
@@ -8502,10 +8516,15 @@ body.bp-page .quiz-option {
     border: 1px solid var(--border);
     border-left: 2px solid rgba(139, 92, 246, 0.4);
 }
-body.bp-page .quiz-option:hover,
+body.bp-page .quiz-option:hover {
+    border-left-color: var(--accent);
+    background: rgba(139, 92, 246, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px -16px rgba(124, 58, 237, 0.6);
+}
 body.bp-page .quiz-option.ativo {
     border-left-color: var(--accent);
-    background: rgba(139, 92, 246, 0.09);
+    background: rgba(139, 92, 246, 0.12);
 }
 
 /* conteúdo entra ACIMA do palco; véus antigos ficam transparentes */

@@ -20,7 +20,6 @@ export default function Footer() {
 
       <div className="footer-links">
         <Link href="/solucao">Sua solução</Link>
-        <Link href="/pacotes">Pacotes</Link>
         <Link href="/contato">Contato</Link>
         <Link href="/exemplos">Exemplos</Link>
         <a href={WA} target="_blank" rel="noopener noreferrer">WhatsApp</a>

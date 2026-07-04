@@ -6,7 +6,7 @@ const OG_IMAGE = "/og.png";
 type PageMetaInput = {
   title: string;
   description: string;
-  /** Caminho da rota começando com "/" (ex.: "/pacotes"). Use "/" para a home. */
+  /** Caminho da rota começando com "/" (ex.: "/solucao"). Use "/" para a home. */
   path: string;
 };
 

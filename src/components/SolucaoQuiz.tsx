@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import {
@@ -63,40 +62,6 @@ const PERGUNTAS: Pergunta[] = [
 
 const TOTAL = PERGUNTAS.length;
 
-/** rota sugerida a partir do OBJETIVO (refinada pelo ramo) — o diagnóstico
- *  devolve algo concreto, não só um "fale com a gente" */
-function recomendar(respostas: Record<string, string>): {
-  pacote: string;
-  motivo: string;
-  extra?: string;
-} {
-  const objetivo = respostas.objetivo ?? "";
-  const ramo = respostas.ramo ?? "";
-  const saasRamo = ramo === "Saúde & Beleza" || ramo === "Alimentação";
-  if (objetivo.startsWith("Vender"))
-    return {
-      pacote: "E-commerce",
-      motivo: "Loja virtual completa com carrinho, Pix e painel do lojista.",
-    };
-  if (objetivo.startsWith("Automatizar"))
-    return {
-      pacote: "Sistema",
-      motivo: "Agendamento, cardápio ou catálogo com painel de controle.",
-      extra: saasRamo
-        ? "Seu ramo também se encaixa no nosso SaaS pronto — no ar em 5 dias."
-        : undefined,
-    };
-  if (objetivo.startsWith("Ser encontrado"))
-    return {
-      pacote: "Presença",
-      motivo: "SEO local + Google Meu Negócio pra aparecer nas buscas.",
-    };
-  return {
-    pacote: "Presença",
-    motivo: "Landing completa e encontrável — presença de verdade, rápido.",
-  };
-}
-
 export default function SolucaoQuiz() {
   const headerRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
@@ -122,20 +87,18 @@ export default function SolucaoQuiz() {
 
   // Deriva itens + recomendação + link do WhatsApp só quando as respostas
   // mudam, mantendo a referência estável de `itens` p/ o modal.
-  const { itens, waHref, rec, respondidas } = useMemo(() => {
+  const { itens, waHref, respondidas } = useMemo(() => {
     const respondidas = PERGUNTAS.filter((p) => respostas[p.id]);
-    const rec = recomendar(respostas);
     const mensagemWA = [
       "Olá! Acabei de fazer o diagnóstico no site da Neovanguard.",
       "",
       ...respondidas.map((p) => `• ${p.resumo}: ${respostas[p.id]}`),
       "",
-      `O site sugeriu o pacote ${rec.pacote}. Quero montar a minha solução sob medida.`,
+      "Quero montar a minha solução sob medida.",
     ].join("\n");
     return {
       itens: respondidas.map((p) => ({ label: `${p.resumo}: ${respostas[p.id]}`, price: null })),
       waHref: `${WA}?text=${encodeURIComponent(mensagemWA)}`,
-      rec,
       respondidas,
     };
   }, [respostas]);
@@ -236,16 +199,14 @@ export default function SolucaoQuiz() {
                 ))}
               </div>
 
-              {/* rota sugerida pelo diagnóstico */}
+              {/* próximo passo: consultoria sob medida, sem prateleira */}
               <div className="quiz-rec">
-                <span className="quiz-rec-label">Rota sugerida</span>
-                <span className="quiz-rec-name">{rec.pacote}</span>
-                <p className="quiz-rec-why">{rec.motivo}</p>
-                {rec.extra && <p className="quiz-rec-extra">{rec.extra}</p>}
-                <Link href="/pacotes" className="quiz-rec-link">
-                  Ver o pacote {rec.pacote}
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
-                </Link>
+                <span className="quiz-rec-label">Próximo passo</span>
+                <span className="quiz-rec-name">Sua solução sob medida</span>
+                <p className="quiz-rec-why">
+                  Com base no que você respondeu, a gente desenha a solução ideal pro seu
+                  momento — direto com você, no atendimento.
+                </p>
               </div>
 
               <p className="quiz-final-sub">
@@ -281,13 +242,6 @@ export default function SolucaoQuiz() {
           )}
         </div>
 
-        <div className="comprar-crosslink">
-          <p>Quer ver os tipos de solução que a gente entrega?</p>
-          <Link href="/pacotes" className="btn-ghost">
-            Ver tipos de solução
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-          </Link>
-        </div>
       </div>
 
       <LeadModal

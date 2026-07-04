@@ -67,10 +67,9 @@ const SERVICES = [
 
 const AREAS = [
   { num: "01", label: "Sua solução", href: "/solucao", desc: "Responda 3 perguntas e a gente monta o seu sob medida." },
-  { num: "02", label: "Pacotes", href: "/pacotes", desc: "Os tipos de solução que a gente entrega." },
-  { num: "03", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
-  { num: "04", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, suporte e como a gente trabalha." },
-  { num: "05", label: "Contato", href: "/contato", desc: "Fale pelo WhatsApp ou formulário." },
+  { num: "02", label: "Quem somos", href: "/sobre", desc: "Quem somos, nossos números e a metodologia." },
+  { num: "03", label: "Perguntas frequentes", href: "/faq", desc: "Prazos, suporte e como a gente trabalha." },
+  { num: "04", label: "Contato", href: "/contato", desc: "Fale pelo WhatsApp ou formulário." },
 ];
 
 const RAIL = [
@@ -436,7 +435,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         {/* mini-footer integrado ao fim da jornada */}
         <div className="jy-cta-foot">
           <nav className="jy-cta-foot-links" aria-label="Links do rodapé">
-            <Link href="/pacotes">Pacotes</Link>
             <Link href="/exemplos">Exemplos</Link>
             <Link href="/contato">Contato</Link>
             <a href={IG} target="_blank" rel="noopener noreferrer">

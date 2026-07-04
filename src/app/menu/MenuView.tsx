@@ -14,7 +14,6 @@ const MenuCanvas = dynamic(() => import("@/components/journey/MenuCanvas"), {
 
 const NAV_LINKS = [
   { label: "Início", href: "/" },
-  { label: "Pacotes", href: "/pacotes" },
   { label: "Quem somos", href: "/sobre" },
   { label: "Perguntas frequentes", href: "/faq" },
   { label: "Contato", href: "/contato" },
