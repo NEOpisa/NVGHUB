@@ -3,8 +3,7 @@
 import { useEffect } from "react";
 
 const SEL =
-  ".btn-primary,.btn-ghost,.nav-cta,.form-submit,.pricing-cta a," +
-  ".home-cta-actions a,.comprar-crosslink a,.services-orcamento-cta a,.contact-whatsapp";
+  ".btn-primary,.btn-ghost,.nav-cta,.form-submit,.contact-whatsapp";
 
 export default function ClickFX() {
   useEffect(() => {
