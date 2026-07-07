@@ -1,3 +1,4 @@
+import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import { EMAIL_RE, isValidPhone } from "@/lib/validation";
 import { createRateLimiter } from "@/lib/rateLimit";
@@ -7,6 +8,15 @@ const MAX_LEN = { nome: 120, email: 180, telefone: 40, tipo: 120 };
 const isRateLimited = createRateLimiter({ windowMs: 10 * 60 * 1000, max: 5 });
 
 type LeadItem = { label: string; price: number | null };
+
+function escapeHtml(s: string) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
@@ -57,55 +67,70 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Um dos campos passou do limite de tamanho." }, { status: 400 });
   }
 
-  const SUPABASE_URL = process.env.SUPABASE_URL;
-  // Chave de serviço (secret) — rota server-side, bypassa RLS. A anon legada
-  // está desligada no projeto, por isso a secret é a opção principal.
-  const SUPABASE_KEY =
-    process.env.SUPABASE_SECRET_KEY ??
-    process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.SUPABASE_ANON_KEY ??
-    process.env.SUPABASE_KEY;
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.error("[lead] SUPABASE_URL / SUPABASE_SECRET_KEY não configurados.");
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[lead] RESEND_API_KEY não configurada.");
     return NextResponse.json({ error: "Serviço indisponível no momento." }, { status: 500 });
   }
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // Resumo legível para o campo "Obs." (aparece no painel de planejamentos).
-  const linhas = itens.map((i) => `• ${i.label}${i.price != null ? ` — R$ ${i.price.toLocaleString("pt-BR")}` : ""}`);
   const contato = [email && `E-mail: ${email}`, telefone && `Tel: ${telefone}`].filter(Boolean).join(" · ");
-  const obs = [
-    linhas.length ? linhas.join("\n") : null,
-    valor != null ? `Total estimado: R$ ${valor.toLocaleString("pt-BR")}` : null,
-    contato,
-  ].filter(Boolean).join("\n");
+  const linhasTxt = itens.map((i) => `• ${i.label}${i.price != null ? ` — R$ ${i.price.toLocaleString("pt-BR")}` : ""}`);
+  const tipoLabel = tipo || "Atendimento sob medida";
 
-  const registro = {
-    Nome: nome || null,
-    Tipo: tipo || "Atendimento sob medida",
-    Status: "pendente",
-    Email: email || null,
-    Telefone: telefone || null,
-    Origem: origem,
-    Itens: itens.length ? itens : null,
-    Valor: valor,
-    "Obs.": obs || null,
-  };
+  const textParts = [
+    `Nome: ${nome || "(não informado)"}`,
+    `Tipo: ${tipoLabel}`,
+    `Origem: ${origem}`,
+    contato && `Contato: ${contato}`,
+    linhasTxt.length ? `\nItens:\n${linhasTxt.join("\n")}` : null,
+    valor != null ? `\nTotal estimado: R$ ${valor.toLocaleString("pt-BR")}` : null,
+  ].filter(Boolean);
+
+  const linhasHtml = itens
+    .map((i) => `<li style="margin:2px 0;">${escapeHtml(i.label)}${i.price != null ? ` — R$ ${i.price.toLocaleString("pt-BR")}` : ""}</li>`)
+    .join("");
 
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/Clientes`, {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify(registro),
+    const { error } = await resend.emails.send({
+      from: "Neovanguard <comercial@neovanguard.com.br>",
+      to: "comercial@neovanguard.com.br",
+      replyTo: email || undefined,
+      subject: `Novo pedido pelo site — ${nome || tipoLabel}`,
+      text: textParts.join("\n"),
+      html: `
+        <div style="font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 560px; margin: 0 auto;">
+          <h2 style="margin: 0 0 16px; color: #1a1a1a;">Novo pedido pelo site</h2>
+          <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #333;">
+            <tr>
+              <td style="padding: 6px 0; color: #777; width: 90px;">Nome</td>
+              <td style="padding: 6px 0;">${escapeHtml(nome || "(não informado)")}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #777;">Tipo</td>
+              <td style="padding: 6px 0;">${escapeHtml(tipoLabel)}</td>
+            </tr>
+            ${email ? `<tr>
+              <td style="padding: 6px 0; color: #777;">E-mail</td>
+              <td style="padding: 6px 0;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td>
+            </tr>` : ""}
+            ${telefone ? `<tr>
+              <td style="padding: 6px 0; color: #777;">Telefone</td>
+              <td style="padding: 6px 0;">${escapeHtml(telefone)}</td>
+            </tr>` : ""}
+            <tr>
+              <td style="padding: 6px 0; color: #777;">Origem</td>
+              <td style="padding: 6px 0;">${escapeHtml(origem)}</td>
+            </tr>
+          </table>
+          ${linhasHtml ? `<p style="margin: 18px 0 6px; color: #777; font-size: 14px;">Itens</p>
+          <ul style="margin: 0; padding-left: 18px; font-size: 14px; color: #333; line-height: 1.6;">${linhasHtml}</ul>` : ""}
+          ${valor != null ? `<p style="margin: 18px 0 0; font-size: 14px; color: #333;"><strong>Total estimado:</strong> R$ ${valor.toLocaleString("pt-BR")}</p>` : ""}
+        </div>
+      `,
     });
 
-    if (!res.ok) {
-      const detalhe = await res.text();
-      console.error("[lead] Supabase insert falhou:", res.status, detalhe);
+    if (error) {
+      console.error("[lead] Resend error:", error);
       return NextResponse.json({ error: "Não foi possível registrar seu pedido agora." }, { status: 502 });
     }
 
