@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
 import { WA, IG } from "@/lib/constants";
+import { getLenisInstance } from "@/lib/lenis";
 
 const ROUTES = [
   { num: "RT_00", label: "Início", href: "/" },
@@ -42,13 +43,19 @@ export default function MenuOverlay({
 }) {
   useEffect(() => {
     if (!open) return;
+    // trava DE VERDADE: pausa o Lenis (que rola o <html> por conta própria —
+    // overflow:hidden no body não o segura) + tranca o scroller nativo
     document.body.classList.add("nv-menu-lock");
+    document.documentElement.classList.add("nv-menu-lock");
+    getLenisInstance()?.stop?.();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.classList.remove("nv-menu-lock");
+      document.documentElement.classList.remove("nv-menu-lock");
+      getLenisInstance()?.start?.();
       window.removeEventListener("keydown", onKey);
     };
   }, [open, onClose]);

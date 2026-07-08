@@ -53,10 +53,10 @@ export default async function OgImage() {
       display: "flex",
       ...pos,
     };
-    if ("top" in pos) style.borderTop = "3px solid #6c5cff";
-    if ("bottom" in pos) style.borderBottom = "3px solid #6c5cff";
-    if ("left" in pos) style.borderLeft = "3px solid #6c5cff";
-    if ("right" in pos) style.borderRight = "3px solid #6c5cff";
+    if ("top" in pos) style.borderTop = "3px solid #dd3bc8";
+    if ("bottom" in pos) style.borderBottom = "3px solid #dd3bc8";
+    if ("left" in pos) style.borderLeft = "3px solid #dd3bc8";
+    if ("right" in pos) style.borderRight = "3px solid #dd3bc8";
     return <div style={style} />;
   };
 
@@ -138,7 +138,7 @@ export default async function OgImage() {
           }}
         >
           <div style={{ ...monoStyle, display: "flex" }}>
-            <span style={{ color: "#6c5cff", marginRight: 10 }}>{"//"}</span>
+            <span style={{ color: "#dd3bc8", marginRight: 10 }}>{"//"}</span>
             ecossistema digital
           </div>
           <div
@@ -154,7 +154,7 @@ export default async function OgImage() {
             }}
           >
             Ecossistemas digitais que impulsionam o&nbsp;
-            <span style={{ color: "#9d8cff" }}>crescimento da sua empresa</span>
+            <span style={{ color: "#f076e0" }}>crescimento da sua empresa</span>
           </div>
           <div
             style={{
@@ -168,7 +168,7 @@ export default async function OgImage() {
             }}
           >
             NEO
-            <span style={{ color: "#6c5cff" }}>VANGUARD</span>
+            <span style={{ color: "#dd3bc8" }}>VANGUARD</span>
             <span
               style={{
                 width: 44,
@@ -193,7 +193,7 @@ export default async function OgImage() {
           {/* contorno traseiro (profundidade) */}
           <g
             opacity={0.38}
-            stroke="#6c5cff"
+            stroke="#dd3bc8"
             fill="none"
             strokeWidth={1.4}
             transform={`translate(${DX} ${DY})`}
@@ -202,7 +202,7 @@ export default async function OgImage() {
             <polygon points={pts(PURPLE)} />
           </g>
           {/* conectores frente↔trás */}
-          <g stroke="#6c5cff" opacity={0.32} strokeWidth={1}>
+          <g stroke="#dd3bc8" opacity={0.32} strokeWidth={1}>
             {[...WHITE, ...PURPLE].map(([x, y], i) => (
               <line key={i} x1={x} y1={y} x2={x + DX} y2={y + DY} />
             ))}
@@ -217,7 +217,7 @@ export default async function OgImage() {
           <polygon
             points={pts(PURPLE)}
             fill="none"
-            stroke="#9d8cff"
+            stroke="#f076e0"
             strokeWidth={2.2}
           />
           {/* nós dos vértices */}
@@ -226,7 +226,7 @@ export default async function OgImage() {
               <circle key={i} cx={x} cy={y} r={2.4} />
             ))}
           </g>
-          <g fill="#9d8cff">
+          <g fill="#f076e0">
             {PURPLE.map(([x, y], i) => (
               <circle key={i} cx={x} cy={y} r={2.4} />
             ))}
@@ -264,7 +264,7 @@ export default async function OgImage() {
             display: "flex",
           }}
         >
-          <span style={{ color: "#6c5cff", marginRight: 10 }}>{"//"}</span>
+          <span style={{ color: "#dd3bc8", marginRight: 10 }}>{"//"}</span>
           blueprint obsidian
         </div>
         <div
@@ -274,7 +274,7 @@ export default async function OgImage() {
             right: 88,
             bottom: 44,
             fontSize: 13,
-            color: "#c4b5fd",
+            color: "#f8b1ec",
             display: "flex",
           }}
         >

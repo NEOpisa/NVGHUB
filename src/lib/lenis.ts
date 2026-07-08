@@ -3,6 +3,9 @@ export type LenisLike = {
     target: number | string | HTMLElement,
     opts?: { offset?: number; immediate?: boolean }
   ) => void;
+  /** pausa/retoma o scroll suave (trava de overlay/menu) */
+  stop?: () => void;
+  start?: () => void;
 };
 
 let instance: LenisLike | undefined;

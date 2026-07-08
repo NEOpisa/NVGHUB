@@ -61,27 +61,33 @@ export default function HeroLogo() {
         color: "#eef0ff",
         metalness: 1.0,
         roughness: 0.1,
-        emissive: new THREE.Color("#6c5cff"),
+        emissive: new THREE.Color("#dd3bc8"),
         emissiveIntensity: 0.06,
         envMapIntensity: 1.6,
         clearcoat: 1,
         clearcoatRoughness: 0.06,
-        iridescence: 0, // sem arco-iris: mono indigo
+        // óxido de bismuto: filme fino iridescente sobre o metal
+        iridescence: 0.9,
+        iridescenceIOR: 1.32,
+        iridescenceThicknessRange: [120, 680],
         clippingPlanes: [clipPlane],
       });
       const purpleMat = new THREE.MeshPhysicalMaterial({
-        color: "#6c5cff",
+        color: "#dd3bc8",
         metalness: 0.92,
         roughness: 0.14,
-        emissive: new THREE.Color("#9d8cff"),
+        emissive: new THREE.Color("#f076e0"),
         emissiveIntensity: 0.9,
         envMapIntensity: 1.8,
         clearcoat: 1,
         clearcoatRoughness: 0.1,
+        iridescence: 0.7,
+        iridescenceIOR: 1.32,
+        iridescenceThicknessRange: [140, 620],
         clippingPlanes: [clipPlane],
       });
       const haloMat = new THREE.MeshBasicMaterial({
-        color: "#9d8cff",
+        color: "#f076e0",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -90,7 +96,7 @@ export default function HeroLogo() {
       });
       // juntas luminosas sobre o metal (as "seams" do igloo)
       const seamMat = new THREE.LineBasicMaterial({
-        color: "#c7c0ff",
+        color: "#fbc6f0",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -293,9 +299,9 @@ export default function HeroLogo() {
         size={2.2}
         speed={0.28}
         opacity={0.35}
-        color="#9d8cff"
+        color="#f076e0"
       />
-      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#6c5cff" />
+      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#dd3bc8" />
     </group>
   );
 }

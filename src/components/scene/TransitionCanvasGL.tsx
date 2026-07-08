@@ -33,15 +33,15 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
 
   const mats = useMemo(() => {
     const white = new THREE.MeshStandardMaterial({
-      color: "#2a2438", metalness: 0.85, roughness: 0.32,
-      emissive: new THREE.Color("#6d5bb8"), emissiveIntensity: 0.35, transparent: true, opacity: 0,
+      color: "#322030", metalness: 0.85, roughness: 0.32,
+      emissive: new THREE.Color("#a24890"), emissiveIntensity: 0.35, transparent: true, opacity: 0,
     });
     const purple = new THREE.MeshStandardMaterial({
-      color: "#3b2566", metalness: 0.7, roughness: 0.36,
-      emissive: new THREE.Color("#6c5cff"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
+      color: "#471540", metalness: 0.7, roughness: 0.36,
+      emissive: new THREE.Color("#dd3bc8"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
     });
     const halo = new THREE.MeshBasicMaterial({
-      color: "#6c5cff", transparent: true, opacity: 0,
+      color: "#dd3bc8", transparent: true, opacity: 0,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     return { white, purple, halo };
@@ -166,8 +166,8 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
         <meshBasicMaterial color="#06050c" transparent opacity={0} depthWrite={false} />
       </mesh>
       <ambientLight intensity={0.45} />
-      <directionalLight position={[4, 6, 6]} intensity={1.8} color="#b89bff" />
-      <pointLight position={[-5, -2, 4]} intensity={30} color="#5a45f0" />
+      <directionalLight position={[4, 6, 6]} intensity={1.8} color="#f39ae2" />
+      <pointLight position={[-5, -2, 4]} intensity={30} color="#b826a6" />
       <primitive object={group} />
     </group>
   );

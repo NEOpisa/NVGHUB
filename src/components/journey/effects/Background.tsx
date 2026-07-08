@@ -35,10 +35,10 @@ const fragmentShader = /* glsl */ `
     return v;
   }
 
-  // matiz ÚNICO (minimal escuro): violeta profundo → violeta acento
+  // matiz BISMUTO: o óxido "viaja" do teal ao magenta ao longo da jornada
   vec3 pal(float x){
-    vec3 deep = vec3(0.353, 0.271, 0.941); // #5a45f0
-    vec3 acc  = vec3(0.424, 0.361, 1.000); // #6c5cff
+    vec3 deep = vec3(0.078, 0.541, 0.502); // #148a80 (teal)
+    vec3 acc  = vec3(0.867, 0.231, 0.784); // #dd3bc8 (magenta)
     return mix(deep, acc, smoothstep(0.1, 0.9, x));
   }
 
@@ -74,7 +74,7 @@ const fragmentShader = /* glsl */ `
     float ay = 0.78 + 0.06 * sin(uTime * 0.12 + p.x * 2.6) + 0.03 * sin(uTime * 0.23 + p.x * 5.1);
     float aur = smoothstep(0.16, 0.0, abs(p.y - ay));
     aur *= 0.55 + 0.45 * sin(uTime * 0.4 + p.x * 7.0);
-    col += aur * 0.05 * mix(tint, vec3(0.616, 0.549, 1.0), 0.4);
+    col += aur * 0.05 * mix(tint, vec3(0.98, 0.72, 0.92), 0.4);
 
     // vinheta + grão
     float edge = distance(uv, vec2(0.5));
