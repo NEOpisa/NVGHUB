@@ -13,6 +13,8 @@ export const journey = {
   /** z atual da câmera no mundo — usado p/ pulso de proximidade (túnel) */
   camZ: 8.6,
   tier: 2 as Tier,
+  /** ponte DOM↔3D da bifurcação: qual porta está em hover */
+  forkHover: "" as "" | "ouro" | "platina",
 };
 
 export const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);

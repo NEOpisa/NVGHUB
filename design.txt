@@ -1,0 +1,144 @@
+╔══════════════════════════════════════════════════════════════╗
+║                 NEOBSIDIAN — DESIGN SYSTEM                      ║
+║              (derivado do hero · NVGHUB / Neovanguard)          ║
+╚══════════════════════════════════════════════════════════════╝
+
+PRINCÍPIO: nada redondo. Um único matiz vivo (violeta elétrico) sobre
+preto puro. Cantos cortados (bevel), hairline violeta, tudo animado.
+
+
+────────────────────────────────────────────────────────────────
+DECISÕES (10)
+────────────────────────────────────────────────────────────────
+
+ 1. ACENTO ........... Violeta frio / elétrico (indigo, ~#6c5cff)
+ 2. FUNDO ............ Preto puro #000
+ 3. CANTOS ........... Bevel (cantos cortados via clip-path) — nada redondo
+ 4. TEXTO ............ Off-white #f0f0f0
+ 5. BOTÃO PRIMÁRIO ... Sólido acento + bevel (glow interno no hover)
+ 6. BOTÃO GHOST ...... Outline 1px + bevel
+ 7. CARD PADRÃO ...... Card-1 sólido (superfície escura + hairline + ticks)
+ 8. BORDA DO CARD .... Hairline violeta tinto (sempre levemente visível)
+ 9. COR DE ESTADO .... Mono violeta — SEM verde (sucesso/checks em violeta)
+10. MOVIMENTO HOVER .. Borda que se desenha + scanline
+
+
+────────────────────────────────────────────────────────────────
+TOKENS (:root)
+────────────────────────────────────────────────────────────────
+
+  Acento (indigo elétrico)
+    --accent          #6c5cff
+    --accent-hover    #5a45f0
+    --accent-light    #9d8cff
+    --accent-glow     rgba(108, 92, 255, 0.24)
+    --accent-subtle   rgba(108, 92, 255, 0.12)
+    --accent-border   rgba(108, 92, 255, 0.35)
+
+  Fundo (preto puro)
+    --bg              #000
+    --bg-2            #000
+
+  Superfícies (separação do fundo)
+    --surface           #141414
+    --surface-raised    #1c1c1c
+    --surface-interactive #202020
+
+  Cards
+    --card-surface    ~near-black puxado pro indigo
+    --card-hairline   rgba(157, 140, 255, 0.28)   (violeta tinto, sempre visível)
+    --card-hairline-hover  rgba(108, 92, 255, 0.55)
+
+  Texto
+    --text-primary    #f0f0f0
+    --text-secondary  #b4b4b4
+    --text-muted      #8c8c8c
+
+  Forma (bevel)
+    --bevel           10px    (padrão: cards e botões)
+    --bevel-sm        6px     (badges)
+    --radius*         0px     (nada redondo)
+
+  Cor de estado: MONO VIOLETA — remover --green (#10b981).
+                 checks / "PRONTO" / sucesso → var(--accent-light)
+
+  Fontes
+    display  Space Grotesk   (grotesca técnica)
+    mono     IBM Plex Mono   (labels/terminais, prefixo "// ")
+    body     Plus Jakarta Sans
+
+
+────────────────────────────────────────────────────────────────
+FORMA — BEVEL (a "linguagem" neobsidian)
+────────────────────────────────────────────────────────────────
+
+  clip-path: polygon(
+    var(--bevel) 0,
+    100% 0,
+    100% calc(100% - var(--bevel)),
+    calc(100% - var(--bevel)) 100%,
+    0 100%,
+    0 var(--bevel)
+  );
+
+  Utilitários:  .nb-bevel  (10px)   ·   .nb-bevel-sm (6px)
+  Aplicar a: card-1, card-2, btn-primary, btn-ghost, badge.
+
+      ╱────────────────╲
+     │                  │
+     │   (bevel 10px)   │
+     │                  │
+      ╲────────────────╱
+
+
+────────────────────────────────────────────────────────────────
+PRIMITIVOS (derivados do hero)
+────────────────────────────────────────────────────────────────
+
+  .card-1  (PADRÃO / sólido)
+    - fundo --card-surface
+    - borda 1px var(--card-hairline)  (violeta tinto)
+    - bevel nos cantos + corner ticks violeta (colchetes)
+    - hover: borda se desenha + scanline atravessa
+
+  .card-2  (transparente)
+    - mesma forma/ticks
+    - background: transparent
+    - hairline mais sutil (deixa o 3D respirar atrás)
+
+  .btn-primary
+    - fundo sólido var(--accent) + bevel
+    - hover: glow interno + lift sutil
+
+  .btn-ghost
+    - outline 1px var(--border) + bevel, transparente
+    - hover: borda/texto/fundo violeta sutil
+
+  .badge / .badge-dot
+    - bevel-sm; dot deixa de ser redondo (quadradinho/losango)
+
+  .nb-label  (mono)
+    - IBM Plex Mono, tracking largo, prefixo "// "
+
+
+────────────────────────────────────────────────────────────────
+MOVIMENTO (hover)
+────────────────────────────────────────────────────────────────
+
+  nbBorderDraw ... corner ticks crescem de 0 → 16px
+  nbScan ......... linha fina violeta atravessa o card (topo→base),
+                   mix-blend: screen
+  Respeitar prefers-reduced-motion (desliga o scan).
+
+
+────────────────────────────────────────────────────────────────
+REGRA "NADA REDONDO"
+────────────────────────────────────────────────────────────────
+
+  .card-1, .card-2, .btn-primary, .btn-ghost, .badge { border-radius: 0 }
+  Zerar raios órfãos: ícones (14/16px), dots (50% / 999px / 100px) → retos/bevel.
+  (Páginas internas legadas: varrer quando cada uma for refeita.)
+
+
+  Referência viva: rota /estilo (styleguide com todos os primitivos).
+  ⚠ Experimental — não commitar.

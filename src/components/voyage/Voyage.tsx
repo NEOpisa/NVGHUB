@@ -2,18 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { journey, clamp01 } from "./journeyState";
-import JourneyOverlay from "./JourneyOverlay";
-import ChapterSnap from "./ChapterSnap";
+import { journey, clamp01 } from "@/components/journey/journeyState";
+import VoyageOverlay from "./VoyageOverlay";
+import BlueprintHud from "./BlueprintHud";
 
-const JourneyCanvas = dynamic(() => import("./JourneyCanvas"), { ssr: false });
+const VoyageCanvas = dynamic(() => import("./VoyageCanvas"), { ssr: false });
 
 /**
- * Raiz da jornada da home: um espaçador de scroll alto (~800vh) dirige o
- * progresso (0..1) lido pelo canvas fixo e pelo overlay. Sem WebGL ou com
- * reduced-motion/?motion=off, cai no modo estático (conteúdo empilhado).
+ * VOYAGE — a jornada da home, reconstruída do zero (neobsidian + blueprint).
+ * Um espaçador de scroll (~560vh, mais curto que a jornada antiga = menos
+ * fadiga) dirige o progresso 0..1 lido pelo canvas fixo e pelo overlay.
+ * Capítulos: HERO → DNA → BIFURCAÇÃO (Ouro|Platina) → EXPLORAR.
+ * Sem WebGL ou com reduced-motion, cai no modo estático (seções empilhadas).
  */
-export default function Journey() {
+export default function Voyage() {
   const wrap = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<"pending" | "gl" | "static">("pending");
 
@@ -39,9 +41,7 @@ export default function Journey() {
     const update = () => {
       const total = el.offsetHeight - window.innerHeight;
       if (total <= 0) return;
-      journey.progress = clamp01(
-        -el.getBoundingClientRect().top / total,
-      );
+      journey.progress = clamp01(-el.getBoundingClientRect().top / total);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -54,10 +54,10 @@ export default function Journey() {
 
   const isStatic = mode === "static";
   return (
-    <div ref={wrap} className={`jy-wrap${isStatic ? " jy-wrap-static" : ""}`}>
-      {mode === "gl" && <JourneyCanvas />}
-      {mode === "gl" && <ChapterSnap wrap={wrap} />}
-      <JourneyOverlay staticMode={isStatic} />
+    <div ref={wrap} className={`vy-wrap${isStatic ? " vy-wrap-static" : ""}`}>
+      {mode === "gl" && <VoyageCanvas />}
+      {mode === "gl" && <BlueprintHud />}
+      <VoyageOverlay staticMode={isStatic} />
     </div>
   );
 }

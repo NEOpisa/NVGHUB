@@ -37,8 +37,8 @@ const fragmentShader = /* glsl */ `
 
   // matiz ÚNICO (minimal escuro): violeta profundo → violeta acento
   vec3 pal(float x){
-    vec3 deep = vec3(0.427, 0.157, 0.851); // #6d28d9
-    vec3 acc  = vec3(0.545, 0.361, 0.965); // #8b5cf6
+    vec3 deep = vec3(0.353, 0.271, 0.941); // #5a45f0
+    vec3 acc  = vec3(0.424, 0.361, 1.000); // #6c5cff
     return mix(deep, acc, smoothstep(0.1, 0.9, x));
   }
 
@@ -49,7 +49,7 @@ const fragmentShader = /* glsl */ `
     float t = uTime * 0.04;
     vec3 tint = pal(uProgress);
 
-    vec3 col = vec3(0.016, 0.014, 0.026); // quase-preto #050408
+    vec3 col = vec3(0.0); // PRETO PURO (neobsidian)
 
     // névoa que "anda" com a jornada (uProgress desloca o campo)
     vec2 np = p * 1.6 + vec2(t + uProgress * 2.6, t * 0.4 + uProgress * 1.4);
@@ -74,7 +74,7 @@ const fragmentShader = /* glsl */ `
     float ay = 0.78 + 0.06 * sin(uTime * 0.12 + p.x * 2.6) + 0.03 * sin(uTime * 0.23 + p.x * 5.1);
     float aur = smoothstep(0.16, 0.0, abs(p.y - ay));
     aur *= 0.55 + 0.45 * sin(uTime * 0.4 + p.x * 7.0);
-    col += aur * 0.05 * mix(tint, vec3(0.75, 0.72, 1.0), 0.4);
+    col += aur * 0.05 * mix(tint, vec3(0.616, 0.549, 1.0), 0.4);
 
     // vinheta + grão
     float edge = distance(uv, vec2(0.5));

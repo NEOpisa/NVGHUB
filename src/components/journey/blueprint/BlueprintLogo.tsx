@@ -267,7 +267,7 @@ export default function BlueprintLogo({
   const purpleMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#a78bfa",
+        color: "#9d8cff",
         transparent: true,
         opacity: 0.95,
         blending: THREE.AdditiveBlending,
@@ -278,7 +278,7 @@ export default function BlueprintLogo({
   const backMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#8b5cf6",
+        color: "#6c5cff",
         transparent: true,
         opacity: 0.4,
         blending: THREE.AdditiveBlending,
@@ -289,7 +289,7 @@ export default function BlueprintLogo({
   const riserMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#cfc8f0",
+        color: "#c7c0ff",
         transparent: true,
         opacity: 0.55,
         blending: THREE.AdditiveBlending,
@@ -300,7 +300,7 @@ export default function BlueprintLogo({
   const ribMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#8b5cf6",
+        color: "#6c5cff",
         transparent: true,
         opacity: 0.22,
         blending: THREE.AdditiveBlending,
@@ -311,7 +311,7 @@ export default function BlueprintLogo({
   const ghostMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#8b5cf6",
+        color: "#6c5cff",
         transparent: true,
         opacity: 0.1,
         blending: THREE.AdditiveBlending,
@@ -322,7 +322,7 @@ export default function BlueprintLogo({
   const calloutMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#cfc8f0",
+        color: "#c7c0ff",
         transparent: true,
         opacity: 0.5,
         blending: THREE.AdditiveBlending,
@@ -346,7 +346,7 @@ export default function BlueprintLogo({
   const beadMatP = useMemo(
     () =>
       new THREE.PointsMaterial({
-        color: "#a78bfa",
+        color: "#9d8cff",
         size: 0.055,
         sizeAttenuation: true,
         transparent: true,
@@ -513,7 +513,7 @@ export default function BlueprintLogo({
       <primitive object={objs.wBeads} />
       <primitive object={objs.pBeads} />
       <ScanHead color="#e6e9f6" headRef={whiteHead} />
-      <ScanHead color="#a78bfa" headRef={purpleHead} />
+      <ScanHead color="#9d8cff" headRef={purpleHead} />
       {/* anotações de medição (mono + linha-guia + crosshair) */}
       <Callout
         anchor={[0.19, 0.74, HD_W]}

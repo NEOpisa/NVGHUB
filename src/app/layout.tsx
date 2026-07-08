@@ -5,6 +5,7 @@ import {
   Orbitron,
   Space_Grotesk,
   IBM_Plex_Mono,
+  Fraunces,
 } from "next/font/google";
 import Header from "@/components/Header";
 import FooterGate from "@/components/FooterGate";
@@ -56,6 +57,15 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--ff-mono",
+  display: "swap",
+});
+
+// serif editorial leve — exclusiva da divisão PLATINA (fria, espaçosa)
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  style: ["normal", "italic"],
+  variable: "--ff-fraunces",
   display: "swap",
 });
 
@@ -208,7 +218,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${syne.variable} ${jakarta.variable} ${orbitron.variable} ${grotesk.variable} ${plexMono.variable}`}
+      className={`${syne.variable} ${jakarta.variable} ${orbitron.variable} ${grotesk.variable} ${plexMono.variable} ${fraunces.variable}`}
     >
       <body>
         <script

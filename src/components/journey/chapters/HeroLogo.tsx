@@ -61,21 +61,19 @@ export default function HeroLogo() {
         color: "#eef0ff",
         metalness: 1.0,
         roughness: 0.1,
-        emissive: new THREE.Color("#8b5cf6"),
+        emissive: new THREE.Color("#6c5cff"),
         emissiveIntensity: 0.06,
         envMapIntensity: 1.6,
         clearcoat: 1,
         clearcoatRoughness: 0.06,
-        iridescence: 0.35,
-        iridescenceIOR: 1.3,
-        iridescenceThicknessRange: [120, 420],
+        iridescence: 0, // sem arco-iris: mono indigo
         clippingPlanes: [clipPlane],
       });
       const purpleMat = new THREE.MeshPhysicalMaterial({
-        color: "#8b5cf6",
+        color: "#6c5cff",
         metalness: 0.92,
         roughness: 0.14,
-        emissive: new THREE.Color("#a78bfa"),
+        emissive: new THREE.Color("#9d8cff"),
         emissiveIntensity: 0.9,
         envMapIntensity: 1.8,
         clearcoat: 1,
@@ -83,7 +81,7 @@ export default function HeroLogo() {
         clippingPlanes: [clipPlane],
       });
       const haloMat = new THREE.MeshBasicMaterial({
-        color: "#a78bfa",
+        color: "#9d8cff",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -92,7 +90,7 @@ export default function HeroLogo() {
       });
       // juntas luminosas sobre o metal (as "seams" do igloo)
       const seamMat = new THREE.LineBasicMaterial({
-        color: "#cfc8f0",
+        color: "#c7c0ff",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -295,9 +293,9 @@ export default function HeroLogo() {
         size={2.2}
         speed={0.28}
         opacity={0.35}
-        color="#a78bfa"
+        color="#9d8cff"
       />
-      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#8b5cf6" />
+      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#6c5cff" />
     </group>
   );
 }

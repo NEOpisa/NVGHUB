@@ -58,7 +58,7 @@ export default function IntroPlexus() {
     [pointGeo, lineGeo],
   );
 
-  const violet = useMemo(() => new THREE.Color("#8b5cf6"), []);
+  const violet = useMemo(() => new THREE.Color("#6c5cff"), []);
 
   useFrame((_, delta) => {
     const g = group.current;

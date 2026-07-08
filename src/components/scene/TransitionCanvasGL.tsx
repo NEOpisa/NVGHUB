@@ -38,10 +38,10 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
     });
     const purple = new THREE.MeshStandardMaterial({
       color: "#3b2566", metalness: 0.7, roughness: 0.36,
-      emissive: new THREE.Color("#8b5cf6"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
+      emissive: new THREE.Color("#6c5cff"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
     });
     const halo = new THREE.MeshBasicMaterial({
-      color: "#8b5cf6", transparent: true, opacity: 0,
+      color: "#6c5cff", transparent: true, opacity: 0,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     return { white, purple, halo };
@@ -167,7 +167,7 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
       </mesh>
       <ambientLight intensity={0.45} />
       <directionalLight position={[4, 6, 6]} intensity={1.8} color="#b89bff" />
-      <pointLight position={[-5, -2, 4]} intensity={30} color="#7c3aed" />
+      <pointLight position={[-5, -2, 4]} intensity={30} color="#5a45f0" />
       <primitive object={group} />
     </group>
   );

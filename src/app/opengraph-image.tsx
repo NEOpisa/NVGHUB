@@ -53,10 +53,10 @@ export default async function OgImage() {
       display: "flex",
       ...pos,
     };
-    if ("top" in pos) style.borderTop = "3px solid #8b5cf6";
-    if ("bottom" in pos) style.borderBottom = "3px solid #8b5cf6";
-    if ("left" in pos) style.borderLeft = "3px solid #8b5cf6";
-    if ("right" in pos) style.borderRight = "3px solid #8b5cf6";
+    if ("top" in pos) style.borderTop = "3px solid #6c5cff";
+    if ("bottom" in pos) style.borderBottom = "3px solid #6c5cff";
+    if ("left" in pos) style.borderLeft = "3px solid #6c5cff";
+    if ("right" in pos) style.borderRight = "3px solid #6c5cff";
     return <div style={style} />;
   };
 
@@ -68,7 +68,7 @@ export default async function OgImage() {
           height: "100%",
           display: "flex",
           position: "relative",
-          backgroundColor: "#050408",
+          backgroundColor: "#000000",
           fontFamily: "Grotesk",
         }}
       >
@@ -78,7 +78,7 @@ export default async function OgImage() {
             position: "absolute",
             top: 0, left: 0, right: 0, bottom: 0,
             backgroundImage:
-              "linear-gradient(to right, rgba(167,139,250,0.07) 1px, transparent 1px)",
+              "linear-gradient(to right, rgba(157, 140, 255,0.07) 1px, transparent 1px)",
             backgroundSize: "72px 72px",
             display: "flex",
           }}
@@ -88,7 +88,7 @@ export default async function OgImage() {
             position: "absolute",
             top: 0, left: 0, right: 0, bottom: 0,
             backgroundImage:
-              "linear-gradient(to bottom, rgba(167,139,250,0.07) 1px, transparent 1px)",
+              "linear-gradient(to bottom, rgba(157, 140, 255,0.07) 1px, transparent 1px)",
             backgroundSize: "72px 72px",
             display: "flex",
           }}
@@ -99,7 +99,7 @@ export default async function OgImage() {
             position: "absolute",
             top: 0, left: 0, right: 0, bottom: 0,
             backgroundImage:
-              "radial-gradient(circle at 18% 8%, rgba(139,92,246,0.30), transparent 55%)",
+              "radial-gradient(circle at 18% 8%, rgba(108, 92, 255,0.30), transparent 55%)",
             display: "flex",
           }}
         />
@@ -108,7 +108,7 @@ export default async function OgImage() {
             position: "absolute",
             top: 0, left: 0, right: 0, bottom: 0,
             backgroundImage:
-              "radial-gradient(circle at 88% 92%, rgba(124,58,237,0.22), transparent 50%)",
+              "radial-gradient(circle at 88% 92%, rgba(90, 69, 240,0.22), transparent 50%)",
             display: "flex",
           }}
         />
@@ -138,7 +138,7 @@ export default async function OgImage() {
           }}
         >
           <div style={{ ...monoStyle, display: "flex" }}>
-            <span style={{ color: "#8b5cf6", marginRight: 10 }}>{"//"}</span>
+            <span style={{ color: "#6c5cff", marginRight: 10 }}>{"//"}</span>
             ecossistema digital
           </div>
           <div
@@ -154,7 +154,7 @@ export default async function OgImage() {
             }}
           >
             Ecossistemas digitais que impulsionam o&nbsp;
-            <span style={{ color: "#a78bfa" }}>crescimento da sua empresa</span>
+            <span style={{ color: "#9d8cff" }}>crescimento da sua empresa</span>
           </div>
           <div
             style={{
@@ -168,12 +168,12 @@ export default async function OgImage() {
             }}
           >
             NEO
-            <span style={{ color: "#8b5cf6" }}>VANGUARD</span>
+            <span style={{ color: "#6c5cff" }}>VANGUARD</span>
             <span
               style={{
                 width: 44,
                 height: 1,
-                backgroundColor: "rgba(167,139,250,0.5)",
+                backgroundColor: "rgba(157, 140, 255,0.5)",
                 margin: "0 16px",
               }}
             />
@@ -193,7 +193,7 @@ export default async function OgImage() {
           {/* contorno traseiro (profundidade) */}
           <g
             opacity={0.38}
-            stroke="#8b5cf6"
+            stroke="#6c5cff"
             fill="none"
             strokeWidth={1.4}
             transform={`translate(${DX} ${DY})`}
@@ -202,7 +202,7 @@ export default async function OgImage() {
             <polygon points={pts(PURPLE)} />
           </g>
           {/* conectores frente↔trás */}
-          <g stroke="#8b5cf6" opacity={0.32} strokeWidth={1}>
+          <g stroke="#6c5cff" opacity={0.32} strokeWidth={1}>
             {[...WHITE, ...PURPLE].map(([x, y], i) => (
               <line key={i} x1={x} y1={y} x2={x + DX} y2={y + DY} />
             ))}
@@ -217,7 +217,7 @@ export default async function OgImage() {
           <polygon
             points={pts(PURPLE)}
             fill="none"
-            stroke="#a78bfa"
+            stroke="#9d8cff"
             strokeWidth={2.2}
           />
           {/* nós dos vértices */}
@@ -226,7 +226,7 @@ export default async function OgImage() {
               <circle key={i} cx={x} cy={y} r={2.4} />
             ))}
           </g>
-          <g fill="#a78bfa">
+          <g fill="#9d8cff">
             {PURPLE.map(([x, y], i) => (
               <circle key={i} cx={x} cy={y} r={2.4} />
             ))}
@@ -264,7 +264,7 @@ export default async function OgImage() {
             display: "flex",
           }}
         >
-          <span style={{ color: "#8b5cf6", marginRight: 10 }}>{"//"}</span>
+          <span style={{ color: "#6c5cff", marginRight: 10 }}>{"//"}</span>
           blueprint obsidian
         </div>
         <div

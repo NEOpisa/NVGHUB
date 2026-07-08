@@ -29,7 +29,7 @@ const starFragment = /* glsl */ `
     if (d > 0.5) discard;
     float a = smoothstep(0.5, 0.0, d);
     a *= a;
-    vec3 col = mix(vec3(0.62, 0.58, 0.85), vec3(0.95, 0.94, 1.0), vTwinkle);
+    vec3 col = mix(vec3(0.42, 0.36, 0.94), vec3(0.78, 0.73, 1.0), vTwinkle);
     gl_FragColor = vec4(col, a * 0.75 * vTwinkle);
   }
 `;
@@ -99,8 +99,8 @@ const dustFragment = /* glsl */ `
     if (d > 0.5) discard;
     float a = smoothstep(0.5, 0.0, d);
     a *= a;
-    vec3 violet = vec3(0.55, 0.45, 0.90);
-    vec3 bright = vec3(0.85, 0.82, 1.00);
+    vec3 violet = vec3(0.42, 0.36, 0.94);
+    vec3 bright = vec3(0.75, 0.70, 1.00);
     vec3 col = mix(violet, bright, vGlow);
     gl_FragColor = vec4(col * mix(0.4, 1.0, vGlow), a * 0.65);
   }
