@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
@@ -35,6 +36,9 @@ export default function MenuOverlay({
   open: boolean;
   onClose: () => void;
 }) {
+  // #010 · prefetch inteligente: nada ao abrir o menu; a rota é prefetchada
+  // no hover/focus do item (intenção real), poupando dados
+  const router = useRouter();
   useEffect(() => {
     if (!open) return;
     // trava DE VERDADE: pausa o Lenis (que rola o <html> por conta própria —
@@ -82,6 +86,9 @@ export default function MenuOverlay({
                 <Link
                   href={r.href}
                   className="nv-menu-route card-1"
+                  prefetch={false}
+                  onMouseEnter={() => router.prefetch(r.href)}
+                  onFocus={() => router.prefetch(r.href)}
                   onClick={onClose}
                 >
                   <span className="nv-menu-num">{r.num}</span>
