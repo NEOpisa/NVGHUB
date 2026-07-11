@@ -38,3 +38,14 @@
 .jy-canvas-loading {
     background: #050408;
 }
+
+/* ══ #007 · content-visibility nos capítulos fora de tela ═══════════════
+   Só no modo estático/reduced-motion, onde as seções empilham em fluxo
+   (`.jy-static .jy-sec` = position:relative, min-height:70vh). O navegador
+   pula render/paint das que estão longe do viewport, preservando o layout
+   via contain-intrinsic-size. No modo GL os capítulos ficam em inset:0 (não
+   off-screen), então isto não os afeta. */
+.jy-static .jy-sec {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 70vh;
+}
