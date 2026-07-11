@@ -198,7 +198,7 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [ ] **#076** (C2) Descrições de template mais vendedoras e consistentes. `lib/templates.ts`
 - [ ] **#077** (C1) `og:description`/twitter copy afinados. `opengraph-image.tsx, layout.tsx`
 - [ ] **#078** (C2) Página /metodologia: narrativa SCAN→BLUEPRINT→SOLUÇÃO→FLOW. `metodologia/page.tsx`
-- [ ] **#079** (C1) 404/500 com a linguagem Neobsidian. `app/not-found.tsx, app/error.tsx (C1)`
+- [x] **#079** (C1·2026-07-11) not-found.tsx + error.tsx (reset/digest) na linguagem Neobsidian; CSS em c1.css. `app/not-found.tsx, app/error.tsx, c1.css`
 - [ ] **#080** (C2) Termos, privacidade e LGPD (páginas legais). `app/legal/** (C2)`
 
 ### 🧩 Tema 9 — Páginas Internas Específicas (C2-heavy)
