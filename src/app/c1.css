@@ -163,3 +163,30 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
     gap: 12px;
     flex-wrap: wrap;
 }
+
+/* ══ PERF · palco blueprint mais barato em telas pequenas ═══════════════
+   Duas nebulosas de 68vmax com blur(70px) custam banda de composição que
+   GPU de celular não tem. No mobile: blur menor e UMA nebulosa só — o
+   visual segue o mesmo à distância de braço. */
+@media (max-width: 768px), (pointer: coarse) {
+    .bp-nebula {
+        filter: blur(36px);
+    }
+    .bp-nebula-b {
+        display: none;
+    }
+    /* grade parada no touch: o pan de 70s é imperceptível rolando com o
+       dedo, mas mantém uma layer animada viva o tempo todo */
+    .bp-grid {
+        animation: none;
+    }
+}
+/* economia de dados: palco vira estático (sem loops infinitos) */
+@media (prefers-reduced-data: reduce) {
+    .bp-nebula,
+    .bp-grid,
+    .bp-scan,
+    .bmt-spin {
+        animation: none !important;
+    }
+}
