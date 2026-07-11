@@ -25,12 +25,18 @@ export const intro = {
 };
 
 export function introWillPlay(): boolean {
-  // HOME NOVA é content-first: o texto pinta no primeiro frame e a marca 3D
-  // entra por trás — nenhum boot-gate segura o visitante. A intro fica
-  // desativada (o Preloader colapsa instantâneo e libera o site).
   if (!decided) {
     decided = true;
-    willPlay = false;
+    try {
+      willPlay =
+        typeof window !== "undefined" &&
+        window.location.pathname === "/" &&
+        !sessionStorage.getItem("nvg:intro") &&
+        new URLSearchParams(window.location.search).get("motion") !== "off" &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch {
+      willPlay = false;
+    }
   }
   return willPlay;
 }
