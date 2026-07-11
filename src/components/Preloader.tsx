@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { intro, introWillPlay, markIntroDone } from "@/components/scene/introState";
+import { track } from "@vercel/analytics";
 
 /**
  * Gate da intro — a marca se DESENHA em traços de luz dentro do canvas da
@@ -65,6 +66,7 @@ export default function Preloader() {
       intro.phase = "handoff"; // a logo começa a migrar pro hero
       if (statusRef.current) statusRef.current.textContent = "PRONTO";
       if (liveRef.current) liveRef.current.textContent = "Site carregado";
+      track("intro_complete", { skipped: skip }); // #045
       hud.current?.classList.add("is-out");
       timers.push(
         window.setTimeout(

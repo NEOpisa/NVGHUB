@@ -22,3 +22,11 @@ export const ROUTES: SiteRoute[] = [
   { num: "RT_07", label: "Metodologia", href: "/metodologia", menu: false },
   { num: "RT_08", label: "FAQ", href: "/faq", menu: false },
 ];
+
+/* #041/#073 · Hero versionável — troque a headline aqui (ou por env no
+   deploy p/ teste A/B) sem tocar no componente. parts: antes/depois do
+   trecho em gradiente. */
+export const HERO_HEADLINE = {
+  before: process.env.NEXT_PUBLIC_HERO_BEFORE ?? "Ecossistemas digitais que impulsionam o ",
+  accent: process.env.NEXT_PUBLIC_HERO_ACCENT ?? "crescimento da sua empresa",
+} as const;

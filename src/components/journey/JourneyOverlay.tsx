@@ -5,7 +5,8 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Magnetic from "@/components/Magnetic";
 import { WhatsAppIcon } from "@/components/icons";
-import { WA, IG } from "@/lib/constants";
+import { WA, IG, HERO_HEADLINE } from "@/lib/constants";
+import { track } from "@vercel/analytics";
 import { getLenisInstance } from "@/lib/lenis";
 import { journey, rangeN, CH } from "./journeyState";
 
@@ -122,6 +123,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
 
   /* A PASSAGEM — o mundo tinge na temperatura da divisão antes de navegar */
   const cross = (href: string, tier: "ouro" | "platina") => {
+    track("door_cross", { tier }); // #045 · conversão de porta
     const pass = passRef.current;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!pass || reduce) {
@@ -160,6 +162,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
     let lastActive = -1;
     let lastPast = false;
     let lastChapter = -1;
+    let maxChapter = -1; // #045 · profundidade máxima já reportada
 
     const setSec = (
       el: HTMLElement | null,
@@ -250,6 +253,11 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
           const label = railItems[chapter]?.textContent?.trim() ?? "";
           liveRef.current.textContent = label ? `Capítulo: ${label}` : "";
         }
+        // #045 · scroll-depth por capítulo (só o mais fundo, uma vez cada)
+        if (chapter > maxChapter) {
+          maxChapter = chapter;
+          track("journey_depth", { chapter });
+        }
       }
 
       // capítulo final: o mini-footer já assina © — some a marca d'água
@@ -286,9 +294,11 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
             <span className="jy-brand-tag">Agência digital · Brasil</span>
           </div>
 
+          {/* #041/#073 · headline versionável (constants/env) + texto real no
+              DOM = fallback SEO garantido mesmo sem o 3D */}
           <h1 className="jy-h1 jy-enter jy-d2">
-            Ecossistemas digitais que impulsionam o{" "}
-            <span className="text-gradient">crescimento da sua empresa</span>
+            {HERO_HEADLINE.before}
+            <span className="text-gradient">{HERO_HEADLINE.accent}</span>
           </h1>
 
           <p className="jy-sub jy-enter jy-d3">

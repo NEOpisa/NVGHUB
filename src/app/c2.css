@@ -384,3 +384,77 @@ body.bp-page {
         content: "";
     }
 }
+
+/* ══ #100 · aviso de consentimento (LGPD) ═══════════════════════════════ */
+.nvg-consent {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 900;
+    max-width: 380px;
+    padding: 18px 20px;
+    background: rgba(10, 8, 18, 0.96);
+    border: 1px solid rgba(108, 92, 255, 0.3);
+    font-size: 0.85rem;
+    color: rgba(240, 240, 240, 0.8);
+}
+.nvg-consent a {
+    color: #9d8cff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.nvg-consent-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+.nvg-consent .btn-primary,
+.nvg-consent .btn-ghost {
+    font-size: 0.78rem;
+    padding: 8px 16px;
+}
+@media (max-width: 640px) {
+    .nvg-consent {
+        left: 10px;
+        right: 10px;
+        bottom: max(10px, env(safe-area-inset-bottom));
+        max-width: none;
+    }
+}
+
+/* ══ #080 · páginas legais ══════════════════════════════════════════════ */
+.legal {
+    min-height: 100vh;
+    padding: clamp(110px, 16vh, 170px) clamp(20px, 6vw, 96px) 120px;
+    display: flex;
+    justify-content: center;
+}
+.legal-body {
+    max-width: 720px;
+    width: 100%;
+    padding: clamp(28px, 5vw, 48px);
+}
+.legal-body h1 {
+    margin: 10px 0 26px;
+}
+.legal-body h2 {
+    font-size: 1.05rem;
+    margin: 26px 0 10px;
+    color: #f0f0f0;
+}
+.legal-body p,
+.legal-body li {
+    color: rgba(240, 240, 240, 0.72);
+    line-height: 1.65;
+    font-size: 0.95rem;
+}
+.legal-body ul {
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+}
+.legal-body a {
+    color: #9d8cff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
