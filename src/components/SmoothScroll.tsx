@@ -11,6 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // #063 · touch fica com o scroll NATIVO por decisão: o momentum do sistema
+    // é mais suave e mais barato que qualquer smoothing em JS (Lenis syncTouch
+    // custa caro em GPU fraca e briga com o gesto no iOS). O snap da jornada
+    // no touch é do ChapterSnap (tween próprio, sem Lenis).
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const lenis = new Lenis({
@@ -20,7 +24,6 @@ export default function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 1.5,
       anchors: true,
     });
     setLenisInstance(lenis);

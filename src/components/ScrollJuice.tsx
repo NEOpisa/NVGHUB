@@ -37,10 +37,14 @@ export default function ScrollJuice() {
       const bar = document.querySelector<HTMLElement>(".scroll-progress");
       if (bar) {
         gsap.set(bar, { scaleX: 0, transformOrigin: "left center" });
+        // #063 · touch: scrub direto (true) — sem tween de alcance por evento,
+        // mais barato e a barra responde 1:1 ao dedo. Ponteiro fino mantém a
+        // suavização de 0.3s.
+        const coarse = window.matchMedia("(pointer: coarse)").matches;
         progress = gsap.to(bar, {
           scaleX: 1,
           ease: "none",
-          scrollTrigger: { start: 0, end: "max", scrub: 0.3 },
+          scrollTrigger: { start: 0, end: "max", scrub: coarse ? true : 0.3 },
         });
       }
 
@@ -54,8 +58,61 @@ export default function ScrollJuice() {
         const splits = gsap.utils
           .toArray<HTMLElement>("[data-split]")
           .map((el) => splitReveal(el, { type: "lines" }));
+
+        /* ── AUTO-JUICE: primitivos comuns ganham entrada viva em TODA
+           rota, sem marcação por página. A home-jornada, o menu, modais e
+           o quiz (coreografias próprias) ficam de fora. ── */
+        const SKIP = ".jy-overlay, .nv-menu, [role='dialog'], .quiz-grid";
+        const fresh = (el: HTMLElement) =>
+          !el.closest(SKIP) && !el.hasAttribute("data-split");
+
+        // títulos grandes: máscara por linha (SplitText), power4
+        const heads = gsap.utils
+          .toArray<HTMLElement>(".section-heading, .tp-h1, .tp-h2, .inst-claim")
+          .filter(fresh);
+        const autoSplits = heads.map((el) =>
+          splitReveal(el, { type: "lines", start: "top 88%" }),
+        );
+
+        // eyebrows mono: wipe lateral curto
+        gsap.utils
+          .toArray<HTMLElement>(".section-eyebrow")
+          .filter(fresh)
+          .forEach((el) => {
+            gsap.from(el, {
+              opacity: 0,
+              x: -16,
+              duration: 0.55,
+              ease: "power3.out",
+              scrollTrigger: { trigger: el, start: "top 92%", once: true },
+            });
+          });
+
+        // cards / linhas: sobem em cascata quando entram na viewport
+        const items = gsap.utils
+          .toArray<HTMLElement>(
+            ".card-1, .card-2, .tp-escada-row, .faq-question, .tq-step",
+          )
+          .filter(fresh);
+        gsap.set(items, { opacity: 0, y: 34 });
+        ScrollTrigger.batch(items, {
+          start: "top 90%",
+          once: true,
+          onEnter: (batch) =>
+            gsap.to(batch, {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              ease: "power3.out",
+              stagger: 0.09,
+              // sticky/tilt precisam do transform livre depois da entrada
+              clearProps: "transform",
+            }),
+        });
+
         return () => {
           splits.forEach((s) => s.split.revert());
+          autoSplits.forEach((s) => s.split.revert());
         };
       });
 
