@@ -16,5 +16,39 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npx tsc --noEmit
       - run: npm run test
       - run: npm run build
+      # #099 · orçamento de bundle: First Load JS da home
+      - name: Bundle budget (home)
+        run: |
+          SIZE=$(node -e "
+            const fs=require('fs');
+            const files=JSON.parse(fs.readFileSync('.next/build-manifest.json','utf8')).pages['/']||[];
+            let t=0; for (const f of files) { try { t+=fs.statSync('.next/'+f).size } catch {} }
+            console.log(Math.round(t/1024));
+          ")
+          echo \"First Load JS da home: ${SIZE}KB (orçamento 650KB)\"
+          [ \"$SIZE\" -le 650 ] || { echo \"::error::bundle estourou\"; exit 1; }
+
+  # #099 · Lighthouse nas páginas-chave (informativo, não bloqueia)
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Lighthouse CI
+        run: |
+          npm start & sleep 8
+          npx --yes @lhci/cli autorun \
+            --collect.url=http://localhost:3000/ \
+            --collect.url=http://localhost:3000/ouro \
+            --collect.url=http://localhost:3000/solucao \
+            --collect.numberOfRuns=1 \
+            --upload.target=temporary-public-storage || true

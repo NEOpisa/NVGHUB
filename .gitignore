@@ -10,3 +10,6 @@ gitignore.txt
 
 # screenshots de desenvolvimento dos templates
 templates/*/screenshots/
+
+# QA visual (#095)
+.qa-shots/
