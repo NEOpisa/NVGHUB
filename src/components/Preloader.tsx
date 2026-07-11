@@ -24,6 +24,8 @@ export default function Preloader() {
   const pctRef = useRef<HTMLElement>(null);
   const statusRef = useRef<HTMLSpanElement>(null);
   const barRef = useRef<HTMLElement>(null);
+  // #013 · live region: leitores de tela ouvem as FASES (não o % por frame)
+  const liveRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     let play = introWillPlay();
@@ -62,6 +64,7 @@ export default function Preloader() {
       intro.build = 1;
       intro.phase = "handoff"; // a logo começa a migrar pro hero
       if (statusRef.current) statusRef.current.textContent = "PRONTO";
+      if (liveRef.current) liveRef.current.textContent = "Site carregado";
       hud.current?.classList.add("is-out");
       timers.push(
         window.setTimeout(
@@ -126,8 +129,12 @@ export default function Preloader() {
       if (statusRef.current) {
         let label = FASES[0][1];
         for (const [at, txt] of FASES) if (disp >= at) label = txt;
-        if (statusRef.current.textContent !== label)
+        if (statusRef.current.textContent !== label) {
           statusRef.current.textContent = label;
+          // #013 · espelha a fase (só na troca) na live region
+          if (liveRef.current)
+            liveRef.current.textContent = `Carregando: ${label.toLowerCase()}`;
+        }
       }
       if (intro.build >= 1) finish();
     };
@@ -143,7 +150,10 @@ export default function Preloader() {
 
   if (!playing) return null;
   return (
-    <div ref={hud} className="nv-boot" aria-hidden="true">
+    <>
+      {/* #013 · fora do aria-hidden: fases anunciadas polite, sem o % ruidoso */}
+      <span ref={liveRef} className="sr-only" role="status" aria-live="polite" />
+      <div ref={hud} className="nv-boot" aria-hidden="true">
       <span ref={statusRef} className="nv-boot-status">
         {"TRAÇANDO VETORES"}
       </span>
@@ -154,6 +164,7 @@ export default function Preloader() {
       <span className="nv-boot-bar">
         <i ref={barRef} />
       </span>
-    </div>
+      </div>
+    </>
   );
 }

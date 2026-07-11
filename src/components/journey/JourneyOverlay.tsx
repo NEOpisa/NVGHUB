@@ -4,32 +4,31 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Magnetic from "@/components/Magnetic";
-import { WhatsAppIcon, CheckIcon, InstagramIcon } from "@/components/icons";
+import { WhatsAppIcon } from "@/components/icons";
 import { WA, IG } from "@/lib/constants";
 import { getLenisInstance } from "@/lib/lenis";
 import { journey, rangeN, CH } from "./journeyState";
 
-const ECO_LAYERS = [
+/* callouts estilo igloo: crosshair + linha-guia + poucas palavras.
+   Cada um aponta uma camada orbital do organismo 3D. */
+const ECO_CALLOUTS = [
   {
     num: "01",
-    tier: "Base",
-    title: "Arquitetura de Conversão",
-    desc: "A fundação. Infraestrutura web rápida, segura e encontrável — feita para transformar visita em cliente.",
-    tags: ["Velocidade", "SEO técnico", "Cloud"],
+    tag: "BASE",
+    txt: "site que captura e converte",
+    pos: "jy-orb--1",
   },
   {
     num: "02",
-    tier: "Conexão",
-    title: "Integrações & Atendimento",
-    desc: "O sistema nervoso. Conecta site, CRM e WhatsApp para que nenhum lead se perca no caminho.",
-    tags: ["CRM", "WhatsApp", "APIs"],
+    tag: "CONEXÃO",
+    txt: "CRM + WhatsApp · nenhum lead se perde",
+    pos: "jy-orb--2",
   },
   {
     num: "03",
-    tier: "Inteligência",
-    title: "Dados, IA & Automação",
-    desc: "A camada que aprende e age sozinha. Tira o trabalho repetitivo da sua mão.",
-    tags: ["IA aplicada", "Analytics", "Automação"],
+    tag: "INTELIGÊNCIA",
+    txt: "IA e automação agindo sozinhas",
+    pos: "jy-orb--3",
   },
 ];
 
@@ -38,31 +37,31 @@ const SERVICES = [
     code: "SRV_01",
     title: "Site Profissional",
     metric: "ENTREGA · 16d",
-    desc: "Landing ou site institucional responsivo, otimizado para SEO local e carregamento rápido. Feito para converter visitante em cliente.",
+    desc: "Feito para transformar visitante em cliente.",
   },
   {
     code: "SRV_02",
     title: "Sistema para Negócio",
     metric: "PAINEL · INCLUSO",
-    desc: "Cardápio digital, agendamento online ou catálogo interativo com painel de controle.",
+    desc: "Cardápio, agendamento ou catálogo — com painel.",
   },
   {
     code: "SRV_03",
     title: "SEO & Presença Digital",
     metric: "RESULTADO · 30–60d",
-    desc: "Apareça no Google local com Google Meu Negócio configurado e palavras-chave do seu segmento.",
+    desc: "Apareça nas buscas locais do Google.",
   },
   {
     code: "SRV_04",
     title: "Manutenção & Suporte",
     metric: "RESPOSTA · 3h",
-    desc: "Suporte real via WhatsApp, atualizações e monitoramento. Você chama, a gente resolve.",
+    desc: "Você chama no WhatsApp, nós resolvemos.",
   },
   {
     code: "SRV_05",
     title: "SaaS para seu segmento",
     metric: "NO AR · 5d",
-    desc: "Plataforma pronta para clínicas e restaurantes, por assinatura — sem desenvolvimento customizado.",
+    desc: "Plataforma por assinatura, pronta em dias.",
   },
 ];
 
@@ -72,7 +71,8 @@ const DOORS = [
     href: "/ouro",
     tag: "DIV_01 · PRODUTO CONSULTIVO",
     title: "OURO",
-    desc: "Presença sólida com escopo claro e entrega rápida. Uma consulta objetiva define o caminho — momentum para fazer acontecer.",
+    desc: "Presença sólida, escopo claro, entrega rápida — o caminho sai de uma consulta objetiva.",
+    specs: ["Escopo fechado", "Entrega 7–35 dias", "Consulta 20–30 min", "Suporte incluso"],
     cta: "Entrar no Ouro",
   },
   {
@@ -80,7 +80,8 @@ const DOORS = [
     href: "/platina",
     tag: "DIV_02 · PARCERIA SOB MEDIDA",
     title: "PLATINA",
-    desc: "O sistema completo, desenhado para o seu negócio — diagnóstico profundo, resultado assumido, otimização contínua.",
+    desc: "A máquina completa, sob medida — diagnóstico profundo e otimização contínua.",
+    specs: ["100% sob medida", "Resultado assumido", "Otimização mensal", "Vagas limitadas"],
     cta: "Entrar na Platina",
   },
 ];
@@ -115,6 +116,8 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
   const expRef = useRef<HTMLElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
   const passRef = useRef<HTMLDivElement>(null);
+  // #013 · live region: anuncia o capítulo ativo a leitores de tela
+  const liveRef = useRef<HTMLSpanElement>(null);
   const router = useRouter();
 
   /* A PASSAGEM — o mundo tinge na temperatura da divisão antes de navegar */
@@ -141,7 +144,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
     };
     if (!els.root) return;
     const ecoCards = Array.from(
-      els.root.querySelectorAll<HTMLElement>(".jy-eco-card"),
+      els.root.querySelectorAll<HTMLElement>(".jy-orb"),
     );
     const svcCards = Array.from(
       els.root.querySelectorAll<HTMLElement>(".jy-svc"),
@@ -156,6 +159,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
 
     let lastActive = -1;
     let lastPast = false;
+    let lastChapter = -1;
 
     const setSec = (
       el: HTMLElement | null,
@@ -216,9 +220,22 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       const expL = rangeN(p, CH.explore.start, CH.explore.end);
       setSec(els.exp, rangeN(expL, 0, 0.4), (1 - expL) * 30);
 
-      // rail: capítulo ativo
+      // rail: capítulo ativo — atualiza SÓ na troca (#013: também menos
+      // trabalho por frame) + aria-current e anúncio polite ao leitor de tela
       const chapter = p < 0.18 ? 0 : p < 0.47 ? 1 : p < 0.77 ? 2 : 3;
-      railItems.forEach((r, i) => r.classList.toggle("is-on", i === chapter));
+      if (chapter !== lastChapter) {
+        lastChapter = chapter;
+        railItems.forEach((r, i) => {
+          const on = i === chapter;
+          r.classList.toggle("is-on", on);
+          if (on) r.setAttribute("aria-current", "true");
+          else r.removeAttribute("aria-current");
+        });
+        if (liveRef.current) {
+          const label = railItems[chapter]?.textContent?.trim() ?? "";
+          liveRef.current.textContent = label ? `Capítulo: ${label}` : "";
+        }
+      }
 
       // capítulo final: o mini-footer já assina © — some a marca d'água
       els.root!.classList.toggle("jy-at-end", p > 0.86);
@@ -266,18 +283,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
 
           <div className="jy-cta-row jy-enter jy-d4">
             <Magnetic>
-              <a
-                href={WA}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary btn-whatsapp"
-              >
-                <WhatsAppIcon />
-                Falar pelo WhatsApp
-              </a>
-            </Magnetic>
-            <Magnetic strength={0.25}>
-              <Link href="/solucao" className="btn-ghost">
+              <Link href="/solucao" className="btn-primary">
                 Quero escalar minha empresa
                 <svg
                   width="14"
@@ -295,41 +301,21 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               </Link>
             </Magnetic>
             <Magnetic strength={0.25}>
-              <Link href="/exemplos" className="btn-ghost">
-                Exemplos de sites
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M7 17 17 7M9 7h8v8" />
-                </svg>
-              </Link>
-            </Magnetic>
-            <Magnetic strength={0.25}>
-              <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-                <InstagramIcon />
-                Instagram
+              <a
+                href={WA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary btn-whatsapp"
+              >
+                <WhatsAppIcon />
+                Falar pelo WhatsApp
               </a>
             </Magnetic>
           </div>
 
-          <div className="jy-trust jy-enter jy-d5">
-            {["Entrega em até 16 dias úteis", "Sem contrato mínimo", "Suporte via WhatsApp"].map(
-              (t) => (
-                <span key={t} className="jy-trust-item">
-                  <CheckIcon />
-                  {t}
-                </span>
-              ),
-            )}
-          </div>
+          <p className="jy-trust-line jy-enter jy-d5">
+            entrega em até 16 dias · sem contrato mínimo · suporte via WhatsApp
+          </p>
           </div>
           {/* coluna direita: a marca NV 3D vive aqui (dentro do canvas) */}
           <div className="jy-hero-space" aria-hidden="true" />
@@ -339,36 +325,40 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       {/* ── Capítulo 2 · ECOSSISTEMA ─────────────────────── */}
       <section ref={ecoRef} className="jy-sec jy-eco" aria-label="O ecossistema Neovanguard">
         <span className="jy-ghost" aria-hidden="true">01</span>
-        <div className="jy-eco-inner">
-          <div className="jy-eco-head">
-            <span className="section-eyebrow">Ecossistema</span>
-            <h2 className="jy-h2">
-              Não vendemos site. Construímos{" "}
-              <span className="text-accent-nvg">capilares de crescimento.</span>
-            </h2>
-            <p className="jy-sub-sm">
-              Cada peça conversa com a próxima. O site é só o ponto de entrada —
-              por baixo corre uma estrutura que captura, conecta e converte.
-            </p>
-          </div>
-          <div className="jy-eco-cards">
-            {ECO_LAYERS.map((l) => (
-              <div key={l.num} className="jy-eco-card">
-                <span className="jy-eco-num">{l.num}</span>
-                <div>
-                  <span className="jy-eco-tier">{l.tier}</span>
-                  <h3 className="jy-eco-title">{l.title}</h3>
-                  <p className="jy-eco-desc">{l.desc}</p>
-                  <ul className="jy-tags">
-                    {l.tags.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
-          </div>
+
+        {/* título mínimo — o organismo 3D é o protagonista */}
+        <div className="jy-eco-min">
+          <span className="section-eyebrow">Ecossistema</span>
+          <h2 className="jy-h2 jy-eco-h2">
+            Não vendemos site.
+            <br />
+            <span className="text-accent-nvg">Construímos um organismo.</span>
+          </h2>
         </div>
+
+        {/* callouts orbitais: crosshair + linha-guia + mono */}
+        <div className="jy-orbs" aria-hidden="false">
+          {ECO_CALLOUTS.map((c) => (
+            <div key={c.num} className={`jy-orb ${c.pos}`}>
+              <span className="jy-orb-cross" aria-hidden="true">
+                <i />
+                <i />
+              </span>
+              <span className="jy-orb-leader" aria-hidden="true" />
+              <div className="jy-orb-body">
+                <span className="jy-orb-tag">
+                  {`CAMADA ${c.num}`} <em>·</em> {c.tag}
+                </span>
+                <span className="jy-orb-txt">{c.txt}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* assinatura da tese, uma linha só */}
+        <p className="jy-eco-thesis">
+          Três camadas, um sistema — cada peça alimenta a próxima.
+        </p>
       </section>
 
       {/* ── Capítulo 3 · SOLUÇÕES ────────────────────────── */}
@@ -443,9 +433,16 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && cross(d.href, d.tier)}
               >
+                <span className="vy-door-bar" aria-hidden="true" />
+                <span className="vy-door-sheen" aria-hidden="true" />
                 <span className="vy-door-tag">{d.tag}</span>
                 <h3 className="vy-door-title">{d.title}</h3>
                 <p className="vy-door-desc">{d.desc}</p>
+                <ul className="vy-door-list">
+                  {d.specs.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ul>
                 <span className="vy-door-cta">
                   {d.cta}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -454,6 +451,25 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
                 </span>
               </article>
             ))}
+          </div>
+
+          {/* terceira via: consulta rápida (o antigo "Sua solução") */}
+          <div className="jy-quick">
+            <span className="jy-quick-tag" aria-hidden="true">
+              CONSULTA RÁPIDA
+            </span>
+            <p className="jy-quick-txt">
+              Não sabe por qual porta entrar? Três perguntas e nós direcionamos
+              você.
+            </p>
+            <Magnetic strength={0.2}>
+              <Link href="/solucao" className="btn-ghost jy-quick-cta">
+                Fazer a consulta rápida
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </Magnetic>
           </div>
         </div>
 
@@ -480,9 +496,11 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               esquerda inferior; some no capítulo final (o mini-footer assina) */}
           <div className="jy-frame" aria-hidden="true">
             <span className="jy-frame-label jy-frame-bl">
-              NVG <i>{"//"}</i> © {new Date().getFullYear()} neovanguard
+              NVG · © {new Date().getFullYear()} neovanguard
             </span>
           </div>
+          {/* #013 · anúncio do capítulo ativo (visualmente oculto) */}
+          <span ref={liveRef} className="sr-only" role="status" aria-live="polite" />
           <nav className="jy-rail" aria-label="Capítulos da página">
             {RAIL.map((r, i) => (
               <button
@@ -516,8 +534,13 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         </>
       )}
 
-      {/* A PASSAGEM — véu de travessia para as divisões */}
-      <div ref={passRef} className="vy-passagem" aria-hidden="true" />
+      {/* A PASSAGEM — a travessia QUEBRA a tela em cacos que convergem
+          na temperatura da divisão antes de navegar */}
+      <div ref={passRef} className="vy-passagem" aria-hidden="true">
+        {Array.from({ length: 12 }, (_, i) => (
+          <i key={i} style={{ "--si": i } as React.CSSProperties} />
+        ))}
+      </div>
     </div>
   );
 }
