@@ -1,4 +1,5 @@
 import Journey from "@/components/journey/Journey";
+import ExitNudge from "@/components/journey/ExitNudge";
 
 /**
  * Home = jornada 3D contínua (canvas único + overlay storytelling).
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <main id="main" className="home home-journey">
       <Journey />
+      <ExitNudge />
     </main>
   );
 }

@@ -190,3 +190,35 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
         animation: none !important;
     }
 }
+
+/* ══ #047 · exit-intent toast (não-intrusivo) ═══════════════════════════ */
+.exit-nudge {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 950;
+    max-width: 330px;
+    padding: 18px 20px;
+    background: rgba(10, 8, 18, 0.97);
+    border: 1px solid rgba(108, 92, 255, 0.35);
+    font-size: 0.88rem;
+    color: rgba(240, 240, 240, 0.85);
+    animation: exitNudgeIn 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.exit-nudge-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 13px;
+}
+.exit-nudge .btn-primary,
+.exit-nudge .btn-ghost {
+    font-size: 0.78rem;
+    padding: 8px 14px;
+}
+@keyframes exitNudgeIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .exit-nudge { animation: none; }
+}
