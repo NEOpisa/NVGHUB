@@ -61,3 +61,22 @@
         opacity: 0;
     }
 }
+
+/* ══ #017 · reduced-transparency / reduced-data ═════════════════════════
+   Remove o backdrop-blur (vidro fosco = efeito de transparência) para quem
+   pede menos transparência ou economia de dados; os painéis mantêm sua cor
+   de fundo, ficando opacos e mais legíveis. O PostFX é desligado no
+   PostFX.tsx nas mesmas condições. (`*` + !important ficam CONFINADOS a
+   estas media queries de acessibilidade.) */
+@media (prefers-reduced-transparency: reduce) {
+    * {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+@media (prefers-reduced-data: reduce) {
+    * {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}

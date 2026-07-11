@@ -15,6 +15,17 @@ const isMobile = () =>
   (window.innerWidth < 768 ||
     !!window.matchMedia?.("(pointer: coarse)").matches);
 
+// #017 · quem pede menos transparência ou economia de dados não recebe o
+// pós-processamento (bloom/aberração/vinheta são camadas extras de composição)
+const hardOff = () => {
+  if (typeof window === "undefined") return false;
+  const n = navigator as Navigator & { connection?: { saveData?: boolean } };
+  return (
+    !!window.matchMedia?.("(prefers-reduced-transparency: reduce)").matches ||
+    n.connection?.saveData === true
+  );
+};
+
 /**
  * Pós-processamento da jornada (linguagem igloo): bloom curto nos emissivos,
  * aberração cromática sutil nas bordas e vinheta. Desligado no tier 0 e ao
@@ -25,11 +36,13 @@ const isMobile = () =>
  * brilho onde a GPU é fraca. Uma vez desligado por performance, não reativa.
  */
 export default function PostFX() {
-  const [on, setOn] = useState(() => journey.tier === 2);
+  const [on, setOn] = useState(() => journey.tier === 2 && !hardOff());
   const perf = useRef({ acc: 0, n: 0, warm: 1.5, killed: false, mobile: false });
 
   useEffect(() => {
     perf.current.mobile = isMobile();
+    // reduced-transparency/save-data: trava desligado (o toggle GFX não reativa)
+    if (hardOff()) perf.current.killed = true;
     const sync = (e: Event) => {
       const detail = (e as CustomEvent<string>).detail;
       if (perf.current.killed) return; // fps ruim já desligou: não reativa
