@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { journey, clamp01 } from "./journeyState";
+import {
+  journey,
+  clamp01,
+  saveJourneyProgress,
+  loadJourneyProgress,
+} from "./journeyState";
+import { intro } from "@/components/scene/introState";
 import JourneyOverlay from "./JourneyOverlay";
 import ChapterSnap from "./ChapterSnap";
 
@@ -77,10 +83,27 @@ export default function Journey() {
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+    // #043 · grava o progresso ao sair (navegação interna ou fechar aba)
+    window.addEventListener("pagehide", saveJourneyProgress);
     return () => {
+      saveJourneyProgress();
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      window.removeEventListener("pagehide", saveJourneyProgress);
     };
+  }, [mode]);
+
+  // #043 · retomar de onde parou (mesma sessão): só sem intro ativa e se o
+  // visitante tinha avançado de verdade (3%..95%) — nunca briga com a intro.
+  useEffect(() => {
+    if (mode !== "gl" || intro.active) return;
+    const el = wrap.current;
+    if (!el) return;
+    const p = loadJourneyProgress();
+    if (p < 0.03 || p > 0.95 || window.scrollY > 4) return;
+    const total = el.offsetHeight - window.innerHeight;
+    if (total <= 0) return;
+    window.scrollTo({ top: el.offsetTop + p * total, behavior: "instant" });
   }, [mode]);
 
   const isStatic = mode === "static";

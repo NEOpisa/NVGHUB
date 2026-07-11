@@ -32,6 +32,29 @@ export const CH = {
   explore: { start: 0.8, end: 0.97 },
 } as const;
 
+/* #043 · persistência do progresso: quem sai da home e volta (mesma sessão)
+   retoma de onde parou. Gravação só em pagehide/unmount — zero custo por
+   frame de scroll. */
+const PROGRESS_KEY = "nvg:journey-p";
+
+export function saveJourneyProgress(): void {
+  try {
+    sessionStorage.setItem(PROGRESS_KEY, journey.progress.toFixed(4));
+  } catch {
+    /* storage indisponível (privado/iframe): segue sem persistir */
+  }
+}
+
+/** progresso salvo, ou 0 se não houver/nulo/inválido */
+export function loadJourneyProgress(): number {
+  try {
+    const v = parseFloat(sessionStorage.getItem(PROGRESS_KEY) ?? "");
+    return Number.isFinite(v) ? clamp01(v) : 0;
+  } catch {
+    return 0;
+  }
+}
+
 /**
  * Tier de qualidade decidido UMA vez no boot (nunca desliga o 3D — só ajusta
  * densidade de partículas e DPR inicial). O DPR ainda é refinado em runtime
