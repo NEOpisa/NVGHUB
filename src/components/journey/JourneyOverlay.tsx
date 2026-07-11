@@ -230,6 +230,10 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
           r.classList.toggle("is-on", on);
           if (on) r.setAttribute("aria-current", "true");
           else r.removeAttribute("aria-current");
+          // #019 · o tab-stop do grupo acompanha o capítulo ativo (roving) —
+          // exceto se o foco está dentro do rail (não roubar o stop do usuário)
+          if (!els.root!.querySelector(".jy-rail:focus-within"))
+            r.tabIndex = on ? 0 : -1;
         });
         if (liveRef.current) {
           const label = railItems[chapter]?.textContent?.trim() ?? "";
@@ -431,7 +435,30 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
                 onClick={() => cross(d.href, d.tier)}
                 role="link"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && cross(d.href, d.tier)}
+                onKeyDown={(e) => {
+                  // #019 · Enter/Space ativam; setas movem entre as portas
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    cross(d.href, d.tier);
+                    return;
+                  }
+                  if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                    const doors = Array.from(
+                      e.currentTarget.parentElement?.querySelectorAll<HTMLElement>(
+                        ".vy-door",
+                      ) ?? [],
+                    );
+                    const idx = doors.indexOf(e.currentTarget as HTMLElement);
+                    const to =
+                      e.key === "ArrowRight"
+                        ? Math.min(doors.length - 1, idx + 1)
+                        : Math.max(0, idx - 1);
+                    if (to !== idx) {
+                      e.preventDefault();
+                      doors[to].focus();
+                    }
+                  }
+                }}
               >
                 <span className="vy-door-bar" aria-hidden="true" />
                 <span className="vy-door-sheen" aria-hidden="true" />
@@ -501,12 +528,39 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
           </div>
           {/* #013 · anúncio do capítulo ativo (visualmente oculto) */}
           <span ref={liveRef} className="sr-only" role="status" aria-live="polite" />
-          <nav className="jy-rail" aria-label="Capítulos da página">
+          {/* #019 · roving tabindex: UM tab-stop no grupo; setas/Home/End movem */}
+          <nav
+            className="jy-rail"
+            aria-label="Capítulos da página"
+            onKeyDown={(e) => {
+              const items = Array.from(
+                e.currentTarget.querySelectorAll<HTMLButtonElement>(
+                  ".jy-rail-item",
+                ),
+              );
+              const idx = items.indexOf(
+                document.activeElement as HTMLButtonElement,
+              );
+              if (idx < 0) return;
+              let to = -1;
+              if (e.key === "ArrowDown" || e.key === "ArrowRight")
+                to = Math.min(items.length - 1, idx + 1);
+              else if (e.key === "ArrowUp" || e.key === "ArrowLeft")
+                to = Math.max(0, idx - 1);
+              else if (e.key === "Home") to = 0;
+              else if (e.key === "End") to = items.length - 1;
+              if (to < 0 || to === idx) return;
+              e.preventDefault();
+              items.forEach((it, i) => (it.tabIndex = i === to ? 0 : -1));
+              items[to].focus();
+            }}
+          >
             {RAIL.map((r, i) => (
               <button
                 key={r.label}
                 type="button"
                 className={`jy-rail-item${i === 0 ? " is-on" : ""}`}
+                tabIndex={i === 0 ? 0 : -1}
                 onClick={() => scrollToProgress(r.p)}
               >
                 <span className="jy-rail-dot" aria-hidden="true" />
