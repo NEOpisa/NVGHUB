@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
 import TierQuiz from "@/components/TierQuiz";
+import BismuthCrystal from "@/components/BismuthCrystal";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Ouro — presença digital sólida, entregue rápido",
   description:
     "A divisão Ouro da Neovanguard: sites, sistemas e e-commerce com escopo claro e consulta objetiva. Valor apresentado na consulta.",
-  alternates: { canonical: "/ouro" },
-};
+  path: "/ouro",
+});
 
 const OFERTAS = [
   {
@@ -67,6 +68,7 @@ export default function OuroPage() {
 
       {/* hero */}
       <section className="tp-hero">
+        <BismuthCrystal />
         <div className="tp-hero-card card-1">
           <span className="section-eyebrow">Divisão Ouro · Produto consultivo</span>
           <h1 className="tp-h1">
@@ -90,7 +92,7 @@ export default function OuroPage() {
             </a>
           </div>
           <p className="tp-trust">
-            {"//"} entrega em até 16 dias úteis · sem contrato mínimo · suporte
+            entrega em até 16 dias úteis · sem contrato mínimo · suporte
             via WhatsApp
           </p>
         </div>

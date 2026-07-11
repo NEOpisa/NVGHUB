@@ -3,9 +3,9 @@ import SolucaoQuiz from "@/components/SolucaoQuiz";
 import BlueprintStage from "@/components/BlueprintStage";
 
 export const metadata = pageMetadata({
-  title: "Sua solução sob medida — Neovanguard",
+  title: "Consulta rápida — sua solução em 3 perguntas",
   description:
-    "Responda 3 perguntas rápidas e a gente monta a solução ideal pro seu negócio. Sem formulário gigante, sem compromisso — fale com a equipe na hora.",
+    "Responda 3 perguntas rápidas e montamos a solução ideal para o seu negócio. Sem formulário gigante, sem compromisso — fale com a equipe na hora.",
   path: "/solucao",
 });
 

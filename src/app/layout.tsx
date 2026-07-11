@@ -19,9 +19,16 @@ import ScrollToSection from "@/components/ScrollToSection";
 import ClickFX from "@/components/ClickFX";
 import MetaPixel from "@/components/MetaPixel";
 import ViewportProbe from "@/components/ViewportProbe";
+import LetterScatter from "@/components/LetterScatter";
+import ObsidianRain from "@/components/ObsidianRain";
+import HudControls from "@/components/HudControls";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
+// Zonas de CSS por owner (paralelismo sem conflito — ver /inc2.md).
+// Ordem importa: importadas após globals.css para vencer a cascata.
+import "./c1.css";
+import "./c2.css";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -72,8 +79,6 @@ const fraunces = Fraunces({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
 };
 
@@ -221,6 +226,9 @@ export default function RootLayout({
       className={`${syne.variable} ${jakarta.variable} ${orbitron.variable} ${grotesk.variable} ${plexMono.variable} ${fraunces.variable}`}
     >
       <body>
+        <a href="#main" className="skip-link">
+          Pular para o conteúdo
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
@@ -240,6 +248,9 @@ export default function RootLayout({
         {children}
         <FooterGate />
         <div className="site-frame" aria-hidden="true" />
+        <HudControls />
+        <LetterScatter />
+        <ObsidianRain />
         <MetaPixel />
         <FpsMeter />
         <Analytics />

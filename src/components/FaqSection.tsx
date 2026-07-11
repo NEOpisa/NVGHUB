@@ -23,7 +23,7 @@ const FAQ: { q: string; a: string; tag: string }[] = [
   },
   {
     q: "Quanto custa um site?",
-    a: "O valor depende do que o seu negócio precisa. A gente faz um diagnóstico, monta uma solução sob medida e fecha tudo com você antes de começar — sem surpresa e sem letra miúda.",
+    a: "O valor depende do que o seu negócio precisa. Fazemos um diagnóstico, montamos uma solução sob medida e fechamos tudo com você antes de começar — sem surpresa e sem letra miúda.",
     tag: "Investimento",
   },
   {
@@ -103,8 +103,7 @@ export default function FaqSection() {
                   <div className="faq-answer-inner">
                     <p className="faq-answer">
                       <span className="faq-a-prefix" aria-hidden="true">
-                        {"// "}
-                      </span>
+                                              </span>
                       {a}
                     </p>
                   </div>
@@ -115,7 +114,7 @@ export default function FaqSection() {
         </div>
 
         <div className="faq-foot">
-          <p>Não achou sua resposta? A gente responde em até 3h úteis.</p>
+          <p>Não achou sua resposta? Respondemos em até 3h úteis.</p>
           <a
             href={WA}
             target="_blank"

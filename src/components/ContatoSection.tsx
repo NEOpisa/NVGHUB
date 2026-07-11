@@ -1,12 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useReveal } from "@/hooks/useReveal";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
 import { track } from "@/lib/fpixel";
 
 export default function ContatoSection() {
+  const router = useRouter();
   const headerRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
@@ -15,14 +17,56 @@ export default function ContatoSection() {
   const [form, setForm] = useState({ nome: "", email: "", mensagem: "", empresa: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  // validação amigável por campo (mensagens curtas, tom da marca)
+  const validateField = (name: string, value: string): string => {
+    const v = value.trim();
+    if (name === "nome") return v.length < 2 ? "Como podemos te chamar?" : "";
+    if (name === "email")
+      return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Confira o e-mail — parece incompleto." : "";
+    if (name === "mensagem")
+      return v.length < 10 ? "Conte um pouquinho mais (mín. 10 caracteres)." : "";
+    return "";
+  };
+  const validateAll = () => {
+    const errs: Record<string, string> = {};
+    (["nome", "email", "mensagem"] as const).forEach((k) => {
+      const msg = validateField(k, form[k]);
+      if (msg) errs[k] = msg;
+    });
+    return errs;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
     if (status === "err") setStatus("idle");
+    // revalida em tempo real só depois que o campo já foi tocado
+    if (touched[name])
+      setFieldErrors((fe) => ({ ...fe, [name]: validateField(name, value) }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched((t) => ({ ...t, [name]: true }));
+    setFieldErrors((fe) => ({ ...fe, [name]: validateField(name, value) }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // valida tudo antes de enviar; foca o primeiro campo inválido
+    const errs = validateAll();
+    setTouched({ nome: true, email: true, mensagem: true });
+    setFieldErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      const first = ["nome", "email", "mensagem"].find((k) => errs[k]);
+      if (first) document.getElementById(first)?.focus();
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
 
@@ -36,8 +80,9 @@ export default function ContatoSection() {
 
       if (res.ok) {
         track("Contact");
-        setStatus("ok");
         setForm({ nome: "", email: "", mensagem: "", empresa: "" });
+        // pós-conversão dedicada (#050): melhor tracking + próximos passos
+        router.push("/obrigado");
       } else {
         setStatus("err");
         setErrorMsg(data.error ?? "Não foi possível enviar sua mensagem.");
@@ -54,10 +99,10 @@ export default function ContatoSection() {
         <div ref={headerRef} data-parallax="0.1">
           <span className="section-eyebrow">Contato</span>
           <h2 className="section-heading" data-split>
-            Bora <span className="text-accent-nvg">começar?</span>
+            Vamos <span className="text-accent-nvg">começar?</span>
           </h2>
           <p className="section-sub">
-            Sem compromisso, sem enrolação. Conta o que precisa e a gente responde rápido.
+            Sem compromisso, sem enrolação. Conte o que precisa e respondemos rápido.
           </p>
         </div>
 
@@ -67,7 +112,7 @@ export default function ContatoSection() {
             <div>
               <div className="contact-info-title">Prefere pelo WhatsApp?</div>
               <p className="contact-info-text" style={{ marginTop: "10px" }}>
-                Resposta mais rápida, conversa mais direta. Manda mensagem agora e a gente fala hoje.
+                Resposta mais rápida, conversa mais direta. Mande mensagem agora e falamos ainda hoje.
               </p>
             </div>
             <a href={WA} target="_blank" rel="noopener noreferrer" className="contact-whatsapp">
@@ -107,10 +152,17 @@ export default function ContatoSection() {
                 name="nome"
                 placeholder="Como quer ser chamado?"
                 autoComplete="name"
+                enterKeyHint="next"
                 required
+                aria-invalid={!!fieldErrors.nome}
+                aria-describedby={fieldErrors.nome ? "err-nome" : undefined}
                 value={form.nome}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+              <span className="field-error" id="err-nome" role="alert">
+                {fieldErrors.nome ?? ""}
+              </span>
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="email">E-mail</label>
@@ -121,10 +173,18 @@ export default function ContatoSection() {
                 name="email"
                 placeholder="seu@email.com"
                 autoComplete="email"
+                inputMode="email"
+                enterKeyHint="next"
                 required
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? "err-email" : undefined}
                 value={form.email}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+              <span className="field-error" id="err-email" role="alert">
+                {fieldErrors.email ?? ""}
+              </span>
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="mensagem">O que você precisa?</label>
@@ -132,11 +192,17 @@ export default function ContatoSection() {
                 className="form-textarea"
                 id="mensagem"
                 name="mensagem"
-                placeholder="Conta um pouco sobre seu negócio e o que está buscando..."
+                placeholder="Conte um pouco sobre seu negócio e o que está buscando..."
                 required
+                aria-invalid={!!fieldErrors.mensagem}
+                aria-describedby={fieldErrors.mensagem ? "err-mensagem" : undefined}
                 value={form.mensagem}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+              <span className="field-error" id="err-mensagem" role="alert">
+                {fieldErrors.mensagem ?? ""}
+              </span>
             </div>
 
             {status === "ok" && (

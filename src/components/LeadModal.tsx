@@ -60,7 +60,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
     const telefone = form.telefone.trim();
     if (!email && !telefone) {
       setStatus("err");
-      setErrorMsg("Informe pelo menos um e-mail ou telefone para a gente te retornar.");
+      setErrorMsg("Informe pelo menos um e-mail ou telefone para retornarmos o contato.");
       return;
     }
     if (email && !EMAIL_RE.test(email)) {
@@ -127,7 +127,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
             </div>
             <h3 id="lead-modal-title" className="lead-title">Recebido!</h3>
             <p className="lead-sub">
-              Sua solução já está com a nossa equipe. A gente te chama pelo contato informado em até <strong>3 horas úteis</strong>.
+              Sua solução já está com a nossa equipe. Entramos em contato pelo canal informado em até <strong>3 horas úteis</strong>.
             </p>
             <ol className="lead-success-steps">
               <li><span className="lead-step-n">1</span> Analisamos o seu diagnóstico</li>
@@ -214,7 +214,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
                   onChange={handleChange}
                 />
               </div>
-              <p className="lead-hint">Informe e-mail ou telefone — o que for melhor pra você.</p>
+              <p className="lead-hint">Informe e-mail ou telefone — o que for melhor para você.</p>
 
               {status === "err" && <div className="form-message error">{errorMsg}</div>}
 

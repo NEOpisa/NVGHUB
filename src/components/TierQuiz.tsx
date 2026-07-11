@@ -7,7 +7,7 @@ import { WA } from "@/lib/constants";
 
 type Tier = "ouro" | "platina";
 
-type Question = { id: string; label: string; options: string[] };
+type Question = { id: string; resumo: string; label: string; options: string[] };
 
 /* ── perguntas por divisão: cada trilha tem a sua conversa ── */
 
@@ -16,6 +16,7 @@ const QUESTIONS: Record<Tier, Question[]> = {
   ouro: [
     {
       id: "hoje",
+      resumo: "hoje",
       label: "O que você já tem hoje?",
       options: [
         "Nada ainda — começando do zero",
@@ -26,6 +27,7 @@ const QUESTIONS: Record<Tier, Question[]> = {
     },
     {
       id: "precisa",
+      resumo: "precisa",
       label: "O que o seu negócio precisa agora?",
       options: [
         "Vitrine Digital — página única",
@@ -36,14 +38,16 @@ const QUESTIONS: Record<Tier, Question[]> = {
     },
     {
       id: "prazo",
-      label: "Pra quando?",
-      options: ["Pra ontem", "Nas próximas semanas", "Estou planejando"],
+      resumo: "prazo",
+      label: "Para quando?",
+      options: ["Para ontem", "Nas próximas semanas", "Estou planejando"],
     },
   ],
   // PLATINA — aplicação PROFUNDA (filtra perfil e momento)
   platina: [
     {
       id: "negocio",
+      resumo: "negócio",
       label: "Qual é o seu negócio?",
       options: [
         "Clínica / saúde",
@@ -54,6 +58,7 @@ const QUESTIONS: Record<Tier, Question[]> = {
     },
     {
       id: "faturamento",
+      resumo: "faturamento",
       label: "Faturamento mensal aproximado",
       options: [
         "Até 30 mil",
@@ -64,11 +69,13 @@ const QUESTIONS: Record<Tier, Question[]> = {
     },
     {
       id: "trafego",
+      resumo: "tráfego",
       label: "Você já investe em tráfego pago?",
       options: ["Sim, com gestor", "Sim, por conta própria", "Ainda não"],
     },
     {
       id: "gargalo",
+      resumo: "gargalo",
       label: "Qual o maior gargalo hoje?",
       options: [
         "Poucos leads chegando",
@@ -86,7 +93,7 @@ const COPY: Record<
 > = {
   ouro: {
     tipo: "Quiz Ouro — consulta rápida",
-    done: "Recebido. Bora fazer acontecer.",
+    done: "Recebido. Vamos fazer acontecer.",
     doneSub:
       "Vamos te chamar para uma consulta objetiva de 20–30 minutos — produto certo e valor, direto ao ponto.",
     cta: "Adiantar pelo WhatsApp",
@@ -99,6 +106,115 @@ const COPY: Record<
     cta: "Falar pelo WhatsApp",
   },
 };
+
+/* ── SCAN Platina: índice de prontidão + gargalos, derivados da aplicação ── */
+function prontidao(a: Record<string, string>) {
+  let nota = 35;
+  const fat = a.faturamento ?? "";
+  const tra = a.trafego ?? "";
+  const gar = a.gargalo ?? "";
+  if (fat.startsWith("Acima")) nota += 25;
+  else if (fat.startsWith("Entre")) nota += 18;
+  else if (fat.startsWith("Até")) nota += 8;
+  else if (fat) nota += 12;
+  if (tra.startsWith("Sim, com gestor")) nota += 20;
+  else if (tra.startsWith("Sim")) nota += 13;
+  else if (tra) nota += 5;
+  if (gar) nota += 8;
+
+  const pontos: string[] = [];
+  if (gar === "Poucos leads chegando")
+    pontos.push("Funil sem topo — mídia e página precisam trabalhar juntas");
+  if (gar === "Agenda ociosa")
+    pontos.push("Captação sem cadência — automação preenche a agenda");
+  if (gar === "Leads que não fecham")
+    pontos.push("Qualificação fraca — tracking e nutrição elevam o fechamento");
+  if (gar === "Sem previsibilidade nenhuma")
+    pontos.push("Sem dados — o sistema completo cria previsibilidade");
+  if (tra === "Ainda não")
+    pontos.push("Sem mídia ativa — todo crescimento hoje é orgânico");
+  if (tra === "Sim, por conta própria")
+    pontos.push("Mídia sem gestão dedicada — verba deixando resultado na mesa");
+  return { nota: Math.min(96, nota), pontos: pontos.slice(0, 3) };
+}
+
+/** painel SCAN — HUD de aplicação ao vivo ao lado do quiz Platina */
+function TierScan({
+  questions,
+  answers,
+  step,
+  finalizado,
+}: {
+  questions: Question[];
+  answers: Record<string, string>;
+  step: number;
+  finalizado: boolean;
+}) {
+  const n = Object.keys(answers).length;
+  const total = questions.length;
+  const { nota, pontos } = prontidao(answers);
+  return (
+    <aside className={`qsc${finalizado ? " is-final" : ""}`} aria-hidden="true">
+      <div className="qsc-frame card-2">
+        <header className="qsc-head">
+          <span className="qsc-tag">APLICAÇÃO AO VIVO</span>
+          <span className={`qsc-status${finalizado ? " is-done" : ""}`}>
+            <i />
+            {finalizado
+              ? "ANÁLISE CONCLUÍDA"
+              : `COLETANDO ${String(Math.min(step + 1, total)).padStart(2, "0")}/${String(total).padStart(2, "0")}`}
+          </span>
+        </header>
+
+        <div className="qsc-radar">
+          <span className="qsc-ring qsc-r1" />
+          <span className="qsc-ring qsc-r2" />
+          <span className="qsc-ring qsc-r3" />
+          <span className="qsc-cross" />
+          <span className="qsc-sweep" />
+          {Array.from({ length: n }, (_, i) => (
+            <span
+              key={i}
+              className="qsc-blip"
+              style={{ "--bi": i } as React.CSSProperties}
+            />
+          ))}
+          {finalizado && (
+            <span className="qsc-lock">
+              <span className="qsc-score-num">
+                {String(nota).padStart(2, "0")}
+                <em>/100</em>
+              </span>
+              <b>PRONTIDÃO PLATINA</b>
+            </span>
+          )}
+        </div>
+
+        <div className="qsc-readout">
+          {questions.map((q) => (
+            <span key={q.id} className={`qsc-line${answers[q.id] ? " is-on" : ""}`}>
+              <i>{q.resumo}</i>
+              <b>{answers[q.id] ?? "aguardando…"}</b>
+            </span>
+          ))}
+        </div>
+
+        {finalizado && pontos.length > 0 && (
+          <div className="qsc-result">
+            <span className="qsc-bar">
+              <i style={{ width: `${nota}%` }} />
+            </span>
+            <ul className="qsc-pontos">
+              {pontos.map((pt) => (
+                <li key={pt}>{pt}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </aside>
+  );
+}
 
 const stepVariants = {
   enter: { opacity: 0, x: 44, filter: "blur(4px)" },
@@ -113,9 +229,11 @@ const stepVariants = {
 
 /**
  * QUIZ POR DIVISÃO — a porta de entrada consultiva de cada trilha.
- * Ouro: 3 perguntas leves, ritmo rápido. Platina: 4 perguntas de aplicação.
- * Transições com Motion; estilo herdado do data-tier da página. Sem preço:
- * o quiz termina agendando a consulta (Ouro) ou o diagnóstico (Platina).
+ * Ouro: 3 perguntas leves, ritmo rápido, card enxuto.
+ * Platina: 4 perguntas de aplicação COM o painel SCAN ao vivo (a experiência
+ * "Sua solução" integrada — radar, readout e índice de prontidão).
+ * Sem preço: o quiz termina agendando a consulta (Ouro) ou o diagnóstico
+ * (Platina). Ao concluir, o card recolhe 20% — o foco vira a próxima ação.
  */
 export default function TierQuiz({ tier }: { tier: Tier }) {
   const questions = QUESTIONS[tier];
@@ -167,8 +285,11 @@ export default function TierQuiz({ tier }: { tier: Tier }) {
 
   const atContact = step >= questions.length;
 
-  return (
-    <div className={`tq tq--${tier} card-1`} id="quiz">
+  const card = (
+    <div
+      className={`tq tq--${tier} card-1${status === "done" ? " is-done" : ""}`}
+      id="quiz"
+    >
       <div className="tq-top">
         <span className="tq-progress">{status === "done" ? "OK" : progress}</span>
         <span className="tq-track" aria-hidden="true">
@@ -209,16 +330,22 @@ export default function TierQuiz({ tier }: { tier: Tier }) {
             exit="exit"
           >
             <h3 className="tq-q">{questions[step].label}</h3>
-            <div className="tq-options">
-              {questions[step].options.map((opt) => (
+            <div className="tq-options quiz-options">
+              {questions[step].options.map((opt, oi) => (
                 <button
                   key={opt}
                   type="button"
-                  className={`tq-option${answers[questions[step].id] === opt ? " is-picked" : ""}`}
+                  className={`quiz-option${answers[questions[step].id] === opt ? " ativo" : ""}`}
+                  style={{ animationDelay: `${oi * 55}ms` }}
                   onClick={() => pick(questions[step], opt)}
                 >
-                  <i aria-hidden="true" />
-                  {opt}
+                  <span className="quiz-option-key" aria-hidden="true">
+                    {String.fromCharCode(65 + oi)}
+                  </span>
+                  <span className="quiz-option-label">{opt}</span>
+                  <span className="quiz-option-arrow" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </span>
                 </button>
               ))}
             </div>
@@ -243,13 +370,29 @@ export default function TierQuiz({ tier }: { tier: Tier }) {
           >
             <h3 className="tq-q">
               {tier === "ouro"
-                ? "Pra onde mandamos a consulta?"
-                : "Pra onde mandamos o diagnóstico?"}
+                ? "Para onde enviamos a consulta?"
+                : "Para onde enviamos o diagnóstico?"}
             </h3>
+
+            {/* readout do terminal: o que foi respondido (linguagem do SCAN) */}
+            <div className="quiz-readout tq-readout" aria-hidden="true">
+              {questions.map(
+                (q) =>
+                  answers[q.id] && (
+                    <span key={q.id} className="quiz-readout-line">
+                                            {q.resumo} <b>▸ {answers[q.id]}</b>
+                    </span>
+                  ),
+              )}
+            </div>
+
             <div className="tq-fields">
               <input
                 type="text"
                 placeholder="Seu nome"
+                aria-label="Seu nome"
+                autoComplete="name"
+                enterKeyHint="next"
                 value={nome}
                 maxLength={120}
                 onChange={(e) => setNome(e.target.value)}
@@ -257,6 +400,10 @@ export default function TierQuiz({ tier }: { tier: Tier }) {
               <input
                 type="tel"
                 placeholder="WhatsApp (com DDD)"
+                aria-label="WhatsApp com DDD"
+                autoComplete="tel"
+                inputMode="tel"
+                enterKeyHint="send"
                 value={tel}
                 maxLength={40}
                 onChange={(e) => setTel(e.target.value)}
@@ -301,4 +448,21 @@ export default function TierQuiz({ tier }: { tier: Tier }) {
       </AnimatePresence>
     </div>
   );
+
+  // Platina: card + painel SCAN lado a lado (mesma malha do antigo /solucao)
+  if (tier === "platina") {
+    return (
+      <div className="quiz-grid tq-duo">
+        {card}
+        <TierScan
+          questions={questions}
+          answers={answers}
+          step={step}
+          finalizado={atContact || status === "done"}
+        />
+      </div>
+    );
+  }
+
+  return card;
 }

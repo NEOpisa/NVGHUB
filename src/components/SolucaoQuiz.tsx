@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
 import {
   GlobeIcon,
@@ -62,6 +62,138 @@ const PERGUNTAS: Pergunta[] = [
 
 const TOTAL = PERGUNTAS.length;
 
+/* ── SCAN: nota de presença digital + furos, derivados das respostas ── */
+function diagnostico(r: Record<string, string>) {
+  const sit = r.situacao ?? "";
+  let nota = 50;
+  let pontos: string[] = [];
+  if (sit.startsWith("Não tenho nada")) {
+    nota = 24;
+    pontos = [
+      "Quem procura no Google não te encontra",
+      "Sem canal próprio — todo cliente depende de indicação",
+      "Concorrentes com site aparecem na sua frente",
+    ];
+  } else if (sit.startsWith("Tenho redes")) {
+    nota = 43;
+    pontos = [
+      "Instagram atrai, mas não converte sozinho",
+      "Invisível nas buscas locais do Google",
+      "Sem agendamento/pedido direto — venda escapa no direct",
+    ];
+  } else if (sit.startsWith("Já tenho site")) {
+    nota = 61;
+    pontos = [
+      "Site no ar ≠ site que converte",
+      "Velocidade e SEO deixando cliente na mesa",
+      "Atendimento manual segurando o crescimento",
+    ];
+  }
+  if (r.objetivo === "Vender online") nota = Math.max(12, nota - 5);
+  if (r.objetivo === "Automatizar e organizar o negócio") nota = Math.max(12, nota - 3);
+  return { nota, pontos };
+}
+
+/** contador animado da nota (ease-out cúbico) */
+function ScoreCount({ nota }: { nota: number }) {
+  const [v, setV] = useState(0);
+  useEffect(() => {
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - t0) / 1400);
+      setV(Math.round(nota * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [nota]);
+  return (
+    <span className="qsc-score-num">
+      {String(v).padStart(2, "0")}
+      <em>/100</em>
+    </span>
+  );
+}
+
+/** painel SCAN — HUD de diagnóstico ao vivo ao lado do quiz */
+function ScanPanel({
+  respostas,
+  passo,
+  finalizado,
+  nota,
+  pontos,
+}: {
+  respostas: Record<string, string>;
+  passo: number;
+  finalizado: boolean;
+  nota: number;
+  pontos: string[];
+}) {
+  const n = Object.keys(respostas).length;
+  return (
+    <aside className={`qsc${finalizado ? " is-final" : ""}`} aria-hidden="true">
+      <div className="qsc-frame card-2">
+        <header className="qsc-head">
+          <span className="qsc-tag">SCAN AO VIVO</span>
+          <span className={`qsc-status${finalizado ? " is-done" : ""}`}>
+            <i />
+            {finalizado
+              ? "ANÁLISE CONCLUÍDA"
+              : `COLETANDO ${String(passo + 1).padStart(2, "0")}/${String(TOTAL).padStart(2, "0")}`}
+          </span>
+        </header>
+
+        <div className="qsc-radar">
+          <span className="qsc-ring qsc-r1" />
+          <span className="qsc-ring qsc-r2" />
+          <span className="qsc-ring qsc-r3" />
+          <span className="qsc-cross" />
+          <span className="qsc-sweep" />
+          {Array.from({ length: n }, (_, i) => (
+            <span
+              key={i}
+              className="qsc-blip"
+              style={{ "--bi": i } as React.CSSProperties}
+            />
+          ))}
+          {finalizado && (
+            <span className="qsc-lock">
+              <ScoreCount nota={nota} />
+              <b>PRESENÇA DIGITAL</b>
+            </span>
+          )}
+        </div>
+
+        <div className="qsc-readout">
+          {PERGUNTAS.map((p) => (
+            <span
+              key={p.id}
+              className={`qsc-line${respostas[p.id] ? " is-on" : ""}`}
+            >
+              <i>{p.resumo.toLowerCase()}</i>
+              <b>{respostas[p.id] ?? "aguardando…"}</b>
+            </span>
+          ))}
+        </div>
+
+        {finalizado && (
+          <div className="qsc-result">
+            <span className="qsc-bar">
+              <i style={{ width: `${nota}%` }} />
+            </span>
+            <ul className="qsc-pontos">
+              {pontos.map((pt) => (
+                <li key={pt}>{pt}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </aside>
+  );
+}
+
 export default function SolucaoQuiz() {
   const headerRef = useRef<HTMLDivElement>(null);
   useReveal(headerRef);
@@ -87,12 +219,15 @@ export default function SolucaoQuiz() {
 
   // Deriva itens + recomendação + link do WhatsApp só quando as respostas
   // mudam, mantendo a referência estável de `itens` p/ o modal.
-  const { itens, waHref, respondidas } = useMemo(() => {
+  const { itens, waHref, respondidas, nota, pontos } = useMemo(() => {
     const respondidas = PERGUNTAS.filter((p) => respostas[p.id]);
+    const { nota, pontos } = diagnostico(respostas);
+    const completo = respondidas.length === TOTAL;
     const mensagemWA = [
       "Olá! Acabei de fazer o diagnóstico no site da Neovanguard.",
       "",
       ...respondidas.map((p) => `• ${p.resumo}: ${respostas[p.id]}`),
+      ...(completo ? ["", `Minha presença digital: ${nota}/100`] : []),
       "",
       "Quero montar a minha solução sob medida.",
     ].join("\n");
@@ -100,6 +235,8 @@ export default function SolucaoQuiz() {
       itens: respondidas.map((p) => ({ label: `${p.resumo}: ${respostas[p.id]}`, price: null })),
       waHref: `${WA}?text=${encodeURIComponent(mensagemWA)}`,
       respondidas,
+      nota,
+      pontos,
     };
   }, [respostas]);
 
@@ -109,15 +246,16 @@ export default function SolucaoQuiz() {
     <div id="diagnostico" className="comprar-part" aria-label="Diagnóstico sob medida">
       <div className="inner">
         <div ref={headerRef} className="quiz-head">
-          <span className="section-eyebrow">Sua solução</span>
+          <span className="section-eyebrow">Consulta rápida</span>
           <h1 className="section-heading">
             Vamos montar a <span className="text-accent-nvg">sua solução</span>
           </h1>
           <p className="section-sub">
-            Responda 3 perguntas rápidas e a gente já entende o seu momento — sem formulário gigante, sem compromisso.
+            Responda 3 perguntas rápidas e já entendemos o seu momento — sem formulário gigante, sem compromisso.
           </p>
         </div>
 
+        <div className="quiz-grid">
         <div className="quiz">
           <div className="quiz-progress" aria-hidden="true">
             <span className="quiz-progress-step">
@@ -193,8 +331,7 @@ export default function SolucaoQuiz() {
               <div className="quiz-readout" aria-hidden="true">
                 {respondidas.map((p) => (
                   <span key={p.id} className="quiz-readout-line">
-                    <i>{"// "}</i>
-                    {p.resumo.toLowerCase()} <b>▸ {respostas[p.id]}</b>
+                                        {p.resumo.toLowerCase()} <b>▸ {respostas[p.id]}</b>
                   </span>
                 ))}
               </div>
@@ -204,14 +341,14 @@ export default function SolucaoQuiz() {
                 <span className="quiz-rec-label">Próximo passo</span>
                 <span className="quiz-rec-name">Sua solução sob medida</span>
                 <p className="quiz-rec-why">
-                  Com base no que você respondeu, a gente desenha a solução ideal pro seu
+                  Com base no que você respondeu, desenhamos a solução ideal para o seu
                   momento — direto com você, no atendimento.
                 </p>
               </div>
 
               <p className="quiz-final-sub">
-                A gente fecha os detalhes com você no atendimento — no ritmo e no
-                orçamento que cabem no seu negócio. Bora conversar?
+                Fechamos os detalhes com você no atendimento — no ritmo e no
+                orçamento que cabem no seu negócio. Vamos conversar?
               </p>
 
               <div className="quiz-final-actions">
@@ -240,6 +377,15 @@ export default function SolucaoQuiz() {
             </div>
             </TiltCard>
           )}
+        </div>
+
+        <ScanPanel
+          respostas={respostas}
+          passo={Math.min(passo, TOTAL - 1)}
+          finalizado={finalizado}
+          nota={nota}
+          pontos={pontos}
+        />
         </div>
 
       </div>

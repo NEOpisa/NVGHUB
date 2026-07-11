@@ -4,16 +4,10 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
-import { WA, IG } from "@/lib/constants";
+import { WA, IG, ROUTES } from "@/lib/constants";
 import { getLenisInstance } from "@/lib/lenis";
 
-const ROUTES = [
-  { num: "RT_00", label: "Início", href: "/" },
-  { num: "RT_01", label: "Ouro", href: "/ouro" },
-  { num: "RT_02", label: "Platina", href: "/platina" },
-  { num: "RT_03", label: "Quem somos", href: "/sobre" },
-  { num: "RT_04", label: "Contato", href: "/contato" },
-];
+const MENU_ROUTES = ROUTES.filter((r) => r.menu !== false);
 
 const listVariants = {
   open: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
@@ -83,7 +77,7 @@ export default function MenuOverlay({
             animate="open"
             exit="closed"
           >
-            {ROUTES.map((r) => (
+            {MENU_ROUTES.map((r) => (
               <motion.div key={r.num} variants={rowVariants}>
                 <Link
                   href={r.href}

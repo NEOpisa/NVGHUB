@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import TierQuiz from "@/components/TierQuiz";
+import BismuthCrystal from "@/components/BismuthCrystal";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Platina — a parceria sob medida",
   description:
     "A divisão Platina da Neovanguard: um sistema completo de captação desenhado para o seu negócio, com diagnóstico profundo, resultado assumido e otimização contínua.",
-  alternates: { canonical: "/platina" },
-};
+  path: "/platina",
+});
 
 const SETUP = [
   "Site e landing de alta conversão",
@@ -60,6 +61,7 @@ export default function PlatinaPage() {
 
       {/* hero — statement espaçoso */}
       <section className="tp-hero tp-hero--platina">
+        <BismuthCrystal />
         <div className="tp-hero-card card-2">
           <span className="section-eyebrow">Divisão Platina · Parceria sob medida</span>
           <h1 className="tp-h1 tp-h1--serif">
@@ -78,7 +80,7 @@ export default function PlatinaPage() {
               </svg>
             </a>
           </div>
-          <p className="tp-trust">{"//"} vagas limitadas · atenção dedicada</p>
+          <p className="tp-trust">vagas limitadas · atenção dedicada</p>
         </div>
       </section>
 
@@ -145,7 +147,7 @@ export default function PlatinaPage() {
       <section className="tp-sec tp-sec--airy" aria-label="Aplicação para a Platina">
         <div className="tp-head card-2">
           <span className="section-eyebrow">A aplicação</span>
-          <h2 className="tp-h2 tp-h2--serif">Quatro perguntas. Um diagnóstico.</h2>
+          <h2 className="tp-h2 tp-h2--serif">Quatro perguntas. Um diagnóstico ao vivo.</h2>
         </div>
         <TierQuiz tier="platina" />
       </section>

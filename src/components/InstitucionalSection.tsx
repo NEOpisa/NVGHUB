@@ -9,7 +9,7 @@ const ETAPAS = [
     code: "ET_01",
     name: "Briefing",
     dur: "dia 0",
-    desc: "Uma conversa direta pra entender o negócio, o público e o que precisa acontecer. Sem formulário de 40 campos.",
+    desc: "Uma conversa direta para entender o negócio, o público e o que precisa acontecer. Sem formulário de 40 campos.",
   },
   {
     code: "ET_02",
@@ -71,23 +71,23 @@ export default function InstitucionalSection() {
         <div className="inst-manifesto" ref={manifestoRef}>
           <span className="section-eyebrow">Manifesto</span>
           <p className="inst-claim">
-            A gente não vende página bonita.{" "}
+            Não vendemos página bonita.{" "}
             <span className="text-accent-nvg">
-              Constrói a infraestrutura digital
+              Construímos a infraestrutura digital
             </span>{" "}
-            que um negócio pequeno precisa pra competir como um grande.
+            que um negócio pequeno precisa para competir como um grande.
           </p>
           <div className="inst-lines" aria-hidden="true">
-            <span>{"// "}pequeno no tamanho, grande na presença</span>
-            <span>{"// "}tecnologia que vira venda, não enfeite</span>
-            <span>{"// "}o combinado é o que vale</span>
+            <span>pequeno no tamanho, grande na presença</span>
+            <span>tecnologia que vira venda, não enfeite</span>
+            <span>o combinado é o que vale</span>
           </div>
         </div>
 
         {/* ── processo em 5 etapas ── */}
         <div className="inst-etapas" ref={etapasRef}>
           <div className="inst-etapas-head">
-            <span className="section-eyebrow">Como a gente trabalha</span>
+            <span className="section-eyebrow">Como trabalhamos</span>
             <h2 className="section-heading inst-h2">
               Do briefing ao ar em{" "}
               <span className="text-accent-nvg">5 etapas medidas</span>
