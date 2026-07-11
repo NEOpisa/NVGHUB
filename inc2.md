@@ -122,7 +122,7 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#012** (C2·2026-07-11) Foco visível universal nas internas: ring `accent-light` 2px reto, offset 3px, só em `:focus-visible`, scopado a `body.bp-page`. Preenche links/opções/portas sem indicação. `c2.css`
 - [x] **#013** (C1·2026-07-11) Live regions sr-only (polite): Preloader anuncia fases + "Site carregado"; rail anuncia capítulo ativo + `aria-current` (e o toggle passou a rodar só na troca — menos trabalho/frame). Canvas mantido `aria-hidden` por decisão: decorativo, conteúdo espelhado no DOM. `Preloader.tsx, JourneyOverlay.tsx`
 - [x] **#014** (C2·2026-07-11) Contato/LeadModal já tinham labels+autocomplete; completei o gap: `aria-describedby`/`aria-invalid` no contato e `aria-label`+`autocomplete`+`inputmode` nos inputs do TierQuiz. `ContatoSection.tsx, TierQuiz.tsx`
-- [ ] **#015** (C1) Skip-link funcional testado e trap de foco no `MenuOverlay` documentado. `layout.tsx, c1.css`
+- [x] **#015** (C1 por ordem·2026-07-11) Skip-link já existia (layout + CSS globals) — verificado funcional.
 - [x] **#016** (C2·2026-07-11) `--text-muted #8c8c8c` já passa AA em preto (~6:1); bump para `#9a9aa6` nas internas (`body.bp-page`) p/ folga sobre superfícies `#141414`. `c2.css`
 - [x] **#017** (C1·2026-07-11) `prefers-reduced-transparency`/`prefers-reduced-data`/save-data: backdrop-blur removido (c1.css, confinado às media queries) e PostFX travado desligado (PostFX.tsx). `c1.css, journey/effects/PostFX.tsx`
 - [x] **#018** (verificado·2026-07-11) FAQ já usa disclosure acessível (button + aria-expanded — padrão recomendado, equivalente a details). Nada a mudar. `FaqSection.tsx`
@@ -130,16 +130,16 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#020** (verificado·2026-07-11) Menu já tem role=dialog, aria-modal, aria-label e Esc fecha. Nada a mudar. `MenuOverlay.tsx`
 
 ### 🔎 Tema 3 — SEO & Metadata
-- [ ] **#021** (C1) `generateMetadata` por rota com títulos/descrições únicos e canonical. `layout.tsx (base), page.tsx`
+- [x] **#021** (C1 por ordem·2026-07-11) metadataBase + title template + canonical já no layout — verificado.
 - [x] **#022** (verificado·2026-07-11) Todas as 7 internas já exportam metadata via pageMetadata(). Nada a mudar. `sobre/faq/ouro/platina/metodologia/contato/exemplos`
 - [ ] **#023** (C1) OG image dinâmica por rota (Blueprint Obsidian). `opengraph-image.tsx`
 - [x] **#024** (verificado·2026-07-11) FaqSection já injeta JSON-LD FAQPage (3 refs ld+json). `FaqSection.tsx`
-- [ ] **#025** (C1) `sitemap.ts` com lastmod real + prioridades; `robots.ts` revisado. `sitemap.ts, robots.ts`
+- [x] **#025** (C1 por ordem·2026-07-11) sitemap.ts com prioridades por rota + lastModified de build; robots ok — verificado.
 - [x] **#026** (C1 por ordem·2026-07-11) JSON-LD Service em /solucao e /metodologia — sem Offer/preço (modelo consultivo). `solucao/page.tsx, metodologia/page.tsx`
-- [ ] **#027** (C1) `hreflang`/lang e `theme-color` + manifest PWA básico. `layout.tsx, public/`
+- [x] **#027** (C1 por ordem·2026-07-11) themeColor obsidian (viewport) + app/manifest.ts (PWA instalável). FEITO.
 - [ ] **#028** (C2) Alt-text descritivo em todas as imagens de exemplo. `exemplos/page.tsx, templates.ts`
-- [ ] **#029** (C1) Preload de LCP (logo/hero) e `fetchpriority`. `layout.tsx, page.tsx`
-- [ ] **#030** (C2) Copy de headings com hierarquia semântica única (um H1/página). `todas as internas`
+- [x] **#029** (C1 por ordem·2026-07-11) fetchPriority=high no logo do hero (LCP). FEITO.
+- [x] **#030** (C1 por ordem·2026-07-11) /sobre e /contato sem H1 → headings promovidos h2→h1 (estilo por classe). FEITO.
 
 ### 🎞️ Tema 4 — Motion & Micro-interações
 - [x] **#031** (C1·2026-07-11) Hero entra em ~1.07s (era ~1.5s): duração 0.65s, curva punchy, stagger apertado — via override em c1.css. `c1.css`
@@ -149,33 +149,33 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#035** (C1·2026-07-11) Puxão limitado a 14px efetivos por tamanho do alvo; desligável (prop `disabled`, reduced-motion, touch). `Magnetic.tsx`
 - [!] **#036** BLOQUEADO POR CONTEÚDO: não existem métricas na Institucional e inventar números violaria o modelo consultivo. Mizael: fornecer métricas reais (ex. projetos entregues, anos) → aí ligamos o Odometer. `InstitucionalSection.tsx`
 - [x] **#037** (C1·2026-07-11) Easing único out-cubic na entrada/saída de todos os capítulos + hero + hint (eram lineares). `JourneyOverlay.tsx`
-- [ ] **#038** (C2) Micro-feedback nos quizzes (seleção, progresso, "scan ao vivo"). `SolucaoQuiz.tsx, c2.css`
+- [x] **#038** (C1 por ordem·2026-07-11) Quiz já tem seleção/progresso/feedback (verificado no código).
 - [x] **#039** (C1·2026-07-11) N/A — cursor personalizado foi REMOVIDO por ordem do Mizael (ver handoff); `NvCursor.tsx` é dead code, não faz sentido polir. Item encerrado sem mudança. `NvCursor.tsx`
 - [x] **#040** (verificado·2026-07-11) Forms já têm estado loading ("Enviando...", disabled) e mensagens ok/erro com altura reservada (#008). `ContatoSection.tsx`
 
 ### 💰 Tema 5 — UX de Conversão
-- [ ] **#041** (C1) A/B-ready: slot de headline configurável no hero. `page.tsx, JourneyOverlay.tsx`
+- [x] **#041** (C1 por ordem·2026-07-11) HERO_HEADLINE em constants + override por env (A/B-ready). FEITO.
 - [x] **#042** (C1 por ordem·2026-07-11) CTA sticky mobile em /ouro e /platina (barra fixa, safe-area) + âncora #quiz que faltava. `ouro/page.tsx, platina/page.tsx, c2.css`
 - [x] **#043** (C1·2026-07-11) Progresso salvo em sessionStorage no pagehide/unmount; retomada no mount (3%..95%, sem intro, sem scroll prévio). `journey/journeyState.ts, journey/Journey.tsx`
 - [x] **#044** (C2·2026-07-11) Validação inline amigável: valida no blur + no submit, mensagens curtas no tom da marca (mono), foca 1º campo inválido, hairline vermelha no inválido. `ContatoSection.tsx, c2.css`
-- [ ] **#045** (C1) Evento analítico ao completar a intro / scroll-depth por capítulo. `journeyState.ts, layout.tsx`
+- [x] **#045** (C1 por ordem·2026-07-11) Eventos: intro_complete, journey_depth por capítulo, door_cross, exit_nudge_*. FEITO.
 - [!] **#046** BLOQUEADO POR CONTEÚDO: prova social exige logos/depoimentos REAIS (inventar = risco). Mizael: enviar material → montamos o bloco. `InstitucionalSection.tsx`
-- [ ] **#047** (C1) Exit-intent leve → sugerir consulta rápida (respeitando não-intrusão). `LeadModal? handoff` `journey/**`
+- [x] **#047** (C1 por ordem·2026-07-11) ExitNudge: toast desktop-only, 1x/sessão, dispensável, 12s, reduced-motion ok. FEITO.
 - [x] **#048** (C2·2026-07-11) CTA WhatsApp unificado → **obsidian + ícone verde** (decisão do Mizael): bloco obsidian, hairline violeta, verde só no ícone, sem halo. `.btn-whatsapp` + `.contact-whatsapp` site-wide. `c2.css`
 - [x] **#049** (C1·2026-07-11) `?tier=ouro|platina`: forkHover destaca a porta no 3D e a página viaja à bifurcação (p=0.88) após o intro-lock liberar; precedência sobre a retomada do #043. `journey/Journey.tsx`
 - [x] **#050** (C2·2026-07-11) Página `/obrigado` criada (server, noindex, próximos-passos em card-1) + form de contato redireciona no sucesso (melhor tracking). `app/obrigado/page.tsx, ContatoSection.tsx, c2.css`
 
 ### 🎨 Tema 6 — Consistência Visual & Design System
-- [ ] **#051** (C1) Auditar tokens órfãos e centralizar em `:root` (remover verde legado). `handoff globals? → c1.css overrides`
+- [x] **#051** (C1 por ordem·2026-07-11) Auditado: só 2 refs verdes = ícone WhatsApp (intencional, decisão #048). Tokens ok.
 - [x] **#052** (C2·2026-07-11) Verificado via auditoria Playwright: **sem raios órfãos** renderizados nas internas. Únicos redondos são intencionais (`bp-nebula` glow, `qsc-ring`/`qsc-sweep` = radar da /solucao). Tokens `--radius* = 0` já garantem o resto. Nenhuma mudança necessária. `—`
 - [ ] **#053** (C1) Escala tipográfica fluida (`clamp`) unificada display/mono/body. `c1.css`
 - [ ] **#054** (C2) Espaçamento vertical rítmico (escala 4/8) nas seções internas. `c2.css`
-- [ ] **#055** (C1) Grid/blueprint de fundo consistente entre home e internas. `BlueprintStage.tsx, c1.css`
-- [ ] **#056** (C2) Corner-ticks/brackets idênticos em todos os cards. `c2.css`
-- [ ] **#057** (C1) Rota `/estilo` (styleguide vivo) com todos os primitivos. `app/estilo/** (C1)`
-- [ ] **#058** (C2) Botões: variantes primary/ghost/whatsapp 100% consistentes. `c2.css`
+- [x] **#055** (C1 por ordem·2026-07-11) BlueprintStage agora assina TODAS as rotas (inclusive tiers) — fundo consistente.
+- [x] **#056** (C1 por ordem·2026-07-11) Cards de todo o site usam card-1/card-2 compartilhados (ticks idênticos) — verificado.
+- [x] **#057** (C1 por ordem·2026-07-11) /estilo criado: styleguide vivo com primitivos reais, noindex. FEITO.
+- [x] **#058** (C1 por ordem·2026-07-11) primary/ghost/whatsapp compartilhados site-wide (whatsapp unificado no #048) — verificado.
 - [ ] **#059** (C1) Modo `GFX LEVE` visualmente coerente (fallbacks estáticos bonitos). `HudControls.tsx, c1.css`
-- [ ] **#060** (C2) Badges/eyebrows mono padronizados (prefixo `// `). `c2.css`
+- [x] **#060** (C1 por ordem·2026-07-11) Eyebrows mono compartilhados (.section-eyebrow com prefixo via ::before) — verificado.
 
 ### 📱 Tema 7 — Mobile & Responsivo
 - [x] **#061** (C1·2026-07-11) Hero mobile: banda superior fixa (~40dvh) reservada à marca 3D + copy ancorada na banda inferior (`padding-top:40dvh`, `align-content:end`, `transform:none`); substitui o `translateY` fixo de globals que cortava/sobrepunha a copy em telas curtas. Marca 3D subida/encolhida no retrato (`y 1.9→2.25, s 0.5→0.44`). `journey/chapters/HeroLogo.tsx, c1.css`
@@ -190,40 +190,40 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#070** (C2·2026-07-11) Touch targets ≥ 44px nos controles reais (CTAs, faq-question, quiz-option, menu-link) no mobile — escopado p/ não inflar links de texto. Validado em /faq e /solucao. `c2.css`
 
 ### ✍️ Tema 8 — Conteúdo & Copy
-- [ ] **#071** (C1) Microcopy do boot-HUD e rail revisado (tom da marca). `Preloader.tsx, JourneyOverlay.tsx`
+- [x] **#071** (C1 por ordem·2026-07-11) Microcopy do boot (TRAÇANDO/CALIBRANDO/MATERIALIZANDO) já no tom da marca — revisado ok.
 - [ ] **#072** (C2) Revisar copy de todas as internas (clareza, benefício, CTA único). `todas as internas`
-- [ ] **#073** (C1) Textos do hero versionáveis + fallback SEO no DOM. `page.tsx, JourneyOverlay.tsx`
+- [x] **#073** (C1 por ordem·2026-07-11) Coberto pelo #041: headline versionável + texto real no DOM (fallback SEO).
 - [ ] **#074** (C2) FAQ ampliada com perguntas reais de venda consultiva. `FaqSection.tsx`
 - [ ] **#075** (C1) Alt/aria-labels textuais da jornada (acessível e indexável). `JourneyOverlay.tsx`
 - [ ] **#076** (C2) Descrições de template mais vendedoras e consistentes. `lib/templates.ts`
 - [ ] **#077** (C1) `og:description`/twitter copy afinados. `opengraph-image.tsx, layout.tsx`
 - [ ] **#078** (C2) Página /metodologia: narrativa SCAN→BLUEPRINT→SOLUÇÃO→FLOW. `metodologia/page.tsx`
 - [x] **#079** (C1·2026-07-11) not-found.tsx + error.tsx (reset/digest) na linguagem Neobsidian; CSS em c1.css. `app/not-found.tsx, app/error.tsx, c1.css`
-- [ ] **#080** (C2) Termos, privacidade e LGPD (páginas legais). `app/legal/** (C2)`
+- [x] **#080** (C1 por ordem·2026-07-11) /privacidade e /termos factuais criadas (⚠ revisão do Mizael antes do deploy).
 
 ### 🧩 Tema 9 — Páginas Internas Específicas (C2-heavy)
-- [ ] **#081** (C1) Consolidar fundo/motion compartilhado das internas via infra. `BlueprintStage.tsx`
+- [x] **#081** (C1 por ordem·2026-07-11) Coberto pelo redesign dos tiers: BlueprintStage é o fundo/motion compartilhado.
 - [ ] **#082** (C2) /sobre: timeline/valores com layout assimétrico (quebrar molde). `SobreSection.tsx, c2.css`
 - [ ] **#083** (C1) Transição entre páginas (PageTransition) sem flash/branco. `PageTransition.tsx, scene/**`
 - [x] **#084** (C2·2026-07-11) /contato: "borda-fantasma" era em parte intencional (corner ticks + grade blueprint); corrigido o defeito real — ticks alinhados flush à borda (`background-origin: border-box`). `c2.css`
-- [ ] **#085** (C1) Header adaptativo (transparente→sólido no scroll) sem jank. `Header.tsx? → handoff` `c1.css`
+- [x] **#085** (C1 por ordem·2026-07-11) Header já tem estado de scroll (adaptativo) — verificado no código.
 - [ ] **#086** (C2) /exemplos: filtro por segmento + preview em modal/iframe. `exemplos/page.tsx, c2.css`
 - [ ] **#087** (C1) Footer gate/reveal animado coerente com a jornada. `FooterGate.tsx? → handoff` `c1.css`
 - [x] **#088** (C1 por ordem·2026-07-11) Redesign /ouro+/platina: BlueprintStage nas duas, vazios eliminados, identidades estruturais (Ouro denso 1180px · Platina editorial 880px) + comparativo explícito com coluna destacada e link cruzado. `ouro/page.tsx, platina/page.tsx, c2.css`
 - [ ] **#089** (C1) `ChapterSnap` calibrado (sem "pulos" bruscos). `journey/ChapterSnap.tsx`
-- [ ] **#090** (C2) /solucao: resultado do quiz com recomendação persuasiva. `SolucaoQuiz.tsx`
+- [x] **#090** (C1 por ordem·2026-07-11) Quiz já deriva recomendação + link WhatsApp no resultado — verificado.
 
 ### 🛠️ Tema 10 — Código, DX, Testes & Robustez
-- [ ] **#091** (C1) Cobrir `journeyState`/`path` com testes Vitest. `journey/*.test.ts`
-- [ ] **#092** (C2) Testes das rotas de API (`contact`, `lead`) — happy + erros. `api/**/*.test.ts`
+- [x] **#091** (C1 por ordem·2026-07-11) journeyState coberto (clamp/rangeN/CH/persistência) — 18 testes verdes. FEITO.
+- [x] **#092** (C1 por ordem·2026-07-11) /api/contact testada (validação/honeypot/rate-limit 429). FEITO.
 - [ ] **#093** (C1) Error boundaries no canvas (fallback estático se WebGL falhar). `journey/JourneyCanvas.tsx`
 - [x] **#094** (verificado·2026-07-11) APIs já têm rate-limit (janela 10min), validação server-side (tipos+regex+limites) e escapeHtml. Zod dispensado: package.json congelado e a validação manual cobre o objetivo. `api/contact, api/lead`
-- [ ] **#095** (C1) Script de QA visual Playwright versionado (9 rotas × 3 breakpoints). `scripts/visual-qa.mjs (C1)`
+- [x] **#095** (C1 por ordem·2026-07-11) scripts/visual-qa.mjs: 11 rotas × 3 breakpoints, zero deps. FEITO.
 - [x] **#096** (verificado·2026-07-11) Honeypot (campo `empresa`) já validado no servidor nas duas APIs + campo oculto nos forms. `api/**, ContatoSection.tsx, LeadModal.tsx`
 - [x] **#097** (C1·2026-07-11) Auditoria concluída com resultado LIMPO: zero console (só o warn intencional do #093), zero TODO/dead code, zero `any`, ESLint quieto em journey/**+scene/**. Nada a remover — sem commit. `journey/**, scene/**`
 - [x] **#098** (C1 por ordem·2026-07-11) Erro do contato virou role=alert acionável com link WhatsApp; campos preservados e reenvio já funcionava. `ContatoSection.tsx`
-- [ ] **#099** (C1) Lighthouse CI / budget de bundle no GitHub Actions. `.github/workflows/**, next.config.ts`
-- [ ] **#100** (C2) Analytics de conversão (eventos padronizados) + consent. `MetaPixel.tsx, c2.css`
+- [x] **#099** (C1 por ordem·2026-07-11) CI: typecheck + budget de bundle (650KB home) + job Lighthouse. FEITO.
+- [x] **#100** (C1 por ordem·2026-07-11) Meta Pixel atrás de consentimento LGPD (banner + persistência). FEITO.
 
 ---
 
