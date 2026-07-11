@@ -211,8 +211,13 @@ export default function ContatoSection() {
               </div>
             )}
             {status === "err" && (
-              <div className="form-message error">
-                {errorMsg} Tente novamente ou fale pelo WhatsApp.
+              <div className="form-message error" role="alert">
+                {/* #098 · erro acionável: caminho alternativo a um toque */}
+                {errorMsg} Tente novamente ou{" "}
+                <a href={WA} target="_blank" rel="noopener noreferrer">
+                  fale pelo WhatsApp
+                </a>
+                .
               </div>
             )}
 

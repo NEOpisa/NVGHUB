@@ -197,6 +197,7 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
                   name="email"
                   placeholder="seu@email.com"
                   autoComplete="email"
+                  inputMode="email"
                   value={form.email}
                   onChange={handleChange}
                 />
@@ -210,6 +211,8 @@ export default function LeadModal({ open, onClose, origem, tipo, itens, valor }:
                   name="telefone"
                   placeholder="(21) 99999-9999"
                   autoComplete="tel"
+                  inputMode="tel"
+                  enterKeyHint="send"
                   value={form.telefone}
                   onChange={handleChange}
                 />
