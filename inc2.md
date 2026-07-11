@@ -111,11 +111,11 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#003** (C1·2026-07-11) Qualidade adaptativa mais agressiva no mobile: Particles −45% em <768px/touch; PostFX com guardião de fps (desliga <~60fps sustentado, não reativa); AdaptiveQuality piso DPR 0.55 + degradação >12.5ms. `journey/effects/Particles.tsx, journey/effects/PostFX.tsx, journey/AdaptiveQuality.tsx`
 - [ ] **#004** (C2) Converter thumbnails de template para AVIF/WebP e servir responsivo. `public/templates/**, exemplos/page.tsx`
 - [x] **#005** (C1·2026-07-11) Teto do failsafe do Preloader POR DEVICE: 1.8s em mobile/save-data/deviceMemory<4/≤4 cores, 2.6s no resto. Fontes já são `next/font` (preload/self-host automático, sem CDN a preconectar) — nada a mudar em layout.tsx. `Preloader.tsx`
-- [ ] **#006** (C2) Code-split dos quizzes pesados (`SolucaoQuiz`, `TierQuiz`) via dynamic import. `solucao/page.tsx, ouro/page.tsx, platina/page.tsx`
+- [x] **#006** (C1 por ordem·2026-07-11) Quizzes fora do chunk inicial via next/dynamic em /solucao, /ouro, /platina. `solucao/page.tsx, ouro/page.tsx, platina/page.tsx`
 - [x] **#007** (C1·2026-07-11) `content-visibility:auto` + `contain-intrinsic-size:70vh` nas seções do modo estático (`.jy-static .jy-sec`, empilhadas em fluxo) — pula render das fora de tela. No modo GL ficam em inset:0, não se aplica. `c1.css`
 - [x] **#008** (C2·2026-07-11) CLS zero: `.field-error` reserva altura fixa (`min-height`) sempre, aparece só com fade. `ContatoSection.tsx, c2.css`
 - [ ] **#009** (C1) Auditar e remover `three`/drei não usados; tree-shake de geometrias. `journey/**, scene/**`
-- [ ] **#010** (C2) Prefetch inteligente das rotas internas ao hover do menu. `MenuOverlay.tsx, Header.tsx`
+- [x] **#010** (C1 por ordem·2026-07-11) Menu com prefetch={false} + router.prefetch no hover/focus (intenção real, poupa dados). `MenuOverlay.tsx`
 
 ### ♿ Tema 2 — Acessibilidade (A11y)
 - [x] **#011** (C1·2026-07-11) reduced-motion: guarda na chuva (ObsidianRain) + neutralização do sweep das scanlines (`c1.css`). Scatter (LetterScatter) já respeitava; NvCursor removido por ordem do Mizael (handoff). `ObsidianRain.tsx, LetterScatter.tsx, c1.css`
@@ -125,13 +125,13 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [ ] **#015** (C1) Skip-link funcional testado e trap de foco no `MenuOverlay` documentado. `layout.tsx, c1.css`
 - [x] **#016** (C2·2026-07-11) `--text-muted #8c8c8c` já passa AA em preto (~6:1); bump para `#9a9aa6` nas internas (`body.bp-page`) p/ folga sobre superfícies `#141414`. `c2.css`
 - [x] **#017** (C1·2026-07-11) `prefers-reduced-transparency`/`prefers-reduced-data`/save-data: backdrop-blur removido (c1.css, confinado às media queries) e PostFX travado desligado (PostFX.tsx). `c1.css, journey/effects/PostFX.tsx`
-- [ ] **#018** (C2) FAQ como `<details>`/disclosure acessível com `aria-expanded`. `FaqSection.tsx`
+- [x] **#018** (verificado·2026-07-11) FAQ já usa disclosure acessível (button + aria-expanded — padrão recomendado, equivalente a details). Nada a mudar. `FaqSection.tsx`
 - [x] **#019** (C1·2026-07-11) Rail com roving tabindex (setas/Home/End; tab-stop segue o capítulo ativo sem roubar foco); portas Ouro/Platina com Enter/Space + setas entre elas. `JourneyOverlay.tsx`
-- [ ] **#020** (C2) `role`/`aria` corretos no menu overlay + `Esc` para fechar. `MenuOverlay.tsx, Header.tsx`
+- [x] **#020** (verificado·2026-07-11) Menu já tem role=dialog, aria-modal, aria-label e Esc fecha. Nada a mudar. `MenuOverlay.tsx`
 
 ### 🔎 Tema 3 — SEO & Metadata
 - [ ] **#021** (C1) `generateMetadata` por rota com títulos/descrições únicos e canonical. `layout.tsx (base), page.tsx`
-- [ ] **#022** (C2) Metadata dedicada por página interna (sobre, ouro, platina, faq…). `sobre/page.tsx …`
+- [x] **#022** (verificado·2026-07-11) Todas as 7 internas já exportam metadata via pageMetadata(). Nada a mudar. `sobre/faq/ouro/platina/metodologia/contato/exemplos`
 - [ ] **#023** (C1) OG image dinâmica por rota (Blueprint Obsidian). `opengraph-image.tsx`
 - [ ] **#024** (C2) JSON-LD `FAQPage` na /faq e `BreadcrumbList` nas internas. `FaqSection.tsx, faq/page.tsx`
 - [ ] **#025** (C1) `sitemap.ts` com lastmod real + prioridades; `robots.ts` revisado. `sitemap.ts, robots.ts`
