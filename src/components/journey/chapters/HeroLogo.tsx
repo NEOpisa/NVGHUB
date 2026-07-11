@@ -55,6 +55,9 @@ export default function HeroLogo() {
   );
   // deslocamento de QUEBRA por caco (persegue o alvo com mola)
   const shatter = useRef<Float32Array | null>(null);
+  // #033 · parallax posicional (damped) do conjunto contra o ponteiro
+  const parX = useRef(0);
+  const parY = useRef(0);
 
   // plano de clipping da materialização (mantém y <= constant, em mundo)
   const clipPlane = useMemo(
@@ -290,7 +293,27 @@ export default function HeroLogo() {
     pos.current.z += (target.z - pos.current.z) * k;
 
     const dep = rangeN(sm, 0.055, 0.19);
-    g.position.set(pos.current.x, pos.current.y, pos.current.z + dep * 2.5);
+    // #033 · parallax posicional sutil: o conjunto deriva levemente CONTRA o
+    // ponteiro (sensação de profundidade vs. o grid ao fundo). Só fora da
+    // intro e com a marca montada; damp para não vibrar.
+    const par = intro.active ? 0 : rangeN(build.current, 0.9, 1);
+    parX.current = THREE.MathUtils.damp(
+      parX.current,
+      -state.pointer.x * 0.14 * par,
+      4,
+      dt,
+    );
+    parY.current = THREE.MathUtils.damp(
+      parY.current,
+      state.pointer.y * 0.09 * par,
+      4,
+      dt,
+    );
+    g.position.set(
+      pos.current.x + parX.current,
+      pos.current.y + parY.current,
+      pos.current.z + dep * 2.5,
+    );
     g.scale.setScalar(pos.current.s);
 
     // olhar: TURNTABLE 3D durante a intro (o volume se revela girando);
