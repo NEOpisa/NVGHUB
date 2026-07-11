@@ -147,7 +147,7 @@ export default function PlatinaPage() {
       </section>
 
       {/* aplicação Platina — o quiz profundo */}
-      <section className="tp-sec tp-sec--airy" aria-label="Aplicação para a Platina">
+      <section id="quiz" className="tp-sec tp-sec--airy" aria-label="Aplicação para a Platina">
         <div className="tp-head card-2">
           <span className="section-eyebrow">A aplicação</span>
           <h2 className="tp-h2 tp-h2--serif">Quatro perguntas. Um diagnóstico ao vivo.</h2>
@@ -173,6 +173,13 @@ export default function PlatinaPage() {
           </a>
         </div>
       </section>
+
+      {/* #042 · CTA primário sticky (só mobile, via c2.css) */}
+      <div className="tp-sticky-cta" aria-hidden="false">
+        <a href="#quiz" className="btn-primary">
+          Agendar diagnóstico
+        </a>
+      </div>
     </main>
   );
 }

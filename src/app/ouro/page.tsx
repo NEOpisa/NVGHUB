@@ -141,7 +141,7 @@ export default function OuroPage() {
       </section>
 
       {/* quiz Ouro — a porta de entrada */}
-      <section className="tp-sec" aria-label="Quiz de qualificação Ouro">
+      <section id="quiz" className="tp-sec" aria-label="Quiz de qualificação Ouro">
         <div className="tp-head card-2">
           <span className="section-eyebrow">Comece aqui</span>
           <h2 className="tp-h2">Três perguntas. Consulta marcada.</h2>
@@ -167,6 +167,13 @@ export default function OuroPage() {
           </Link>
         </div>
       </section>
+
+      {/* #042 · CTA primário sticky (só mobile, via c2.css) */}
+      <div className="tp-sticky-cta" aria-hidden="false">
+        <a href="#quiz" className="btn-primary">
+          Começar as 3 perguntas
+        </a>
+      </div>
     </main>
   );
 }

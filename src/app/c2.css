@@ -225,3 +225,36 @@ body.bp-page {
         gap: 14px;
     }
 }
+
+/* ══ #042 · CTA primário sticky nas páginas de oferta (só mobile) ═══════
+   Barra fixa no rodapé de /ouro e /platina em telas estreitas: o próximo
+   passo está sempre a um toque, sem caçar o CTA no fim da página. Some no
+   desktop (o layout já expõe os CTAs). */
+.tp-sticky-cta {
+    display: none;
+}
+@media (max-width: 640px) {
+    .tp-sticky-cta {
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        padding: 10px max(14px, env(safe-area-inset-left))
+            max(10px, env(safe-area-inset-bottom));
+        background: linear-gradient(180deg, transparent, rgba(4, 3, 9, 0.92) 30%);
+        pointer-events: none;
+    }
+    .tp-sticky-cta .btn-primary {
+        pointer-events: auto;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+    /* a última seção respira acima da barra */
+    .tp main > section:last-of-type,
+    .tp .tp-sec:last-of-type {
+        padding-bottom: 84px;
+    }
+}
