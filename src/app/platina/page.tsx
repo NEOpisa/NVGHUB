@@ -1,4 +1,6 @@
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import BlueprintStage from "@/components/BlueprintStage";
 import BismuthCrystal from "@/components/BismuthCrystal";
 import { pageMetadata } from "@/lib/seo";
 
@@ -60,6 +62,8 @@ const PASSOS = [
 export default function PlatinaPage() {
   return (
     <main id="main" data-tier="platina" className="tp tp-platina">
+      {/* fundo blueprint — mesma assinatura das demais internas */}
+      <BlueprintStage code="divisão platina" index="B2" />
       <span className="bp-grid tp-grid" aria-hidden="true" />
 
       {/* hero — statement espaçoso */}
@@ -142,6 +146,35 @@ export default function PlatinaPage() {
               <h3>{p.title}</h3>
               <p>{p.desc}</p>
             </article>
+          ))}
+        </div>
+      </section>
+
+      {/* #088 · comparativo claro: o que muda do Ouro para a Platina */}
+      <section className="tp-sec tp-sec--airy" aria-label="Comparativo Ouro e Platina">
+        <div className="tp-head card-2">
+          <span className="section-eyebrow">As duas divisões</span>
+          <h2 className="tp-h2 tp-h2--serif">Do produto à <em>parceria</em>.</h2>
+        </div>
+        <div className="tp-compare card-1" role="table" aria-label="Ouro versus Platina">
+          <div className="tp-compare-row tp-compare-head" role="row">
+            <span role="columnheader" className="tpc-attr" aria-hidden="true" />
+            <span role="columnheader" className="tpc-col">
+              <Link href="/ouro" className="tpc-link">Ouro</Link>
+            </span>
+            <span role="columnheader" className="tpc-col is-here">Platina · você está aqui</span>
+          </div>
+          {[
+            ["Formato", "Produto com escopo claro", "Parceria sob medida, operada"],
+            ["Ritmo", "Entrega em até 16 dias úteis", "Evolução contínua, mês a mês"],
+            ["Consulta", "Objetiva — 20 a 30 minutos", "Diagnóstico profundo ao vivo"],
+            ["Resultado", "Presença digital no ar", "Máquina de captação completa"],
+          ].map(([attr, ouro, platina]) => (
+            <div key={attr} className="tp-compare-row" role="row">
+              <span role="rowheader" className="tpc-attr">{attr}</span>
+              <span role="cell" className="tpc-col">{ouro}</span>
+              <span role="cell" className="tpc-col is-here">{platina}</span>
+            </div>
           ))}
         </div>
       </section>
