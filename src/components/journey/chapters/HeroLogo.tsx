@@ -21,7 +21,9 @@ import { journey, rangeN } from "../journeyState";
 
 // posição da marca na composição do hero (paisagem / retrato)
 const HERO_POS = { x: 3.1, y: 0.15, s: 0.92 };
-const HERO_POS_PORTRAIT = { x: 0, y: 1.9, s: 0.5 };
+// retrato: marca mais alta e menor p/ caber na banda superior (~40dvh) e
+// liberar a metade de baixo para a copy sem sobreposição (#061)
+const HERO_POS_PORTRAIT = { x: 0, y: 2.25, s: 0.44 };
 // posição durante a intro: centro da tela
 const INTRO_POS = { x: 0, y: 0.1, s: 0.62 };
 // respiração dos cacos (drift do loop antigo)
@@ -32,7 +34,11 @@ const LOGO_MIN_Y = -2.5;
 const LOGO_MAX_Y = 2.45;
 
 const _wp = new THREE.Vector3();
+const _chunkW = new THREE.Vector3();
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+// SHATTER por proximidade do ponteiro: raio (mundo) e força do estouro
+const SHATTER_RADIUS = 1.6;
+const SHATTER_AMT = 1.15;
 
 export default function HeroLogo() {
   const root = useRef<THREE.Group>(null);
@@ -47,6 +53,8 @@ export default function HeroLogo() {
   const pos = useRef(
     intro.active ? { ...INTRO_POS, z: 0.8 } : { ...HERO_POS, z: 0 },
   );
+  // deslocamento de QUEBRA por caco (persegue o alvo com mola)
+  const shatter = useRef<Float32Array | null>(null);
 
   // plano de clipping da materialização (mantém y <= constant, em mundo)
   const clipPlane = useMemo(
@@ -61,7 +69,7 @@ export default function HeroLogo() {
         color: "#eef0ff",
         metalness: 1.0,
         roughness: 0.1,
-        emissive: new THREE.Color("#dd3bc8"),
+        emissive: new THREE.Color("#6c5cff"),
         emissiveIntensity: 0.06,
         envMapIntensity: 1.6,
         clearcoat: 1,
@@ -73,10 +81,10 @@ export default function HeroLogo() {
         clippingPlanes: [clipPlane],
       });
       const purpleMat = new THREE.MeshPhysicalMaterial({
-        color: "#dd3bc8",
+        color: "#6c5cff",
         metalness: 0.92,
         roughness: 0.14,
-        emissive: new THREE.Color("#f076e0"),
+        emissive: new THREE.Color("#9d8cff"),
         emissiveIntensity: 0.9,
         envMapIntensity: 1.8,
         clearcoat: 1,
@@ -87,7 +95,7 @@ export default function HeroLogo() {
         clippingPlanes: [clipPlane],
       });
       const haloMat = new THREE.MeshBasicMaterial({
-        color: "#f076e0",
+        color: "#9d8cff",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -96,7 +104,7 @@ export default function HeroLogo() {
       });
       // juntas luminosas sobre o metal (as "seams" do igloo)
       const seamMat = new THREE.LineBasicMaterial({
-        color: "#fbc6f0",
+        color: "#cfc4ff",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -193,7 +201,7 @@ export default function HeroLogo() {
     // clipping em espaço de MUNDO: acompanha posição/escala do grupo
     const rg = realGroup.current;
     if (rg) {
-      rg.visible = fill > 0.002;
+      rg.visible = fill > 0.002 || build.current > 0.55;
       rg.getWorldPosition(_wp);
       const s = pos.current.s;
       clipPlane.constant =
@@ -208,6 +216,34 @@ export default function HeroLogo() {
       // juntas de luz do metal: acendem com a materialização e respiram
       seamMat.opacity = fill * (0.14 + breathe * 0.14) + flash * 0.25;
 
+      // CONVERGÊNCIA da intro: os cacos voam de longe e se encaixam
+      // enquanto o scan revela o metal (spread → 0 no fim do build)
+      const spread = Math.pow(1 - rangeN(build.current, 0.66, 1), 1.6) * 6;
+
+      // SHATTER no ponteiro: raycast contra os cacos; os próximos ao ponto
+      // de impacto estouram para fora e voltam com mola ao sair
+      if (!shatter.current || shatter.current.length !== meshes.length)
+        shatter.current = new Float32Array(meshes.length);
+      const sh = shatter.current;
+      let hitPoint: THREE.Vector3 | null = null;
+      if (fill > 0.9 && spread < 0.01 && scatter < 0.05) {
+        state.raycaster.setFromCamera(state.pointer, state.camera);
+        const hits = state.raycaster.intersectObjects(meshes, false);
+        if (hits.length) hitPoint = hits[0].point;
+      }
+      for (let i = 0; i < meshes.length; i++) {
+        let target = 0;
+        if (hitPoint) {
+          meshes[i].getWorldPosition(_chunkW);
+          const d = _chunkW.distanceTo(hitPoint);
+          const infl = clamp01(1 - d / SHATTER_RADIUS);
+          target = infl * infl * SHATTER_AMT;
+        }
+        // ataque rápido (estoura na hora), retorno mais lento (mola)
+        const rate = target > sh[i] ? 14 : 5.5;
+        sh[i] = THREE.MathUtils.damp(sh[i], target, rate, dt);
+      }
+
       for (let i = 0; i < meshes.length; i++) {
         const c = chunks[i];
         const drift =
@@ -215,10 +251,18 @@ export default function HeroLogo() {
           LOOP_AMT *
           (0.8 + (i % 3) * 0.15) *
           loopAmp;
+        const off = drift + spread * (1 + (i % 4) * 0.35) + sh[i];
         meshes[i].position.set(
-          c.pivot.x + c.dir.x * drift,
-          c.pivot.y + c.dir.y * drift,
-          c.pivot.z + c.dir.z * drift,
+          c.pivot.x + c.dir.x * off,
+          c.pivot.y + c.dir.y * off,
+          c.pivot.z + c.dir.z * off,
+        );
+        // tomba em voo (intro) e ao quebrar (hover) — zera encaixado
+        const tumble = spread * 0.35 + sh[i] * 0.5;
+        meshes[i].rotation.set(
+          c.dir.y * tumble,
+          c.dir.x * tumble,
+          c.dir.z * tumble * 0.6,
         );
       }
     }
@@ -299,9 +343,9 @@ export default function HeroLogo() {
         size={2.2}
         speed={0.28}
         opacity={0.35}
-        color="#f076e0"
+        color="#9d8cff"
       />
-      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#dd3bc8" />
+      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#6c5cff" />
     </group>
   );
 }

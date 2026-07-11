@@ -1,0 +1,33 @@
+/* ══════════════════════════════════════════════════════════════════
+   ZONA C1 · CLAUDE 1 (Núcleo Imersivo & Infra)
+   ------------------------------------------------------------------
+   Somente o Claude 1 escreve neste arquivo. Importado DEPOIS de
+   globals.css (cascata vence em especificidade igual). Use para todo
+   CSS novo dos itens do C1 — NÃO edite globals.css para itens novos.
+   Ver protocolo em /inc2.md.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ #061 · Hero mobile — marca 3D sem sobrepor a copy ═══════════════
+   globals.css empurrava a copy com `transform: translateY(min(13vh,110px))`
+   sobre um layout `flex-end`: em telas curtas isso a fazia subir até a base
+   da marca 3D (overlap) e ainda cortava a copy embaixo. Aqui trocamos por
+   uma banda superior FIXA reservada à marca (a logo vive no canvas atrás) e
+   ancoramos a copy na banda inferior — separação garantida em QUALQUER
+   altura. Mesmo escopo do bloco de globals (@media max-width:640px);
+   c1.css carrega depois → vence em especificidade igual. */
+@media (max-width: 640px) {
+    .jy-hero {
+        align-items: stretch;
+    }
+    .jy-hero-grid {
+        height: 100%;
+        align-content: end;
+        /* banda superior reservada p/ a marca 3D (dvh acompanha a barra do
+           navegador mobile) */
+        padding-top: 40dvh;
+    }
+    .jy-hero-copy {
+        transform: none; /* remove o translateY fixo que cortava a copy */
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+}
