@@ -488,3 +488,57 @@ body.bp-page {
     background: rgba(108, 92, 255, 0.16);
     border-color: rgba(108, 92, 255, 0.65);
 }
+
+/* ══ tato universal: press/lift (compositor only) ═══════════════════════ */
+/* #034 · pressionar qualquer botão do site tem resposta física imediata */
+body.bp-page .btn-primary:active,
+body.bp-page .btn-ghost:active,
+.exemplos-chip:active,
+.tp .btn-primary:active,
+.tp .btn-ghost:active {
+    transform: translateY(1px) scale(0.985);
+    transition: transform 0.08s ease-out;
+}
+/* #032 · hover dos cards internos: lift sutil + hairline que acende
+   (transform/opacity — nada de box-shadow animado) */
+body.bp-page .card-1,
+body.bp-page .card-2 {
+    transition: transform 0.28s cubic-bezier(0.19, 1, 0.22, 1),
+        border-color 0.28s ease;
+}
+body.bp-page a.card-1:hover,
+body.bp-page a.card-2:hover,
+body.bp-page .exemplo-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(108, 92, 255, 0.55);
+}
+@media (prefers-reduced-motion: reduce) {
+    body.bp-page a.card-1:hover,
+    body.bp-page a.card-2:hover,
+    body.bp-page .exemplo-card:hover {
+        transform: none;
+    }
+}
+
+/* ══ #070 · touch targets ≥44px nos controles internos ══════════════════ */
+@media (pointer: coarse) {
+    body.bp-page button,
+    body.bp-page .btn-primary,
+    body.bp-page .btn-ghost,
+    .faq-question,
+    .nv-menu-route {
+        min-height: 44px;
+    }
+}
+
+/* ══ #066 · menu overlay otimizado pro polegar ══════════════════════════ */
+@media (max-width: 640px) {
+    .nv-menu-routes {
+        margin-top: auto; /* rotas descem pra zona do polegar */
+        padding-bottom: max(18px, env(safe-area-inset-bottom));
+    }
+    .nv-menu-route {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}
