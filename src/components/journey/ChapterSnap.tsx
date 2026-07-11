@@ -143,17 +143,27 @@ export default function ChapterSnap({
     };
 
     // ── mobile: swipe vertical vira uma viagem completa (encadeável) ──
+    // #089 · covering() é medido UMA vez por gesto (getBoundingClientRect a
+    // cada touchmove era uma leitura de layout por frame de dedo) e o flick
+    // conta por DISTÂNCIA OU VELOCIDADE: swipe curto e rápido também viaja
+    // (42px fixos deixavam gesto rápido "morto" — sensação de travada).
     let touchY = 0;
+    let touchT = 0;
+    let touchCovers = false;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
+      touchT = performance.now();
+      touchCovers = covering();
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (covering()) e.preventDefault(); // o snap assume o controle
+      if (touchCovers) e.preventDefault(); // o snap assume o controle
     };
     const onTouchEnd = (e: TouchEvent) => {
-      if (!covering()) return;
+      if (!touchCovers) return;
       const dy = touchY - e.changedTouches[0].clientY;
-      if (Math.abs(dy) < 42) return;
+      const dt = Math.max(1, performance.now() - touchT);
+      const fast = Math.abs(dy) >= 16 && Math.abs(dy) / dt > 0.35; // flick
+      if (Math.abs(dy) < 42 && !fast) return;
       step(dy > 0 ? 1 : -1);
     };
 
