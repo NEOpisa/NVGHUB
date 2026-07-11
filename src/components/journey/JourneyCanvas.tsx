@@ -7,6 +7,8 @@ import { detectTier, journey } from "./journeyState";
 import CameraRig from "./CameraRig";
 import AdaptiveQuality from "./AdaptiveQuality";
 import Background from "./effects/Background";
+import AmbientWorld from "./effects/AmbientWorld";
+import PostFX from "./effects/PostFX";
 import Particles from "./effects/Particles";
 import HeroLogo from "./chapters/HeroLogo";
 import IntroPlexus from "./blueprint/IntroPlexus";
@@ -34,9 +36,14 @@ export default function JourneyCanvas() {
     const tier = detectTier();
     journey.tier = tier;
     if (typeof window === "undefined") return 1.5;
-    if (tier === 2) return Math.min(window.devicePixelRatio || 1, 2);
-    if (tier === 1) return Math.min(window.devicePixelRatio || 1, 1.5);
-    return 1.2;
+    // #067 · telas pequenas/touch têm DPR físico alto (2–3) e GPU fraca:
+    // teto extra por tier — em 390px de largura, 1.3x já é visualmente denso
+    // e corta ~45% dos fragments vs 1.75x.
+    const small =
+      window.innerWidth < 768 ||
+      !!window.matchMedia?.("(pointer: coarse)").matches;
+    const cap = tier === 2 ? (small ? 1.35 : 1.75) : tier === 1 ? (small ? 1.25 : 1.5) : small ? 1.0 : 1.2;
+    return Math.min(window.devicePixelRatio || 1, cap);
   }, []);
 
   return (
@@ -61,6 +68,7 @@ export default function JourneyCanvas() {
         <fog attach="fog" args={["#050408", 14, 72]} />
         <Background />
         <Particles />
+        <AmbientWorld />
 
         <HeroLogo />
         <IntroPlexus />
@@ -84,7 +92,7 @@ export default function JourneyCanvas() {
             intensity={0.9}
             position={[-5, -1, 3]}
             scale={6}
-            color="#dd3bc8"
+            color="#6c5cff"
           />
           <Lightformer
             form="circle"
@@ -95,6 +103,7 @@ export default function JourneyCanvas() {
           />
         </Environment>
 
+        <PostFX />
         <AdaptiveQuality start={maxDpr} min={0.75} />
       </Canvas>
     </div>
