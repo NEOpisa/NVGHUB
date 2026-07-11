@@ -458,3 +458,33 @@ body.bp-page {
     text-decoration: underline;
     text-underline-offset: 3px;
 }
+
+/* ══ filtro de /exemplos (chips mono) ═══════════════════════════════════ */
+.exemplos-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+.exemplos-chip {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    min-height: 40px;
+    background: rgba(10, 8, 18, 0.6);
+    border: 1px solid rgba(108, 92, 255, 0.22);
+    color: rgba(240, 240, 240, 0.6);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.exemplos-chip:hover {
+    color: #f0f0f0;
+    border-color: rgba(108, 92, 255, 0.5);
+}
+.exemplos-chip.is-on {
+    color: #f0f0f0;
+    background: rgba(108, 92, 255, 0.16);
+    border-color: rgba(108, 92, 255, 0.65);
+}
