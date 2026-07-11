@@ -80,3 +80,17 @@
         -webkit-backdrop-filter: none !important;
     }
 }
+
+/* ══ #031 · entrada do hero mais snappy ═════════════════════════════════
+   Globals: 0.9s + stagger até 0.62s (~1.5s total). Aqui: 0.65s com curva
+   mais punchy e delays apertados (~1.07s total) — o hero "chega" sem
+   arrastar, mantendo a hierarquia brand → H1 → sub → CTAs → trust. */
+body.site-loaded .jy-enter {
+    animation-duration: 0.65s;
+    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+body.site-loaded .jy-d1 { animation-delay: 0.03s; }
+body.site-loaded .jy-d2 { animation-delay: 0.12s; }
+body.site-loaded .jy-d3 { animation-delay: 0.22s; }
+body.site-loaded .jy-d4 { animation-delay: 0.32s; }
+body.site-loaded .jy-d5 { animation-delay: 0.42s; }
