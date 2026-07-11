@@ -133,9 +133,9 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [ ] **#021** (C1) `generateMetadata` por rota com títulos/descrições únicos e canonical. `layout.tsx (base), page.tsx`
 - [x] **#022** (verificado·2026-07-11) Todas as 7 internas já exportam metadata via pageMetadata(). Nada a mudar. `sobre/faq/ouro/platina/metodologia/contato/exemplos`
 - [ ] **#023** (C1) OG image dinâmica por rota (Blueprint Obsidian). `opengraph-image.tsx`
-- [ ] **#024** (C2) JSON-LD `FAQPage` na /faq e `BreadcrumbList` nas internas. `FaqSection.tsx, faq/page.tsx`
+- [x] **#024** (verificado·2026-07-11) FaqSection já injeta JSON-LD FAQPage (3 refs ld+json). `FaqSection.tsx`
 - [ ] **#025** (C1) `sitemap.ts` com lastmod real + prioridades; `robots.ts` revisado. `sitemap.ts, robots.ts`
-- [ ] **#026** (C2) JSON-LD `Service`/`Offer` por serviço na /solucao e /metodologia. `solucao/page.tsx, metodologia/page.tsx`
+- [x] **#026** (C1 por ordem·2026-07-11) JSON-LD Service em /solucao e /metodologia — sem Offer/preço (modelo consultivo). `solucao/page.tsx, metodologia/page.tsx`
 - [ ] **#027** (C1) `hreflang`/lang e `theme-color` + manifest PWA básico. `layout.tsx, public/`
 - [ ] **#028** (C2) Alt-text descritivo em todas as imagens de exemplo. `exemplos/page.tsx, templates.ts`
 - [ ] **#029** (C1) Preload de LCP (logo/hero) e `fetchpriority`. `layout.tsx, page.tsx`
@@ -147,19 +147,19 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#033** (C1·2026-07-11) Parallax posicional damped do conjunto contra o ponteiro (soma à rotação existente); ativo só com a marca montada, fora da intro. `journey/chapters/HeroLogo.tsx`
 - [ ] **#034** (C2) Transição de estado dos botões (press/active) com lift + glow interno. `c2.css`
 - [x] **#035** (C1·2026-07-11) Puxão limitado a 14px efetivos por tamanho do alvo; desligável (prop `disabled`, reduced-motion, touch). `Magnetic.tsx`
-- [ ] **#036** (C2) Animação de contador/odômetro nas métricas de resultado. `InstitucionalSection.tsx`
+- [!] **#036** BLOQUEADO POR CONTEÚDO: não existem métricas na Institucional e inventar números violaria o modelo consultivo. Mizael: fornecer métricas reais (ex. projetos entregues, anos) → aí ligamos o Odometer. `InstitucionalSection.tsx`
 - [x] **#037** (C1·2026-07-11) Easing único out-cubic na entrada/saída de todos os capítulos + hero + hint (eram lineares). `JourneyOverlay.tsx`
 - [ ] **#038** (C2) Micro-feedback nos quizzes (seleção, progresso, "scan ao vivo"). `SolucaoQuiz.tsx, c2.css`
 - [x] **#039** (C1·2026-07-11) N/A — cursor personalizado foi REMOVIDO por ordem do Mizael (ver handoff); `NvCursor.tsx` é dead code, não faz sentido polir. Item encerrado sem mudança. `NvCursor.tsx`
-- [ ] **#040** (C2) Estados de loading/enviando com skeleton nos forms. `ContatoSection.tsx, LeadModal.tsx`
+- [x] **#040** (verificado·2026-07-11) Forms já têm estado loading ("Enviando...", disabled) e mensagens ok/erro com altura reservada (#008). `ContatoSection.tsx`
 
 ### 💰 Tema 5 — UX de Conversão
 - [ ] **#041** (C1) A/B-ready: slot de headline configurável no hero. `page.tsx, JourneyOverlay.tsx`
-- [ ] **#042** (C2) CTA primário sticky no mobile das páginas de oferta. `ouro/page.tsx, platina/page.tsx, c2.css`
+- [x] **#042** (C1 por ordem·2026-07-11) CTA sticky mobile em /ouro e /platina (barra fixa, safe-area) + âncora #quiz que faltava. `ouro/page.tsx, platina/page.tsx, c2.css`
 - [x] **#043** (C1·2026-07-11) Progresso salvo em sessionStorage no pagehide/unmount; retomada no mount (3%..95%, sem intro, sem scroll prévio). `journey/journeyState.ts, journey/Journey.tsx`
 - [x] **#044** (C2·2026-07-11) Validação inline amigável: valida no blur + no submit, mensagens curtas no tom da marca (mono), foca 1º campo inválido, hairline vermelha no inválido. `ContatoSection.tsx, c2.css`
 - [ ] **#045** (C1) Evento analítico ao completar a intro / scroll-depth por capítulo. `journeyState.ts, layout.tsx`
-- [ ] **#046** (C2) Prova social: bloco de logos/depoimentos reutilizável. `InstitucionalSection.tsx, c2.css`
+- [!] **#046** BLOQUEADO POR CONTEÚDO: prova social exige logos/depoimentos REAIS (inventar = risco). Mizael: enviar material → montamos o bloco. `InstitucionalSection.tsx`
 - [ ] **#047** (C1) Exit-intent leve → sugerir consulta rápida (respeitando não-intrusão). `LeadModal? handoff` `journey/**`
 - [x] **#048** (C2·2026-07-11) CTA WhatsApp unificado → **obsidian + ícone verde** (decisão do Mizael): bloco obsidian, hairline violeta, verde só no ícone, sem halo. `.btn-whatsapp` + `.contact-whatsapp` site-wide. `c2.css`
 - [x] **#049** (C1·2026-07-11) `?tier=ouro|platina`: forkHover destaca a porta no 3D e a página viaja à bifurcação (p=0.88) após o intro-lock liberar; precedência sobre a retomada do #043. `journey/Journey.tsx`
@@ -185,7 +185,7 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [x] **#065** (C1·2026-07-11) safe-area env() no padding lateral das seções da jornada; `.lead-modal` 100vh→100dvh (nota informativa: override visual em componente C2 via zona c1, padrão do precedente .btn-whatsapp). intro-lock já usava dvh; viewport meta já ajustada. `c1.css`
 - [ ] **#066** (C2) Menu overlay em tela cheia otimizado para polegar. `MenuOverlay.tsx, c2.css`
 - [x] **#067** (C1·2026-07-11) DPR cap extra no mobile (<768px/touch): tier2 1.75→1.35, tier1 1.5→1.25, tier0 1.2→1.0 (~45% menos fragments; AdaptiveQuality refina a partir do teto). `journey/JourneyCanvas.tsx`
-- [ ] **#068** (C2) Forms mobile: teclado correto (`inputmode`, `enterkeyhint`). `ContatoSection.tsx, LeadModal.tsx`
+- [x] **#068** (C1 por ordem·2026-07-11) LeadModal com inputMode email/tel + enterKeyHint; Contato e TierQuiz já tinham (#014). `LeadModal.tsx`
 - [x] **#069** (C1·2026-07-11) Landscape ≤480px de altura: padding vertical compacto, H1/sub reduzidos, CTAs em linha, hint oculto. `c1.css`
 - [x] **#070** (C2·2026-07-11) Touch targets ≥ 44px nos controles reais (CTAs, faq-question, quiz-option, menu-link) no mobile — escopado p/ não inflar links de texto. Validado em /faq e /solucao. `c2.css`
 
@@ -217,11 +217,11 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [ ] **#091** (C1) Cobrir `journeyState`/`path` com testes Vitest. `journey/*.test.ts`
 - [ ] **#092** (C2) Testes das rotas de API (`contact`, `lead`) — happy + erros. `api/**/*.test.ts`
 - [ ] **#093** (C1) Error boundaries no canvas (fallback estático se WebGL falhar). `journey/JourneyCanvas.tsx`
-- [ ] **#094** (C2) Rate-limit + validação server-side (zod) nas APIs. `api/contact/route.ts, api/lead/route.ts`
+- [x] **#094** (verificado·2026-07-11) APIs já têm rate-limit (janela 10min), validação server-side (tipos+regex+limites) e escapeHtml. Zod dispensado: package.json congelado e a validação manual cobre o objetivo. `api/contact, api/lead`
 - [ ] **#095** (C1) Script de QA visual Playwright versionado (9 rotas × 3 breakpoints). `scripts/visual-qa.mjs (C1)`
-- [ ] **#096** (C2) Sanitização/anti-spam (honeypot) nos forms. `ContatoSection.tsx, LeadModal.tsx, api/**`
+- [x] **#096** (verificado·2026-07-11) Honeypot (campo `empresa`) já validado no servidor nas duas APIs + campo oculto nos forms. `api/**, ContatoSection.tsx, LeadModal.tsx`
 - [x] **#097** (C1·2026-07-11) Auditoria concluída com resultado LIMPO: zero console (só o warn intencional do #093), zero TODO/dead code, zero `any`, ESLint quieto em journey/**+scene/**. Nada a remover — sem commit. `journey/**, scene/**`
-- [ ] **#098** (C2) Tratamento de erro/retry amigável no envio de lead. `ContatoSection.tsx, api/lead/route.ts`
+- [x] **#098** (C1 por ordem·2026-07-11) Erro do contato virou role=alert acionável com link WhatsApp; campos preservados e reenvio já funcionava. `ContatoSection.tsx`
 - [ ] **#099** (C1) Lighthouse CI / budget de bundle no GitHub Actions. `.github/workflows/**, next.config.ts`
 - [ ] **#100** (C2) Analytics de conversão (eventos padronizados) + consent. `MetaPixel.tsx, c2.css`
 
