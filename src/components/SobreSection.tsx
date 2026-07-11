@@ -33,10 +33,11 @@ export default function SobreSection() {
       <div className="inner">
         <div className="sobre-head" ref={headerRef} data-parallax="0.12">
           <span className="section-eyebrow">Quem somos</span>
-          <h2 className="section-heading" data-split>
+          {/* #030 · página própria: heading principal é H1 (estilo é por classe) */}
+          <h1 className="section-heading" data-split>
             Uma agência digital pensada como{" "}
             <span className="text-accent-nvg">um só ecossistema</span>
-          </h2>
+          </h1>
           <p className="section-sub">
             Somos a Neovanguard — uma operação 100% remota que atende o Brasil
             inteiro. Sites, sistemas, SEO e suporte não são serviços soltos:

@@ -98,9 +98,10 @@ export default function ContatoSection() {
       <div className="inner">
         <div ref={headerRef} data-parallax="0.1">
           <span className="section-eyebrow">Contato</span>
-          <h2 className="section-heading" data-split>
+          {/* #030 · página própria: heading principal é H1 (estilo é por classe) */}
+          <h1 className="section-heading" data-split>
             Vamos <span className="text-accent-nvg">começar?</span>
-          </h2>
+          </h1>
           <p className="section-sub">
             Sem compromisso, sem enrolação. Conte o que precisa e respondemos rápido.
           </p>

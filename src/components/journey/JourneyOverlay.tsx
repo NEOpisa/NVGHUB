@@ -277,7 +277,8 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         <div className="jy-hero-grid">
           <div className="jy-hero-copy">
           <div className="jy-brand jy-enter jy-d1">
-            <img src="/logo.png" alt="" aria-hidden="true" width={40} height={30} />
+            {/* #029 · candidato a LCP do hero: prioridade alta na busca */}
+            <img src="/logo.png" alt="" aria-hidden="true" width={40} height={30} fetchPriority="high" />
             <span className="jy-brand-name">
               NEO<b>VANGUARD</b>
             </span>

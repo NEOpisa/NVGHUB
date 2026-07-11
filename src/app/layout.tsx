@@ -80,6 +80,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // #027 · cor da UI do navegador casa com o obsidian do site
+  themeColor: "#040309",
 };
 
 export const metadata: Metadata = {
