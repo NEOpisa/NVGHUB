@@ -173,9 +173,16 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       el.style.pointerEvents = op > 0.35 ? "auto" : "none";
       el.classList.toggle("is-live", op > 0.05);
     };
+    // #037 · easing ÚNICO dos reveals scroll-linked: entrada/saída deixam de
+    // ser lineares e compartilham a mesma curva (out-cubic) em todos os
+    // capítulos — mais snap no início, assentamento suave no fim.
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
     const band = (p: number, start: number, end: number) => {
       const l = rangeN(p, start, end);
-      const op = Math.min(rangeN(l, 0, 0.12), 1 - rangeN(l, 0.86, 1));
+      const op = Math.min(
+        easeOut(rangeN(l, 0, 0.12)),
+        1 - easeOut(rangeN(l, 0.86, 1)),
+      );
       return { l, op, ty: (0.5 - l) * 40 };
     };
 
@@ -184,9 +191,13 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       raf = requestAnimationFrame(loop);
       const p = journey.progress;
 
-      // HERO: visível desde o load, só sai de cena
-      setSec(els.hero, 1 - rangeN(p, 0.09, 0.155), rangeN(p, 0.04, 0.15) * -60);
-      if (hint) hint.style.opacity = String(1 - rangeN(p, 0.02, 0.06));
+      // HERO: visível desde o load, só sai de cena (mesma curva dos capítulos)
+      setSec(
+        els.hero,
+        1 - easeOut(rangeN(p, 0.09, 0.155)),
+        rangeN(p, 0.04, 0.15) * -60,
+      );
+      if (hint) hint.style.opacity = String(1 - easeOut(rangeN(p, 0.02, 0.06)));
 
       // marca volta ao header quando o visitante SAI do hero (o #hero é um
       // overlay fixo — o IntersectionObserver do Header não serve aqui)
