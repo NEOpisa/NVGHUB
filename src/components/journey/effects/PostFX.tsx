@@ -6,8 +6,10 @@ import {
   EffectComposer,
   Bloom,
   ChromaticAberration,
+  Noise,
   Vignette,
 } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 import { journey } from "../journeyState";
 
 const isMobile = () =>
@@ -52,10 +54,11 @@ export default function PostFX() {
     return () => window.removeEventListener("nvg-gfx", sync);
   }, []);
 
-  // guardião de fps (só mobile, só enquanto ligado)
+  // guardião de fps: 60 CRAVADO em qualquer device — se o quadro médio cair
+  // do alvo de forma sustentada, o PostFX se sacrifica pela taxa de quadros.
   useFrame((_, dt) => {
     const p = perf.current;
-    if (!on || p.killed || !p.mobile) return;
+    if (!on || p.killed) return;
     if (p.warm > 0) {
       p.warm -= dt; // ignora o aquecimento inicial
       return;
@@ -66,7 +69,8 @@ export default function PostFX() {
     const fps = p.n / p.acc;
     p.acc = 0;
     p.n = 0;
-    if (fps < 58) {
+    // mobile corta mais cedo (58); desktop tolera um vale curto (55)
+    if (fps < (p.mobile ? 58 : 55)) {
       p.killed = true;
       setOn(false);
     }
@@ -76,13 +80,15 @@ export default function PostFX() {
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        intensity={0.28}
-        luminanceThreshold={0.5}
-        luminanceSmoothing={0.22}
+        intensity={0.34}
+        luminanceThreshold={0.46}
+        luminanceSmoothing={0.24}
         mipmapBlur
       />
       <ChromaticAberration offset={[0.0006, 0.0004]} />
-      <Vignette offset={0.24} darkness={0.5} eskil={false} />
+      {/* film grain: textura viva que também mata o banding do fundo escuro */}
+      <Noise premultiply blendFunction={BlendFunction.SCREEN} opacity={0.55} />
+      <Vignette offset={0.24} darkness={0.52} eskil={false} />
     </EffectComposer>
   );
 }

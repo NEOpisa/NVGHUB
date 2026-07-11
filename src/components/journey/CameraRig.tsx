@@ -79,10 +79,16 @@ export default function CameraRig() {
       _look.lerp(_introLook, ia);
     }
 
+    // respiração da câmera: deriva orgânica minúscula — o frame nunca fica
+    // morto, mesmo sem input (handheld sutil, custo zero)
+    const bt = state.clock.elapsedTime;
+    const brX = Math.sin(bt * 0.23) * 0.022 + Math.sin(bt * 0.61) * 0.011;
+    const brY = Math.cos(bt * 0.31) * 0.02 + Math.sin(bt * 0.47) * 0.009;
+
     const cam = state.camera as THREE.PerspectiveCamera;
     cam.position.set(
-      _pos.x + mouse.current.x * 0.35,
-      _pos.y + mouse.current.y * 0.22,
+      _pos.x + mouse.current.x * 0.35 + brX,
+      _pos.y + mouse.current.y * 0.22 + brY,
       _pos.z,
     );
     cam.up.set(0, 1, 0);

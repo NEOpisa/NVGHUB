@@ -222,3 +222,45 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
 @media (prefers-reduced-motion: reduce) {
     .exit-nudge { animation: none; }
 }
+
+/* ══ LUXO · film grain nas internas (o canvas já tem o dele via PostFX) ══
+   Ruído SVG estático em overlay fraco: mata o banding dos gradientes
+   escuros e dá textura de impresso. Camada fixa única, custo ~zero. */
+body.bp-page::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-data: reduce) {
+    body.bp-page::after { display: none; }
+}
+
+/* ══ LUXO · scrollbar do design system ══════════════════════════════════ */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(108, 92, 255, 0.45) #06050c;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #06050c;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(108, 92, 255, 0.4);
+    border: 2px solid #06050c; /* hairline de respiro, mantém o bevel reto */
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(108, 92, 255, 0.7);
+}
+
+/* ══ LUXO · seleção de texto na marca ═══════════════════════════════════ */
+::selection {
+    background: rgba(108, 92, 255, 0.85);
+    color: #ffffff;
+}

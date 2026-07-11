@@ -58,6 +58,9 @@ export default function HeroLogo() {
   // #033 · parallax posicional (damped) do conjunto contra o ponteiro
   const parX = useRef(0);
   const parY = useRef(0);
+  // raycast gateado por movimento do ponteiro (60fps)
+  const lastPtr = useRef({ x: 99, y: 99 });
+  const cachedHit = useRef<THREE.Vector3 | null>(null);
 
   // plano de clipping da materialização (mantém y <= constant, em mundo)
   const clipPlane = useMemo(
@@ -228,11 +231,22 @@ export default function HeroLogo() {
       if (!shatter.current || shatter.current.length !== meshes.length)
         shatter.current = new Float32Array(meshes.length);
       const sh = shatter.current;
+      // 60fps: raycast SÓ quando o ponteiro se moveu — parado, zero custo
       let hitPoint: THREE.Vector3 | null = null;
       if (fill > 0.9 && spread < 0.01 && scatter < 0.05) {
-        state.raycaster.setFromCamera(state.pointer, state.camera);
-        const hits = state.raycaster.intersectObjects(meshes, false);
-        if (hits.length) hitPoint = hits[0].point;
+        const moved =
+          state.pointer.x !== lastPtr.current.x ||
+          state.pointer.y !== lastPtr.current.y;
+        if (moved) {
+          lastPtr.current.x = state.pointer.x;
+          lastPtr.current.y = state.pointer.y;
+          state.raycaster.setFromCamera(state.pointer, state.camera);
+          const hits = state.raycaster.intersectObjects(meshes, false);
+          cachedHit.current = hits.length ? hits[0].point.clone() : null;
+        }
+        hitPoint = cachedHit.current;
+      } else {
+        cachedHit.current = null;
       }
       for (let i = 0; i < meshes.length; i++) {
         let target = 0;
