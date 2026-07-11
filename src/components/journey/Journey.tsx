@@ -93,12 +93,44 @@ export default function Journey() {
     };
   }, [mode]);
 
+  // #049 · deep-link ?tier=ouro|platina: viaja até a bifurcação com a porta
+  // certa destacada (ponte forkHover já lida pelo 3D). Espera a intro/lock
+  // liberar antes de posicionar (scroll programático não move com o lock).
+  useEffect(() => {
+    if (mode !== "gl") return;
+    const tier = new URLSearchParams(window.location.search).get("tier");
+    if (tier !== "ouro" && tier !== "platina") return;
+    const el = wrap.current;
+    if (!el) return;
+    journey.forkHover = tier;
+    let raf = 0;
+    const t0 = performance.now();
+    const go = () => {
+      if (performance.now() - t0 > 10000) return; // teto de segurança
+      if (intro.active || !document.body.classList.contains("site-loaded")) {
+        raf = requestAnimationFrame(go);
+        return;
+      }
+      const total = el.offsetHeight - window.innerHeight;
+      if (total > 0)
+        window.scrollTo({
+          top: el.offsetTop + 0.88 * total,
+          behavior: "instant",
+        });
+    };
+    raf = requestAnimationFrame(go);
+    return () => cancelAnimationFrame(raf);
+  }, [mode]);
+
   // #043 · retomar de onde parou (mesma sessão): só sem intro ativa e se o
-  // visitante tinha avançado de verdade (3%..95%) — nunca briga com a intro.
+  // visitante tinha avançado de verdade (3%..95%) — nunca briga com a intro
+  // nem com o deep-link ?tier (que tem precedência).
   useEffect(() => {
     if (mode !== "gl" || intro.active) return;
     const el = wrap.current;
     if (!el) return;
+    const tier = new URLSearchParams(window.location.search).get("tier");
+    if (tier === "ouro" || tier === "platina") return;
     const p = loadJourneyProgress();
     if (p < 0.03 || p > 0.95 || window.scrollY > 4) return;
     const total = el.offsetHeight - window.innerHeight;
