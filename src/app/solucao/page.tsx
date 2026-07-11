@@ -1,6 +1,9 @@
+import dynamic from "next/dynamic";
 import { pageMetadata } from "@/lib/seo";
-import SolucaoQuiz from "@/components/SolucaoQuiz";
 import BlueprintStage from "@/components/BlueprintStage";
+
+// #006 · quiz pesado fora do chunk inicial da rota (carrega após hidratar)
+const SolucaoQuiz = dynamic(() => import("@/components/SolucaoQuiz"));
 
 export const metadata = pageMetadata({
   title: "Consulta rápida — sua solução em 3 perguntas",

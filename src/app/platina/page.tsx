@@ -1,6 +1,9 @@
-import TierQuiz from "@/components/TierQuiz";
+import dynamic from "next/dynamic";
 import BismuthCrystal from "@/components/BismuthCrystal";
 import { pageMetadata } from "@/lib/seo";
+
+// #006 · quiz pesado fora do chunk inicial da rota
+const TierQuiz = dynamic(() => import("@/components/TierQuiz"));
 
 export const metadata = pageMetadata({
   title: "Platina — a parceria sob medida",

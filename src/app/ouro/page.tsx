@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA } from "@/lib/constants";
+import dynamic from "next/dynamic";
 import { pageMetadata } from "@/lib/seo";
-import TierQuiz from "@/components/TierQuiz";
 import BismuthCrystal from "@/components/BismuthCrystal";
+
+// #006 · quiz pesado fora do chunk inicial da rota
+const TierQuiz = dynamic(() => import("@/components/TierQuiz"));
 
 export const metadata = pageMetadata({
   title: "Ouro — presença digital sólida, entregue rápido",
