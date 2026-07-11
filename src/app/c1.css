@@ -94,3 +94,40 @@ body.site-loaded .jy-d2 { animation-delay: 0.12s; }
 body.site-loaded .jy-d3 { animation-delay: 0.22s; }
 body.site-loaded .jy-d4 { animation-delay: 0.32s; }
 body.site-loaded .jy-d5 { animation-delay: 0.42s; }
+
+/* ══ #065 · dvh + safe-area (notch) em telas cheias ═════════════════════
+   O padding lateral das seções da jornada passa a respeitar o recorte do
+   aparelho (mesmo clamp de globals, com env() por cima); o modal de lead
+   troca 100vh por 100dvh (barra dinâmica do navegador mobile não corta o
+   rodapé do modal — override visual via zona C1, sem tocar arquivo alheio). */
+.jy-sec {
+    padding-left: max(clamp(20px, 6vw, 96px), env(safe-area-inset-left));
+    padding-right: max(clamp(20px, 6vw, 96px), env(safe-area-inset-right));
+}
+.lead-modal {
+    max-height: calc(100dvh - 40px);
+}
+
+/* ══ #069 · landscape mobile não quebra a jornada ═══════════════════════
+   Celular deitado (~390px de altura): padding vertical de 72px+72px comia
+   quase 40% da tela. Compacta o respiro, reduz o H1 e reaproxima os CTAs
+   em linha — a jornada continua legível e navegável. */
+@media (orientation: landscape) and (max-height: 480px) {
+    .jy-sec {
+        padding-top: 20px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+    .jy-hero .jy-h1 {
+        font-size: clamp(1.1rem, 3.4vh + 0.4rem, 1.6rem);
+    }
+    .jy-sub {
+        font-size: 0.85rem;
+    }
+    .jy-cta-row {
+        flex-direction: row;
+        align-items: center;
+    }
+    .jy-hint {
+        display: none; /* sem espaço vertical: a dica sai de cena */
+    }
+}
