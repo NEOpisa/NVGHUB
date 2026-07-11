@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import { detectTier, journey } from "./journeyState";
@@ -15,6 +15,31 @@ import IntroPlexus from "./blueprint/IntroPlexus";
 import Ecosystem from "./chapters/Ecosystem";
 import ServicesRing from "./chapters/ServicesRing";
 import ExploreTunnel from "./chapters/ExploreTunnel";
+
+/**
+ * #093 · Error boundary do 3D: se o WebGL/three falhar em runtime (driver,
+ * contexto perdido, shader), o erro NÃO derruba a árvore React — o canvas
+ * degrada para um fundo estático escuro e o resto do site (overlay, copy,
+ * navegação) continua funcionando.
+ */
+class CanvasBoundary extends Component<
+  { children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(err: unknown) {
+    // um registro único e silencioso — sem spam de console em produção
+    console.warn("[journey] WebGL falhou; caindo para fundo estático.", err);
+  }
+  render() {
+    if (this.state.failed)
+      return <div className="jy-canvas jy-canvas-loading" aria-hidden="true" />;
+    return this.props.children;
+  }
+}
 
 /**
  * O canvas ÚNICO da jornada — todo o 3D da home vive aqui, numa só cena com
@@ -48,6 +73,7 @@ export default function JourneyCanvas() {
 
   return (
     <div className="jy-canvas" aria-hidden="true">
+      <CanvasBoundary>
       <Canvas
         dpr={maxDpr}
         frameloop={running ? "always" : "never"}
@@ -106,6 +132,7 @@ export default function JourneyCanvas() {
         <PostFX />
         <AdaptiveQuality start={maxDpr} min={0.75} />
       </Canvas>
+      </CanvasBoundary>
     </div>
   );
 }
