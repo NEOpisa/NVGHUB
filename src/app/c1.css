@@ -131,3 +131,35 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
         display: none; /* sem espaço vertical: a dica sai de cena */
     }
 }
+
+/* ══ #079 · 404/500 Neobsidian ═══════════════════════════════════════ */
+.nf-stage {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #040309;
+}
+.nf-card {
+    max-width: 460px;
+    padding: 36px 32px;
+    text-align: left;
+}
+.nf-code {
+    font-family: var(--ff-mono), monospace;
+    font-size: clamp(3.4rem, 10vw, 5.4rem);
+    line-height: 1;
+    color: #6c5cff;
+    letter-spacing: -0.04em;
+    margin: 10px 0 12px;
+}
+.nf-msg {
+    color: rgba(240, 240, 240, 0.72);
+    margin-bottom: 22px;
+}
+.nf-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
