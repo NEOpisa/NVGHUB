@@ -49,3 +49,15 @@
     content-visibility: auto;
     contain-intrinsic-size: auto 70vh;
 }
+
+/* ══ #011 · reduced-motion nas scanlines de hover ═══════════════════════
+   O sweep `nbScanSweep` (globals) atravessa a borda dos cards no hover.
+   Para quem pede menos movimento, neutralizamos o varrimento (o resto do
+   estado de hover — ticks/borda — permanece). Chuva (ObsidianRain) e
+   scatter (LetterScatter) já têm guarda em JS. */
+@media (prefers-reduced-motion: reduce) {
+    .nb-scan-hover:hover .nb-scanline {
+        animation: none;
+        opacity: 0;
+    }
+}
