@@ -209,7 +209,7 @@ _Formato: `[ ] (quem pede → dono) arquivo — motivo`. O dono resolve e marca 
 - [ ] **#085** (C1) Header adaptativo (transparente→sólido no scroll) sem jank. `Header.tsx? → handoff` `c1.css`
 - [ ] **#086** (C2) /exemplos: filtro por segmento + preview em modal/iframe. `exemplos/page.tsx, c2.css`
 - [ ] **#087** (C1) Footer gate/reveal animado coerente com a jornada. `FooterGate.tsx? → handoff` `c1.css`
-- [ ] **#088** (C2) /ouro e /platina: comparativo lado a lado claro (sem preço). `ouro/page.tsx, platina/page.tsx`
+- [x] **#088** (C1 por ordem·2026-07-11) Redesign /ouro+/platina: BlueprintStage nas duas, vazios eliminados, identidades estruturais (Ouro denso 1180px · Platina editorial 880px) + comparativo explícito com coluna destacada e link cruzado. `ouro/page.tsx, platina/page.tsx, c2.css`
 - [ ] **#089** (C1) `ChapterSnap` calibrado (sem "pulos" bruscos). `journey/ChapterSnap.tsx`
 - [ ] **#090** (C2) /solucao: resultado do quiz com recomendação persuasiva. `SolucaoQuiz.tsx`
 
