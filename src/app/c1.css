@@ -31,3 +31,10 @@
         padding-bottom: max(16px, env(safe-area-inset-bottom));
     }
 }
+
+/* ══ #001 · placeholder do canvas 3D durante o carregamento do chunk ═════
+   mesma cor da névoa da cena (#050408) p/ transição sem flash quando o
+   JourneyCanvas (three/fiber/drei) termina de baixar e assume. */
+.jy-canvas-loading {
+    background: #050408;
+}
