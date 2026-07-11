@@ -8,6 +8,15 @@ import { journey, type Tier } from "../journeyState";
 const STAR_COUNT: Record<Tier, number> = { 0: 380, 1: 650, 2: 950 };
 const DUST_COUNT: Record<Tier, number> = { 0: 260, 1: 450, 2: 700 };
 
+// #003 · corte extra de partículas em telas pequenas/touch (além do tier):
+// menos fill-rate e menos vértices onde a GPU é mais fraca.
+function mobileFactor(): number {
+  if (typeof window === "undefined") return 1;
+  const small = window.innerWidth < 768;
+  const coarse = window.matchMedia?.("(pointer: coarse)").matches;
+  return small || coarse ? 0.55 : 1;
+}
+
 const starVertex = /* glsl */ `
   uniform float uTime;
   attribute float aSeed;
@@ -29,15 +38,15 @@ const starFragment = /* glsl */ `
     if (d > 0.5) discard;
     float a = smoothstep(0.5, 0.0, d);
     a *= a;
-    vec3 col = mix(vec3(0.24, 0.78, 0.74), vec3(0.92, 0.82, 0.98), vTwinkle);
+    vec3 col = mix(vec3(0.42, 0.36, 1.0), vec3(0.81, 0.77, 1.0), vTwinkle);
     gl_FragColor = vec4(col, a * 0.75 * vTwinkle);
   }
 `;
 
 /** Estrelas cintilantes distribuídas por todo o corredor — 1 draw call. */
-function Stars({ tier }: { tier: Tier }) {
+function Stars({ count }: { count: number }) {
   const { geometry, uniforms } = useMemo(() => {
-    const n = STAR_COUNT[tier];
+    const n = count;
     const pos = new Float32Array(n * 3);
     const seed = new Float32Array(n);
     for (let i = 0; i < n; i++) {
@@ -50,7 +59,7 @@ function Stars({ tier }: { tier: Tier }) {
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     g.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
     return { geometry: g, uniforms: { uTime: { value: 0 } } };
-  }, [tier]);
+  }, [count]);
 
   useEffect(() => () => geometry.dispose(), [geometry]);
 
@@ -99,17 +108,17 @@ const dustFragment = /* glsl */ `
     if (d > 0.5) discard;
     float a = smoothstep(0.5, 0.0, d);
     a *= a;
-    vec3 violet = vec3(0.87, 0.23, 0.78);
-    vec3 bright = vec3(0.98, 0.72, 0.92);
+    vec3 violet = vec3(0.42, 0.36, 1.0);
+    vec3 bright = vec3(0.79, 0.75, 1.0);
     vec3 col = mix(violet, bright, vGlow);
     gl_FragColor = vec4(col * mix(0.4, 1.0, vGlow), a * 0.65);
   }
 `;
 
 /** Poeira sedosa que serpenteia pelo corredor inteiro (deslocamento na GPU). */
-function Dust({ tier }: { tier: Tier }) {
+function Dust({ count }: { count: number }) {
   const { geometry, uniforms } = useMemo(() => {
-    const n = DUST_COUNT[tier];
+    const n = count;
     const pos = new Float32Array(n * 3);
     const seed = new Float32Array(n);
     for (let i = 0; i < n; i++) {
@@ -122,7 +131,7 @@ function Dust({ tier }: { tier: Tier }) {
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     g.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
     return { geometry: g, uniforms: { uTime: { value: 0 } } };
-  }, [tier]);
+  }, [count]);
 
   useEffect(() => () => geometry.dispose(), [geometry]);
 
@@ -146,10 +155,14 @@ function Dust({ tier }: { tier: Tier }) {
 
 export default function Particles() {
   const tier = journey.tier;
+  // fator mobile fixado na montagem (não recalcula por frame)
+  const f = useMemo(() => mobileFactor(), []);
+  const starN = Math.round(STAR_COUNT[tier] * f);
+  const dustN = Math.round(DUST_COUNT[tier] * f);
   return (
     <>
-      <Stars tier={tier} />
-      <Dust tier={tier} />
+      <Stars count={starN} />
+      <Dust count={dustN} />
     </>
   );
 }
