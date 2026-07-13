@@ -8,12 +8,11 @@ import CameraRig from "./CameraRig";
 import AdaptiveQuality from "./AdaptiveQuality";
 import Background from "./effects/Background";
 import AmbientWorld from "./effects/AmbientWorld";
-import PostFX from "./effects/PostFX";
 import Particles from "./effects/Particles";
 import HeroLogo from "./chapters/HeroLogo";
 import IntroPlexus from "./blueprint/IntroPlexus";
 import Ecosystem from "./chapters/Ecosystem";
-import ServicesRing from "./chapters/ServicesRing";
+import WarpGates from "./chapters/WarpGates";
 import ExploreTunnel from "./chapters/ExploreTunnel";
 
 /**
@@ -99,37 +98,34 @@ export default function JourneyCanvas() {
         <HeroLogo />
         <IntroPlexus />
         <Ecosystem />
-        <ServicesRing />
+        <WarpGates />
         <ExploreTunnel />
 
-        <ambientLight intensity={0.55} />
-        <directionalLight position={[6, 8, 4]} intensity={2.2} color="#ffffff" />
-        {/* reflexos para os metais (bake único, sem rede) */}
+        {/* luz única: key branca vindo do topo-esquerda, com fill fraco */}
+        <ambientLight intensity={0.5} />
+        <directionalLight
+          position={[-7, 9, 6]}
+          intensity={2.4}
+          color="#ffffff"
+        />
+        {/* reflexos para os metais (bake único, sem rede) — a mesma luz
+            superior-esquerda domina o environment */}
         <Environment resolution={64} frames={1}>
           <Lightformer
             form="rect"
-            intensity={1.6}
-            position={[4, 3, 5]}
-            scale={7}
+            intensity={1.9}
+            position={[-4, 4, 5]}
+            scale={8}
             color="#ffffff"
           />
           <Lightformer
             form="rect"
-            intensity={0.9}
-            position={[-5, -1, 3]}
+            intensity={0.45}
+            position={[5, -2, 3]}
             scale={6}
             color="#6c5cff"
           />
-          <Lightformer
-            form="circle"
-            intensity={1.4}
-            position={[0, 5, -4]}
-            scale={5}
-            color="#ffffff"
-          />
         </Environment>
-
-        <PostFX />
         <AdaptiveQuality start={maxDpr} min={0.75} />
       </Canvas>
       </CanvasBoundary>

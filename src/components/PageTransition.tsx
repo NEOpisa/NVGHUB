@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motionEnabled } from "@/lib/motionConfig";
-import { txBus } from "@/components/scene/transitionBus";
+import { txBus, txState } from "@/components/scene/transitionBus";
 
 /**
  * Controlador da transição entre páginas. NÃO desenha nada — quem desenha é o
@@ -42,6 +42,12 @@ export default function PageTransition() {
         return;
       }
       if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      // a cor da travessia segue o destino (Ouro dourado · Platina bismuto)
+      txState.tint = url.pathname.startsWith("/ouro")
+        ? "ouro"
+        : url.pathname.startsWith("/platina")
+          ? "platina"
+          : "default";
       cover(); // sem preventDefault: o <Link> navega por baixo da cortina
     };
 

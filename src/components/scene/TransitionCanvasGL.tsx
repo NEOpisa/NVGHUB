@@ -4,11 +4,50 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import gsap from "gsap";
-import { txBus } from "@/components/scene/transitionBus";
+import { txBus, txState, type TxTint } from "@/components/scene/transitionBus";
 import { buildLogoChunks } from "@/components/scene/logoGeometry";
 
 const _v = new THREE.Vector3();
 const _dir = new THREE.Vector3();
+
+/* paleta da travessia por destino: violeta (padrão) · dourado (Ouro) ·
+   bismuto azulado (Platina) */
+const TINTS: Record<
+  TxTint,
+  {
+    whiteEm: string;
+    purpleCol: string;
+    purpleEm: string;
+    halo: string;
+    dir: string;
+    point: string;
+  }
+> = {
+  default: {
+    whiteEm: "#6b57c9",
+    purpleCol: "#251a63",
+    purpleEm: "#6c5cff",
+    halo: "#6c5cff",
+    dir: "#b3a1ff",
+    point: "#5a45f0",
+  },
+  ouro: {
+    whiteEm: "#c9962e",
+    purpleCol: "#4a3410",
+    purpleEm: "#f4b74a",
+    halo: "#f4b74a",
+    dir: "#ffe2b0",
+    point: "#e0a030",
+  },
+  platina: {
+    whiteEm: "#7fa8b8",
+    purpleCol: "#123338",
+    purpleEm: "#3fe0d8",
+    halo: "#3fe0d8",
+    dir: "#dfe6f2",
+    point: "#35c4cf",
+  },
+};
 
 // centro de um elemento (px de tela) → mundo no plano z, na câmera dada.
 function screenToWorld(cx: number, cy: number, camera: THREE.Camera, z: number) {
@@ -29,19 +68,21 @@ function screenToWorld(cx: number, cy: number, camera: THREE.Camera, z: number) 
 function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
   const { camera } = useThree();
   const backdropRef = useRef<THREE.Mesh>(null);
+  const dirLight = useRef<THREE.DirectionalLight>(null);
+  const pointLight = useRef<THREE.PointLight>(null);
   const glow = useRef(0);
 
   const mats = useMemo(() => {
     const white = new THREE.MeshStandardMaterial({
-      color: "#322030", metalness: 0.85, roughness: 0.32,
-      emissive: new THREE.Color("#a24890"), emissiveIntensity: 0.35, transparent: true, opacity: 0,
+      color: "#221c3d", metalness: 0.85, roughness: 0.32,
+      emissive: new THREE.Color("#6b57c9"), emissiveIntensity: 0.35, transparent: true, opacity: 0,
     });
     const purple = new THREE.MeshStandardMaterial({
-      color: "#471540", metalness: 0.7, roughness: 0.36,
-      emissive: new THREE.Color("#dd3bc8"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
+      color: "#251a63", metalness: 0.7, roughness: 0.36,
+      emissive: new THREE.Color("#6c5cff"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
     });
     const halo = new THREE.MeshBasicMaterial({
-      color: "#dd3bc8", transparent: true, opacity: 0,
+      color: "#6c5cff", transparent: true, opacity: 0,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     return { white, purple, halo };
@@ -76,6 +117,15 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
       if (e === "cover") {
         tl?.kill();
         onActive(true);
+
+        // tinge a marca e as luzes na cor do destino
+        const tint = TINTS[txState.tint];
+        mats.white.emissive.set(tint.whiteEm);
+        mats.purple.color.set(tint.purpleCol);
+        mats.purple.emissive.set(tint.purpleEm);
+        mats.halo.color.set(tint.halo);
+        dirLight.current?.color.set(tint.dir);
+        pointLight.current?.color.set(tint.point);
 
         // origem: posição do hero (se visível) ou fora da tela, embaixo à
         // esquerda — a marca VOA girando até o centro, e só então a rota troca
@@ -166,8 +216,18 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
         <meshBasicMaterial color="#06050c" transparent opacity={0} depthWrite={false} />
       </mesh>
       <ambientLight intensity={0.45} />
-      <directionalLight position={[4, 6, 6]} intensity={1.8} color="#f39ae2" />
-      <pointLight position={[-5, -2, 4]} intensity={30} color="#b826a6" />
+      <directionalLight
+        ref={dirLight}
+        position={[4, 6, 6]}
+        intensity={1.8}
+        color="#b3a1ff"
+      />
+      <pointLight
+        ref={pointLight}
+        position={[-5, -2, 4]}
+        intensity={30}
+        color="#5a45f0"
+      />
       <primitive object={group} />
     </group>
   );

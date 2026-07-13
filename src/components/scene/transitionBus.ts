@@ -6,6 +6,11 @@
  */
 export type TxEvent = "cover" | "covered" | "reveal";
 
+/** Tinta da travessia: a marca NV cobre a tela na COR do destino —
+ *  dourado a caminho do Ouro, bismuto azulado a caminho da Platina. */
+export type TxTint = "default" | "ouro" | "platina";
+export const txState = { tint: "default" as TxTint };
+
 const listeners = new Set<(e: TxEvent) => void>();
 
 export const txBus = {

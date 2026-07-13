@@ -4,90 +4,159 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { journey, rangeN } from "../journeyState";
+import { eco, ECO_COUNT, ECO_PER_WHEEL } from "../ecoState";
 import { WORLD } from "../path";
 
 /**
- * Estação ECOSSISTEMA: um "planeta digital" em linguagem de LINHAS — núcleo
- * icosaédrico wireframe com enxame de pontos internos cintilando, 3 camadas
- * orbitais (Base → Conexão → Inteligência) com anéis delgados contra-rotativos
- * e nós esféricos, casca wireframe externa, feixes verticais e cometas.
- * Tudo respira: revela por camada, pulsa, orbita.
+ * Estação ECOSSISTEMA — o catálogo inteiro em DUAS RODAS VERTICAIS, uma de
+ * cada lado da tela (linguagem igloo): dez placas opacas por roda, tangentes
+ * ao aro como um tambor de revólver. Rolar com o ponteiro sobre uma roda a
+ * GIRA (handler no overlay escreve eco.wheelIdx); a placa da frente é o
+ * módulo selecionado. O vão central fica livre — é por ele que a câmera
+ * mergulha no warp. O 3D publica posição/raio projetados em `eco.screen`.
  */
-const LAYERS = [
-  { y: -1.15, r: 2.4, speed: 0.12 },
-  { y: 0, r: 1.9, speed: -0.16 },
-  { y: 1.15, r: 1.4, speed: 0.2 },
-] as const;
-const NODES = 12;
-const COMETS = 26;
-const CORE_PTS = 60;
+const PER = ECO_PER_WHEEL;
+const WHEEL_X = 2.35; // afastamento lateral de cada roda
+const WHEEL_R = 1.55;
+const PANE_W = 0.72;
+const PANE_H = 0.88;
+const CHAMFER = 0.1;
+const GLYPH_SCALE = 1.05;
+
+/* glifo wireframe por módulo — geometria abstrata, uma por opção */
+function glyphGeo(i: number): THREE.BufferGeometry {
+  switch (i) {
+    case 0: return new THREE.BoxGeometry(0.5, 0.34, 0.05); // site: tela
+    case 1: return new THREE.BoxGeometry(0.34, 0.34, 0.34); // mercado: caixa
+    case 2: return new THREE.CylinderGeometry(0.24, 0.24, 0.3, 6); // agenda
+    case 3: return new THREE.IcosahedronGeometry(0.27, 0); // saas
+    case 4: return new THREE.DodecahedronGeometry(0.26, 0); // crm
+    case 5: return new THREE.TorusGeometry(0.22, 0.08, 4, 12); // integrações
+    case 6: return new THREE.ConeGeometry(0.24, 0.42, 5); // seo
+    case 7: return new THREE.OctahedronGeometry(0.28, 0); // ia
+    case 8: return new THREE.TetrahedronGeometry(0.32, 0); // lavoura
+    case 9: return new THREE.CylinderGeometry(0.26, 0.26, 0.1, 10); // bi
+    case 10: return new THREE.BoxGeometry(0.42, 0.3, 0.24); // loja: pacote
+    case 11: return new THREE.BoxGeometry(0.26, 0.46, 0.05); // app: celular
+    case 12: return new THREE.BoxGeometry(0.52, 0.32, 0.03); // landing: placa
+    case 13: return new THREE.OctahedronGeometry(0.3, 1); // branding: gema
+    case 14: return new THREE.ConeGeometry(0.28, 0.44, 4); // tráfego: seta
+    case 15: return new THREE.CylinderGeometry(0.28, 0.08, 0.42, 6); // funil
+    case 16: return new THREE.TorusGeometry(0.26, 0.05, 3, 6); // portal: elo
+    case 17: return new THREE.CylinderGeometry(0.2, 0.2, 0.44, 8); // rpa
+    case 18: return new THREE.SphereGeometry(0.26, 6, 4); // dados: globo
+    default: return new THREE.CylinderGeometry(0.06, 0.3, 0.42, 5); // cro
+  }
+}
+
+/* moldura da placa: retângulo com cantos chanfrados (chapa blueprint) */
+function paneFrameGeo(): THREE.BufferGeometry {
+  const w = PANE_W / 2;
+  const h = PANE_H / 2;
+  const c = CHAMFER;
+  const pts = [
+    [-w + c, h], [w - c, h], [w, h - c], [w, -h + c], [w - c, -h],
+    [-w + c, -h], [-w, -h + c], [-w, h - c],
+  ];
+  const pos: number[] = [];
+  for (let k = 0; k < pts.length; k++) {
+    const a = pts[k];
+    const b = pts[(k + 1) % pts.length];
+    pos.push(a[0], a[1], 0, b[0], b[1], 0);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  return g;
+}
+
+const _wp = new THREE.Vector3();
 
 export default function Ecosystem() {
   const group = useRef<THREE.Group>(null);
-  const layerRefs = useRef<(THREE.Group | null)[]>([]);
-  const innerRings = useRef<(THREE.Mesh | null)[]>([]);
-  const beams = useRef<THREE.LineSegments>(null);
-  const shell = useRef<THREE.Mesh>(null);
-  const comets = useRef<THREE.Points>(null);
-  const coreWire = useRef<THREE.Mesh>(null);
-  const corePts = useRef<THREE.Points>(null);
+  const spinnerRefs = useRef<(THREE.Group | null)[]>([]);
+  const paneRefs = useRef<(THREE.Group | null)[]>([]);
+  const glyphRefs = useRef<(THREE.LineSegments | null)[]>([]);
+  const thetas = useRef([
+    { v: 0, has: false },
+    { v: 0, has: false },
+  ]);
 
-  const nodeGeo = useMemo(() => new THREE.SphereGeometry(0.07, 10, 10), []);
-  const torusGeos = useMemo(
-    () => LAYERS.map((l) => new THREE.TorusGeometry(l.r, 0.012, 8, 96)),
-    [],
-  );
-  const innerGeos = useMemo(
-    () => LAYERS.map((l) => new THREE.TorusGeometry(l.r - 0.22, 0.006, 8, 96)),
-    [],
-  );
-  const layerMats = useMemo(
+  const frameGeo = useMemo(() => paneFrameGeo(), []);
+  const frameMats = useMemo(
     () =>
-      LAYERS.map(
-        () =>
-          new THREE.MeshStandardMaterial({
-            color: "#f076e0",
-            emissive: "#dd3bc8",
-            emissiveIntensity: 0.55,
-            metalness: 0.6,
-            roughness: 0.35,
-            transparent: true,
-            opacity: 0,
-          }),
+      Array.from({ length: ECO_COUNT }, () =>
+        new THREE.LineBasicMaterial({
+          color: "#9d8cff",
+          transparent: true,
+          opacity: 0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        }),
       ),
     [],
   );
-  const innerMats = useMemo(
+  // placa OPACA: chapa escura sólida (depthWrite oclui as placas de trás)
+  const fillGeo = useMemo(
+    () => new THREE.PlaneGeometry(PANE_W - 0.05, PANE_H - 0.05),
+    [],
+  );
+  const fillMats = useMemo(
     () =>
-      LAYERS.map(
-        () =>
-          new THREE.MeshBasicMaterial({
-            color: "#f076e0",
-            transparent: true,
-            opacity: 0,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-          }),
+      Array.from({ length: ECO_COUNT }, () =>
+        new THREE.MeshBasicMaterial({
+          color: "#0c0918",
+          transparent: true,
+          opacity: 0,
+          side: THREE.DoubleSide,
+        }),
+      ),
+    [],
+  );
+  const glyphGeos = useMemo(
+    () =>
+      Array.from({ length: ECO_COUNT }, (_, i) => {
+        const base = glyphGeo(i);
+        const edges = new THREE.EdgesGeometry(base, 1);
+        base.dispose();
+        return edges;
+      }),
+    [],
+  );
+  const glyphMats = useMemo(
+    () =>
+      Array.from({ length: ECO_COUNT }, () =>
+        new THREE.LineBasicMaterial({
+          color: "#cfc6ff",
+          transparent: true,
+          opacity: 0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        }),
       ),
     [],
   );
 
-  const beamGeo = useMemo(() => {
+  // aro-guia de cada roda (círculo no plano Y-Z da roda)
+  const rimGeo = useMemo(() => {
+    const N = 96;
     const pos: number[] = [];
-    for (let j = 0; j < NODES; j++) {
-      const a = (j / NODES) * Math.PI * 2;
-      const x = Math.cos(a) * 1.65;
-      const z = Math.sin(a) * 1.65;
-      pos.push(x, LAYERS[0].y, z, x, LAYERS[2].y, z);
+    const R = WHEEL_R + 0.14;
+    for (let k = 0; k < N; k++) {
+      const a = (k / N) * Math.PI * 2;
+      const b = ((k + 1) / N) * Math.PI * 2;
+      pos.push(
+        0, Math.sin(a) * R, Math.cos(a) * R,
+        0, Math.sin(b) * R, Math.cos(b) * R,
+      );
     }
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
     return g;
   }, []);
-  const beamMat = useMemo(
+  const rimMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#dd3bc8",
+        color: "#6c5cff",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -95,228 +164,158 @@ export default function Ecosystem() {
       }),
     [],
   );
-
-  const shellGeo = useMemo(() => new THREE.IcosahedronGeometry(3.15, 1), []);
-  const shellMat = useMemo(
-    () =>
-      new THREE.MeshBasicMaterial({
-        color: "#8f1878",
-        wireframe: true,
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      }),
-    [],
-  );
-
-  // cometas: pontos orbitando em elipses inclinadas (grupo gira; barato)
-  const cometGeo = useMemo(() => {
-    const pos = new Float32Array(COMETS * 3);
-    for (let i = 0; i < COMETS; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 2.6 + Math.random() * 1.2;
-      pos[i * 3] = Math.cos(a) * r;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 2.6;
-      pos[i * 3 + 2] = Math.sin(a) * r;
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    return g;
-  }, []);
-  const cometMat = useMemo(
-    () =>
-      new THREE.PointsMaterial({
-        size: 0.06,
-        sizeAttenuation: true,
-        color: "#f076e0",
-        transparent: true,
-        opacity: 0,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      }),
-    [],
-  );
-
-  // núcleo: icosaedro wireframe + enxame de pontos internos cintilando
-  const coreWireGeo = useMemo(() => new THREE.IcosahedronGeometry(0.52, 1), []);
-  const coreWireMat = useMemo(
-    () =>
-      new THREE.MeshBasicMaterial({
-        color: "#f076e0",
-        wireframe: true,
-        transparent: true,
-        opacity: 0.7,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      }),
-    [],
-  );
-  const corePtsGeo = useMemo(() => {
-    const pos = new Float32Array(CORE_PTS * 3);
-    for (let i = 0; i < CORE_PTS; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const b = Math.acos(Math.random() * 2 - 1);
-      const rr = Math.random() * 0.42;
-      pos[i * 3] = Math.sin(b) * Math.cos(a) * rr;
-      pos[i * 3 + 1] = Math.cos(b) * rr;
-      pos[i * 3 + 2] = Math.sin(b) * Math.sin(a) * rr;
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    return g;
-  }, []);
-  const corePtsMat = useMemo(
-    () =>
-      new THREE.PointsMaterial({
-        size: 0.05,
-        sizeAttenuation: true,
-        color: "#e6e9f6",
-        transparent: true,
-        opacity: 0.9,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      }),
-    [],
-  );
-
-  const nodeMeshes = useRef<(THREE.InstancedMesh | null)[]>([]);
-  useEffect(() => {
-    const o = new THREE.Object3D();
-    nodeMeshes.current.forEach((im, li) => {
-      if (!im) return;
-      for (let j = 0; j < NODES; j++) {
-        const a = (j / NODES) * Math.PI * 2;
-        o.position.set(
-          Math.cos(a) * LAYERS[li].r,
-          0,
-          Math.sin(a) * LAYERS[li].r,
-        );
-        o.scale.setScalar(0.6 + (j % 3) * 0.28);
-        o.updateMatrix();
-        im.setMatrixAt(j, o.matrix);
-      }
-      im.instanceMatrix.needsUpdate = true;
-    });
-  }, []);
 
   useEffect(
     () => () => {
-      nodeGeo.dispose();
-      torusGeos.forEach((g) => g.dispose());
-      innerGeos.forEach((g) => g.dispose());
-      layerMats.forEach((m) => m.dispose());
-      innerMats.forEach((m) => m.dispose());
-      beamGeo.dispose();
-      beamMat.dispose();
-      shellGeo.dispose();
-      shellMat.dispose();
-      cometGeo.dispose();
-      cometMat.dispose();
-      coreWireGeo.dispose();
-      coreWireMat.dispose();
-      corePtsGeo.dispose();
-      corePtsMat.dispose();
+      frameGeo.dispose();
+      frameMats.forEach((m) => m.dispose());
+      fillGeo.dispose();
+      fillMats.forEach((m) => m.dispose());
+      glyphGeos.forEach((g) => g.dispose());
+      glyphMats.forEach((m) => m.dispose());
+      rimGeo.dispose();
+      rimMat.dispose();
     },
-    [nodeGeo, torusGeos, innerGeos, layerMats, innerMats, beamGeo, beamMat, shellGeo, shellMat, cometGeo, cometMat, coreWireGeo, coreWireMat, corePtsGeo, corePtsMat],
+    [frameGeo, frameMats, fillGeo, fillMats, glyphGeos, glyphMats, rimGeo, rimMat],
   );
 
   useFrame((state, dt) => {
     const g = group.current;
     if (!g) return;
     const sm = journey.smooth;
-    g.visible = sm > 0.12 && sm < 0.56;
-    if (!g.visible) return;
+    g.visible = sm > 0.12 && sm < 0.64;
+    if (!g.visible) {
+      for (const s of eco.screen) s.vis = 0;
+      return;
+    }
 
     const time = state.clock.elapsedTime;
-    const l = rangeN(sm, 0.2, 0.44);
+    const l = rangeN(sm, 0.2, 0.4);
+    // o warp começa: as rodas cedem o palco enquanto a câmera mergulha
+    const warpFade = 1 - rangeN(sm, 0.55, 0.63);
+    const cam = state.camera as THREE.PerspectiveCamera;
+    const tanHalfFov = Math.tan((cam.fov * Math.PI) / 360);
 
-    for (let i = 0; i < LAYERS.length; i++) {
-      const lg = layerRefs.current[i];
-      if (!lg) continue;
-      const reveal = rangeN(l, 0.1 + i * 0.22, 0.28 + i * 0.22);
-      const s = 0.55 + 0.45 * reveal;
-      lg.scale.setScalar(THREE.MathUtils.damp(lg.scale.x, s, 6, dt));
-      lg.rotation.y += dt * LAYERS[i].speed * (0.3 + reveal);
-      layerMats[i].opacity = reveal;
-      layerMats[i].emissiveIntensity =
-        0.35 + reveal * (0.85 + Math.sin(time * 1.4 + i) * 0.2);
-      const ir = innerRings.current[i];
-      if (ir) {
-        ir.rotation.z -= dt * LAYERS[i].speed * 2.2;
-        innerMats[i].opacity = reveal * 0.3;
+    // parallax mínimo do conjunto
+    g.rotation.y = state.pointer.x * 0.02;
+
+    rimMat.opacity = rangeN(l, 0.05, 0.3) * 0.3 * warpFade;
+
+    for (let b = 0; b < 2; b++) {
+      const spinner = spinnerRefs.current[b];
+      if (!spinner) continue;
+      const th = thetas.current[b];
+      // a placa do índice de frente encara a câmera (menor caminho angular)
+      const want = (eco.wheelIdx[b] / PER) * Math.PI * 2;
+      if (!th.has) {
+        th.v = want;
+        th.has = true;
+      }
+      let diff = want - th.v;
+      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+      th.v += diff * Math.min(dt * 4.2, 1);
+      spinner.rotation.x = th.v;
+    }
+
+    for (let i = 0; i < ECO_COUNT; i++) {
+      const pane = paneRefs.current[i];
+      if (!pane) continue;
+      const b = Math.floor(i / PER);
+      const baseA = ((i % PER) / PER) * Math.PI * 2;
+      // ângulo efetivo da placa na roda (0 = de frente pra câmera)
+      let eff = baseA - thetas.current[b].v;
+      eff = Math.atan2(Math.sin(eff), Math.cos(eff));
+      const face = (Math.cos(eff) + 1) / 2; // 1 = frente · 0 = fundo da roda
+
+      const reveal = rangeN(l, 0.03 + i * 0.008, 0.14 + i * 0.008) * warpFade;
+      const isActive = eco.active === i;
+
+      const wantS = reveal * (isActive ? 1.12 : 0.94);
+      pane.scale.setScalar(
+        THREE.MathUtils.damp(Math.max(pane.scale.x, 1e-3), wantS, 6, dt),
+      );
+
+      // OPACO na frente; placas do fundo da roda somem quase por completo
+      // (o wireframe delas vazava por cima — AdditiveBlending ignora depth)
+      const faceQ = face * face;
+      fillMats[i].opacity = reveal * Math.min(1, face * 1.8);
+      fillMats[i].color.set(isActive ? "#181240" : "#0c0918");
+      frameMats[i].opacity = reveal * (0.05 + faceQ * (isActive ? 0.95 : 0.5));
+      frameMats[i].color.set(isActive ? "#e9e4ff" : "#9d8cff");
+      glyphMats[i].opacity = reveal * (0.04 + faceQ * (isActive ? 0.96 : 0.6));
+
+      const gl = glyphRefs.current[i];
+      if (gl) {
+        gl.rotation.y += dt * (isActive ? 0.9 : 0.22);
+        gl.rotation.x = Math.sin(time * 0.5 + i) * 0.2;
+      }
+
+      // projeção: posição + raio de tela para o retículo DOM — rótulos do
+      // fundo da roda somem (face), o resto esmaece com a distância angular
+      const s = eco.screen[i];
+      pane.getWorldPosition(_wp);
+      const dist = cam.position.distanceTo(_wp);
+      _wp.project(cam);
+      if (_wp.z < 1) {
+        s.x = (_wp.x * 0.5 + 0.5) * state.size.width;
+        s.y = (-_wp.y * 0.5 + 0.5) * state.size.height;
+        s.r =
+          ((PANE_H / 2) * pane.scale.x / dist) *
+          (state.size.height / 2 / tanHalfFov);
+        s.vis = reveal * Math.pow(face, 1.6);
+      } else {
+        s.vis = 0;
       }
     }
-
-    if (beams.current) {
-      beams.current.rotation.y -= dt * 0.06;
-      beamMat.opacity = rangeN(l, 0.5, 0.85) * 0.3;
-    }
-    if (shell.current) {
-      shell.current.rotation.y += dt * 0.03;
-      shell.current.rotation.x = Math.sin(time * 0.08) * 0.1;
-      shellMat.opacity = rangeN(l, 0.15, 0.6) * 0.09;
-    }
-    if (comets.current) {
-      comets.current.rotation.y += dt * 0.22;
-      comets.current.rotation.x = 0.28;
-      cometMat.opacity = rangeN(l, 0.2, 0.6) * 0.7;
-    }
-
-    // núcleo: wireframe pulsa e gira; pontos internos cintilam em contra-giro
-    const pulse = 1 + Math.sin(time * 1.8) * 0.07;
-    if (coreWire.current) {
-      coreWire.current.scale.setScalar(pulse * (0.6 + l * 0.4));
-      coreWire.current.rotation.y += dt * 0.35;
-      coreWire.current.rotation.x = Math.sin(time * 0.5) * 0.25;
-      coreWireMat.opacity = 0.3 + l * 0.4 + Math.sin(time * 2.4) * 0.12;
-    }
-    if (corePts.current) {
-      corePts.current.rotation.y -= dt * 0.6;
-      corePts.current.scale.setScalar(pulse);
-      corePtsMat.opacity = (0.5 + Math.sin(time * 3.1) * 0.3) * l;
-    }
-    g.rotation.y = Math.sin(time * 0.1) * 0.15;
-    g.rotation.z = 0.1; // leve inclinação de composição
   });
 
   return (
     <group ref={group} position={[WORLD.eco.x, WORLD.eco.y, WORLD.eco.z]}>
-      {LAYERS.map((layer, i) => (
+      <pointLight intensity={26} color="#b3a5ff" distance={14} decay={1.6} />
+
+      {/* duas rodas verticais — viradas de leve para o centro */}
+      {[0, 1].map((b) => (
         <group
-          key={i}
-          ref={(el) => {
-            layerRefs.current[i] = el;
-          }}
-          position={[0, layer.y, 0]}
+          key={b}
+          position={[b === 0 ? -WHEEL_X : WHEEL_X, 0, 0]}
+          rotation={[0, b === 0 ? 0.34 : -0.34, 0]}
         >
-          <mesh
-            geometry={torusGeos[i]}
-            material={layerMats[i]}
-            rotation={[Math.PI / 2, 0, 0]}
-          />
-          <mesh
+          <lineSegments geometry={rimGeo} material={rimMat} />
+          <group
             ref={(el) => {
-              innerRings.current[i] = el;
+              spinnerRefs.current[b] = el;
             }}
-            geometry={innerGeos[i]}
-            material={innerMats[i]}
-            rotation={[Math.PI / 2, 0, 0]}
-          />
-          <instancedMesh
-            ref={(el) => {
-              nodeMeshes.current[i] = el;
-            }}
-            args={[nodeGeo, layerMats[i], NODES]}
-          />
+          >
+            {Array.from({ length: PER }, (_, k) => {
+              const i = b * PER + k;
+              const a = (k / PER) * Math.PI * 2;
+              return (
+                <group
+                  key={i}
+                  ref={(el) => {
+                    paneRefs.current[i] = el;
+                  }}
+                  position={[0, Math.sin(a) * WHEEL_R, Math.cos(a) * WHEEL_R]}
+                  rotation={[-a, 0, 0]}
+                  scale={0.001}
+                >
+                  <mesh geometry={fillGeo} material={fillMats[i]} />
+                  <lineSegments geometry={frameGeo} material={frameMats[i]} />
+                  <lineSegments
+                    ref={(el) => {
+                      glyphRefs.current[i] = el;
+                    }}
+                    geometry={glyphGeos[i]}
+                    material={glyphMats[i]}
+                    position={[0, 0, 0.08]}
+                    scale={GLYPH_SCALE}
+                  />
+                </group>
+              );
+            })}
+          </group>
         </group>
       ))}
-      <lineSegments ref={beams} geometry={beamGeo} material={beamMat} />
-      <mesh ref={shell} geometry={shellGeo} material={shellMat} />
-      <points ref={comets} geometry={cometGeo} material={cometMat} />
-      <mesh ref={coreWire} geometry={coreWireGeo} material={coreWireMat} />
-      <points ref={corePts} geometry={corePtsGeo} material={corePtsMat} />
-      <pointLight intensity={40} color="#dd3bc8" distance={14} />
     </group>
   );
 }

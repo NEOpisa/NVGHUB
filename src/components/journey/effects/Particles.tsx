@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { journey, type Tier } from "../journeyState";
@@ -153,67 +153,6 @@ function Dust({ count }: { count: number }) {
   );
 }
 
-/** Estrela CADENTE: risco de luz que cruza o fundo de tempos em tempos.
- *  Um plano fino esticado com gradiente aditivo; 1 draw call, matemática de
- *  2 floats por frame. Puro tempero — nunca rouba a cena. */
-function ShootingStar({ seed }: { seed: number }) {
-  const ref = useRef<THREE.Mesh>(null);
-  const st = useRef({
-    t: -2 - seed * 5, // espera inicial dessincronizada
-    dur: 1.1,
-    from: new THREE.Vector3(),
-    dir: new THREE.Vector3(),
-  });
-  const mat = useMemo(
-    () =>
-      new THREE.MeshBasicMaterial({
-        color: "#cfc4ff",
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      }),
-    [],
-  );
-  useEffect(() => () => mat.dispose(), [mat]);
-
-  useFrame((_, dt) => {
-    const s = st.current;
-    const m = ref.current;
-    if (!m) return;
-    s.t += dt;
-    if (s.t < 0) {
-      m.visible = false;
-      return;
-    }
-    if (s.t > s.dur) {
-      // reprograma o próximo voo: pausa longa aleatória + nova diagonal
-      s.t = -(4 + Math.random() * 8);
-      s.dur = 0.9 + Math.random() * 0.7;
-      const y = 4 + Math.random() * 5;
-      const z = -12 - Math.random() * 46;
-      s.from.set((Math.random() - 0.5) * 26 + 8, y, z);
-      s.dir.set(-1, -0.35 - Math.random() * 0.3, 0).normalize();
-      m.visible = false;
-      return;
-    }
-    const k = s.t / s.dur;
-    m.visible = true;
-    m.position
-      .copy(s.from)
-      .addScaledVector(s.dir, k * 22);
-    m.rotation.z = Math.atan2(s.dir.y, s.dir.x);
-    // acende rápido, apaga suave (parábola)
-    mat.opacity = Math.sin(Math.PI * k) * 0.5;
-  });
-
-  return (
-    <mesh ref={ref} visible={false} material={mat}>
-      <planeGeometry args={[2.6, 0.02]} />
-    </mesh>
-  );
-}
-
 export default function Particles() {
   const tier = journey.tier;
   // fator mobile fixado na montagem (não recalcula por frame)
@@ -224,13 +163,6 @@ export default function Particles() {
     <>
       <Stars count={starN} />
       <Dust count={dustN} />
-      {/* cadentes só fora do tier mínimo (lá cada draw call importa) */}
-      {tier > 0 && (
-        <>
-          <ShootingStar seed={0.2} />
-          <ShootingStar seed={0.7} />
-        </>
-      )}
     </>
   );
 }

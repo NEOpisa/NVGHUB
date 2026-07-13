@@ -32,7 +32,7 @@ describe("rangeN", () => {
 
 describe("CH (faixas dos capítulos)", () => {
   it("faixas são crescentes e não se sobrepõem", () => {
-    const list = [CH.hero, CH.eco, CH.services, CH.explore];
+    const list = [CH.hero, CH.eco, CH.explore];
     for (const c of list) expect(c.end).toBeGreaterThan(c.start);
     for (let i = 1; i < list.length; i++)
       expect(list[i].start).toBeGreaterThanOrEqual(list[i - 1].end);

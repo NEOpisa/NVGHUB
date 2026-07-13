@@ -3,19 +3,21 @@
 import { useEffect, type RefObject } from "react";
 import { getLenisInstance } from "@/lib/lenis";
 import { journey } from "./journeyState";
+import { ecoWheelZone } from "./ecoState";
 
 /**
  * EXPERIMENTAL (teste local): scroll por PARADAS. Qualquer gesto de rolagem
  * dispara a viagem completa até o próximo estado — sem posições
- * intermediárias. Paradas: herói, ecossistema, cada uma das 5 soluções e o
- * destino final (os valores casam com os waypoints da câmera em path.ts).
+ * intermediárias. Paradas: herói, ecossistema e destino final — a viagem
+ * eco→final toca o WARP inteiro (mergulho + corredor de portões) num único
+ * movimento de câmera.
  *
  * Resposta imediata: cada NOVO gesto conta na hora, mesmo no meio de uma
  * viagem — rolar de novo empilha a próxima parada e ACELERA (quem rola
  * rápido quer chegar rápido). A separação gesto novo × inércia residual é
  * feita pelo formato do delta: inércia só decai; um flick novo sobe.
  */
-const SNAPS = [0, 0.35, 0.522, 0.566, 0.61, 0.654, 0.698, 1];
+const SNAPS = [0, 0.35, 1];
 
 type SnapLenis = {
   scrollTo: (
@@ -29,8 +31,6 @@ type SnapLenis = {
   ) => void;
 };
 
-const easeInOut = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export default function ChapterSnap({
@@ -46,6 +46,7 @@ export default function ChapterSnap({
     let targetIdx: number | null = null;
     let travelId = 0;
     let tweenRaf = 0;
+    let stepAt = 0; // última viagem disparada (cooldown anti passo-duplo)
 
     const toY = (p: number) =>
       el.offsetTop + p * (el.offsetHeight - window.innerHeight);
@@ -75,15 +76,14 @@ export default function ChapterSnap({
     };
 
     // tween próprio pro caminho sem Lenis (mobile/pointer coarse)
-    const tweenTo = (y: number, ms: number, id: number, chained: boolean) => {
+    const tweenTo = (y: number, ms: number, id: number) => {
       cancelAnimationFrame(tweenRaf);
       const y0 = window.scrollY;
       const t0 = performance.now();
-      const ease = chained ? easeOut : easeInOut; // encadeado: sem re-acelerar
       const step = (now: number) => {
         if (id !== travelId) return;
         const c = Math.min(1, (now - t0) / ms);
-        window.scrollTo(0, y0 + (y - y0) * ease(c));
+        window.scrollTo(0, y0 + (y - y0) * easeOut(c));
         if (c < 1) tweenRaf = requestAnimationFrame(step);
         else done(id);
       };
@@ -99,24 +99,28 @@ export default function ChapterSnap({
       busy = true;
       const id = ++travelId;
 
+      stepAt = performance.now();
       const dist = Math.abs(SNAPS[to] - journey.progress);
-      let ms = 460 + dist * 2000;
+      // a viagem eco→final é O warp: merece durar mais que um snap comum
+      let ms = 420 + dist * 3200;
       if (chained) ms *= 0.55;
-      ms = Math.min(1500, Math.max(340, ms));
+      ms = Math.min(2600, Math.max(320, ms));
 
       const y = toY(SNAPS[to]);
       const lenis = getLenisInstance() as SnapLenis | undefined;
       if (lenis) {
         lenis.scrollTo(y, {
           duration: ms / 1000,
-          easing: chained ? easeOut : easeInOut,
+          // saída rápida SEMPRE: o easeInOut arrancava devagar e o snap
+          // parecia atrasado em relação ao gesto
+          easing: easeOut,
           lock: true,
           onComplete: () => done(id),
         });
         // rede de segurança caso o onComplete não dispare (interrupções)
         window.setTimeout(() => done(id), ms + 500);
       } else {
-        tweenTo(y, ms, id, chained);
+        tweenTo(y, ms, id);
       }
     };
 
@@ -128,6 +132,8 @@ export default function ChapterSnap({
     let lastT = 0;
     const onWheel = (e: WheelEvent) => {
       if (!covering()) return;
+      // ponteiro sobre uma roda do ecossistema: o giro é dela, não da página
+      if (ecoWheelZone(e.clientX, e.clientY) >= 0) return;
       e.preventDefault();
       e.stopImmediatePropagation();
       const now = performance.now();
@@ -139,7 +145,9 @@ export default function ChapterSnap({
         (gap > 45 && ad >= lastAd * 0.92 && ad >= 60); // notch de mouse
       lastAd = ad;
       lastT = now;
-      if (fresh) step(e.deltaY > 0 ? 1 : -1);
+      // cooldown pós-viagem: 1 gesto = 1 parada — a roda de mouse emitia
+      // vários notches num flick e o snap pulava DUAS paradas de uma vez
+      if (fresh && now - stepAt > 380) step(e.deltaY > 0 ? 1 : -1);
     };
 
     // ── mobile: swipe vertical vira uma viagem completa (encadeável) ──

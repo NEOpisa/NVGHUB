@@ -45,17 +45,17 @@ const OFERTAS = [
 
 const PASSOS = [
   {
-    num: "P_01",
+    num: "01",
     title: "Quiz de qualificação",
     desc: "Três minutos para entendermos o que você já tem e o que precisa.",
   },
   {
-    num: "P_02",
+    num: "02",
     title: "Consulta objetiva",
     desc: "20–30 minutos: indicamos o produto certo e apresentamos o valor.",
   },
   {
-    num: "P_03",
+    num: "03",
     title: "Proposta e entrega",
     desc: "Proposta enxuta, produção sistematizada e entrega em até 16 dias úteis.",
   },

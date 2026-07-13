@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { intro } from "@/components/scene/introState";
 import { buildLogoChunks, type Chunk } from "@/components/scene/logoGeometry";
 import BlueprintLogo from "../blueprint/BlueprintLogo";
+import MeasureCallouts from "../blueprint/MeasureCallouts";
 import { journey, rangeN } from "../journeyState";
 
 /**
@@ -371,6 +372,7 @@ export default function HeroLogo() {
             {meshes.map((m, i) => (
               <primitive key={i} object={m} />
             ))}
+            <MeasureCallouts meshes={meshes} />
           </group>
         </group>
       </group>
@@ -382,7 +384,7 @@ export default function HeroLogo() {
         opacity={0.35}
         color="#9d8cff"
       />
-      <pointLight position={[1.5, 1.5, 2.5]} intensity={22} color="#6c5cff" />
+      <pointLight position={[-1.8, 1.8, 2.5]} intensity={22} color="#6c5cff" />
     </group>
   );
 }

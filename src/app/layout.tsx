@@ -22,6 +22,7 @@ import ViewportProbe from "@/components/ViewportProbe";
 import LetterScatter from "@/components/LetterScatter";
 import ObsidianRain from "@/components/ObsidianRain";
 import HudControls from "@/components/HudControls";
+import CornerHud from "@/components/CornerHud";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, IG } from "@/lib/constants";
 import "./globals.css";
@@ -251,6 +252,7 @@ export default function RootLayout({
         <FooterGate />
         <div className="site-frame" aria-hidden="true" />
         <HudControls />
+        <CornerHud />
         <LetterScatter />
         <ObsidianRain />
         <MetaPixel />

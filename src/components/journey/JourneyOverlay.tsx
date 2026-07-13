@@ -2,95 +2,26 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import Magnetic from "@/components/Magnetic";
 import { WhatsAppIcon } from "@/components/icons";
 import { WA, IG, HERO_HEADLINE } from "@/lib/constants";
 import { track } from "@vercel/analytics";
 import { getLenisInstance } from "@/lib/lenis";
 import { journey, rangeN, CH } from "./journeyState";
+import EcoNodes from "./EcoNodes";
 
-/* callouts estilo igloo: crosshair + linha-guia + poucas palavras.
-   Cada um aponta uma camada orbital do organismo 3D. */
-const ECO_CALLOUTS = [
-  {
-    num: "01",
-    tag: "BASE",
-    txt: "site que captura e converte",
-    pos: "jy-orb--1",
-  },
-  {
-    num: "02",
-    tag: "CONEXÃO",
-    txt: "CRM + WhatsApp · nenhum lead se perde",
-    pos: "jy-orb--2",
-  },
-  {
-    num: "03",
-    tag: "INTELIGÊNCIA",
-    txt: "IA e automação agindo sozinhas",
-    pos: "jy-orb--3",
-  },
-];
-
-const SERVICES = [
-  {
-    code: "SRV_01",
-    title: "Site Profissional",
-    metric: "ENTREGA · 16d",
-    desc: "Feito para transformar visitante em cliente.",
-  },
-  {
-    code: "SRV_02",
-    title: "Sistema para Negócio",
-    metric: "PAINEL · INCLUSO",
-    desc: "Cardápio, agendamento ou catálogo — com painel.",
-  },
-  {
-    code: "SRV_03",
-    title: "SEO & Presença Digital",
-    metric: "RESULTADO · 30–60d",
-    desc: "Apareça nas buscas locais do Google.",
-  },
-  {
-    code: "SRV_04",
-    title: "Manutenção & Suporte",
-    metric: "RESPOSTA · 3h",
-    desc: "Você chama no WhatsApp, nós resolvemos.",
-  },
-  {
-    code: "SRV_05",
-    title: "SaaS para seu segmento",
-    metric: "NO AR · 5d",
-    desc: "Plataforma por assinatura, pronta em dias.",
-  },
-];
-
-const DOORS = [
-  {
-    tier: "ouro" as const,
-    href: "/ouro",
-    tag: "DIV_01 · PRODUTO CONSULTIVO",
-    title: "OURO",
-    desc: "Presença sólida, escopo claro, entrega rápida — o caminho sai de uma consulta objetiva.",
-    specs: ["Escopo fechado", "Entrega 7–35 dias", "Consulta 20–30 min", "Suporte incluso"],
-    cta: "Entrar no Ouro",
-  },
-  {
-    tier: "platina" as const,
-    href: "/platina",
-    tag: "DIV_02 · PARCERIA SOB MEDIDA",
-    title: "PLATINA",
-    desc: "A máquina completa, sob medida — diagnóstico profundo e otimização contínua.",
-    specs: ["100% sob medida", "Resultado assumido", "Otimização mensal", "Vagas limitadas"],
-    cta: "Entrar na Platina",
-  },
+/* OURO é o produto principal (a porta larga); PLATINA é seletiva — a porta
+   dela é um CADASTRO de candidatura, não uma vitrine */
+const OURO_SPECS = [
+  "Escopo fechado",
+  "Entrega 7–35 dias",
+  "Consulta 20–30 min",
+  "Suporte incluso",
 ];
 
 const RAIL = [
   { label: "Início", p: 0.02 },
-  { label: "Ecossistema", p: 0.32 },
-  { label: "Soluções", p: 0.62 },
+  { label: "Ecossistema", p: 0.35 },
   { label: "A Escolha", p: 0.985 },
 ];
 
@@ -113,26 +44,22 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
   const root = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const ecoRef = useRef<HTMLElement>(null);
-  const svcRef = useRef<HTMLElement>(null);
   const expRef = useRef<HTMLElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
-  const passRef = useRef<HTMLDivElement>(null);
   // #013 · live region: anuncia o capítulo ativo a leitores de tela
   const liveRef = useRef<HTMLSpanElement>(null);
-  const router = useRouter();
 
-  /* A PASSAGEM — o mundo tinge na temperatura da divisão antes de navegar */
-  const cross = (href: string, tier: "ouro" | "platina") => {
-    track("door_cross", { tier }); // #045 · conversão de porta
-    const pass = passRef.current;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!pass || reduce) {
-      router.push(href);
-      return;
-    }
-    pass.dataset.tier = tier;
-    pass.classList.add("is-crossing");
-    window.setTimeout(() => router.push(href), 560);
+  /* candidatura PLATINA: o formulário abre o WhatsApp com a ficha pronta */
+  const applyPlatina = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const nome = String(fd.get("nome") ?? "").trim();
+    const empresa = String(fd.get("empresa") ?? "").trim();
+    const zap = String(fd.get("whatsapp") ?? "").trim();
+    track("platina_apply");
+    const msg = encodeURIComponent(
+      `Candidatura PLATINA\nNome: ${nome}\nEmpresa: ${empresa}\nWhatsApp: ${zap}`,
+    );
+    window.open(`${WA}?text=${msg}`, "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {
@@ -140,26 +67,18 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
     const els = {
       hero: heroRef.current,
       eco: ecoRef.current,
-      svc: svcRef.current,
       exp: expRef.current,
       root: root.current,
     };
     if (!els.root) return;
     const ecoCards = Array.from(
-      els.root.querySelectorAll<HTMLElement>(".jy-orb"),
-    );
-    const svcCards = Array.from(
-      els.root.querySelectorAll<HTMLElement>(".jy-svc"),
-    );
-    const svcDots = Array.from(
-      els.root.querySelectorAll<HTMLElement>(".jy-svc-dot"),
+      els.root.querySelectorAll<HTMLElement>(".eco-node"),
     );
     const railItems = Array.from(
       els.root.querySelectorAll<HTMLElement>(".jy-rail-item"),
     );
     const hint = els.root.querySelector<HTMLElement>(".jy-hint");
 
-    let lastActive = -1;
     let lastPast = false;
     let lastChapter = -1;
     let maxChapter = -1; // #045 · profundidade máxima já reportada
@@ -213,22 +132,8 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       const eco = band(p, CH.eco.start, CH.eco.end);
       setSec(els.eco, eco.op, eco.ty);
       ecoCards.forEach((c, i) =>
-        c.classList.toggle("is-on", eco.l > 0.16 + i * 0.22),
+        c.classList.toggle("is-on", eco.l > 0.06 + i * 0.02),
       );
-
-      const svc = band(p, CH.services.start, CH.services.end);
-      setSec(els.svc, svc.op, svc.ty);
-      const active = Math.min(
-        4,
-        Math.floor(rangeN(p, CH.services.start, 0.72) * 5),
-      );
-      if (active !== lastActive) {
-        lastActive = active;
-        svcCards.forEach((c, i) => c.classList.toggle("is-on", i === active));
-        svcDots.forEach((d, i) => d.classList.toggle("is-on", i === active));
-        if (counterRef.current)
-          counterRef.current.textContent = `0${active + 1}`;
-      }
 
       // EXPLORE: capítulo final — entra e FICA
       const expL = rangeN(p, CH.explore.start, CH.explore.end);
@@ -236,7 +141,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
 
       // rail: capítulo ativo — atualiza SÓ na troca (#013: também menos
       // trabalho por frame) + aria-current e anúncio polite ao leitor de tela
-      const chapter = p < 0.18 ? 0 : p < 0.47 ? 1 : p < 0.77 ? 2 : 3;
+      const chapter = p < 0.18 ? 0 : p < 0.68 ? 1 : 2;
       if (chapter !== lastChapter) {
         lastChapter = chapter;
         railItems.forEach((r, i) => {
@@ -352,68 +257,21 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       <section ref={ecoRef} className="jy-sec jy-eco" aria-label="O ecossistema Neovanguard">
         <span className="jy-ghost" aria-hidden="true">01</span>
 
-        {/* título mínimo — o organismo 3D é o protagonista */}
+        {/* título central no topo — as rodas flanqueiam, nada se cobre */}
         <div className="jy-eco-min">
           <span className="section-eyebrow">Ecossistema</span>
           <h2 className="jy-h2 jy-eco-h2">
-            Não vendemos site.
-            <br />
-            <span className="text-accent-nvg">Construímos um organismo.</span>
+            Vinte módulos.{" "}
+            <span className="text-accent-nvg">Um organismo.</span>
           </h2>
+          <p className="jy-eco-sub">
+            Gire as rodas e explore tudo que construímos — cada peça alimenta
+            a próxima.
+          </p>
         </div>
 
-        {/* callouts orbitais: crosshair + linha-guia + mono */}
-        <div className="jy-orbs" aria-hidden="false">
-          {ECO_CALLOUTS.map((c) => (
-            <div key={c.num} className={`jy-orb ${c.pos}`}>
-              <span className="jy-orb-cross" aria-hidden="true">
-                <i />
-                <i />
-              </span>
-              <span className="jy-orb-leader" aria-hidden="true" />
-              <div className="jy-orb-body">
-                <span className="jy-orb-tag">
-                  {`CAMADA ${c.num}`} <em>·</em> {c.tag}
-                </span>
-                <span className="jy-orb-txt">{c.txt}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* assinatura da tese, uma linha só */}
-        <p className="jy-eco-thesis">
-          Três camadas, um sistema — cada peça alimenta a próxima.
-        </p>
-      </section>
-
-      {/* ── Capítulo 3 · SOLUÇÕES ────────────────────────── */}
-      <section ref={svcRef} className="jy-sec jy-services" aria-label="Soluções da Neovanguard">
-        <span className="jy-ghost jy-ghost-top" aria-hidden="true">02</span>
-        <div className="jy-svc-inner">
-          <div className="jy-svc-head">
-            <span className="section-eyebrow">Soluções</span>
-            <span className="jy-svc-counter" aria-hidden="true">
-              <span ref={counterRef}>01</span>
-              <em>/05</em>
-            </span>
-          </div>
-          <div className="jy-svc-stack">
-            {SERVICES.map((s, i) => (
-              <article key={s.code} className={`jy-svc${i === 0 ? " is-on" : ""}`}>
-                <span className="jy-svc-code">{s.code}</span>
-                <h3 className="jy-svc-title">{s.title}</h3>
-                <span className="jy-svc-metric">{s.metric}</span>
-                <p className="jy-svc-desc">{s.desc}</p>
-              </article>
-            ))}
-          </div>
-          <div className="jy-svc-dots" aria-hidden="true">
-            {SERVICES.map((s, i) => (
-              <span key={s.code} className={`jy-svc-dot${i === 0 ? " is-on" : ""}`} />
-            ))}
-          </div>
-        </div>
+        {/* sistema planetário interativo: rótulos colados nos planetas 3D */}
+        <EcoNodes staticMode={staticMode} />
       </section>
 
       {/* ── Capítulo final · A ESCOLHA (bifurcação Ouro | Platina) ── */}
@@ -422,7 +280,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         className="jy-sec jy-explore"
         aria-label="A escolha: Ouro ou Platina"
       >
-        <span className="jy-ghost" aria-hidden="true">03</span>
+        <span className="jy-ghost" aria-hidden="true">02</span>
         <div className="jy-exp-inner">
           <div className="jy-exp-head">
             <span className="section-eyebrow">A escolha</span>
@@ -430,8 +288,9 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               Duas divisões. <span className="text-accent-nvg">Um DNA.</span>
             </h2>
             <p className="jy-sub-sm">
-              Ambas consultivas — o valor é apresentado na consulta. A
-              diferença é a profundidade.
+              O <strong>Ouro</strong> é a porta de entrada — objetivo, rápido
+              e para todos. A <strong>Platina</strong> é seletiva: poucas
+              operações por vez, escolhidas por diagnóstico.
             </p>
             <div className="jy-cta-row">
               <Magnetic>
@@ -447,59 +306,94 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               </Magnetic>
             </div>
           </div>
-          {/* bifurcação: duas portas DOM (Ouro esquenta · Platina esfria) */}
+          {/* bifurcação: OURO é produto (navega, travessia dourada);
+              PLATINA é candidatura (formulário, sem vitrine) */}
           <div className="jy-fork-grid vy-fork-grid">
-            {DOORS.map((d, i) => (
-              <article
-                key={d.tier}
-                className={`vy-door vy-door--${d.tier} card-1`}
-                style={{ transitionDelay: `${i * 90}ms` }}
-                onClick={() => cross(d.href, d.tier)}
-                role="link"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  // #019 · Enter/Space ativam; setas movem entre as portas
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    cross(d.href, d.tier);
-                    return;
-                  }
-                  if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-                    const doors = Array.from(
-                      e.currentTarget.parentElement?.querySelectorAll<HTMLElement>(
-                        ".vy-door",
-                      ) ?? [],
-                    );
-                    const idx = doors.indexOf(e.currentTarget as HTMLElement);
-                    const to =
-                      e.key === "ArrowRight"
-                        ? Math.min(doors.length - 1, idx + 1)
-                        : Math.max(0, idx - 1);
-                    if (to !== idx) {
-                      e.preventDefault();
-                      doors[to].focus();
-                    }
-                  }
-                }}
-              >
-                <span className="vy-door-bar" aria-hidden="true" />
-                <span className="vy-door-sheen" aria-hidden="true" />
-                <span className="vy-door-tag">{d.tag}</span>
-                <h3 className="vy-door-title">{d.title}</h3>
-                <p className="vy-door-desc">{d.desc}</p>
-                <ul className="vy-door-list">
-                  {d.specs.map((s) => (
-                    <li key={s}>{s}</li>
-                  ))}
-                </ul>
-                <span className="vy-door-cta">
-                  {d.cta}
+            <Link
+              href="/ouro"
+              className="vy-door vy-door--ouro card-1"
+              onClick={() => track("door_cross", { tier: "ouro" })}
+            >
+              <span className="vy-door-bar" aria-hidden="true" />
+              <span className="vy-door-sheen" aria-hidden="true" />
+              <span className="vy-door-flag">RECOMENDADO · COMECE AQUI</span>
+              <span className="vy-door-tag">PRODUTO PRINCIPAL</span>
+              <h3 className="vy-door-title">OURO</h3>
+              <p className="vy-door-desc">
+                O caminho direto: presença sólida, escopo claro e entrega
+                rápida. Uma consulta objetiva de 20–30 minutos define seu
+                plano.
+              </p>
+              <ul className="vy-door-list">
+                {OURO_SPECS.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ul>
+              <span className="vy-door-cta">
+                Entrar no Ouro
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+              <span className="vy-door-note">
+                entrega em até 16 dias · sem contrato mínimo
+              </span>
+            </Link>
+
+            <div
+              className="vy-door vy-door--platina card-1"
+              style={{ transitionDelay: "90ms" }}
+            >
+              <span className="vy-door-bar" aria-hidden="true" />
+              <span className="vy-door-flag">VAGAS LIMITADAS</span>
+              <span className="vy-door-tag">ACESSO SELETIVO</span>
+              <h3 className="vy-door-title">PLATINA</h3>
+              <p className="vy-door-desc">
+                Parceria completa e sob medida, para poucas operações por vez.
+                Candidate-se — nós analisamos e retornamos.
+              </p>
+              <form className="vy-apply" onSubmit={applyPlatina}>
+                <label className="vy-apply-field">
+                  <span>Nome</span>
+                  <input
+                    name="nome"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    placeholder="Seu nome"
+                  />
+                </label>
+                <label className="vy-apply-field">
+                  <span>Empresa</span>
+                  <input
+                    name="empresa"
+                    type="text"
+                    required
+                    autoComplete="organization"
+                    placeholder="Nome do negócio"
+                  />
+                </label>
+                <label className="vy-apply-field">
+                  <span>WhatsApp</span>
+                  <input
+                    name="whatsapp"
+                    type="tel"
+                    required
+                    autoComplete="tel"
+                    placeholder="(19) 9 9999-9999"
+                  />
+                </label>
+                <button type="submit" className="vy-apply-send">
+                  Enviar candidatura
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                </span>
-              </article>
-            ))}
+                </button>
+              </form>
+              <Link href="/platina" className="vy-door-more">
+                Conhecer a divisão Platina
+              </Link>
+            </div>
           </div>
 
           {/* terceira via: consulta rápida (o antigo "Sua solução") */}
@@ -610,13 +504,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         </>
       )}
 
-      {/* A PASSAGEM — a travessia QUEBRA a tela em cacos que convergem
-          na temperatura da divisão antes de navegar */}
-      <div ref={passRef} className="vy-passagem" aria-hidden="true">
-        {Array.from({ length: 12 }, (_, i) => (
-          <i key={i} style={{ "--si": i } as React.CSSProperties} />
-        ))}
-      </div>
     </div>
   );
 }

@@ -37,7 +37,7 @@ export default function BlueprintStage({
       </div>
       <div className="bp-frame" aria-hidden="true">
         <span className="bp-frame-label bp-frame-br">
-          <i>{"//"}</i> SEC_{index} · © {new Date().getFullYear()} neovanguard
+          SEC {index} · © {new Date().getFullYear()} neovanguard
         </span>
       </div>
     </>

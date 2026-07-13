@@ -39,17 +39,17 @@ const ESCADA = [
 
 const PASSOS = [
   {
-    num: "P_01",
+    num: "01",
     title: "Aplicação",
     desc: "Uma qualificação curta filtra perfil e momento do negócio.",
   },
   {
-    num: "P_02",
+    num: "02",
     title: "Diagnóstico",
     desc: "30–45 minutos para entender o caso, mostrar o buraco e projetar o resultado.",
   },
   {
-    num: "P_03",
+    num: "03",
     title: "Proposta sob medida",
     desc: "Um plano desenhado para o seu negócio — valor apresentado na conversa.",
   },
@@ -99,7 +99,7 @@ export default function PlatinaPage() {
         </div>
         <div className="tp-duo">
           <article className="tp-duo-col card-2">
-            <span className="tp-duo-tag">FASE_01 · SETUP</span>
+            <span className="tp-duo-tag">SETUP</span>
             <ul className="tp-list">
               {SETUP.map((s) => (
                 <li key={s}>{s}</li>
@@ -107,7 +107,7 @@ export default function PlatinaPage() {
             </ul>
           </article>
           <article className="tp-duo-col card-2">
-            <span className="tp-duo-tag">FASE_02 · RECORRÊNCIA</span>
+            <span className="tp-duo-tag">RECORRÊNCIA</span>
             <ul className="tp-list">
               {RECORRENCIA.map((s) => (
                 <li key={s}>{s}</li>

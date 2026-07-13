@@ -35,10 +35,10 @@ const fragmentShader = /* glsl */ `
     return v;
   }
 
-  // matiz BISMUTO: o óxido "viaja" do teal ao magenta ao longo da jornada
+  // matiz ÚNICO violeta: do indigo profundo ao violeta claro ao longo da jornada
   vec3 pal(float x){
-    vec3 deep = vec3(0.078, 0.541, 0.502); // #148a80 (teal)
-    vec3 acc  = vec3(0.867, 0.231, 0.784); // #dd3bc8 (magenta)
+    vec3 deep = vec3(0.196, 0.153, 0.541); // #32278a (indigo profundo)
+    vec3 acc  = vec3(0.424, 0.361, 1.0);   // #6c5cff (indigo elétrico)
     return mix(deep, acc, smoothstep(0.1, 0.9, x));
   }
 
@@ -56,7 +56,7 @@ const fragmentShader = /* glsl */ `
     float n  = fbm(np);
     float n2 = fbm(np * 1.9 - vec2(t * 0.6, uProgress * 0.8));
     float neb = smoothstep(0.40, 1.0, n * 0.6 + n2 * 0.5);
-    col += neb * 0.05 * tint;
+    col += neb * 0.095 * tint;
 
     // dois glows sutis que driftam e seguem levemente o mouse
     vec2 m = uMouse - 0.5;
@@ -67,19 +67,17 @@ const fragmentShader = /* glsl */ `
       gc += m * (0.06 + fi * 0.05);
       float d = distance(uv, gc);
       float g = smoothstep(0.62, 0.0, d);
-      col += g * g * 0.045 * tint;
+      col += g * g * 0.075 * tint;
     }
 
-    // AURORA: banda de luz serpenteando no alto do céu (movimento constante)
-    float ay = 0.78 + 0.06 * sin(uTime * 0.12 + p.x * 2.6) + 0.03 * sin(uTime * 0.23 + p.x * 5.1);
-    float aur = smoothstep(0.16, 0.0, abs(p.y - ay));
-    aur *= 0.55 + 0.45 * sin(uTime * 0.4 + p.x * 7.0);
-    col += aur * 0.05 * mix(tint, vec3(0.98, 0.72, 0.92), 0.4);
+    // LUZ-CHAVE: claridade suave vindo do canto superior esquerdo — a mesma
+    // luz que ilumina os itens 2D e 3D banha o fundo
+    float key = smoothstep(1.5, 0.0, distance(p, vec2(-0.15 * aspect + 0.15, 1.1)));
+    col += key * key * 0.085 * mix(tint, vec3(1.0), 0.5);
 
-    // vinheta + grão
+    // vinheta suave
     float edge = distance(uv, vec2(0.5));
     col *= 0.5 + 0.5 * smoothstep(1.25, 0.35, edge);
-    col += (hash(uv * uRes + fract(t)) - 0.5) * 0.028;
 
     gl_FragColor = vec4(col, 1.0);
   }
