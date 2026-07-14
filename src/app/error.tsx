@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 // #079 · erro de runtime na linguagem Neobsidian, com recuperação (reset).
 export default function Error({
   error,
@@ -21,9 +23,9 @@ export default function Error({
           <button type="button" className="btn-primary" onClick={reset}>
             Tentar novamente
           </button>
-          <a href="/" className="btn-ghost">
+          <Link href="/" className="btn-ghost">
             Voltar ao início
-          </a>
+          </Link>
         </div>
       </div>
     </main>
