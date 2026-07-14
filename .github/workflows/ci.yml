@@ -20,16 +20,20 @@ jobs:
       - run: npm run test
       - run: npm run build
       # #099 · orçamento de bundle: First Load JS da home
+      # App Router: os chunks da home vivem em app-build-manifest.json
+      # (o build-manifest.json antigo só conhece o Pages Router e vinha vazio)
       - name: Bundle budget (home)
         run: |
           SIZE=$(node -e "
-            const fs=require('fs');
-            const files=JSON.parse(fs.readFileSync('.next/build-manifest.json','utf8')).pages['/']||[];
-            let t=0; for (const f of files) { try { t+=fs.statSync('.next/'+f).size } catch {} }
-            console.log(Math.round(t/1024));
+            const fs = require('fs');
+            const m = JSON.parse(fs.readFileSync('.next/app-build-manifest.json', 'utf8'));
+            const files = m.pages['/page'] || [];
+            let t = 0;
+            for (const f of files) { try { t += fs.statSync('.next/' + f).size } catch {} }
+            console.log(Math.round(t / 1024));
           ")
-          echo \"First Load JS da home: ${SIZE}KB (orçamento 650KB)\"
-          [ \"$SIZE\" -le 650 ] || { echo \"::error::bundle estourou\"; exit 1; }
+          echo "First Load JS da home: ${SIZE}KB (orcamento 650KB)"
+          [ "$SIZE" -le 650 ] || { echo "::error::bundle estourou"; exit 1; }
 
   # #099 · Lighthouse nas páginas-chave (informativo, não bloqueia)
   lighthouse:
