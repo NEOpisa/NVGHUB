@@ -9,7 +9,7 @@ const COLS: {
     title: "DIVISÕES",
     links: [
       { label: "Ouro", href: "/ouro" },
-      { label: "Platina", href: "/platina" },
+      { label: "Candidatura Platina", href: "/?tier=platina" },
       { label: "Consulta rápida", href: "/solucao" },
     ],
   },

@@ -246,8 +246,8 @@ export default function OuroExperience() {
             <strong>Platina</strong> é a parceria completa — seletiva, por
             candidatura.
           </p>
-          <Link href="/platina" className="ou-bridge-link">
-            Conhecer a divisão Platina
+          <Link href="/?tier=platina" className="ou-bridge-link">
+            Candidatar-se à Platina
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M7 17 17 7M9 7h8v8" />
             </svg>

@@ -10641,3 +10641,127 @@ body.site-loaded .hudc {
         display: none;
     }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   POLIMENTO GLOBAL — os detalhes que fazem o site parecer caro:
+   seleção, foco, scrollbar, respiração dos botões e links vivos
+   ════════════════════════════════════════════════════════════════════ */
+
+/* seleção de texto na cor da casa */
+::selection {
+    background: rgba(108, 92, 255, 0.5);
+    color: #ffffff;
+}
+
+/* foco por teclado visível e elegante (nunca o anel azul default) */
+:focus-visible {
+    outline: 2px solid rgba(157, 140, 255, 0.85);
+    outline-offset: 3px;
+}
+
+/* scrollbar da casa: trilho quase preto, polegar violeta */
+html {
+    scrollbar-color: rgba(108, 92, 255, 0.45) rgba(8, 6, 14, 0.9);
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #08060e;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(108, 92, 255, 0.55), rgba(69, 52, 184, 0.55));
+    border: 2px solid #08060e;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(157, 140, 255, 0.7);
+}
+
+/* botões respiram: sobem um fio e acendem no hover */
+.btn-primary,
+.btn-ghost {
+    transition:
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.28s,
+        background 0.28s,
+        border-color 0.28s,
+        color 0.28s;
+    will-change: transform;
+}
+.btn-primary:hover,
+.btn-ghost:hover {
+    transform: translateY(-2px);
+}
+.btn-primary:not(.ou-btn-gold):hover {
+    box-shadow: 0 10px 30px -10px rgba(108, 92, 255, 0.65);
+}
+.ou-btn-gold:hover {
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 240, 210, 0.5),
+        0 10px 32px -10px rgba(244, 183, 74, 0.6);
+}
+.btn-primary:active,
+.btn-ghost:active {
+    transform: translateY(0);
+}
+
+/* links do footer ganham uma seta que desliza para dentro */
+.ft-col a {
+    position: relative;
+    display: inline-block;
+    transition: color 0.25s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ft-col a::before {
+    content: "▸";
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7em;
+    color: var(--accent-light, #9d8cff);
+    opacity: 0;
+    transition: opacity 0.25s, left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ft-col a:hover {
+    color: #ffffff;
+    transform: translateX(14px);
+}
+.ft-col a:hover::before {
+    opacity: 1;
+    left: -13px;
+}
+
+/* cards de rota do menu: hairline que se desenha embaixo no hover */
+.nv-menu-route {
+    position: relative;
+    transition: border-color 0.3s, background 0.3s, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nv-menu-route::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, #9d8cff, rgba(108, 92, 255, 0));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nv-menu-route:hover {
+    transform: translateX(6px);
+}
+.nv-menu-route:hover::after {
+    transform: scaleX(1);
+}
+
+/* imagens de exemplo: zoom sedoso no hover (vitrine com vida) */
+.exg-card img,
+.tpl-card img {
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exg-card:hover img,
+.tpl-card:hover img {
+    transform: scale(1.04);
+}

@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/orcamento", destination: "/solucao", permanent: true },
       { source: "/pacotes", destination: "/solucao", permanent: true },
+      // a Platina não tem mais vitrine: candidatura no fim da home
+      { source: "/platina", destination: "/?tier=platina", permanent: false },
     ];
   },
 };

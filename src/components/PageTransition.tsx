@@ -45,7 +45,7 @@ export default function PageTransition() {
       // a cor da travessia segue o destino (Ouro dourado · Platina bismuto)
       txState.tint = url.pathname.startsWith("/ouro")
         ? "ouro"
-        : url.pathname.startsWith("/platina")
+        : url.searchParams.get("tier") === "platina"
           ? "platina"
           : "default";
       cover(); // sem preventDefault: o <Link> navega por baixo da cortina

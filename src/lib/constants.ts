@@ -11,16 +11,17 @@ export type SiteRoute = {
   /** false = fora do menu overlay (mas o HUD do header ainda a conhece) */
   menu?: boolean;
 };
+/* a Platina não tem mais página própria: é acesso seletivo, via
+   candidatura no fim da jornada da home (/?tier=platina) */
 export const ROUTES: SiteRoute[] = [
-  { num: "RT_00", label: "Início", href: "/" },
-  { num: "RT_01", label: "Ouro", href: "/ouro" },
-  { num: "RT_02", label: "Platina", href: "/platina" },
-  { num: "RT_03", label: "Consulta rápida", href: "/solucao" },
-  { num: "RT_04", label: "Quem somos", href: "/sobre" },
-  { num: "RT_05", label: "Exemplos", href: "/exemplos" },
-  { num: "RT_06", label: "Contato", href: "/contato" },
-  { num: "RT_07", label: "Metodologia", href: "/metodologia", menu: false },
-  { num: "RT_08", label: "FAQ", href: "/faq", menu: false },
+  { num: "00", label: "Início", href: "/" },
+  { num: "01", label: "Ouro", href: "/ouro" },
+  { num: "02", label: "Consulta rápida", href: "/solucao" },
+  { num: "03", label: "Quem somos", href: "/sobre" },
+  { num: "04", label: "Exemplos", href: "/exemplos" },
+  { num: "05", label: "Contato", href: "/contato" },
+  { num: "06", label: "Metodologia", href: "/metodologia", menu: false },
+  { num: "07", label: "FAQ", href: "/faq", menu: false },
 ];
 
 /* #041/#073 · Hero versionável — troque a headline aqui (ou por env no

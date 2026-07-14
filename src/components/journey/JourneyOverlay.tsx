@@ -391,9 +391,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
                   resposta em até 48h · seus dados ficam só com a gente
                 </span>
               </form>
-              <Link href="/platina" className="vy-door-more">
-                Conhecer a divisão Platina
-              </Link>
             </div>
           </div>
 
