@@ -249,7 +249,7 @@ export default function TierQuiz({ tier }: { tier: Tier }) {
   );
 
   const progress = useMemo(
-    () => `Q_${String(Math.min(step + 1, total)).padStart(2, "0")}/${String(total).padStart(2, "0")}`,
+    () => `${String(Math.min(step + 1, total)).padStart(2, "0")}/${String(total).padStart(2, "0")}`,
     [step, total],
   );
 

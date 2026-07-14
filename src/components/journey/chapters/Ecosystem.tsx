@@ -73,6 +73,7 @@ const _wp = new THREE.Vector3();
 
 export default function Ecosystem() {
   const group = useRef<THREE.Group>(null);
+  const wheelOuter = useRef<(THREE.Group | null)[]>([]);
   const spinnerRefs = useRef<(THREE.Group | null)[]>([]);
   const paneRefs = useRef<(THREE.Group | null)[]>([]);
   const glyphRefs = useRef<(THREE.LineSegments | null)[]>([]);
@@ -201,7 +202,19 @@ export default function Ecosystem() {
 
     rimMat.opacity = rangeN(l, 0.05, 0.3) * 0.3 * warpFade;
 
+    // RETRATO: as rodas se aproximam, encolhem e sobem — o carrossel
+    // funciona em QUALQUER proporção de tela (os chips controlam no touch)
+    const k = THREE.MathUtils.clamp((0.95 - cam.aspect) / 0.5, 0, 1);
+    const wheelScale = THREE.MathUtils.lerp(1, 0.42, k);
     for (let b = 0; b < 2; b++) {
+      const outer = wheelOuter.current[b];
+      if (outer) {
+        const side = b === 0 ? -1 : 1;
+        outer.position.x = side * THREE.MathUtils.lerp(WHEEL_X, 0.62, k);
+        outer.position.y = THREE.MathUtils.lerp(0, 0.5, k);
+        outer.scale.setScalar(wheelScale);
+        outer.rotation.y = -side * 0.34 * THREE.MathUtils.lerp(1, 0.4, k);
+      }
       const spinner = spinnerRefs.current[b];
       if (!spinner) continue;
       const th = thetas.current[b];
@@ -260,7 +273,7 @@ export default function Ecosystem() {
         s.x = (_wp.x * 0.5 + 0.5) * state.size.width;
         s.y = (-_wp.y * 0.5 + 0.5) * state.size.height;
         s.r =
-          ((PANE_H / 2) * pane.scale.x / dist) *
+          ((PANE_H / 2) * pane.scale.x * wheelScale / dist) *
           (state.size.height / 2 / tanHalfFov);
         s.vis = reveal * Math.pow(face, 1.6);
       } else {
@@ -273,10 +286,14 @@ export default function Ecosystem() {
     <group ref={group} position={[WORLD.eco.x, WORLD.eco.y, WORLD.eco.z]}>
       <pointLight intensity={26} color="#b3a5ff" distance={14} decay={1.6} />
 
-      {/* duas rodas verticais — viradas de leve para o centro */}
+      {/* duas rodas verticais — posição/escala ajustadas por aspecto no
+          useFrame (retrato aproxima e encolhe) */}
       {[0, 1].map((b) => (
         <group
           key={b}
+          ref={(el) => {
+            wheelOuter.current[b] = el;
+          }}
           position={[b === 0 ? -WHEEL_X : WHEEL_X, 0, 0]}
           rotation={[0, b === 0 ? 0.34 : -0.34, 0]}
         >

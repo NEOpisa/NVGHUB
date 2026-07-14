@@ -6417,6 +6417,87 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-explore {
     justify-content: center;
 }
+/* o capítulo inteiro é UMA coluna (título → portas → consulta+footer):
+   tudo no fluxo — nada se sobrepõe em nenhuma altura de tela */
+.jy-explore {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: clamp(18px, 3vh, 32px);
+}
+/* telas ≤960px de altura (laptops comuns): o capítulo compacta para caber
+   inteiro entre o header e o mini-footer */
+@media (max-height: 960px) {
+    .jy-explore {
+        padding-top: 88px;
+        padding-bottom: 16px;
+    }
+    .jy-exp-inner {
+        gap: 14px;
+    }
+    .jy-exp-head .jy-h2-xl {
+        font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+        margin-bottom: 0.35rem;
+    }
+    .jy-exp-head .jy-sub-sm {
+        font-size: 0.82rem;
+    }
+    .jy-fork-grid .vy-door {
+        padding: 16px 20px;
+    }
+    .vy-door-title {
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+        margin: 6px 0 6px;
+    }
+    .vy-door--platina .vy-door-title {
+        font-size: clamp(1.4rem, 2.3vw, 1.9rem);
+    }
+    .vy-door-desc {
+        font-size: 0.82rem;
+        margin-bottom: 10px;
+    }
+    .vy-door-stats {
+        margin-bottom: 10px;
+        padding: 8px 0;
+    }
+    .vy-door-stats b {
+        font-size: 1rem;
+    }
+    .vy-apply {
+        gap: 6px;
+    }
+    .vy-apply-field input {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    .jy-quick {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+    }
+}
+/* telas MUITO baixas (≤820px): o subtítulo cede a vez ao conteúdo */
+@media (max-height: 820px) {
+    .jy-explore {
+        /* nunca menor que o header fixo (~76px) */
+        padding-top: 82px;
+        padding-bottom: 12px;
+    }
+    .jy-exp-head .jy-sub-sm {
+        display: none;
+    }
+    .jy-exp-head .jy-h2-xl {
+        font-size: clamp(1.35rem, 2.3vw, 1.8rem);
+    }
+    /* o strip encolhe para tag + botão (a pergunta é redundante aqui) */
+    .jy-quick-txt {
+        display: none;
+    }
+    .jy-quick .btn-ghost {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+}
+
 /* fundo da ESCOLHA: scrim de leitura + a dualidade das divisões — calor
    dourado nascendo à esquerda, frio bismuto à direita */
 .jy-explore::before {
@@ -6471,20 +6552,39 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     margin-bottom: 0;
 }
 .jy-explore .jy-cta-foot {
-    position: absolute;
-    left: clamp(20px, 6vw, 96px);
-    right: clamp(20px, 6vw, 96px);
-    bottom: clamp(14px, 3vh, 30px);
-    margin-top: 0;
-    padding-top: 14px;
+    width: 100%;
+    max-width: 1060px;
+    margin: clamp(16px, 3vh, 28px) auto 0;
+    padding-top: 12px;
 }
+/* composição CENTRAL empilhada: título no eixo, portas lado a lado abaixo */
 .jy-exp-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
-    gap: clamp(28px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    max-width: 1250px;
+    gap: clamp(18px, 3vh, 34px);
+    max-width: 1060px;
     margin: 0 auto;
+    width: 100%;
+}
+.jy-exp-head {
+    text-align: center;
+    max-width: 660px;
+}
+.jy-exp-head::before {
+    display: none;
+}
+.jy-exp-head .jy-h2-xl {
+    font-size: clamp(1.9rem, 3.4vw, 3rem);
+    margin-bottom: 0.6rem;
+}
+.jy-exp-head .jy-sub-sm {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+}
+.jy-fork-grid {
     width: 100%;
 }
 /* ── painel de EMBARQUE: cada rota é um card (mesmo padrão do site) ── */
@@ -7054,10 +7154,32 @@ body:not(.site-loaded) .jy-hero-copy {
     .jy-rail-label {
         display: none;
     }
+    /* capítulo final no mobile: o conteúdo é maior que a tela — a SEÇÃO
+       rola por dentro (o ChapterSnap cede o toque a ela) e o mini-footer
+       entra no fluxo em vez de flutuar por cima do cadastro */
+    .jy-explore {
+        /* o mini-footer entra no fluxo: a seção empilha e rola por dentro */
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-top: 86px;
+        padding-bottom: 28px;
+    }
+    .jy-explore .jy-cta-foot {
+        position: static;
+        width: 100%;
+        margin-top: 28px;
+        padding-top: 14px;
+    }
     .jy-exp-inner {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 18px;
         align-content: center;
+    }
+    .jy-exp-head .jy-h2-xl {
+        font-size: clamp(1.6rem, 7vw, 2.1rem);
     }
     .jy-exp-head .jy-sub-sm {
         display: none;
@@ -8262,6 +8384,37 @@ a.vy-door .vy-door-cta {
     font-size: 0.58rem;
     letter-spacing: 0.16em;
     color: rgba(255, 203, 110, 0.5);
+}
+/* régua de métricas do OURO: números grandes dourados entre hairlines */
+.vy-door-stats {
+    display: flex;
+    gap: clamp(16px, 2.2vw, 30px);
+    margin: 2px 0 14px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(244, 183, 74, 0.18);
+    border-bottom: 1px solid rgba(244, 183, 74, 0.18);
+}
+.vy-door-stats span {
+    display: grid;
+    gap: 2px;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240, 240, 240, 0.55);
+}
+.vy-door-stats b {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #ffcb6e;
+}
+.vy-apply-note {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    color: rgba(216, 220, 228, 0.4);
 }
 /* a porta PLATINA é um formulário — sem "pulo" de hover enquanto digita */
 .vy-door--platina.is-on:hover {
@@ -9643,18 +9796,17 @@ html.nv-menu-lock {
     opacity: 1;
 }
 
-/* ── terceira via: CONSULTA RÁPIDA (o antigo "Sua solução") ──
-   discreta sob as portas — para quem ainda não sabe a divisão */
+/* ── terceira via: CONSULTA RÁPIDA — vive DENTRO do mini-footer (bloco
+   único no pé: nunca disputa espaço com os cards) ── */
 .jy-quick {
-    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 12px 22px;
-    margin-top: clamp(20px, 3.4vh, 36px);
-    padding-top: clamp(16px, 2.6vh, 26px);
-    border-top: 1px solid rgba(157, 140, 255, 0.14);
+    gap: 10px 22px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(157, 140, 255, 0.14);
     opacity: 0;
     transform: translateY(14px);
     transition:
@@ -10088,10 +10240,404 @@ body.site-loaded .hudc {
     padding: 26px 28px;
 }
 
-/* ── CAP 4 · A ESCOLHA: colunas equilibradas, respiro entre blocos ── */
-.jy-exp-inner {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+
+/* ════════════════════════════════════════════════════════════════════
+   EXPERIÊNCIA OURO (/ouro) — jornada própria da divisão: cenário 3D
+   dourado fixo ao fundo, seções reveladas por scroll, energia de venda
+   ════════════════════════════════════════════════════════════════════ */
+.ou {
+    position: relative;
+    overflow: hidden;
 }
-.jy-exp-head .jy-sub-sm {
-    margin-bottom: 0;
+.ou-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(52% 60% at 74% 34%, rgba(244, 183, 74, 0.09), transparent 70%),
+        radial-gradient(120% 100% at 0% 0%, rgba(255, 236, 200, 0.05), transparent 55%),
+        #070502;
+}
+.ou-canvas canvas {
+    display: block;
+}
+.ou > section,
+.ou-marquee {
+    position: relative;
+    z-index: 1;
+}
+
+/* reveal-on-scroll */
+.ou-rv {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ou-rv.is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* tipografia */
+.ou-eyebrow {
+    display: inline-block;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.26em;
+    color: #ffcb6e;
+    border: 1px solid rgba(244, 183, 74, 0.35);
+    padding: 5px 12px;
+    margin-bottom: 18px;
+}
+.ou-h1 {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 4.4vw + 0.4rem, 4.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    color: #fff;
+    max-width: 15ch;
+    margin: 0 0 1rem;
+    text-shadow: 2px 3px 16px rgba(0, 0, 0, 0.6);
+}
+.ou-h1 em,
+.ou-h2 em {
+    font-style: normal;
+    background: linear-gradient(105deg, #ffe9c4 10%, #f4b74a 55%, #d99323 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.ou-h2 {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.8vw, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: 0;
+}
+.ou-sub {
+    font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+    line-height: 1.65;
+    color: rgba(245, 240, 230, 0.85);
+    max-width: 46ch;
+    margin: 0 0 1.5rem;
+}
+.ou-trust {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    color: rgba(255, 203, 110, 0.55);
+    margin: 1.2rem 0 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(244, 183, 74, 0.16);
+    display: inline-block;
+}
+
+/* hero */
+.ou-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: clamp(20px, 4vw, 60px);
+    min-height: 100vh;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: clamp(90px, 14vh, 150px) clamp(20px, 6vw, 96px) clamp(60px, 8vh, 100px);
+    position: relative;
+    z-index: 1;
+}
+.ou-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.ou-btn-gold {
+    background: linear-gradient(105deg, #f4b74a, #d99323);
+    border-color: rgba(255, 226, 176, 0.5);
+    color: #1c1204;
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 240, 210, 0.5),
+        0 0 26px rgba(244, 183, 74, 0.28);
+}
+.ou-btn-gold:hover {
+    background: linear-gradient(105deg, #ffcb6e, #eaa73a);
+}
+
+/* marquee dourado */
+.ou-marquee {
+    overflow: hidden;
+    border-top: 1px solid rgba(244, 183, 74, 0.22);
+    border-bottom: 1px solid rgba(244, 183, 74, 0.22);
+    background: rgba(20, 12, 2, 0.55);
+    backdrop-filter: blur(3px);
+}
+.ou-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    width: max-content;
+    padding: 13px 0;
+    animation: ouMarquee 26s linear infinite;
+}
+.ou-marquee-track span {
+    display: inline-flex;
+    align-items: center;
+    gap: 34px;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: rgba(255, 213, 140, 0.8);
+    white-space: nowrap;
+}
+.ou-marquee-track i {
+    font-style: normal;
+    font-size: 0.5rem;
+    color: rgba(244, 183, 74, 0.5);
+}
+@keyframes ouMarquee {
+    to { transform: translateX(-33.333%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ou-marquee-track { animation: none; }
+}
+
+/* seções */
+.ou-sec {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: clamp(56px, 9vh, 110px) clamp(20px, 6vw, 96px);
+}
+.ou-head {
+    margin-bottom: clamp(26px, 4vh, 44px);
+}
+
+/* números */
+.ou-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 26px);
+}
+.ou-stat {
+    padding: 20px 22px;
+    border: 1px solid rgba(244, 183, 74, 0.2);
+    background: rgba(16, 10, 2, 0.72);
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 236, 200, 0.1),
+        12px 16px 36px -14px rgba(0, 0, 0, 0.5);
+}
+.ou-stat b {
+    display: block;
+    font-family: var(--ff-grotesk), sans-serif;
+    font-size: clamp(1.9rem, 3vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(105deg, #ffe9c4 10%, #f4b74a 60%, #d99323 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+}
+.ou-stat-u {
+    display: block;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 213, 140, 0.85);
+    margin-bottom: 3px;
+}
+.ou-stat-d {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(245, 240, 230, 0.6);
+}
+
+/* produtos */
+.ou-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 26px);
+}
+.ou-card {
+    position: relative;
+    padding: 26px 28px;
+    border: 1px solid rgba(244, 183, 74, 0.2);
+    border-left: 2px solid rgba(244, 183, 74, 0.5);
+    background: rgba(16, 10, 2, 0.72);
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 236, 200, 0.1),
+        12px 16px 36px -14px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.35s, background 0.35s, transform 0.35s var(--ease-out),
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ou-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(244, 183, 74, 0.5);
+    background: rgba(26, 16, 4, 0.82);
+}
+.ou-card-num {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-family: var(--ff-mono), monospace;
+    font-size: 1.6rem;
+    color: rgba(244, 183, 74, 0.28);
+}
+.ou-card h3 {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+}
+.ou-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(245, 240, 230, 0.75);
+    margin: 0 0 14px;
+    max-width: 44ch;
+}
+.ou-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.ou-card-tags li {
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 213, 140, 0.85);
+    border: 1px solid rgba(244, 183, 74, 0.28);
+    background: rgba(244, 183, 74, 0.08);
+    padding: 3px 9px;
+}
+
+/* passos: linha do tempo com fio dourado */
+.ou-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 26px);
+    position: relative;
+}
+.ou-steps::before {
+    content: "";
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: 34px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(244, 183, 74, 0.4), transparent);
+}
+.ou-step {
+    position: relative;
+    padding: 20px 22px;
+    background: rgba(16, 10, 2, 0.66);
+    border: 1px solid rgba(244, 183, 74, 0.16);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ou-step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 12px;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.72rem;
+    color: #1c1204;
+    background: linear-gradient(105deg, #f4b74a, #d99323);
+    box-shadow: 0 0 16px rgba(244, 183, 74, 0.35);
+}
+.ou-step h3 {
+    font-family: var(--ff-grotesk), sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px;
+}
+.ou-step p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(245, 240, 230, 0.7);
+    margin: 0;
+}
+
+/* quiz: painel dourado */
+.ou-quiz {
+    border: 1px solid rgba(244, 183, 74, 0.22);
+    background: rgba(14, 9, 2, 0.8);
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 236, 200, 0.08),
+        12px 16px 40px -14px rgba(0, 0, 0, 0.55);
+    padding: clamp(18px, 3vw, 34px);
+}
+
+/* ponte platina — discreta, mono */
+.ou-sec--last {
+    padding-bottom: clamp(90px, 12vh, 150px);
+}
+.ou-bridge {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 26px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(244, 183, 74, 0.16);
+}
+.ou-bridge p {
+    font-size: 0.88rem;
+    color: rgba(245, 240, 230, 0.6);
+    margin: 0;
+    max-width: 52ch;
+}
+.ou-bridge strong {
+    color: #d8dce4;
+}
+.ou-bridge-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--ff-mono), monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(216, 220, 228, 0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.ou-bridge-link:hover {
+    color: #3fe0d8;
+}
+
+/* responsivo */
+@media (max-width: 900px) {
+    .ou-hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-top: clamp(110px, 16vh, 150px);
+    }
+    .ou-hero-space {
+        display: none;
+    }
+    .ou-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .ou-cards {
+        grid-template-columns: 1fr;
+    }
+    .ou-steps {
+        grid-template-columns: 1fr;
+    }
+    .ou-steps::before {
+        display: none;
+    }
 }

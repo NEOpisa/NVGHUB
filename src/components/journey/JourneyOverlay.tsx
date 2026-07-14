@@ -12,11 +12,15 @@ import EcoNodes from "./EcoNodes";
 
 /* OURO é o produto principal (a porta larga); PLATINA é seletiva — a porta
    dela é um CADASTRO de candidatura, não uma vitrine */
-const OURO_SPECS = [
-  "Escopo fechado",
-  "Entrega 7–35 dias",
-  "Consulta 20–30 min",
-  "Suporte incluso",
+const OURO_STATS = [
+  ["16d", "entrega"],
+  ["20–30min", "consulta"],
+  ["3h", "suporte"],
+] as const;
+const OURO_LEVA = [
+  "Site, sistema ou e-commerce no ar",
+  "Escopo fechado antes de começar",
+  "Suporte incluso via WhatsApp",
 ];
 
 const RAIL = [
@@ -292,19 +296,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               e para todos. A <strong>Platina</strong> é seletiva: poucas
               operações por vez, escolhidas por diagnóstico.
             </p>
-            <div className="jy-cta-row">
-              <Magnetic>
-                <a
-                  href={WA}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary btn-whatsapp"
-                >
-                  <WhatsAppIcon />
-                  Falar pelo WhatsApp
-                </a>
-              </Magnetic>
-            </div>
           </div>
           {/* bifurcação: OURO é produto (navega, travessia dourada);
               PLATINA é candidatura (formulário, sem vitrine) */}
@@ -321,11 +312,18 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               <h3 className="vy-door-title">OURO</h3>
               <p className="vy-door-desc">
                 O caminho direto: presença sólida, escopo claro e entrega
-                rápida. Uma consulta objetiva de 20–30 minutos define seu
-                plano.
+                rápida. Uma consulta objetiva define seu plano.
               </p>
+              <div className="vy-door-stats" aria-hidden="true">
+                {OURO_STATS.map(([n, l]) => (
+                  <span key={l}>
+                    <b>{n}</b>
+                    {l}
+                  </span>
+                ))}
+              </div>
               <ul className="vy-door-list">
-                {OURO_SPECS.map((s) => (
+                {OURO_LEVA.map((s) => (
                   <li key={s}>{s}</li>
                 ))}
               </ul>
@@ -389,6 +387,9 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </button>
+                <span className="vy-apply-note">
+                  resposta em até 48h · seus dados ficam só com a gente
+                </span>
               </form>
               <Link href="/platina" className="vy-door-more">
                 Conhecer a divisão Platina
@@ -396,7 +397,10 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
             </div>
           </div>
 
-          {/* terceira via: consulta rápida (o antigo "Sua solução") */}
+        </div>
+
+        {/* mini-footer integrado: consulta rápida + links num bloco só */}
+        <div className="jy-cta-foot">
           <div className="jy-quick">
             <span className="jy-quick-tag" aria-hidden="true">
               CONSULTA RÁPIDA
@@ -414,10 +418,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               </Link>
             </Magnetic>
           </div>
-        </div>
-
-        {/* mini-footer integrado ao fim da jornada */}
-        <div className="jy-cta-foot">
           <nav className="jy-cta-foot-links" aria-label="Links do rodapé">
             <Link href="/exemplos">Exemplos</Link>
             <Link href="/contato">Contato</Link>

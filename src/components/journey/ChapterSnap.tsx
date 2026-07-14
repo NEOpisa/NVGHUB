@@ -158,17 +158,30 @@ export default function ChapterSnap({
     let touchY = 0;
     let touchT = 0;
     let touchCovers = false;
+    // capítulo final no mobile: a seção rola por DENTRO — o snap cede o
+    // gesto a ela e só volta de capítulo quando ela já está no topo
+    let touchScroller: HTMLElement | null = null;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
       touchT = performance.now();
       touchCovers = covering();
+      const sc = (e.target as HTMLElement | null)?.closest?.(
+        ".jy-explore",
+      ) as HTMLElement | null;
+      touchScroller =
+        sc && sc.scrollHeight > sc.clientHeight + 4 ? sc : null;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (touchCovers) e.preventDefault(); // o snap assume o controle
+      if (touchCovers && !touchScroller) e.preventDefault(); // o snap assume
     };
     const onTouchEnd = (e: TouchEvent) => {
       if (!touchCovers) return;
       const dy = touchY - e.changedTouches[0].clientY;
+      if (touchScroller) {
+        // swipe pra baixo com a seção no topo = voltar um capítulo
+        if (dy < -42 && touchScroller.scrollTop <= 2) step(-1);
+        return;
+      }
       const dt = Math.max(1, performance.now() - touchT);
       const fast = Math.abs(dy) >= 16 && Math.abs(dy) / dt > 0.35; // flick
       if (Math.abs(dy) < 42 && !fast) return;
