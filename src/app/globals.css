@@ -6114,6 +6114,28 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     letter-spacing: 0.22em;
     color: var(--accent-light);
 }
+/* setas ‹ › do painel: escondidas no desktop (lá a roda gira por scroll);
+   viram a navegação principal do carrossel no mobile */
+.eco-panel-nav {
+    display: none;
+}
+.eco-panel-nav button {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    color: rgba(240, 236, 255, 0.9);
+    background: rgba(108, 92, 255, 0.14);
+    border: 1px solid rgba(157, 140, 255, 0.4);
+    box-shadow: inset 1px 1px 0 rgba(240, 236, 255, 0.08);
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s;
+}
+.eco-panel-nav button:active {
+    background: rgba(108, 92, 255, 0.32);
+    border-color: rgba(200, 188, 255, 0.7);
+}
 .eco-panel-title {
     font-family: var(--ff-grotesk), sans-serif;
     font-size: 1.15rem;
@@ -6888,6 +6910,30 @@ body:not(.site-loaded) .jy-frame {
     flex-direction: column;
     gap: 18px;
     pointer-events: auto;
+    z-index: 0;
+    --jyp: 0; /* progresso da viagem (escrito pelo driver rAF) */
+}
+/* espinha do trilho: um fio que LIGA os capítulos e se preenche com a
+   viagem — o visitante sempre sabe onde está e quanto falta */
+.jy-rail::before,
+.jy-rail::after {
+    content: "";
+    position: absolute;
+    left: 7.5px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    z-index: -1;
+    pointer-events: none;
+}
+.jy-rail::before {
+    background: rgba(240, 240, 240, 0.14);
+}
+.jy-rail::after {
+    background: linear-gradient(180deg, #9d8cff, #6c5cff);
+    box-shadow: 0 0 10px rgba(108, 92, 255, 0.55);
+    transform: scaleY(var(--jyp));
+    transform-origin: top;
 }
 .jy-rail-item {
     display: flex;
@@ -6901,11 +6947,17 @@ body:not(.site-loaded) .jy-frame {
 .jy-rail-dot {
     width: 8px;
     height: 8px;
-    background: rgba(240, 240, 240, 0.25);
-    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+    background: #241f3a;
+    border: 1px solid rgba(240, 240, 240, 0.35);
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+}
+.jy-rail-item:hover .jy-rail-dot {
+    border-color: rgba(200, 188, 255, 0.9);
+    transform: scale(1.2);
 }
 .jy-rail-item.is-on .jy-rail-dot {
     background: #6c5cff;
+    border-color: rgba(200, 188, 255, 0.9);
     box-shadow: 0 0 12px rgba(108, 92, 255, 0.9);
     transform: scale(1.3);
 }
@@ -6915,6 +6967,10 @@ body:not(.site-loaded) .jy-frame {
     text-transform: uppercase;
     color: rgba(240, 240, 240, 0);
     transition: color 0.3s;
+}
+/* pairar sobre o trilho revela TODOS os capítulos (mapa da viagem) */
+.jy-rail:hover .jy-rail-label {
+    color: rgba(240, 240, 240, 0.4);
 }
 .jy-rail-item:hover .jy-rail-label,
 .jy-rail-item.is-on .jy-rail-label {
@@ -6945,6 +7001,18 @@ body:not(.site-loaded) .jy-frame {
     border: 1px solid rgba(108, 92, 255, 0.4);
     color: #9d8cff;
     animation: jyArrow 1.6s ease-in-out infinite;
+}
+/* a dica fala a língua do dispositivo: rolar (ponteiro) × deslizar (toque) */
+.jy-hint-txt--touch {
+    display: none;
+}
+@media (pointer: coarse) {
+    .jy-hint-txt--pointer {
+        display: none;
+    }
+    .jy-hint-txt--touch {
+        display: inline;
+    }
 }
 @keyframes jyArrow {
     0%, 100% { transform: translateY(0); opacity: 0.55; box-shadow: 0 0 0 rgba(108, 92, 255, 0); }
@@ -7084,75 +7152,135 @@ body:not(.site-loaded) .jy-hero-copy {
         transform: none;
         text-align: left;
     }
-    /* mapa do ecossistema no mobile: chips + painel ancorados na base */
+    /* mapa do ecossistema no mobile: CARROSSEL — painel navegável por setas
+       + fita horizontal de chips com snap, ancorados na base */
     .eco-map {
         position: absolute;
-        inset: auto 20px clamp(76px, 11vh, 120px);
+        inset: auto 0 clamp(70px, 10vh, 112px);
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
+        padding: 0 18px;
     }
     .eco-nodes {
         position: static;
         display: flex;
-        flex-wrap: wrap;
-        gap: 4px 12px;
-        /* 20 módulos: a lista rola dentro da própria faixa */
-        max-height: 24vh;
-        overflow-y: auto;
-        overscroll-behavior: contain;
+        flex-wrap: nowrap;
+        gap: 8px;
+        order: 2;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 2px 2px 4px;
+        /* a fita esmaece nas bordas: fica claro que continua */
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    }
+    .eco-nodes::-webkit-scrollbar {
+        display: none;
     }
     .eco-node {
         position: static;
         transform: none;
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 7px;
+        flex: 0 0 auto;
+        scroll-snap-align: center;
         width: auto;
         height: auto;
-        padding: 4px;
-        transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        padding: 7px 12px;
+        border: 1px solid rgba(157, 140, 255, 0.22);
+        background: rgba(10, 8, 18, 0.78);
+        box-shadow: inset 1px 1px 0 rgba(240, 236, 255, 0.05);
+        transition:
+            opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.3s,
+            background 0.3s;
+    }
+    .eco-node.is-active {
+        border-color: rgba(200, 188, 255, 0.85);
+        background: rgba(108, 92, 255, 0.2);
+        box-shadow:
+            inset 1px 1px 0 rgba(240, 236, 255, 0.14),
+            0 0 16px rgba(108, 92, 255, 0.35);
     }
     .eco-node-ring {
-        position: relative;
-        width: 14px;
-        height: 14px;
-        flex-shrink: 0;
-    }
-    .eco-nodes .eco-node-ring i {
-        display: block;
-        inset: 4px;
+        display: none;
     }
     .eco-node.is-active .eco-node-ring::before,
     .eco-node.is-active .eco-node-ring::after {
         content: none;
     }
+    .eco-node-num {
+        position: static;
+        transform: none;
+        display: block;
+        font-size: 0.56rem;
+        color: rgba(157, 140, 255, 0.85);
+        opacity: 1 !important;
+        text-shadow: none;
+    }
     .eco-node-label {
         position: static;
         transform: none;
-        font-size: 0.54rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
         opacity: 1;
-    }
-    .eco-node-num {
-        display: none;
+        text-shadow: none;
     }
     .eco-zone {
         display: none;
     }
     .eco-node.is-active .eco-node-label {
-        padding: 3px 7px;
+        padding: 0;
+        background: none;
+        border: none;
+        box-shadow: none;
+        left: auto;
     }
     .eco-panel {
         position: static;
         transform: none;
         width: auto;
-        padding: 14px 16px;
+        order: 1;
+        padding: 14px 16px 16px;
+        background: rgba(8, 6, 14, 0.86);
+        backdrop-filter: blur(6px);
     }
     .eco-panel-desc {
         font-size: 0.8rem;
+        /* altura estável: o painel não "pula" a cada troca de módulo */
+        min-height: 2.5em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
+    .eco-panel-nav {
+        display: inline-flex;
+        gap: 8px;
+        margin-left: auto;
+        align-self: center;
+    }
+    /* trilho no mobile: só os pontos, com alvo de toque generoso */
     .jy-rail-label {
         display: none;
+    }
+    .jy-rail {
+        gap: 10px;
+    }
+    .jy-rail-item {
+        padding: 9px;
+    }
+    .jy-rail::before,
+    .jy-rail::after {
+        left: 12.5px;
+        top: 13px;
+        bottom: 13px;
     }
     /* capítulo final no mobile: o conteúdo é maior que a tela — a SEÇÃO
        rola por dentro (o ChapterSnap cede o toque a ela) e o mini-footer
@@ -10267,6 +10395,26 @@ body.site-loaded .hudc {
     position: relative;
     z-index: 1;
 }
+/* fio de ouro no topo: progresso da página (transform escrito via rAF) */
+.ou-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 60;
+    background: rgba(244, 183, 74, 0.12);
+    pointer-events: none;
+}
+.ou-progress i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #d99323, #f4b74a 60%, #ffcb6e);
+    box-shadow: 0 0 12px rgba(244, 183, 74, 0.7);
+    transform: scaleX(0);
+    transform-origin: left;
+    will-change: transform;
+}
 
 /* reveal-on-scroll */
 .ou-rv {
@@ -10620,13 +10768,24 @@ body.site-loaded .hudc {
 
 /* responsivo */
 @media (max-width: 900px) {
+    /* retrato: a marca de OURO 3D vive numa banda no TOPO (o canvas a
+       centraliza lá) e a copy assenta embaixo — nada sai cortado */
     .ou-hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding-top: clamp(110px, 16vh, 150px);
+        display: flex;
+        flex-direction: column;
+        min-height: 100svh;
+        gap: 0;
+        padding-top: clamp(80px, 11vh, 110px);
+        padding-bottom: clamp(40px, 6vh, 70px);
     }
     .ou-hero-space {
-        display: none;
+        display: block;
+        order: -1;
+        flex: 0 0 auto;
+        min-height: clamp(180px, 30svh, 300px);
+    }
+    .ou-h1 {
+        font-size: clamp(1.9rem, 8vw, 2.6rem);
     }
     .ou-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -10639,6 +10798,20 @@ body.site-loaded .hudc {
     }
     .ou-steps::before {
         display: none;
+    }
+}
+@media (max-width: 640px) {
+    /* a barra sticky de CTA cobre o pé da página: a última seção respira */
+    .ou-sec--last {
+        padding-bottom: 130px;
+    }
+    .ou-stat {
+        padding: 14px 14px;
+    }
+    .ou-cta-row .btn-primary,
+    .ou-cta-row .btn-ghost {
+        width: 100%;
+        justify-content: center;
     }
 }
 

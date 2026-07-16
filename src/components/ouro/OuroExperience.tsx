@@ -82,6 +82,31 @@ const MARQUEE = [
  */
 export default function OuroExperience() {
   const root = useRef<HTMLDivElement>(null);
+  const progRef = useRef<HTMLElement>(null);
+
+  // fio de ouro no topo: o progresso da leitura (rAF-throttled, sem re-render)
+  useEffect(() => {
+    const el = progRef.current;
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? window.scrollY / max : 0;
+      el.style.transform = `scaleX(${p.toFixed(4)})`;
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   // reveal-on-scroll: uma classe, sem re-render
   useEffect(() => {
@@ -109,6 +134,11 @@ export default function OuroExperience() {
   return (
     <div ref={root} className="ou">
       <OuroCanvas />
+
+      {/* fio de ouro: progresso da página, sempre visível */}
+      <div className="ou-progress" aria-hidden="true">
+        <i ref={progRef} />
+      </div>
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="ou-hero" aria-label="Divisão Ouro">

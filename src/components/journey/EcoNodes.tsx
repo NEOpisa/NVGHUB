@@ -201,6 +201,34 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
   const nodesRef = useRef<HTMLDivElement>(null);
   const item = ITEMS[active];
 
+  /* seleciona um módulo (chip, seta, swipe) e gira a roda 3D correspondente */
+  const select = (i: number) => {
+    setActive(i);
+    eco.active = i;
+    eco.wheelIdx[Math.floor(i / ECO_PER_WHEEL)] = i % ECO_PER_WHEEL;
+    eco.touched = true;
+    navigator.vibrate?.(6); // tick háptico: a troca "encaixa" (no-op sem hw)
+  };
+  // swipe horizontal sobre o painel = próximo/anterior (gesto de carrossel)
+  const swipe = useRef({ x: 0, y: 0 });
+  const step = (dir: 1 | -1) => {
+    const next = (active + dir + ITEMS.length) % ITEMS.length;
+    select(next);
+    track("eco_node", { id: ITEMS[next].id });
+  };
+
+  // mobile: a fita de chips acompanha a seleção (o ativo fica sempre à vista)
+  useEffect(() => {
+    if (!window.matchMedia("(max-width: 900px)").matches) return;
+    const btn =
+      nodesRef.current?.querySelectorAll<HTMLElement>(".eco-node")[active];
+    btn?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [active]);
+
   // tracking DOM→planeta (só no modo GL desktop; mobile usa lista via CSS)
   useEffect(() => {
     if (staticMode) return;
@@ -350,10 +378,7 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
             }`}
             aria-pressed={i === active}
             onClick={() => {
-              setActive(i);
-              eco.active = i;
-              eco.wheelIdx[Math.floor(i / ECO_PER_WHEEL)] = i % ECO_PER_WHEEL;
-              eco.touched = true;
+              select(i);
               track("eco_node", { id: it.id });
             }}
           >
@@ -373,6 +398,18 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
         role="region"
         aria-live="polite"
         aria-label="Detalhe do módulo selecionado"
+        onTouchStart={(e) => {
+          swipe.current = {
+            x: e.touches[0].clientX,
+            y: e.touches[0].clientY,
+          };
+        }}
+        onTouchEnd={(e) => {
+          const dx = e.changedTouches[0].clientX - swipe.current.x;
+          const dy = e.changedTouches[0].clientY - swipe.current.y;
+          if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.4)
+            step(dx < 0 ? 1 : -1);
+        }}
       >
         <div className="eco-panel-head">
           <span className="eco-panel-idx" aria-hidden="true">
@@ -380,6 +417,28 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
             <em>/{ITEMS.length}</em>
           </span>
           <span className="eco-panel-tag">{LAYERS[item.layer]}</span>
+          {/* navegação por toque (só mobile via CSS): o carrossel funciona
+              mesmo sem rolar a fita de chips */}
+          <span className="eco-panel-nav" role="group" aria-label="Navegar módulos">
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label="Módulo anterior"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label="Próximo módulo"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </button>
+          </span>
         </div>
         <h3 className="eco-panel-title">{item.title}</h3>
         <p className="eco-panel-desc">{item.desc}</p>

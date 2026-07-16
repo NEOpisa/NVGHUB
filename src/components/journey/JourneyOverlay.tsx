@@ -81,6 +81,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
     const railItems = Array.from(
       els.root.querySelectorAll<HTMLElement>(".jy-rail-item"),
     );
+    const railEl = els.root.querySelector<HTMLElement>(".jy-rail");
     const hint = els.root.querySelector<HTMLElement>(".jy-hint");
 
     let lastPast = false;
@@ -124,6 +125,8 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         rangeN(p, 0.04, 0.15) * -60,
       );
       if (hint) hint.style.opacity = String(1 - easeOut(rangeN(p, 0.02, 0.06)));
+      // espinha do trilho: o fio de progresso acompanha a viagem
+      if (railEl) railEl.style.setProperty("--jyp", p.toFixed(4));
 
       // marca volta ao header quando o visitante SAI do hero (o #hero é um
       // overlay fixo — o IntersectionObserver do Header não serve aqui)
@@ -482,7 +485,9 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
             ))}
           </nav>
           <div className="jy-hint" aria-hidden="true">
-            <span>Role para explorar</span>
+            {/* a dica fala a língua do dispositivo (CSS troca por pointer) */}
+            <span className="jy-hint-txt--pointer">Role para explorar</span>
+            <span className="jy-hint-txt--touch">Deslize para explorar</span>
             <span className="jy-hint-arrow">
               <svg
                 width="16"

@@ -2,14 +2,16 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import { buildLogoChunks } from "@/components/scene/logoGeometry";
 
 /**
- * Cenário 3D próprio da DIVISÃO OURO: a marca NV fundida em OURO flutua à
- * direita do hero, ladeada por barras de ouro em deriva e poeira dourada.
- * O scroll da página dirige tudo (a marca recua e gira conforme desce) —
- * mesma luz única do site: key branca-quente vindo do topo-esquerda.
+ * Cenário 3D próprio da DIVISÃO OURO: a MESMA marca NV do hero da home —
+ * material físico com clearcoat, filme iridescente e juntas de luz — só que
+ * FUNDIDA EM OURO, ladeada por barras em deriva e poeira dourada.
+ * Paisagem: a marca vive à direita do hero. Retrato: centrada no topo,
+ * acima da copy (nada sai cortado na borda). O scroll dirige tudo.
  */
 
 function scrollP(): number {
@@ -17,46 +19,96 @@ function scrollP(): number {
   return max > 0 ? window.scrollY / max : 0;
 }
 
+// composição da marca no hero (paisagem / retrato)
+const LOGO_LAND = { x: 2.3, y: 0.1, s: 0.95 };
+const LOGO_PORT = { x: 0, y: 1.85, s: 0.5 };
+
 function GoldWorld() {
   const logo = useRef<THREE.Group>(null);
   const barsRef = useRef<THREE.Group>(null);
   const p = useRef(0);
 
   const mats = useMemo(() => {
-    const gold = new THREE.MeshStandardMaterial({
+    // a peça "branca" do hero, em ouro claro polido
+    const goldLight = new THREE.MeshPhysicalMaterial({
+      color: "#f2cd86",
+      metalness: 1.0,
+      roughness: 0.14,
+      emissive: new THREE.Color("#b8791e"),
+      emissiveIntensity: 0.18,
+      envMapIntensity: 1.6,
+      clearcoat: 1,
+      clearcoatRoughness: 0.06,
+      // mesmo filme fino iridescente do hero — aqui sobre o ouro
+      iridescence: 0.55,
+      iridescenceIOR: 1.32,
+      iridescenceThicknessRange: [120, 680],
+      transparent: true,
+    });
+    // a peça "roxa" do hero, em ouro profundo que emite calor
+    const goldDeep = new THREE.MeshPhysicalMaterial({
+      color: "#d9a441",
+      metalness: 0.95,
+      roughness: 0.18,
+      emissive: new THREE.Color("#f4b74a"),
+      emissiveIntensity: 0.5,
+      envMapIntensity: 1.8,
+      clearcoat: 1,
+      clearcoatRoughness: 0.1,
+      iridescence: 0.4,
+      iridescenceIOR: 1.32,
+      iridescenceThicknessRange: [140, 620],
+      transparent: true,
+    });
+    // halo dourado respirando sobre as peças profundas
+    const halo = new THREE.MeshBasicMaterial({
+      color: "#ffcb6e",
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    // juntas luminosas entre os cacos (as "seams" do hero)
+    const seam = new THREE.LineBasicMaterial({
+      color: "#ffe9c4",
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    // barras de ouro ao fundo
+    const bar = new THREE.MeshStandardMaterial({
       color: "#d9a441",
       metalness: 0.85,
       roughness: 0.28,
       emissive: new THREE.Color("#7a5514"),
       emissiveIntensity: 0.35,
     });
-    const goldLight = new THREE.MeshStandardMaterial({
-      color: "#f4d089",
-      metalness: 0.75,
-      roughness: 0.22,
-      emissive: new THREE.Color("#9c7020"),
-      emissiveIntensity: 0.4,
-      transparent: true,
-    });
-    // só a marca esmaece (as barras continuam ao fundo da página inteira)
-    const goldFade = gold.clone();
-    goldFade.transparent = true;
-    return { gold, goldLight, goldFade };
+    return { goldLight, goldDeep, halo, seam, bar };
   }, []);
 
-  // a marca NV inteira, em ouro (peça "branca" clara + peça "roxa" escura)
+  // a marca NV inteira do hero, caco a caco, em ouro
   const { group, geos } = useMemo(() => {
     const built = buildLogoChunks(1, 1);
     const g = new THREE.Group();
     const geos: THREE.BufferGeometry[] = [];
     [
-      ...built.white.map((c) => ({ c, mat: mats.goldLight })),
-      ...built.purple.map((c) => ({ c, mat: mats.goldFade })),
-    ].forEach(({ c, mat }) => {
+      ...built.white.map((c) => ({ c, mat: mats.goldLight, deep: false })),
+      ...built.purple.map((c) => ({ c, mat: mats.goldDeep, deep: true })),
+    ].forEach(({ c, mat, deep }) => {
       const mesh = new THREE.Mesh(c.geometry, mat);
       mesh.position.copy(c.pivot);
-      g.add(mesh);
       geos.push(c.geometry);
+      // juntas de luz sobre o metal (mesma construção do HeroLogo)
+      const edges = new THREE.EdgesGeometry(c.geometry, 24);
+      mesh.add(new THREE.LineSegments(edges, mats.seam));
+      geos.push(edges);
+      if (deep) {
+        const halo = new THREE.Mesh(c.geometry, mats.halo);
+        halo.scale.setScalar(1.04);
+        mesh.add(halo);
+      }
+      g.add(mesh);
     });
     return { group: g, geos };
   }, [mats]);
@@ -114,9 +166,11 @@ function GoldWorld() {
   useEffect(
     () => () => {
       geos.forEach((g) => g.dispose());
-      mats.gold.dispose();
       mats.goldLight.dispose();
-      mats.goldFade.dispose();
+      mats.goldDeep.dispose();
+      mats.halo.dispose();
+      mats.seam.dispose();
+      mats.bar.dispose();
       barGeo.dispose();
       dustGeo.dispose();
       dustMat.dispose();
@@ -127,28 +181,43 @@ function GoldWorld() {
   useFrame((state, dt) => {
     const t = state.clock.elapsedTime;
     const sp = p.current;
+    const cam = state.camera as THREE.PerspectiveCamera;
+    // RETRATO: a marca sobe pro topo, centrada e menor — nada sai cortado
+    const k = THREE.MathUtils.clamp((0.9 - cam.aspect) / 0.45, 0, 1);
     const l = logo.current;
     if (l) {
-      // hero: à direita, de frente; ao descer, recua girando e SE DISSOLVE
+      // hero: em cena, de frente; ao descer, recua girando e SE DISSOLVE
       // (senão a marca gigante atravessa o conteúdo das seções)
       const vis = 1 - THREE.MathUtils.clamp((sp - 0.06) / 0.1, 0, 1);
       l.visible = vis > 0.01;
       mats.goldLight.opacity = vis;
-      mats.goldFade.opacity = vis;
-      l.position.x = 2.3 + sp * 3;
-      l.position.y = 0.1 + Math.sin(t * 0.5) * 0.12 + sp * 1.4;
+      mats.goldDeep.opacity = vis;
+
+      // LOOP do hero: brilho respirando + juntas de luz + halo pulsando
+      const breathe = 0.5 + 0.5 * Math.sin(t * 1.1);
+      mats.goldLight.emissiveIntensity = 0.14 + breathe * 0.18;
+      mats.goldDeep.emissiveIntensity = 0.4 + breathe * 0.5;
+      mats.seam.opacity = (0.12 + breathe * 0.14) * vis;
+      mats.halo.opacity = breathe * 0.28 * vis;
+
+      const bx = THREE.MathUtils.lerp(LOGO_LAND.x, LOGO_PORT.x, k);
+      const by = THREE.MathUtils.lerp(LOGO_LAND.y, LOGO_PORT.y, k);
+      const bs = THREE.MathUtils.lerp(LOGO_LAND.s, LOGO_PORT.s, k);
+      l.position.x = bx + sp * 3 * (1 - k);
+      l.position.y = by + Math.sin(t * 0.5) * 0.12 + sp * 1.4;
       l.position.z = -sp * 6;
-      l.rotation.y = -0.35 + t * 0.1 + sp * 2.6;
+      l.rotation.y = -0.35 * (1 - k * 0.5) + t * 0.1 + sp * 2.6;
       l.rotation.x = Math.sin(t * 0.33) * 0.06;
-      const s = 0.95 - sp * 0.3;
-      l.scale.setScalar(Math.max(s, 0.1));
+      l.scale.setScalar(Math.max(bs - sp * 0.3, 0.1));
     }
     const bg = barsRef.current;
     if (bg) bg.position.y = sp * 3.4; // parallax: barras sobem mais devagar
+    const barPull = THREE.MathUtils.lerp(1, 0.5, k); // retrato: barras pra dentro
     barRefs.current.forEach((m, i) => {
       if (!m) return;
       m.rotation.y += dt * bars[i].sp;
       m.rotation.x = Math.sin(t * 0.3 + i * 2.1) * 0.25;
+      m.position.x = bars[i].pos[0] * barPull;
       m.position.y = bars[i].pos[1] + Math.sin(t * 0.4 + i * 1.7) * 0.18;
     });
     if (dust.current) {
@@ -163,6 +232,24 @@ function GoldWorld() {
       <ambientLight intensity={0.42} />
       <directionalLight position={[-6, 8, 5]} intensity={2.6} color="#fff3dd" />
       <pointLight position={[3, 1, 3]} intensity={26} color="#f4b74a" distance={14} decay={1.8} />
+      {/* reflexos para o metal (bake único, sem rede) — a mesma key
+          superior-esquerda domina, com um fill dourado por baixo */}
+      <Environment resolution={64} frames={1}>
+        <Lightformer
+          form="rect"
+          intensity={1.9}
+          position={[-4, 4, 5]}
+          scale={8}
+          color="#fff3dd"
+        />
+        <Lightformer
+          form="rect"
+          intensity={0.5}
+          position={[5, -2, 3]}
+          scale={6}
+          color="#f4b74a"
+        />
+      </Environment>
 
       <group ref={logo}>
         <primitive object={group} />
@@ -176,7 +263,7 @@ function GoldWorld() {
               barRefs.current[i] = el;
             }}
             geometry={barGeo}
-            material={mats.gold}
+            material={mats.bar}
             position={[b.pos[0], b.pos[1], b.pos[2]]}
             rotation={[0, b.rot, 0.12]}
             scale={b.s}

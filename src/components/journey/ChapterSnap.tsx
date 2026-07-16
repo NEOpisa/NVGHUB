@@ -90,14 +90,15 @@ export default function ChapterSnap({
       tweenRaf = requestAnimationFrame(step);
     };
 
-    const step = (dir: 1 | -1) => {
+    const travel = (to: number) => {
       const from = busy && targetIdx !== null ? targetIdx : nearestIdx();
-      const to = Math.min(SNAPS.length - 1, Math.max(0, from + dir));
       if (to === from && !busy) return;
       const chained = busy; // rolou de novo no meio = quer velocidade
       targetIdx = to;
       busy = true;
       const id = ++travelId;
+      // tick háptico sutil: a viagem "encaixa" na mão (no-op sem hardware)
+      navigator.vibrate?.(8);
 
       stepAt = performance.now();
       const dist = Math.abs(SNAPS[to] - journey.progress);
@@ -122,6 +123,46 @@ export default function ChapterSnap({
       } else {
         tweenTo(y, ms, id);
       }
+    };
+
+    const step = (dir: 1 | -1) => {
+      const from = busy && targetIdx !== null ? targetIdx : nearestIdx();
+      travel(Math.min(SNAPS.length - 1, Math.max(0, from + dir)));
+    };
+
+    // ── teclado: a jornada inteira navegável sem mouse ──
+    // setas/PageUp/PageDown/espaço viajam entre paradas; Home/End vão às
+    // pontas. Nada é sequestrado de formulários, botões ou do menu aberto.
+    const onKey = (e: KeyboardEvent) => {
+      if (!covering()) return;
+      if (e.repeat) return; // tecla segurada: 1 gesto = 1 parada
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (document.body.classList.contains("nv-menu-lock")) return;
+      const t = e.target as HTMLElement | null;
+      if (
+        t &&
+        (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(t.tagName) ||
+          t.isContentEditable)
+      )
+        return;
+      if (e.key === "Home") {
+        e.preventDefault();
+        travel(0);
+        return;
+      }
+      if (e.key === "End") {
+        e.preventDefault();
+        travel(SNAPS.length - 1);
+        return;
+      }
+      let dir: 1 | -1 | 0 = 0;
+      if (e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey))
+        dir = 1;
+      else if (e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey))
+        dir = -1;
+      if (!dir) return;
+      e.preventDefault();
+      step(dir);
     };
 
     // ── desktop: wheel em captura, antes do handler do Lenis ──
@@ -161,21 +202,24 @@ export default function ChapterSnap({
     // capítulo final no mobile: a seção rola por DENTRO — o snap cede o
     // gesto a ela e só volta de capítulo quando ela já está no topo
     let touchScroller: HTMLElement | null = null;
+    // carrossel do ecossistema no mobile: o gesto é DELE (fita rola na
+    // horizontal, painel navega por toque) — o snap não intercepta nada
+    let touchInEco = false;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY;
       touchT = performance.now();
       touchCovers = covering();
-      const sc = (e.target as HTMLElement | null)?.closest?.(
-        ".jy-explore",
-      ) as HTMLElement | null;
+      const t = e.target as HTMLElement | null;
+      touchInEco = !!t?.closest?.(".eco-map");
+      const sc = t?.closest?.(".jy-explore") as HTMLElement | null;
       touchScroller =
         sc && sc.scrollHeight > sc.clientHeight + 4 ? sc : null;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (touchCovers && !touchScroller) e.preventDefault(); // o snap assume
+      if (touchCovers && !touchScroller && !touchInEco) e.preventDefault(); // o snap assume
     };
     const onTouchEnd = (e: TouchEvent) => {
-      if (!touchCovers) return;
+      if (!touchCovers || touchInEco) return;
       const dy = touchY - e.changedTouches[0].clientY;
       if (touchScroller) {
         // swipe pra baixo com a seção no topo = voltar um capítulo
@@ -192,11 +236,13 @@ export default function ChapterSnap({
       passive: false,
       capture: true,
     });
+    window.addEventListener("keydown", onKey);
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel, { capture: true });
+      window.removeEventListener("keydown", onKey);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
