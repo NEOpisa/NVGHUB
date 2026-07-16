@@ -262,8 +262,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
 
       {/* ── Capítulo 2 · ECOSSISTEMA ─────────────────────── */}
       <section ref={ecoRef} className="jy-sec jy-eco" aria-label="O ecossistema Neovanguard">
-        <span className="jy-ghost" aria-hidden="true">01</span>
-
         {/* título central no topo — as rodas flanqueiam, nada se cobre */}
         <div className="jy-eco-min">
           <span className="section-eyebrow">Ecossistema</span>
@@ -287,7 +285,6 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         className="jy-sec jy-explore"
         aria-label="A escolha: Ouro ou Platina"
       >
-        <span className="jy-ghost" aria-hidden="true">02</span>
         <div className="jy-exp-inner">
           <div className="jy-exp-head">
             <span className="section-eyebrow">A escolha</span>

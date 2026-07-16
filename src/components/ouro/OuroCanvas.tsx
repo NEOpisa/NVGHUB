@@ -20,8 +20,8 @@ function scrollP(): number {
 }
 
 // composição da marca no hero (paisagem / retrato)
-const LOGO_LAND = { x: 2.3, y: 0.1, s: 0.95 };
-const LOGO_PORT = { x: 0, y: 1.85, s: 0.5 };
+const LOGO_LAND = { x: 2.4, y: 0.1, s: 0.68 };
+const LOGO_PORT = { x: 0, y: 1.9, s: 0.38 };
 
 function GoldWorld() {
   const logo = useRef<THREE.Group>(null);

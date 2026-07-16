@@ -8,8 +8,10 @@ import { track } from "@vercel/analytics";
  * Gate da intro — a marca se DESENHA em traços de luz dentro do canvas da
  * jornada (HeroLogo) enquanto um boot-HUD mono acompanha em DOM:
  *   1. trava o scroll e espera o palco 3D montar (intro.canvasReady);
- *   2. palco pronto → build 0→1 (~1.6s), HUD narra as fases do desenho;
- *   3. build completo → handoff: logo migra, HUD se apaga, destrava.
+ *   2. palco pronto → build 0→1 (~1.1s), HUD narra as fases do desenho;
+ *   3. a marca MATERIALIZA por completo (intro.fill, publicado pelo 3D) →
+ *      handoff: logo migra, HUD se apaga, destrava. Formar vem antes de
+ *      liberar — nunca o contrário.
  * Toca só na 1ª visita da sessão; fora disso libera o site na hora.
  */
 
@@ -86,10 +88,9 @@ export default function Preloader() {
     };
 
     // failsafe: o canvas nunca montou (erro/modo estático/device lento) →
-    // libera direto. Teto curto: a mensagem do hero é o que importa, não
-    // deixar o visitante encarando um loader travado.
-    // #005 · teto POR DEVICE: em aparelhos fracos / mobile / save-data o
-    // failsafe fecha mais cedo (1.8s) para não prender o visitante.
+    // libera direto. O teto agora respeita a FORMAÇÃO da marca (o desenho +
+    // materialização levam ~1.8s depois do palco pronto): folga suficiente
+    // para a intro completar, sem nunca prender o visitante num loader morto.
     const capMs = (() => {
       try {
         const n = navigator as Navigator & {
@@ -102,16 +103,17 @@ export default function Preloader() {
           (n.deviceMemory ?? 8) < 4 ||
           (navigator.hardwareConcurrency ?? 8) <= 4 ||
           !!coarse;
-        return weak ? 1800 : 2600;
+        return weak ? 3600 : 5000;
       } catch {
-        return 2600;
+        return 5000;
       }
     })();
     const fs = window.setTimeout(() => finish(true), capMs);
 
-    // enquanto o palco 3D compila, o contador GOTEJA até 55% (mais rápido, sem
-    // estacionar visivelmente); palco pronto → o desenho real (~1.1s) completa
-    // 55→100. Nunca fica parado no zero nem estagnado em 32%.
+    // enquanto o palco 3D compila, o contador GOTEJA até 55%; palco pronto →
+    // o desenho (55→85) e a MATERIALIZAÇÃO REAL da marca (85→100, lida do 3D
+    // via intro.fill) completam a régua. O site só libera com a logo formada
+    // — a intro é a formação, não um cronômetro.
     let raf = 0;
     let t0 = 0;
     let disp = 0;
@@ -123,7 +125,7 @@ export default function Preloader() {
       } else {
         if (!t0) t0 = now;
         intro.build = Math.min(1, (now - t0) / 1100);
-        disp = 0.55 + intro.build * 0.45;
+        disp = 0.55 + intro.build * 0.3 + intro.fill * 0.15;
       }
       if (pctRef.current)
         pctRef.current.textContent = String(Math.round(disp * 100)).padStart(2, "0");
@@ -138,7 +140,8 @@ export default function Preloader() {
             liveRef.current.textContent = `Carregando: ${label.toLowerCase()}`;
         }
       }
-      if (intro.build >= 1) finish();
+      // libera SÓ com a marca materializada (o 3D publica intro.fill)
+      if (intro.build >= 1 && intro.fill >= 0.985) finish();
     };
     raf = requestAnimationFrame(loop);
 

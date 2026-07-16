@@ -5822,41 +5822,6 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     }
 }
 
-/* ── numeral fantasma gigante de cada capítulo (presença tipográfica) ── */
-.jy-ghost {
-    position: absolute;
-    right: clamp(10px, 5vw, 90px);
-    bottom: 4vh;
-    font-family: var(--ff-mono), monospace;
-    font-weight: 500;
-    font-size: clamp(7rem, 24vw, 21rem);
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.07);
-    letter-spacing: 0.04em;
-    pointer-events: none;
-    user-select: none;
-    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
-    transform: translateY(6vh);
-}
-.jy-sec.is-live .jy-ghost {
-    transform: translateY(0);
-    animation: jyGhostDrift 9s ease-in-out 1.2s infinite;
-}
-@keyframes jyGhostDrift {
-    50% {
-        transform: translateY(-1.6vh);
-    }
-}
-.jy-ghost-top {
-    bottom: auto;
-    top: 8vh;
-}
-.jy-ghost-center {
-    right: auto;
-    left: clamp(10px, 4vw, 70px);
-}
-
 /* ── bracket HUD nos títulos: amarra o texto ao cenário 3D ── */
 .jy-exp-head {
     position: relative;
@@ -10553,6 +10518,15 @@ body.site-loaded .hudc {
 @media (prefers-reduced-motion: reduce) {
     .ou-marquee-track { animation: none; }
 }
+/* o marquee respeita a leitura: pausa sob o ponteiro */
+.ou-marquee:hover .ou-marquee-track {
+    animation-play-state: paused;
+}
+/* na casa do ouro, até a seleção de texto é dourada */
+.ou ::selection {
+    background: rgba(244, 183, 74, 0.45);
+    color: #fff8ec;
+}
 
 /* seções */
 .ou-sec {
@@ -10623,10 +10597,44 @@ body.site-loaded .hudc {
     transition: border-color 0.35s, background 0.35s, transform 0.35s var(--ease-out),
         opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.ou-card {
+    overflow: hidden;
+}
 .ou-card:hover {
     transform: translateY(-4px);
     border-color: rgba(244, 183, 74, 0.5);
     background: rgba(26, 16, 4, 0.82);
+    box-shadow:
+        inset 1px 1px 0 rgba(255, 236, 200, 0.14),
+        0 0 30px rgba(244, 183, 74, 0.12),
+        12px 16px 36px -14px rgba(0, 0, 0, 0.6);
+}
+/* lâmina de luz dourada atravessa o card no hover (mesma linguagem das
+   portas da home) */
+.ou-card::after {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background: linear-gradient(
+        115deg,
+        transparent 42%,
+        rgba(255, 226, 176, 0.09) 50%,
+        transparent 58%
+    );
+    transform: translateX(-130%);
+    pointer-events: none;
+}
+.ou-card:hover::after {
+    transform: translateX(130%);
+    transition: transform 0.9s var(--ease-premium);
+}
+.ou-stat {
+    transition: border-color 0.35s, transform 0.35s var(--ease-out),
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ou-stat:hover {
+    transform: translateY(-3px);
+    border-color: rgba(244, 183, 74, 0.45);
 }
 .ou-card-num {
     position: absolute;
@@ -10865,6 +10873,14 @@ html {
 .btn-primary:hover,
 .btn-ghost:hover {
     transform: translateY(-2px);
+}
+/* feedback de pressão: o clique TEM peso (desktop e toque) */
+.btn-primary:active,
+.btn-ghost:active,
+.eco-panel-cta:active,
+.vy-apply-send:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
 }
 .btn-primary:not(.ou-btn-gold):hover {
     box-shadow: 0 10px 30px -10px rgba(108, 92, 255, 0.65);

@@ -198,6 +198,8 @@ export default function HeroLogo() {
     );
     fillSm.current = THREE.MathUtils.damp(fillSm.current, fillTarget, 6, dt);
     const fill = fillSm.current;
+    // publica a materialização real: o gate da intro espera a marca FORMAR
+    if (intro.active && intro.phase === "load") intro.fill = fill;
 
     // flash de conclusão (dispara quando o fill fecha)
     if (fill >= 0.995 && prevFill.current < 0.995) flashT.current = 0;

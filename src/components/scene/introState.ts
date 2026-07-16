@@ -20,6 +20,9 @@ export const intro = {
   canvasReady: false,
   /** progresso da construção 0..1 — escrito pelo gate, lido pelo 3D */
   build: 0,
+  /** materialização REAL da marca 0..1 — escrita pelo 3D (HeroLogo), lida
+      pelo gate: o site só libera quando a logo terminou de se formar */
+  fill: 0,
   /** load → construindo · handoff → migrando pro hero · done → liberado */
   phase: "load" as IntroPhase,
 };
