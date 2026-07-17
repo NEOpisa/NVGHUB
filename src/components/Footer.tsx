@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { WA, IG } from "@/lib/constants";
+import { WA } from "@/lib/constants";
 
 const COLS: {
   title: string;
@@ -27,7 +27,6 @@ const COLS: {
     links: [
       { label: "Contato", href: "/contato" },
       { label: "WhatsApp", href: WA, ext: true },
-      { label: "Instagram", href: IG, ext: true },
     ],
   },
 ];
@@ -56,8 +55,8 @@ export default function Footer() {
             </span>
           </Link>
           <p className="ft-thesis">
-            Ecossistemas digitais que impulsionam o crescimento — sites,
-            sistemas, SEO e suporte operados como um só organismo.
+            Para cada problema do seu negócio, a ferramenta ideal — sistemas,
+            automações e IA operados como um só organismo.
           </p>
           <span className="ft-mono" aria-hidden="true">
             {"NVG · 100% remoto · Brasil"}

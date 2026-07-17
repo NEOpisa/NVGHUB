@@ -3437,34 +3437,6 @@ html.lenis body {
     -webkit-backdrop-filter: blur(12px);
 }
 
-/* HUD de rota: carimbo mono da página atual, ao lado do menu */
-.route-hud {
-    font-family: var(--font-mono);
-    font-size: 0.64rem;
-    letter-spacing: 0.22em;
-    text-transform: lowercase;
-    color: var(--text-muted);
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(6px);
-    animation: routeHudIn 0.6s var(--ease-out) 0.15s forwards;
-}
-.route-hud em {
-    font-style: normal;
-    color: var(--accent);
-}
-@keyframes routeHudIn {
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-@media (max-width: 720px) {
-    .route-hud {
-        display: none;
-    }
-}
-
 .site-header.is-menu-open {
     background: transparent;
     border-bottom-color: transparent;
@@ -6034,17 +6006,22 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .eco-nodes.is-tracking .eco-node.is-active:not(:hover) .eco-node-label {
     opacity: 0;
 }
-/* painel de detalhe do módulo selecionado — no VÃO entre as duas rodas */
+/* painel de detalhe do módulo selecionado — no VÃO entre as duas rodas.
+   Cartão de vidro escuro com a BARRA DA CAMADA respirando no topo. */
 .eco-panel {
     position: absolute;
     left: 50%;
     top: 54%;
     transform: translate(-50%, -50%);
-    width: min(330px, 24vw);
-    padding: 20px 22px;
-    background: var(--jy-panel-bg);
+    width: min(340px, 25vw);
+    padding: 20px 22px 22px;
+    background: rgba(8, 6, 14, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--card-hairline);
-    border-left: 2px solid rgba(108, 92, 255, 0.45);
+    box-shadow:
+        inset 1px 1px 0 rgba(240, 236, 255, 0.06),
+        0 24px 60px -24px rgba(0, 0, 0, 0.8);
     pointer-events: auto;
     opacity: 0;
     transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
@@ -6052,37 +6029,54 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-eco.is-live .eco-panel {
     opacity: 1;
 }
-/* cabeçalho do card: índice grande + camada, selados por uma hairline */
+/* barra da camada: a assinatura colorida do módulo ativo, respirando */
+.eco-panel-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--layer-c), transparent 85%);
+    box-shadow: 0 0 14px var(--layer-c);
+    animation: vyBarBreathe 3.2s ease-in-out infinite;
+    transition: background 0.4s, box-shadow 0.4s;
+}
+/* cabeçalho do card: camada + navegação, selados por uma hairline */
 .eco-panel-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
     padding-bottom: 10px;
     margin-bottom: 12px;
     border-bottom: 1px solid rgba(157, 140, 255, 0.18);
 }
-.eco-panel-idx {
-    font-family: var(--ff-mono), monospace;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: #f0f0f0;
-}
-.eco-panel-idx em {
-    font-style: normal;
-    font-size: 0.55em;
-    color: rgba(240, 240, 240, 0.45);
-}
 .eco-panel-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     font-family: var(--ff-mono), monospace;
     font-size: 0.6rem;
     letter-spacing: 0.22em;
     color: var(--accent-light);
 }
-/* setas ‹ › do painel: escondidas no desktop (lá a roda gira por scroll);
-   viram a navegação principal do carrossel no mobile */
+/* ponto na cor da camada ao lado do nome dela */
+.eco-panel-tag i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--layer-c);
+    box-shadow: 0 0 8px var(--layer-c);
+    transition: background 0.4s, box-shadow 0.4s;
+}
+/* setas ‹ › do painel: o carrossel navega por clique em qualquer tela */
 .eco-panel-nav {
-    display: none;
+    display: inline-flex;
+    gap: 6px;
+}
+.eco-panel-nav button:hover {
+    background: rgba(108, 92, 255, 0.26);
+    border-color: rgba(200, 188, 255, 0.65);
 }
 .eco-panel-nav button {
     display: grid;
@@ -6100,6 +6094,63 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .eco-panel-nav button:active {
     background: rgba(108, 92, 255, 0.32);
     border-color: rgba(200, 188, 255, 0.7);
+}
+
+/* ── carrossel v2 ─────────────────────────────────────────────────────
+   cor por CAMADA (base/conexão/inteligência), fio de coleção e entrada
+   direcional do conteúdo — a troca de módulo tem física, não corte seco */
+.eco-panel {
+    --layer-c: #9d8cff; /* 1 · BASE */
+}
+.eco-panel[data-layer="2"] {
+    --layer-c: #3fe0d8; /* 2 · CONEXÃO */
+}
+.eco-panel[data-layer="3"] {
+    --layer-c: #f4b74a; /* 3 · INTELIGÊNCIA */
+}
+.eco-panel-tag {
+    color: var(--layer-c, var(--accent-light));
+}
+/* fio de coleção 01→20: vontade de percorrer o catálogo inteiro */
+.eco-progress {
+    display: block;
+    height: 2px;
+    margin: 0 0 12px;
+    background: rgba(240, 236, 255, 0.1);
+    overflow: hidden;
+}
+.eco-progress i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(157, 140, 255, 0.7), var(--layer-c, #9d8cff));
+    box-shadow: 0 0 8px var(--layer-c, rgba(108, 92, 255, 0.6));
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+/* o conteúdo entra deslizando NA DIREÇÃO do gesto (key remonta o nó) */
+.eco-panel-body {
+    animation: ecoBodyIn 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.eco-panel[data-dir="-1"] .eco-panel-body {
+    animation-name: ecoBodyInRev;
+}
+@keyframes ecoBodyIn {
+    from {
+        opacity: 0;
+        transform: translateX(16px);
+    }
+}
+@keyframes ecoBodyInRev {
+    from {
+        opacity: 0;
+        transform: translateX(-16px);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .eco-panel-body {
+        animation: none;
+    }
 }
 .eco-panel-title {
     font-family: var(--ff-grotesk), sans-serif;
@@ -6148,65 +6199,6 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .eco-panel-cta:hover {
     border-color: rgba(108, 92, 255, 0.6);
     background: rgba(108, 92, 255, 0.12);
-}
-
-/* zonas de giro: moldura sutil sobre cada roda — acende no hover */
-.eco-zone {
-    position: absolute;
-    /* espelha a ecoWheelZone: só o miolo da roda captura o scroll */
-    top: 22%;
-    bottom: 22%;
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    pointer-events: auto;
-    cursor: ns-resize;
-    opacity: 0;
-    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.jy-eco.is-live .eco-zone {
-    opacity: 0.4;
-}
-.jy-eco.is-live .eco-zone:hover {
-    opacity: 1;
-}
-.eco-zone--l { left: 9%; }
-.eco-zone--r { right: 9%; }
-.eco-zone-chev {
-    font-size: 0.62rem;
-    color: rgba(157, 140, 255, 0.9);
-    text-shadow: 0 0 10px rgba(108, 92, 255, 0.6);
-    animation: ecoChevPulse 2.2s ease-in-out infinite;
-}
-.eco-zone-chev:last-child {
-    animation-delay: 1.1s;
-}
-@keyframes ecoChevPulse {
-    50% { opacity: 0.35; }
-}
-.eco-zone-tag {
-    position: absolute;
-    bottom: -22px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: var(--ff-mono), monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
-    color: rgba(205, 197, 250, 0.75);
-    white-space: nowrap;
-}
-.eco-zone-tag svg {
-    color: rgba(157, 140, 255, 0.9);
-    animation: ecoSpinHint 3.5s linear infinite;
-}
-@keyframes ecoSpinHint {
-    to { transform: rotate(360deg); }
 }
 
 /* cantoneiras HUD — mesma linguagem dos cards das páginas internas */
@@ -7173,6 +7165,26 @@ body:not(.site-loaded) .jy-hero-copy {
             inset 1px 1px 0 rgba(240, 236, 255, 0.14),
             0 0 16px rgba(108, 92, 255, 0.35);
     }
+    /* ponto na cor da CAMADA: o catálogo ganha leitura instantânea */
+    .eco-node {
+        --layer-c: #9d8cff;
+    }
+    .eco-node[data-layer="2"] {
+        --layer-c: #3fe0d8;
+    }
+    .eco-node[data-layer="3"] {
+        --layer-c: #f4b74a;
+    }
+    .eco-node::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: var(--layer-c);
+        box-shadow: 0 0 6px var(--layer-c);
+        opacity: 0.85;
+    }
     .eco-node-ring {
         display: none;
     }
@@ -7196,9 +7208,6 @@ body:not(.site-loaded) .jy-hero-copy {
         letter-spacing: 0.1em;
         opacity: 1;
         text-shadow: none;
-    }
-    .eco-zone {
-        display: none;
     }
     .eco-node.is-active .eco-node-label {
         padding: 0;
@@ -7455,24 +7464,6 @@ body.bp-page {
         rgba(0, 0, 0, 0.5) 100%
     );
 }
-/* número fantasma do capítulo — respira no canto */
-.bp-ghost {
-    position: absolute;
-    right: clamp(8px, 4vw, 60px);
-    bottom: -0.18em;
-    font-family: var(--ff-grotesk), sans-serif;
-    font-weight: 700;
-    font-size: clamp(9rem, 24vw, 22rem);
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(108, 92, 255, 0.1);
-    animation: bpGhostBreathe 7s ease-in-out infinite;
-    user-select: none;
-}
-@keyframes bpGhostBreathe {
-    0%, 100% { opacity: 0.55; transform: translateY(0); }
-    50%      { opacity: 1; transform: translateY(-8px); }
-}
 
 /* ── moldura HUD fixa: monta SOBRE a linha do .site-frame global
    (mesma inset via --frame) — só cantoneiras pulsantes + labels mono ── */
@@ -7525,7 +7516,6 @@ body.bp-page {
 }
 @media (max-width: 760px) {
     .bp-frame { display: none; }
-    .bp-ghost { font-size: 8rem; }
 }
 
 /* ── painéis: cantoneiras tick nos cards (linguagem dos painéis 3D) ── */
@@ -7651,7 +7641,7 @@ body.bp-page main {
 
 /* reduced motion: atmosfera congela, nada some */
 @media (prefers-reduced-motion: reduce) {
-    .bp-nebula, .bp-grid, .bp-scan, .bp-ghost,
+    .bp-nebula, .bp-grid, .bp-scan,
     .bp-frame::before, .bp-frame::after {
         animation: none;
     }
@@ -9050,13 +9040,6 @@ html.nv-menu-lock {
     border-color: var(--card-hairline-hover);
     background: rgba(108, 92, 255, 0.08);
 }
-.nv-menu-num {
-    font-family: var(--ff-mono), monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    min-width: 52px;
-}
 .nv-menu-label {
     flex: 1;
     font-family: var(--ff-grotesk), sans-serif;
@@ -10010,73 +9993,6 @@ html.nv-cursor-on select {
     border-color: #fff;
 }
 
-/* ── HUD de cantos (micro-dados mono, linguagem igloo) ── */
-.chud {
-    pointer-events: none;
-}
-.chud-panel {
-    position: fixed;
-    z-index: 140;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 0.18em;
-    color: var(--text-muted);
-    opacity: 0;
-    transition: opacity 0.8s ease 0.4s;
-    padding: 8px 10px;
-}
-/* colchete de canto 1px (marca de registro de desenho técnico) */
-.chud-panel::before {
-    content: "";
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border: 1px solid var(--accent-border);
-}
-.chud-tr {
-    /* abaixo do header, colado à direita */
-    top: clamp(64px, 9vh, 96px);
-    right: clamp(14px, 2vw, 26px);
-    align-items: flex-end;
-    text-align: right;
-}
-.chud-tr::before {
-    top: 0;
-    right: 0;
-    border-left: 0;
-    border-bottom: 0;
-}
-.chud-bl {
-    /* acima da linha de copyright que já mora no canto inferior-esquerdo */
-    bottom: clamp(64px, 9vh, 92px);
-    left: clamp(14px, 2vw, 26px);
-}
-.chud-bl::before {
-    bottom: 0;
-    left: 0;
-    border-right: 0;
-    border-top: 0;
-}
-.chud-line {
-    opacity: 0.75;
-}
-.chud-line:first-child {
-    color: var(--accent-light);
-    opacity: 0.9;
-}
-body.site-loaded .chud-panel {
-    opacity: 1;
-}
-/* mobile: os cantos já são disputados (menu, chip SOM) — HUD só em telas amplas */
-@media (max-width: 900px) {
-    .chud {
-        display: none;
-    }
-}
-
 /* ── controles HUD (SOM) ── */
 .hudc {
     position: fixed;
@@ -10690,7 +10606,25 @@ body.site-loaded .hudc {
     right: 4%;
     top: 34px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(244, 183, 74, 0.4), transparent);
+    /* fio energizado: os traços dourados FLUEM pelo caminho dos passos */
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(244, 183, 74, 0.55) 0 9px,
+        rgba(244, 183, 74, 0.08) 9px 16px
+    );
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    animation: ouStepFlow 1.8s linear infinite;
+}
+@keyframes ouStepFlow {
+    to {
+        background-position: 16px 0;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ou-steps::before {
+        animation: none;
+    }
 }
 .ou-step {
     position: relative;
@@ -10726,7 +10660,8 @@ body.site-loaded .hudc {
     margin: 0;
 }
 
-/* quiz: painel dourado */
+/* quiz: painel dourado com cantoneiras HUD (a linguagem da casa, na cor
+   da divisão) */
 .ou-quiz {
     border: 1px solid rgba(244, 183, 74, 0.22);
     background: rgba(14, 9, 2, 0.8);
@@ -10734,6 +10669,26 @@ body.site-loaded .hudc {
         inset 1px 1px 0 rgba(255, 236, 200, 0.08),
         12px 16px 40px -14px rgba(0, 0, 0, 0.55);
     padding: clamp(18px, 3vw, 34px);
+    background-image:
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8)),
+        linear-gradient(rgba(244, 183, 74, 0.8), rgba(244, 183, 74, 0.8));
+    background-repeat: no-repeat;
+    background-size:
+        14px 1px, 1px 14px,
+        14px 1px, 1px 14px,
+        14px 1px, 1px 14px,
+        14px 1px, 1px 14px;
+    background-position:
+        left top, left top,
+        right top, right top,
+        left bottom, left bottom,
+        right bottom, right bottom;
 }
 
 /* ponte platina — discreta, mono */

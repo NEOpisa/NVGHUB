@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import Magnetic from "@/components/Magnetic";
 import { WhatsAppIcon } from "@/components/icons";
-import { WA, IG, HERO_HEADLINE } from "@/lib/constants";
+import { WA, HERO_HEADLINE } from "@/lib/constants";
 import { track } from "@vercel/analytics";
 import { getLenisInstance } from "@/lib/lenis";
 import { journey, rangeN, CH } from "./journeyState";
@@ -18,7 +18,7 @@ const OURO_STATS = [
   ["3h", "suporte"],
 ] as const;
 const OURO_LEVA = [
-  "Site, sistema ou e-commerce no ar",
+  "Sistema, automação ou loja no ar",
   "Escopo fechado antes de começar",
   "Suporte incluso via WhatsApp",
 ];
@@ -203,7 +203,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               NEO<b>VANGUARD</b>
             </span>
             <span className="jy-brand-sep" aria-hidden="true" />
-            <span className="jy-brand-tag">Agência digital · Brasil</span>
+            <span className="jy-brand-tag">Ferramentas para negócios · Brasil</span>
           </div>
 
           {/* #041/#073 · headline versionável (constants/env) + texto real no
@@ -214,15 +214,15 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
           </h1>
 
           <p className="jy-sub jy-enter jy-d3">
-            Integramos design de alta performance, inteligência artificial e
-            automação para transformar sua presença online em uma{" "}
-            <strong>máquina de resultados</strong>.
+            Sistemas, automações e IA sob medida. Entendemos a dor, desenhamos
+            a solução e entregamos a ferramenta —{" "}
+            <strong>funcionando</strong>.
           </p>
 
           <div className="jy-cta-row jy-enter jy-d4">
             <Magnetic>
               <Link href="/solucao" className="btn-primary">
-                Quero escalar minha empresa
+                Quero resolver um problema
                 <svg
                   width="14"
                   height="14"
@@ -266,12 +266,12 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
         <div className="jy-eco-min">
           <span className="section-eyebrow">Ecossistema</span>
           <h2 className="jy-h2 jy-eco-h2">
-            Vinte módulos.{" "}
+            Vinte ferramentas.{" "}
             <span className="text-accent-nvg">Um organismo.</span>
           </h2>
           <p className="jy-eco-sub">
-            Gire as rodas e explore tudo que construímos — cada peça alimenta
-            a próxima.
+            Gire as rodas e explore tudo que construímos — cada ferramenta
+            alimenta a próxima.
           </p>
         </div>
 
@@ -311,8 +311,9 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
               <span className="vy-door-tag">PRODUTO PRINCIPAL</span>
               <h3 className="vy-door-title">OURO</h3>
               <p className="vy-door-desc">
-                O caminho direto: presença sólida, escopo claro e entrega
-                rápida. Uma consulta objetiva define seu plano.
+                O caminho direto: a ferramenta que seu negócio precisa, com
+                escopo fechado e entrega rápida. Uma consulta objetiva define
+                seu plano.
               </p>
               <div className="vy-door-stats" aria-hidden="true">
                 {OURO_STATS.map(([n, l]) => (
@@ -418,9 +419,7 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
           <nav className="jy-cta-foot-links" aria-label="Links do rodapé">
             <Link href="/exemplos">Exemplos</Link>
             <Link href="/contato">Contato</Link>
-            <a href={IG} target="_blank" rel="noopener noreferrer">
-              Instagram
-            </a>
+            <Link href="/sobre">Quem somos</Link>
           </nav>
           <span className="jy-cta-copy">
             © {new Date().getFullYear()} Neovanguard · Todos os direitos

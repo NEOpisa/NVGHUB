@@ -35,12 +35,13 @@ export default function SobreSection() {
           <span className="section-eyebrow">Quem somos</span>
           {/* #030 · página própria: heading principal é H1 (estilo é por classe) */}
           <h1 className="section-heading" data-split>
-            Uma agência digital pensada como{" "}
+            Ferramentas pensadas como{" "}
             <span className="text-accent-nvg">um só ecossistema</span>
           </h1>
           <p className="section-sub">
             Somos a Neovanguard — uma operação 100% remota que atende o Brasil
-            inteiro. Sites, sistemas, SEO e suporte não são serviços soltos:
+            inteiro. Resolvemos problemas de negócio criando a ferramenta
+            certa: sistemas, automações e IA não são serviços soltos —
             funcionam como um organismo único, conduzido por uma força-tarefa
             síncrona do briefing à entrega.
           </p>

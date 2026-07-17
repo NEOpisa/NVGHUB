@@ -1,6 +1,4 @@
 export const WA = "https://wa.me/5519994425132";
-export const IG =
-  "https://www.instagram.com/neo_vanguard?utm_source=qr&igsh=MWx5Ym1nZ2J0NW5kMw==";
 export const SITE_URL = "https://neovanguard.com.br";
 
 /** Mapa de rotas do site — fonte única do menu overlay e do HUD do header. */
@@ -28,6 +26,6 @@ export const ROUTES: SiteRoute[] = [
    deploy p/ teste A/B) sem tocar no componente. parts: antes/depois do
    trecho em gradiente. */
 export const HERO_HEADLINE = {
-  before: process.env.NEXT_PUBLIC_HERO_BEFORE ?? "Ecossistemas digitais que impulsionam o ",
-  accent: process.env.NEXT_PUBLIC_HERO_ACCENT ?? "crescimento da sua empresa",
+  before: process.env.NEXT_PUBLIC_HERO_BEFORE ?? "Para cada problema do seu negócio, construímos ",
+  accent: process.env.NEXT_PUBLIC_HERO_ACCENT ?? "a ferramenta ideal",
 } as const;

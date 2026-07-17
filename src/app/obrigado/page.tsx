@@ -39,7 +39,7 @@ const PASSOS = [
 export default function ObrigadoPage() {
   return (
     <main id="main">
-      <BlueprintStage code="obrigado" index="07" />
+      <BlueprintStage />
       <section className="obg-page" aria-label="Mensagem recebida">
         <div className="inner">
           <span className="section-eyebrow">Tudo certo</span>

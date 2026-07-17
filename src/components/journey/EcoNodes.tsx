@@ -198,11 +198,17 @@ const ITEMS: EcoItem[] = [
  */
 export default function EcoNodes({ staticMode = false }: { staticMode?: boolean }) {
   const [active, setActive] = useState(0);
+  // direção da última troca: o conteúdo do painel desliza acompanhando o gesto
+  const [dir, setDir] = useState<1 | -1>(1);
   const nodesRef = useRef<HTMLDivElement>(null);
   const item = ITEMS[active];
 
   /* seleciona um módulo (chip, seta, swipe) e gira a roda 3D correspondente */
-  const select = (i: number) => {
+  const select = (i: number, d?: 1 | -1) => {
+    // sem direção explícita: o caminho mais curto no anel decide
+    setDir(
+      d ?? (((i - active + ITEMS.length) % ITEMS.length) <= ITEMS.length / 2 ? 1 : -1),
+    );
     setActive(i);
     eco.active = i;
     eco.wheelIdx[Math.floor(i / ECO_PER_WHEEL)] = i % ECO_PER_WHEEL;
@@ -211,9 +217,9 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
   };
   // swipe horizontal sobre o painel = próximo/anterior (gesto de carrossel)
   const swipe = useRef({ x: 0, y: 0 });
-  const step = (dir: 1 | -1) => {
-    const next = (active + dir + ITEMS.length) % ITEMS.length;
-    select(next);
+  const step = (d: 1 | -1) => {
+    const next = (active + d + ITEMS.length) % ITEMS.length;
+    select(next, d);
     track("eco_node", { id: ITEMS[next].id });
   };
 
@@ -301,6 +307,7 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
       const idx = (eco.wheelIdx[b] + dir + ECO_PER_WHEEL) % ECO_PER_WHEEL;
       eco.wheelIdx[b] = idx;
       eco.active = b * ECO_PER_WHEEL + idx;
+      setDir(dir); // o painel desliza acompanhando o giro
       setActive(eco.active);
     };
     window.addEventListener("wheel", onWheel, {
@@ -334,35 +341,6 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
 
   return (
     <div className="eco-map">
-      {/* dica das zonas de giro (decorativa; o gesto é por coordenada) */}
-      {!staticMode &&
-        [0, 1].map((b) => (
-          <div
-            key={b}
-            className={`eco-zone eco-zone--${b === 0 ? "l" : "r"}`}
-            aria-hidden="true"
-          >
-            <span className="eco-zone-chev">▲</span>
-            <span className="eco-zone-tag">
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21 12a9 9 0 1 1-3-6.7" />
-                <path d="M21 3v5h-5" />
-              </svg>
-              SCROLL GIRA A RODA
-            </span>
-            <span className="eco-zone-chev">▼</span>
-          </div>
-        ))}
       <div
         ref={nodesRef}
         className="eco-nodes"
@@ -376,6 +354,7 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
             className={`eco-node${i >= ECO_PER_WHEEL ? " eco-node--rw" : ""}${
               i === active ? " is-active" : ""
             }`}
+            data-layer={it.layer}
             aria-pressed={i === active}
             onClick={() => {
               select(i);
@@ -395,6 +374,8 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
 
       <div
         className="eco-panel"
+        data-layer={item.layer}
+        data-dir={dir}
         role="region"
         aria-live="polite"
         aria-label="Detalhe do módulo selecionado"
@@ -411,12 +392,13 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
             step(dx < 0 ? 1 : -1);
         }}
       >
+        {/* barra da camada: a assinatura colorida do módulo ativo */}
+        <span className="eco-panel-bar" aria-hidden="true" />
         <div className="eco-panel-head">
-          <span className="eco-panel-idx" aria-hidden="true">
-            {String(active + 1).padStart(2, "0")}
-            <em>/{ITEMS.length}</em>
+          <span className="eco-panel-tag">
+            <i aria-hidden="true" />
+            {LAYERS[item.layer]}
           </span>
-          <span className="eco-panel-tag">{LAYERS[item.layer]}</span>
           {/* navegação por toque (só mobile via CSS): o carrossel funciona
               mesmo sem rolar a fita de chips */}
           <span className="eco-panel-nav" role="group" aria-label="Navegar módulos">
@@ -440,13 +422,22 @@ export default function EcoNodes({ staticMode = false }: { staticMode?: boolean 
             </button>
           </span>
         </div>
-        <h3 className="eco-panel-title">{item.title}</h3>
-        <p className="eco-panel-desc">{item.desc}</p>
-        <ul className="eco-panel-chips">
-          {item.chips.map((c) => (
-            <li key={c}>{c}</li>
-          ))}
-        </ul>
+        {/* fio de coleção: quanto do catálogo você já percorreu */}
+        <span className="eco-progress" aria-hidden="true">
+          <i
+            style={{ transform: `scaleX(${(active + 1) / ITEMS.length})` }}
+          />
+        </span>
+        {/* key={active}: remonta e a entrada desliza na direção do gesto */}
+        <div className="eco-panel-body" key={active}>
+          <h3 className="eco-panel-title">{item.title}</h3>
+          <p className="eco-panel-desc">{item.desc}</p>
+          <ul className="eco-panel-chips">
+            {item.chips.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </div>
         <a
           href={WA}
           target="_blank"

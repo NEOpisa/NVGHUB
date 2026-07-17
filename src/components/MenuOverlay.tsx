@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { WhatsAppIcon, InstagramIcon } from "@/components/icons";
-import { WA, IG, ROUTES } from "@/lib/constants";
+import { WhatsAppIcon } from "@/components/icons";
+import { WA, ROUTES } from "@/lib/constants";
 import { getLenisInstance } from "@/lib/lenis";
 
 const MENU_ROUTES = ROUTES.filter((r) => r.menu !== false);
@@ -82,7 +82,7 @@ export default function MenuOverlay({
             exit="closed"
           >
             {MENU_ROUTES.map((r) => (
-              <motion.div key={r.num} variants={rowVariants}>
+              <motion.div key={r.href} variants={rowVariants}>
                 <Link
                   href={r.href}
                   className="nv-menu-route card-1"
@@ -91,7 +91,6 @@ export default function MenuOverlay({
                   onFocus={() => router.prefetch(r.href)}
                   onClick={onClose}
                 >
-                  <span className="nv-menu-num">{r.num}</span>
                   <span className="nv-menu-label">{r.label}</span>
                   <span className="nv-menu-state" aria-hidden="true">
                     <i /> PRONTO
@@ -111,10 +110,6 @@ export default function MenuOverlay({
             <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-primary">
               <WhatsAppIcon />
               Falar pelo WhatsApp
-            </a>
-            <a href={IG} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-              <InstagramIcon />
-              Instagram
             </a>
           </motion.div>
         </motion.div>

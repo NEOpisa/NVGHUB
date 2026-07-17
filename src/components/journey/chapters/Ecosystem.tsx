@@ -205,13 +205,15 @@ export default function Ecosystem() {
     // RETRATO: as rodas se aproximam, encolhem e sobem — o carrossel
     // funciona em QUALQUER proporção de tela (os chips controlam no touch)
     const k = THREE.MathUtils.clamp((0.95 - cam.aspect) / 0.5, 0, 1);
-    const wheelScale = THREE.MathUtils.lerp(1, 0.42, k);
+    const wheelScale = THREE.MathUtils.lerp(1, 0.38, k);
     for (let b = 0; b < 2; b++) {
       const outer = wheelOuter.current[b];
       if (outer) {
         const side = b === 0 ? -1 : 1;
-        outer.position.x = side * THREE.MathUtils.lerp(WHEEL_X, 0.62, k);
-        outer.position.y = THREE.MathUtils.lerp(0, 0.5, k);
+        outer.position.x = side * THREE.MathUtils.lerp(WHEEL_X, 0.58, k);
+        // retrato: as rodas vivem na BANDA entre o título e o painel —
+        // mais altas para nunca invadirem o cartão na base
+        outer.position.y = THREE.MathUtils.lerp(0, 0.85, k);
         outer.scale.setScalar(wheelScale);
         outer.rotation.y = -side * 0.34 * THREE.MathUtils.lerp(1, 0.4, k);
       }

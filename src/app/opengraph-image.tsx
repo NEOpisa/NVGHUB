@@ -178,7 +178,7 @@ export default async function OgImage() {
               }}
             />
             <span style={{ fontSize: 14, color: "rgba(200,190,255,0.55)" }}>
-              agência digital · brasil
+              ferramentas para negócios · brasil
             </span>
           </div>
         </div>

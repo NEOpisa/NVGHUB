@@ -22,9 +22,8 @@ import ViewportProbe from "@/components/ViewportProbe";
 import LetterScatter from "@/components/LetterScatter";
 import ObsidianRain from "@/components/ObsidianRain";
 import HudControls from "@/components/HudControls";
-import CornerHud from "@/components/CornerHud";
 import { Analytics } from "@vercel/analytics/next";
-import { SITE_URL, IG } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import "./globals.css";
 // Zonas de CSS por owner (paralelismo sem conflito — ver /inc2.md).
 // Ordem importa: importadas após globals.css para vencer a cascata.
@@ -88,21 +87,21 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Neovanguard — Agência de Soluções Digitais",
+    default: "Neovanguard — Ferramentas para o seu negócio",
     template: "%s · Neovanguard",
   },
   description:
-    "Sites, sistemas, SEO e suporte operados como um só ecossistema. Entrega com prazo definido, sem contrato mínimo, atendendo o Brasil inteiro de forma 100% remota.",
+    "Resolvemos problemas de negócio criando a ferramenta certa: sistemas, automações, IA aplicada e lojas sob medida. Entrega com prazo definido, sem contrato mínimo, atendendo o Brasil inteiro de forma 100% remota.",
   applicationName: "Neovanguard",
   keywords: [
-    "agência digital",
-    "criação de sites",
-    "sistemas web",
-    "SEO local",
-    "Google Meu Negócio",
-    "site para pequenos negócios",
-    "desenvolvimento web Brasil",
-    "manutenção de sites",
+    "ferramentas para negócios",
+    "sistemas web sob medida",
+    "automação de processos",
+    "IA para empresas",
+    "sistema para comércio",
+    "agendamento online",
+    "e-commerce",
+    "desenvolvimento sob medida Brasil",
     "landing page",
     "Neovanguard",
   ],
@@ -122,9 +121,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Neovanguard — Agência de Soluções Digitais",
+    title: "Neovanguard — Ferramentas para o seu negócio",
     description:
-      "Sites, sistemas, SEO e suporte operados como um só ecossistema. Entrega com prazo definido, sem contrato mínimo, 100% remoto.",
+      "Resolvemos problemas de negócio criando a ferramenta certa: sistemas, automações, IA e lojas sob medida. Prazo definido, sem contrato mínimo, 100% remoto.",
     type: "website",
     locale: "pt_BR",
     siteName: "Neovanguard",
@@ -133,9 +132,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Neovanguard — Agência de Soluções Digitais",
+    title: "Neovanguard — Ferramentas para o seu negócio",
     description:
-      "Sites, sistemas, SEO e suporte como um só ecossistema. 100% remoto, sem contrato mínimo.",
+      "A ferramenta certa para cada problema do seu negócio: sistemas, automações e IA sob medida. 100% remoto, sem contrato mínimo.",
   },
 };
 
@@ -158,7 +157,7 @@ const JSON_LD = {
       logo: `${SITE_URL}/logo.png`,
       image: `${SITE_URL}/og.png`,
       description:
-        "Agência de soluções digitais 100% remota, especializada em sites e sistemas para pequenos negócios locais em todo o Brasil.",
+        "Estúdio de tecnologia 100% remoto: resolvemos problemas de negócio criando a ferramenta certa — sistemas, automações, IA e lojas sob medida — para empresas de todo o Brasil.",
       areaServed: { "@type": "Country", name: "Brasil" },
       priceRange: "$$",
       contactPoint: {
@@ -167,15 +166,14 @@ const JSON_LD = {
         telephone: "+5519994425132",
         availableLanguage: ["pt-BR"],
       },
-      sameAs: [IG],
       makesOffer: [
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Site Profissional",
+            name: "Ferramenta sob medida",
             description:
-              "Landing pages e sites institucionais responsivos, otimizados para SEO local.",
+              "Sistemas, automações e integrações desenhados para o problema específico do seu negócio.",
           },
         },
         {
@@ -252,7 +250,6 @@ export default function RootLayout({
         <FooterGate />
         <div className="site-frame" aria-hidden="true" />
         <HudControls />
-        <CornerHud />
         <LetterScatter />
         <ObsidianRain />
         <MetaPixel />

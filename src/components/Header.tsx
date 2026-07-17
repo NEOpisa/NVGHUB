@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MenuOverlay from "@/components/MenuOverlay";
-import { ROUTES } from "@/lib/constants";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -66,14 +65,6 @@ export default function Header() {
           </Link>
 
           <div className="site-header-right">
-            {(() => {
-              const r = ROUTES.find((x) => x.href === pathname);
-              return r ? (
-                <span className="route-hud" aria-hidden="true">
-                  {r.num.replace("_", " ")} <em>·</em> {r.label.toLowerCase()}
-                </span>
-              ) : null;
-            })()}
             <button
               className="menu-toggle"
               onClick={() => setMenuOpen((v) => !v)}

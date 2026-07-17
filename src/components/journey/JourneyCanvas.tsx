@@ -60,13 +60,14 @@ export default function JourneyCanvas() {
     const tier = detectTier();
     journey.tier = tier;
     if (typeof window === "undefined") return 1.5;
-    // #067 · telas pequenas/touch têm DPR físico alto (2–3) e GPU fraca:
-    // teto extra por tier — em 390px de largura, 1.3x já é visualmente denso
-    // e corta ~45% dos fragments vs 1.75x.
+    // #067 · telas pequenas/touch têm DPR físico alto (2–3): teto por tier.
+    // Tetos mobile elevados (1.35→1.6 no tier 2 etc): a nitidez do 3D no
+    // celular vale os fragments — o AdaptiveQuality ainda desce se o frame
+    // estourar o orçamento.
     const small =
       window.innerWidth < 768 ||
       !!window.matchMedia?.("(pointer: coarse)").matches;
-    const cap = tier === 2 ? (small ? 1.35 : 1.75) : tier === 1 ? (small ? 1.25 : 1.5) : small ? 1.0 : 1.2;
+    const cap = tier === 2 ? (small ? 1.6 : 1.75) : tier === 1 ? (small ? 1.45 : 1.5) : small ? 1.15 : 1.2;
     return Math.min(window.devicePixelRatio || 1, cap);
   }, []);
 

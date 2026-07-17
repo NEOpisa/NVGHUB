@@ -287,7 +287,7 @@ export default function OuroCanvas() {
   return (
     <div className="ou-canvas" aria-hidden="true">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, 1.75]}
         frameloop={running ? "always" : "never"}
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 6.4], fov: 52 }}

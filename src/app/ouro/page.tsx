@@ -2,9 +2,9 @@ import { pageMetadata } from "@/lib/seo";
 import OuroExperience from "@/components/ouro/OuroExperience";
 
 export const metadata = pageMetadata({
-  title: "Ouro — seu negócio no ar, vendendo, em até 16 dias",
+  title: "Ouro — a ferramenta do seu negócio no ar em até 16 dias",
   description:
-    "A divisão Ouro da Neovanguard: sites, sistemas e e-commerce com escopo claro e consulta objetiva. Valor apresentado na consulta.",
+    "A divisão Ouro da Neovanguard: sistemas, automações e lojas com escopo fechado e consulta objetiva. Valor apresentado na consulta.",
   path: "/ouro",
 });
 

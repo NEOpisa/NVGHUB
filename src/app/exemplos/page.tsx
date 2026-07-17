@@ -4,16 +4,16 @@ import BlueprintStage from "@/components/BlueprintStage";
 import ExemplosGrid from "@/components/ExemplosGrid";
 
 export const metadata = pageMetadata({
-  title: "Exemplos de Sites — Neovanguard",
+  title: "Exemplos — Ferramentas, Automações e Sites — Neovanguard",
   description:
-    "Modelos de sites prontos da Neovanguard. Clique em qualquer exemplo e navegue pelo site completo, funcionando de verdade.",
+    "Exemplos reais do que a Neovanguard constrói: ferramentas sob medida (PDV, agendamento, IA), automações que trabalham sozinhas e sites completos e navegáveis.",
   path: "/exemplos",
 });
 
 export default function ExemplosPage() {
   return (
     <main id="main" className="exemplos-page">
-      <BlueprintStage code="exemplos" index="04" />
+      <BlueprintStage />
       <section className="exemplos-hero">
         <div className="inner">
           <Link href="/" className="exemplos-back">
@@ -22,12 +22,14 @@ export default function ExemplosPage() {
           </Link>
           <span className="section-eyebrow">Exemplos</span>
           <h1 className="section-heading" data-split>
-            Veja sites <span className="text-accent-nvg">de verdade</span>, prontos para usar
+            Exemplos <span className="text-accent-nvg">de verdade</span>, para
+            ver e usar
           </h1>
           <p className="section-sub">
-            Cada modelo abaixo é um site completo e funcionando. Clique em
-            &ldquo;Abrir exemplo&rdquo; e navegue como se fosse seu — depois é só
-            personalizar com a sua marca.
+            Três coleções: <strong>ferramentas</strong> que resolvem um
+            problema específico, <strong>automações</strong> que trabalham
+            sozinhas e <strong>sites</strong> completos e navegáveis. Escolha
+            o tipo, filtre por categoria e explore.
           </p>
         </div>
       </section>

@@ -67,11 +67,11 @@ const PASSOS = [
 ];
 
 const MARQUEE = [
-  "SITE PROFISSIONAL",
+  "FERRAMENTAS SOB MEDIDA",
   "SISTEMA WEB",
   "E-COMMERCE",
-  "SEO LOCAL",
   "AUTOMAÇÃO",
+  "IA APLICADA",
   "ENTREGA EM 16 DIAS",
 ];
 
@@ -147,12 +147,12 @@ export default function OuroExperience() {
             DIVISÃO OURO · PRODUTO PRINCIPAL
           </span>
           <h1 className="ou-h1 ou-rv">
-            Seu negócio no ar, <em>vendendo</em>, em até 16 dias.
+            A ferramenta do seu negócio, <em>funcionando</em>, em até 16 dias.
           </h1>
           <p className="ou-sub ou-rv">
-            Site, sistema ou loja com escopo fechado e produção sistematizada.
-            Uma consulta objetiva define o caminho — e é nela que o valor é
-            apresentado.
+            Sistema, automação ou loja com escopo fechado e produção
+            sistematizada. Uma consulta objetiva define a ferramenta certa —
+            e é nela que o valor é apresentado.
           </p>
           <div className="ou-cta-row ou-rv">
             <a href="#quiz" className="btn-primary ou-btn-gold">
@@ -209,7 +209,7 @@ export default function OuroExperience() {
         <div className="ou-head ou-rv">
           <span className="ou-eyebrow">Os produtos</span>
           <h2 className="ou-h2">
-            Quatro caminhos. <em>Um destino: vender.</em>
+            Quatro ferramentas. <em>Um destino: vender.</em>
           </h2>
         </div>
         <div className="ou-cards">

@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
 export default function TermosPage() {
   return (
     <main id="main" className="legal">
-      <BlueprintStage code="termos" index="L2" />
+      <BlueprintStage />
       <article className="legal-body card-1">
         <span className="section-eyebrow">Termos de uso</span>
         <h1 className="section-heading">Termos de uso do site</h1>

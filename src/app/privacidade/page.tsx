@@ -13,7 +13,7 @@ export const metadata = pageMetadata({
 export default function PrivacidadePage() {
   return (
     <main id="main" className="legal">
-      <BlueprintStage code="privacidade" index="L1" />
+      <BlueprintStage />
       <article className="legal-body card-1">
         <span className="section-eyebrow">Privacidade · LGPD</span>
         <h1 className="section-heading">Como tratamos seus dados</h1>

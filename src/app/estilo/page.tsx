@@ -15,7 +15,7 @@ export const metadata = {
 export default function EstiloPage() {
   return (
     <main id="main" className="legal">
-      <BlueprintStage code="styleguide" index="S0" />
+      <BlueprintStage />
       <div className="legal-body" style={{ maxWidth: 880 }}>
         <span className="section-eyebrow">Design system</span>
         <h1 className="section-heading">Neobsidian — primitivos</h1>
