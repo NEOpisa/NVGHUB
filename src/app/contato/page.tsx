@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
 export default function ContatoPage() {
   return (
     <main id="main">
-      <BlueprintStage />
+      <BlueprintStage accent="ice" />
       <ContatoSection />
     </main>
   );

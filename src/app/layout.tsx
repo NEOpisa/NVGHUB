@@ -163,9 +163,9 @@ const JSON_LD = {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "SEO & Presença Digital",
+            name: "Automação & Integrações",
             description:
-              "Google Meu Negócio e otimização para aparecer nas buscas locais.",
+              "Robôs, integrações e rotinas que eliminam o trabalho manual do negócio.",
           },
         },
         {

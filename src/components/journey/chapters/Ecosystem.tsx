@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { journey, rangeN } from "../journeyState";
 import { eco, ECO_COUNT, ECO_PER_WHEEL } from "../ecoState";
+import { WHITE_POINTS } from "@/components/scene/logoGeometry";
 import { WORLD } from "../path";
 
 /**
@@ -18,10 +19,25 @@ import { WORLD } from "../path";
 const PER = ECO_PER_WHEEL;
 const WHEEL_X = 2.35; // afastamento lateral de cada roda
 const WHEEL_R = 1.55;
-const PANE_W = 0.72;
-const PANE_H = 0.88;
-const CHAMFER = 0.1;
-const GLYPH_SCALE = 1.05;
+const PANE_H = 0.92;
+const GLYPH_SCALE = 1.0;
+
+/* cada placa é um MINI-BRASÃO: a mesma silhueta de escudo da logo,
+   normalizada para a altura da placa (a roda vira um cofre de emblemas) */
+const SHIELD_2D: [number, number][] = (() => {
+  const pts = WHITE_POINTS.map(
+    ([x, y]) => [(x - 160) / 42, -(y - 124) / 42] as [number, number],
+  );
+  const ys = pts.map((p) => p[1]);
+  const mid = (Math.max(...ys) + Math.min(...ys)) / 2;
+  const s = PANE_H / (Math.max(...ys) - Math.min(...ys));
+  return pts.map(([x, y]) => [x * s, (y - mid) * s]);
+})();
+function insetShield(k: number): [number, number][] {
+  let cx = 0, cy = 0;
+  for (const [x, y] of SHIELD_2D) { cx += x / SHIELD_2D.length; cy += y / SHIELD_2D.length; }
+  return SHIELD_2D.map(([x, y]) => [cx + (x - cx) * k, cy + (y - cy) * k]);
+}
 
 /* glifo wireframe por módulo — geometria abstrata, uma por opção */
 function glyphGeo(i: number): THREE.BufferGeometry {
@@ -32,41 +48,47 @@ function glyphGeo(i: number): THREE.BufferGeometry {
     case 3: return new THREE.IcosahedronGeometry(0.27, 0); // saas
     case 4: return new THREE.DodecahedronGeometry(0.26, 0); // crm
     case 5: return new THREE.TorusGeometry(0.22, 0.08, 4, 12); // integrações
-    case 6: return new THREE.ConeGeometry(0.24, 0.42, 5); // seo
+    case 6: return new THREE.ConeGeometry(0.24, 0.42, 5); // fiscal
     case 7: return new THREE.OctahedronGeometry(0.28, 0); // ia
     case 8: return new THREE.TetrahedronGeometry(0.32, 0); // lavoura
     case 9: return new THREE.CylinderGeometry(0.26, 0.26, 0.1, 10); // bi
     case 10: return new THREE.BoxGeometry(0.42, 0.3, 0.24); // loja: pacote
     case 11: return new THREE.BoxGeometry(0.26, 0.46, 0.05); // app: celular
     case 12: return new THREE.BoxGeometry(0.52, 0.32, 0.03); // landing: placa
-    case 13: return new THREE.OctahedronGeometry(0.3, 1); // branding: gema
-    case 14: return new THREE.ConeGeometry(0.28, 0.44, 4); // tráfego: seta
-    case 15: return new THREE.CylinderGeometry(0.28, 0.08, 0.42, 6); // funil
+    case 13: return new THREE.OctahedronGeometry(0.3, 1); // planilha→sistema
+    case 14: return new THREE.ConeGeometry(0.28, 0.44, 4); // ordens de serviço
+    case 15: return new THREE.CylinderGeometry(0.28, 0.08, 0.42, 6); // orçamentos
     case 16: return new THREE.TorusGeometry(0.26, 0.05, 3, 6); // portal: elo
     case 17: return new THREE.CylinderGeometry(0.2, 0.2, 0.44, 8); // rpa
     case 18: return new THREE.SphereGeometry(0.26, 6, 4); // dados: globo
-    default: return new THREE.CylinderGeometry(0.06, 0.3, 0.42, 5); // cro
+    default: return new THREE.CylinderGeometry(0.06, 0.3, 0.42, 5); // backups
   }
 }
 
-/* moldura da placa: retângulo com cantos chanfrados (chapa blueprint) */
+/* moldura da placa: contorno do ESCUDO + aro interno (a anatomia da logo,
+   em wireframe) — num só buffer de linhas */
 function paneFrameGeo(): THREE.BufferGeometry {
-  const w = PANE_W / 2;
-  const h = PANE_H / 2;
-  const c = CHAMFER;
-  const pts = [
-    [-w + c, h], [w - c, h], [w, h - c], [w, -h + c], [w - c, -h],
-    [-w + c, -h], [-w, -h + c], [-w, h - c],
-  ];
   const pos: number[] = [];
-  for (let k = 0; k < pts.length; k++) {
-    const a = pts[k];
-    const b = pts[(k + 1) % pts.length];
-    pos.push(a[0], a[1], 0, b[0], b[1], 0);
-  }
+  const ring = (pts: [number, number][], z: number) => {
+    for (let k = 0; k < pts.length; k++) {
+      const a = pts[k];
+      const b = pts[(k + 1) % pts.length];
+      pos.push(a[0], a[1], z, b[0], b[1], z);
+    }
+  };
+  ring(SHIELD_2D, 0.01);          // contorno externo
+  ring(insetShield(0.82), 0.01);  // aro interno (o "rim" do brasão)
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
   return g;
+}
+
+/* chapa sólida em forma de escudo (o "esmalte" da placa) */
+function paneFillGeo(): THREE.BufferGeometry {
+  const shape = new THREE.Shape(
+    SHIELD_2D.map(([x, y]) => new THREE.Vector2(x, y)),
+  );
+  return new THREE.ShapeGeometry(shape);
 }
 
 const _wp = new THREE.Vector3();
@@ -96,11 +118,8 @@ export default function Ecosystem() {
       ),
     [],
   );
-  // placa OPACA: chapa escura sólida (depthWrite oclui as placas de trás)
-  const fillGeo = useMemo(
-    () => new THREE.PlaneGeometry(PANE_W - 0.05, PANE_H - 0.05),
-    [],
-  );
+  // placa OPACA: escudo escuro sólido (depthWrite oclui as placas de trás)
+  const fillGeo = useMemo(() => paneFillGeo(), []);
   const fillMats = useMemo(
     () =>
       Array.from({ length: ECO_COUNT }, () =>

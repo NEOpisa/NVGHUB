@@ -7,6 +7,7 @@ import { WhatsAppIcon } from "@/components/icons";
 import { WA, HERO_HEADLINE } from "@/lib/constants";
 import { track } from "@vercel/analytics";
 import { getLenisInstance } from "@/lib/lenis";
+import { txBus, txState } from "@/components/scene/transitionBus";
 import { journey, rangeN, CH } from "./journeyState";
 import EcoNodes from "./EcoNodes";
 
@@ -52,7 +53,9 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
   // #013 · live region: anuncia o capítulo ativo a leitores de tela
   const liveRef = useRef<HTMLSpanElement>(null);
 
-  /* candidatura PLATINA: o formulário abre o WhatsApp com a ficha pronta */
+  /* candidatura PLATINA: travessia GL tingida de platina (a mesma cerimônia
+     da porta Ouro) — o brasão cobre a tela, a ficha voa pro WhatsApp por
+     baixo da cortina e a cena revela de volta */
   const applyPlatina = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -63,7 +66,30 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
     const msg = encodeURIComponent(
       `Candidatura PLATINA\nNome: ${nome}\nEmpresa: ${empresa}\nWhatsApp: ${zap}`,
     );
-    window.open(`${WA}?text=${msg}`, "_blank", "noopener,noreferrer");
+    const url = `${WA}?text=${msg}`;
+    // sem motion (reduced/estático): abre direto
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.open(url, "_blank", "noopener,noreferrer");
+      return;
+    }
+    txState.tint = "platina";
+    let done = false;
+    const off = txBus.on((ev) => {
+      if (ev !== "covered" || done) return;
+      done = true;
+      off();
+      window.open(url, "_blank", "noopener,noreferrer");
+      window.setTimeout(() => txBus.emit("reveal"), 650);
+    });
+    txBus.emit("cover");
+    // failsafe: se o canvas da travessia não responder, abre mesmo assim
+    window.setTimeout(() => {
+      if (done) return;
+      done = true;
+      off();
+      window.open(url, "_blank", "noopener,noreferrer");
+      txBus.emit("reveal");
+    }, 2000);
   };
 
   useEffect(() => {
@@ -118,10 +144,11 @@ export default function JourneyOverlay({ staticMode }: { staticMode: boolean }) 
       raf = requestAnimationFrame(loop);
       const p = journey.progress;
 
-      // HERO: visível desde o load, só sai de cena (mesma curva dos capítulos)
+      // HERO: visível desde o load, sai de cena JÁ SOBREPONDO a entrada do
+      // eco (fade até 0.175 × eco nasce em 0.16 — zero tela vazia)
       setSec(
         els.hero,
-        1 - easeOut(rangeN(p, 0.09, 0.155)),
+        1 - easeOut(rangeN(p, 0.09, 0.175)),
         rangeN(p, 0.04, 0.15) * -60,
       );
       if (hint) hint.style.opacity = String(1 - easeOut(rangeN(p, 0.02, 0.06)));

@@ -4,7 +4,7 @@
  * a animação (TransitionItem). O controlador emite "cover"/"reveal"; o canvas
  * responde com "covered" quando terminou de cobrir a tela.
  */
-export type TxEvent = "cover" | "covered" | "reveal";
+type TxEvent = "cover" | "covered" | "reveal";
 
 /** Tinta da travessia: a marca NV cobre a tela na COR do destino —
  *  dourado a caminho do Ouro, bismuto azulado a caminho da Platina. */

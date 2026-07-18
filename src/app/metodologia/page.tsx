@@ -28,7 +28,7 @@ export default function MetodologiaPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
-      <BlueprintStage />
+      <BlueprintStage accent="gold" />
       <NoxzSection />
     </main>
   );

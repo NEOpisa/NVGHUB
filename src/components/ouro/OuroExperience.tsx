@@ -26,13 +26,13 @@ const OFERTAS = [
     num: "01",
     title: "Vitrine Digital",
     desc: "Página única de alta conversão para colocar seu negócio no mapa — rápida, bonita e encontrável.",
-    tags: ["Landing", "SEO local", "WhatsApp"],
+    tags: ["Landing", "Veloz", "WhatsApp"],
   },
   {
     num: "02",
     title: "Presença Web",
-    desc: "Site institucional completo com blog e Google Meu Negócio configurado para dominar a busca local.",
-    tags: ["Institucional", "GMN", "Blog"],
+    desc: "Site institucional completo e administrável: você mesmo atualiza conteúdo e fotos pelo painel.",
+    tags: ["Institucional", "Painel", "Blog"],
   },
   {
     num: "03",

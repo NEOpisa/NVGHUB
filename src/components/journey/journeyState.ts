@@ -27,7 +27,8 @@ export const rangeN = (t: number, a: number, b: number) =>
  *  EXPLORE é o capítulo FINAL: entra e fica (portal + constelação). */
 export const CH = {
   hero: { start: 0.0, end: 0.16 },
-  eco: { start: 0.18, end: 0.56 },
+  // eco entra mais cedo: sobrepõe o fade do hero (sem tela vazia na viagem)
+  eco: { start: 0.16, end: 0.56 },
   explore: { start: 0.8, end: 0.97 },
 } as const;
 

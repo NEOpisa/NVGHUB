@@ -90,9 +90,9 @@ export default function ChapterSnap({
       tweenRaf = requestAnimationFrame(step);
     };
 
-    const travel = (to: number) => {
+    const travel = (to: number, force = false) => {
       const from = busy && targetIdx !== null ? targetIdx : nearestIdx();
-      if (to === from && !busy) return;
+      if (to === from && !busy && !force) return;
       const chained = busy; // rolou de novo no meio = quer velocidade
       targetIdx = to;
       busy = true;
@@ -234,6 +234,26 @@ export default function ChapterSnap({
       step(dy > 0 ? 1 : -1);
     };
 
+    // ── WATCHDOG anti-encalhe ────────────────────────────────────────
+    // No touch, um tween interrompido (fling nativo, aba trocada, gesto
+    // atropelado) podia largar o progresso ENTRE capítulos — na zona do
+    // warp (0.53–0.83) nada é visível e a tela ficava "vazia" até o
+    // visitante arrastar de novo. A cada 400ms: se está parado longe de
+    // qualquer parada, viaja sozinho para a mais próxima.
+    let touching = false; // dedo na tela = gesto em andamento, não interfere
+    const tDown = () => { touching = true; };
+    const tUp = () => { touching = false; };
+    window.addEventListener("touchstart", tDown, { passive: true });
+    window.addEventListener("touchend", tUp, { passive: true });
+    window.addEventListener("touchcancel", tUp, { passive: true });
+    const watchdog = window.setInterval(() => {
+      if (busy || touching || !covering()) return;
+      const p = journey.progress;
+      let bd = Infinity;
+      for (const s of SNAPS) bd = Math.min(bd, Math.abs(s - p));
+      if (bd > 0.035) travel(nearestIdx(), true); // resgata pro porto mais próximo
+    }, 400);
+
     window.addEventListener("wheel", onWheel, {
       passive: false,
       capture: true,
@@ -243,6 +263,10 @@ export default function ChapterSnap({
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
+      window.clearInterval(watchdog);
+      window.removeEventListener("touchstart", tDown);
+      window.removeEventListener("touchend", tUp);
+      window.removeEventListener("touchcancel", tUp);
       window.removeEventListener("wheel", onWheel, { capture: true });
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("touchstart", onTouchStart);

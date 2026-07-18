@@ -100,9 +100,7 @@ body.bp-page {
    ───────────────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
     /* controles com layout próprio: só garante a altura mínima */
-    body.bp-page .faq-question,
-    body.bp-page .quiz-option,
-    body.bp-page .menu-link {
+    body.bp-page .faq-question,body.bp-page .quiz-option {
         min-height: 44px;
     }
     /* CTAs (já inline-flex): altura mínima + centralização preservada */
@@ -124,9 +122,7 @@ body.bp-page {
    último conteúdo. Reserva espaço no fim do fluxo.
    ───────────────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
-    body.bp-page footer,
-    body.bp-page .site-footer,
-    body.bp-page .vy-fork-foot {
+    body.bp-page footer {
         padding-bottom: max(64px, env(safe-area-inset-bottom, 0px));
     }
 }
@@ -253,8 +249,7 @@ body.bp-page {
         justify-content: center;
     }
     /* a última seção respira acima da barra */
-    .tp main > section:last-of-type,
-    .tp .tp-sec:last-of-type {
+    .tp main > section:last-of-type {
         padding-bottom: 84px;
     }
 }
@@ -278,51 +273,12 @@ body.bp-page {
 .tp-ouro {
     --tier-pad: clamp(52px, 7vh, 84px);
 }
-
-/* ── identidade OURO: linha de produção — denso, numerado, técnico ── */
-.tp-ouro .tp-sec {
-    max-width: 1180px;
-}
-.tp-ouro .tp-h2 {
-    letter-spacing: -0.02em;
-}
-/* hairline âmbar SÓ nos detalhes; a moldura volta ao violeta do site */
 .tp-ouro .card-1,
 .tp-ouro .card-2 {
     border-color: rgba(108, 92, 255, 0.22);
 }
 
-/* ── identidade PLATINA: dossiê editorial — estreito, sereno ── */
-.tp-platina .tp-sec {
-    max-width: 880px; /* coluna de leitura, não um painel largo */
-}
-.tp-platina .card-1,
-.tp-platina .card-2 {
-    border-color: rgba(108, 92, 255, 0.18);
-}
-.tpc-col.is-here {
-    color: #f0f0f0;
-}
-.tp-compare-head .tpc-col.is-here {
-    color: var(--tier-accent, #6c5cff);
-}
-@media (max-width: 640px) {
-    .tpc-col:not(.is-here) {
-        font-size: 0.82rem;
-        opacity: 0.75;
-    }
-    .tpc-col:not(.is-here)::before {
-        content: "ouro · ";
-        font-family: var(--ff-mono), monospace;
-        font-size: 0.6rem;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-    }
-    .tp-platina .tpc-col.is-here::before,
-    .tp-ouro .tpc-col.is-here::before {
-        content: "";
-    }
-}
+
 
 /* ══ #100 · aviso de consentimento (LGPD) ═══════════════════════════════ */
 .nvg-consent {

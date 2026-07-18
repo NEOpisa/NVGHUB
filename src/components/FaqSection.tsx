@@ -32,9 +32,9 @@ const FAQ: { q: string; a: string; tag: string }[] = [
     tag: "Suporte",
   },
   {
-    q: "Vocês cuidam do Google e do SEO?",
-    a: "Sim. Quando o seu objetivo é aparecer nas buscas, incluímos SEO local e a configuração do Google Meu Negócio para o seu negócio ser encontrado por quem procura na sua região.",
-    tag: "SEO",
+    q: "Vocês fazem marketing ou tráfego pago?",
+    a: "Não — somos uma empresa de software. Construímos a ferramenta (sistema, site, automação, IA) e entregamos tudo tecnicamente impecável, rápido e pronto para o Google indexar. Campanhas e anúncios ficam com você ou com a sua agência — a nossa parte é garantir que, quando o cliente chegar, a ferramenta converta.",
+    tag: "Escopo",
   },
 ];
 

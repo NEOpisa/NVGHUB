@@ -85,7 +85,7 @@ function diagnostico(r: Record<string, string>) {
     nota = 61;
     pontos = [
       "Site no ar ≠ site que converte",
-      "Velocidade e SEO deixando cliente na mesa",
+      "Site lento derruba conversão e ranqueamento",
       "Atendimento manual segurando o crescimento",
     ];
   }

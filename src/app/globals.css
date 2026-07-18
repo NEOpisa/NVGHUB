@@ -361,11 +361,6 @@ html.lenis body {
 }
 
 
-
-
-
-
-
 .cta-row {
     display: flex;
     flex-wrap: wrap;
@@ -374,38 +369,11 @@ html.lenis body {
     margin-top: 4px;
 }
 
-/* ── Hero ecosystem visual ── */
-
-
-
-/* Parallax do hero agora é GSAP scrub (cross-browser) — ver Hero.tsx.
-   O antigo CSS animation-timeline só rodava no Chrome/Edge. */
-
-.scroll-arrow {
-    width: 20px;
-    height: 20px;
-    border-right: 1.5px solid var(--text-muted);
-    border-bottom: 1.5px solid var(--text-muted);
-    transform: rotate(45deg);
-    animation: hero-scroll-cue 2.2s var(--ease-out) infinite;
-}
-@keyframes hero-scroll-cue {
-    0%,
-    100% {
-        transform: rotate(45deg) translate(0, 0);
-        opacity: 0.35;
-    }
-    50% {
-        transform: rotate(45deg) translate(4px, 4px);
-        opacity: 0.9;
-    }
-}
 @media (max-width: 1024px) {
     
     
     
-    .cta-row,
-    .trust-signals {
+    .cta-row {
         justify-content: center;
     }
     
@@ -417,34 +385,6 @@ html.lenis body {
     padding: var(--section-pad) 0;
     border-top: 1px solid var(--border);
 }
-
-/* ── Services carousel (1 card por vez, desktop e mobile) ── */
-
-
-.carousel-viewport {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    touch-action: pan-y;
-}
-
-
-/* ── Serviços: galeria horizontal pinned (desktop / tier FULL) ──
-   O viewport recorta (overflow hidden, como já é) e o track scrubba na horizontal;
-   setas e dots somem. No mobile o carrossel normal continua. */
-
-
-.saas-waitlist {
-    margin-top: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.saas-waitlist-msg.show {
-    display: block;
-}
-
-/* ── Orçamento ── */
 /* ── Área de compra (pacotes + orçamento numa seção só) ── */
 .comprar-area {
     background: var(--bg-2-veil);
@@ -1367,9 +1307,6 @@ html.lenis body {
    hover ligar/desligar — era o "tremor" do card Sistema. */
 
 
-
-
-
 /* ── Noxz (página /metodologia) ── */
 .noxz-section {
     position: relative;
@@ -1533,10 +1470,16 @@ html.lenis body {
     font-size: 13px;
     color: var(--text-muted);
 }
+/* o formulário é um PAINEL da casa (surface + hairline), como o card
+   WhatsApp ao lado — campos soltos no fundo fugiam do padrão */
 .contact-form {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    padding: clamp(22px, 3vw, 34px);
+    background: var(--card-surface, rgba(10, 8, 18, 0.72));
+    border: 1px solid var(--card-hairline, rgba(108, 92, 255, 0.22));
+    border-left: 2px solid rgba(108, 92, 255, 0.45);
 }
 .form-honeypot {
     position: absolute;
@@ -1604,6 +1547,11 @@ html.lenis body {
     padding: 15px 24px;
     cursor: pointer;
     width: 100%;
+    /* bevel da casa: o mesmo canto cortado dos CTAs primários */
+    clip-path: polygon(
+        12px 0, 100% 0, 100% calc(100% - 12px),
+        calc(100% - 12px) 100%, 0 100%, 0 12px
+    );
     transition:
         background 150ms,
         box-shadow 200ms,
@@ -1783,9 +1731,7 @@ html.lenis body {
         gap: 44px;
     }
     
-    .nav-desktop {
-        display: none !important;
-    }
+    
     .noxz-section {
         padding: var(--section-pad-mobile) 0;
     }
@@ -1810,34 +1756,6 @@ html.lenis body {
     
 }
 
-/* ════════════════════════════════════════════════
-   UPGRADE — preloader, 3D, marquee, manifesto, tilt
-   ════════════════════════════════════════════════ */
-
-/* ── Preloader (estilo hubtown: contador de %) ── */
-.preloader {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-        transform 0.9s var(--ease-premium),
-        visibility 0.9s;
-}
-
-
-
-
-
-
-
-
-
-/* ── Entrada cinematográfica do hero (após o preloader) ── */
-
 
 /* ── Logo 3D no hero ── */
 .logo-scene {
@@ -1856,9 +1774,6 @@ html.lenis body {
 }
 
 /* ── Marquee infinito ── */
-
-
-
 
 
 /* ── Manifesto (texto que preenche ao rolar) ── */
@@ -1910,8 +1825,6 @@ html.lenis body {
 }
 
 /* ── Feixe de luz diagonal ambiente ── */
-
-
 
 
 /* ════════════════════════════════════════════════
@@ -2104,10 +2017,6 @@ html.lenis body {
         animation: none;
         opacity: 1;
     }
-}
-.carousel-slide .tilt-card {
-    width: min(100%, 580px);
-    margin: 0 auto;
 }
 
 /* ── Pricing: cartas laminadas (holo trading card) ── */
@@ -2520,8 +2429,6 @@ html.lenis body {
 }
 
 
-
-
 @media (max-width: 860px) {
     
     .nav-cta {
@@ -2605,13 +2512,6 @@ html.lenis body {
     }
 }
 
-.menu-link.is-active {
-    color: var(--accent-light);
-}
-.menu-link.is-active .menu-link-index {
-    color: var(--accent-light);
-}
-
 
 /* ════════════════════════════════════════════════
    GPU-FIRST v3 — tira repaint por frame da main thread
@@ -2647,8 +2547,6 @@ html.lenis body {
         animation: none;
     }
 }
-
-
 
 
 .noxz-title-shimmer {
@@ -2712,11 +2610,7 @@ html.lenis body {
     transition: transform 0.12s var(--ease-out);
 }
 
-.btn-primary:focus-visible,
-.btn-ghost:focus-visible,
-.nav-cta:focus-visible,
-.form-submit:focus-visible,
-.menu-link:focus-visible{
+.btn-primary:focus-visible,.btn-ghost:focus-visible,.nav-cta:focus-visible,.form-submit:focus-visible {
     outline: 2px solid var(--accent-light);
     outline-offset: 3px;
 }
@@ -2776,21 +2670,7 @@ html.lenis body {
     border-radius: 0;
 }
 /* A barra de progresso agora é dirigida por GSAP (ScrollJuice.tsx) para rodar
-   em todos os navegadores, não só nos que têm animation-timeline. */
-
-/* Quando o Marquee assume o loop via GSAP (tier FULL), desliga o CSS. */
-
-
-/* ── Fundo WebGL único (WebGLBackground.tsx) — no lugar do AmbientField ── */
-.webgl-bg {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: var(--bg);
-}
-
-/* ── Transição "cortina" entre páginas, com a logo (PageTransition.tsx) ── */
+   em todos os navegadores,não só nos que têm animation-timeline. */
 .page-transition {
     position: fixed;
     inset: 0;
@@ -2833,9 +2713,6 @@ html.lenis body {
 /* ── Fundo vivo (orbs) ── */
 
 
-
-
-
 /* ════════════════════════════════════════════════
    v5 — hero refeito (hubtown), fundo em movimento,
    banda de metodologia em Quem somos, +perf
@@ -2854,7 +2731,6 @@ html.lenis body {
 
 
 /* ── Fundo em movimento (grade) ── */
-
 
 
 /* ── Banda "Plano Noxz" dentro de Quem somos ── */
@@ -2975,26 +2851,6 @@ html.lenis body {
     text-align: left;
     place-items: stretch;
 }
-
-
-/* ════════════════════════════════════════════════
-   v13 — preloader bonito, brand do header condicional,
-   hero 20% menor
-   ════════════════════════════════════════════════ */
-.preloader::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(
-        ellipse 46% 38% at 50% 44%,
-        var(--accent-subtle),
-        transparent 70%
-    );
-}
-
-/* header: wordmark + logo entram em cena quando o visitante SAI do hero —
-   a marca "sobe" do palco 3D para o header (deslize + desfoque + pop) */
 .site-header .wordmark {
     transition:
         opacity 480ms var(--ease-out),
@@ -3446,60 +3302,6 @@ body.jy-past-hero .site-header .nav-logo {
     }
 }
 
-/* ════════════════════════════════════════════════
-   DESIGN SYSTEM — Cards & Buttons
-   Linha visual minimalista (ref. hubtown.co.in): superfícies
-   limpas, cantos retos/quadrado-arredondado, acento roxo usado
-   com parcimônia. Botões (.btn-primary, .btn-ghost, .pricing-cta)
-   e cards (.pricing-card, .service-card) usam o estilo padrão —
-   sem foil. O efeito holográfico é EXCLUSIVO do destaque
-   "Sua solução" na navegação.
-   ════════════════════════════════════════════════ */
-
-/* ── "Sua solução": botão dedicado do menu ──
-   Translúcido e coerente com os .menu-contact (ícone + rótulo,
-   alinhado à esquerda). No hover: foil laminado no botão todo. */
-.menu-solucao-cta {
-    display: flex;
-    align-items: center;
-    gap: clamp(10px, 1.3vw, 16px);
-    width: 100%;
-    padding: clamp(11px, 1.2vw, 15px) clamp(14px, 1.4vw, 18px);
-    border-radius: var(--radius);
-    background: transparent;
-    border: 1px solid var(--accent-border);
-    color: var(--accent-light);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(22px, 3.2vw, 42px);
-    letter-spacing: -0.025em;
-    line-height: 1.04;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    transition:
-        color 200ms,
-        border-color 200ms,
-        background 200ms,
-        transform 200ms var(--ease-out);
-}
-@keyframes holo-sweep {
-    from {
-        background-position: 0% 0;
-    }
-    to {
-        background-position: 200% 0;
-    }
-}
-
-
-/* ── "Sua solução": destaque na área "Navegue" ──
-   Em repouso: roxo + aura. No hover: foil laminado em todo o
-   comprimento da linha + rótulo holográfico. */
-
-
-
 
 /* ════════════════════════════════════════════════
    PERFORMANCE / MOVIMENTO (Fase 1)
@@ -3526,30 +3328,10 @@ body.jy-past-hero .site-header .nav-logo {
    HERO — elementos mantidos: índice de áreas (esq.) +
    barra inferior. O statement/3D voltaram ao layout anterior.
    ════════════════════════════════════════════════ */
-/* Índice vertical na margem externa esquerda (só onde há espaço,
-   pra não cobrir a copy). */
+/* Índice vertical na margem externa esquerda (só onde há espaço,pra não cobrir a copy). */
 
 
 /* Barra inferior: "role para explorar" (esq.) + contato (dir.) */
-
-
-/* ════════════════════════════════════════════════
-   MENU — refino editorial: rótulo de seção + foco
-   (ao passar o mouse num link, os outros esmaecem)
-   ════════════════════════════════════════════════ */
-.menu-nav-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: clamp(14px, 2vw, 22px);
-}
-
-/* ── Motion: clip-path suporte ──
-   will-change removido: estes elementos fazem o reveal de clip-path uma única
-   vez (GSAP/ScrollTrigger), então manter a dica de compositor permanente só
-   custava memória (camadas vivas) sem ganho após a animação. */
 
 /* Remove will-change após animação (o JS pode fazer isso, mas CSS garante) */
 
@@ -3583,40 +3365,6 @@ body.jy-past-hero .site-header .nav-logo {
     z-index: 1100;
 }
 
-/* Rota /menu — a navegação principal virou página, sobre o fundo variante do
-   canvas. Reaproveita as classes do antigo overlay, mas revela o conteúdo. */
-.menu-page {
-    position: relative;
-    z-index: 1;
-    min-height: 100svh;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    align-items: center;
-    gap: clamp(32px, 5vw, 80px);
-    padding: 132px clamp(28px, 7vw, 120px) 64px;
-}
-/* Escurece o fundo do canvas atrás do menu, pra leitura (a variante da cena
-   continua aparecendo por baixo do véu). */
-.menu-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-        radial-gradient(
-            ellipse 70% 60% at 50% 40%,
-            rgba(8, 8, 11, 0.55),
-            rgba(6, 5, 12, 0.86) 75%
-        ),
-        rgba(5, 4, 10, 0.55);
-}
-
-
-/* ════════════════════════════════════════════════
-   Galeria de serviços 3D (canvas) + menu radial
-   ════════════════════════════════════════════════ */
-
 .sr-only {
     position: absolute;
     width: 1px;
@@ -3628,7 +3376,6 @@ body.jy-past-hero .site-header .nav-logo {
     white-space: nowrap;
     border: 0;
 }
-
 
 
 /* Fallback acessível (reduced-motion) */
@@ -3743,13 +3490,7 @@ body.jy-past-hero .site-header .nav-logo {
     
 
     
-    .solucoes-bridge,
-    .menu-page {
-        box-sizing: border-box;
-        width: 100%;
-        max-width: none;
-        min-width: 0;
-    }
+    
 
     .btn-primary,
     .btn-ghost {
@@ -3757,12 +3498,7 @@ body.jy-past-hero .site-header .nav-logo {
         min-height: 44px;
     }
 
-    .solucoes-bridge-label {
-        max-width: 100%;
-        text-align: center;
-        letter-spacing: clamp(0.12em, 1.4vw, 0.22em);
-        overflow-wrap: anywhere;
-    }
+    
 
     #hero .cta-row {
         display: grid;
@@ -3909,15 +3645,7 @@ body.jy-past-hero .site-header .nav-logo {
 }
 
 /* ── tipografia técnica (igloo): micro-labels em MONO tracked ── */
-.jy-rail-label,
-.jy-hint,
-.jy-trust-item,
-.jy-brand-tag,
-.jy-eco-tier,
-.jy-svc-metric,
-.jy-tags li,
-.jy-cta-foot-links a,
-.jy-cta-copy {
+.jy-rail-label,.jy-hint,.jy-brand-tag,.jy-cta-foot-links a,.jy-cta-copy {
     font-family: var(--ff-mono), monospace;
 }
 .jy-sec .section-eyebrow {
@@ -4467,20 +4195,7 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     border-color: rgba(108, 92, 255, 0.6);
     background: rgba(108, 92, 255, 0.12);
 }
-.jy-svc.is-on {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-.jy-svc-dot.is-on {
-    background: var(--jy-accent);
-    width: 28px;
-    animation: jyDotPulse 1.6s ease-in-out infinite;
-}
-@keyframes jyDotPulse {
-    50% {
-        box-shadow: 0 0 14px rgba(108, 92, 255, 1);
-    }
-}
+
 
 /* ── EXPLORE — capítulo FINAL: grande tipografia + footer integrado ── */
 .jy-explore {
@@ -4567,8 +4282,10 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     }
 }
 
-/* fundo da ESCOLHA: scrim de leitura + a dualidade das divisões — calor
-   dourado nascendo à esquerda, frio bismuto à direita */
+/* fundo da ESCOLHA — o salão das duas portas: um FACHO de luz desce do
+   alto sobre cada divisão (ouro à esquerda, platina à direita) e um scrim
+   limpo sobe do chão para a leitura. Nada de blob preto no meio — a
+   atmosfera dual vem do shader da jornada; aqui é só teatro de luz. */
 .jy-explore::before {
     content: "";
     position: absolute;
@@ -4577,40 +4294,54 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
     pointer-events: none;
     background:
         radial-gradient(
-            42% 58% at 26% 44%,
-            rgba(244, 183, 74, 0.09),
-            transparent 72%
+            46% 90% at 25% -12%,
+            rgba(244, 183, 74, 0.14),
+            rgba(244, 183, 74, 0.04) 55%,
+            transparent 74%
         ),
         radial-gradient(
-            42% 58% at 76% 44%,
-            rgba(63, 224, 216, 0.075),
-            transparent 72%
+            46% 90% at 75% -12%,
+            rgba(63, 224, 216, 0.12),
+            rgba(63, 224, 216, 0.035) 55%,
+            transparent 74%
         ),
-        radial-gradient(
-            ellipse 85% 75% at 50% 52%,
-            rgba(0, 0, 0, 0.84) 0%,
-            rgba(0, 0, 0, 0.56) 55%,
-            transparent 100%
+        linear-gradient(
+            180deg,
+            rgba(3, 2, 8, 0) 0%,
+            rgba(3, 2, 8, 0.45) 58%,
+            rgba(3, 2, 8, 0.82) 100%
         );
 }
-/* linha de horizonte dividindo os dois mundos */
+/* a FENDA entre os dois mundos: fio de energia com núcleo aceso e um
+   brilho onde encontra o chão */
 .jy-explore::after {
     content: "";
     position: absolute;
     left: 50%;
-    top: 16%;
-    bottom: 22%;
-    width: 1px;
+    top: 10%;
+    bottom: 14%;
+    width: 2px;
+    transform: translateX(-50%);
     z-index: -1;
     pointer-events: none;
     background: linear-gradient(
         180deg,
         transparent,
-        rgba(244, 183, 74, 0.25) 30%,
-        rgba(157, 140, 255, 0.3) 50%,
-        rgba(63, 224, 216, 0.25) 70%,
+        rgba(244, 183, 74, 0.45) 28%,
+        rgba(210, 200, 255, 0.65) 50%,
+        rgba(63, 224, 216, 0.45) 72%,
         transparent
     );
+    box-shadow:
+        0 0 18px rgba(157, 140, 255, 0.35),
+        0 46vh 60px 8px rgba(157, 140, 255, 0.12);
+    animation: jyFendaBreathe 4.5s ease-in-out infinite;
+}
+@keyframes jyFendaBreathe {
+    50% { opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .jy-explore::after { animation: none; }
 }
 .jy-h2-xl {
     font-size: clamp(2.2rem, 5vw, 4rem);
@@ -4656,54 +4387,9 @@ body.site-loaded .jy-d5 { animation-delay: 0.62s; }
 .jy-fork-grid {
     width: 100%;
 }
-/* stagger de entrada dirigido pelo capítulo (is-live) */
-.jy-explore:not(.is-live) .jy-exp-link {
-    opacity: 0;
-    transform: translateX(-30px);
-}
 @keyframes jyDotBlink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.35; }
-}
-/* "Sua solução": FOIL holográfico policromático no hover (mesmo brilho do
-   botão dedicado do /menu — holo-sweep + texto iridescente) */
-.jy-exp-link.is-holo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: var(--holo-foil);
-    background-size: 220% 100%;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-.jy-exp-link.is-holo:hover::before {
-    opacity: 1;
-    animation: holo-sweep 1.7s linear infinite;
-}
-.jy-exp-link.is-holo > * {
-    position: relative;
-    z-index: 1;
-}
-.jy-exp-link.is-holo:hover .jy-exp-label {
-    background: var(--holo-text);
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
-    animation: holo-sweep 2.4s linear infinite;
-}
-.jy-exp-link.is-holo:hover .jy-exp-go-hover {
-    background: var(--holo-text);
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: holo-sweep 2.4s linear infinite;
 }
 
 /* mini-footer integrado ao capítulo final */
@@ -4934,8 +4620,7 @@ body:not(.site-loaded) .jy-frame {
     transform: none;
     filter: none;
 }
-.jy-static .eco-node,
-.jy-static .jy-svc {
+.jy-static .eco-node {
     opacity: 1;
     transform: none;
     position: relative;
@@ -4988,13 +4673,6 @@ body:not(.site-loaded) .jy-frame {
     width: auto;
     max-width: 520px;
     opacity: 1;
-}
-.jy-static .jy-svc-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    max-width: none;
-    min-height: 0;
 }
 .jy-static .jy-cta-foot {
     position: static;
@@ -5326,13 +5004,20 @@ body.bp-page {
     filter: blur(70px);
     will-change: transform;
 }
+/* IDENTIDADE POR ÁREA: a liga do palco muda por rota (BlueprintStage
+   define as vars via prop accent) — violeta é o default da casa */
+.bp-stage {
+    --bp-n1: 108, 92, 255;
+    --bp-n2: 90, 69, 240;
+    --bp-line: 157, 140, 255;
+}
 .bp-nebula-a {
     top: -28vmax;
     left: -16vmax;
     background: radial-gradient(
         circle,
-        rgba(108, 92, 255, 0.16) 0%,
-        rgba(90, 69, 240, 0.07) 42%,
+        rgba(var(--bp-n1), 0.16) 0%,
+        rgba(var(--bp-n2), 0.07) 42%,
         transparent 68%
     );
     animation: bpDriftA 46s ease-in-out infinite alternate;
@@ -5342,8 +5027,8 @@ body.bp-page {
     right: -18vmax;
     background: radial-gradient(
         circle,
-        rgba(90, 69, 240, 0.13) 0%,
-        rgba(108, 92, 255, 0.05) 45%,
+        rgba(var(--bp-n2), 0.13) 0%,
+        rgba(var(--bp-n1), 0.05) 45%,
         transparent 70%
     );
     animation: bpDriftB 58s ease-in-out infinite alternate;
@@ -5363,8 +5048,8 @@ body.bp-page {
     position: absolute;
     inset: -80px;
     background-image:
-        linear-gradient(rgba(157, 140, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(157, 140, 255, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(var(--bp-line, 157, 140, 255), 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--bp-line, 157, 140, 255), 0.05) 1px, transparent 1px);
     background-size: 72px 72px;
     mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, #000 30%, transparent 100%);
     animation: bpGridPan 70s linear infinite;
@@ -5383,10 +5068,10 @@ body.bp-page {
     background: linear-gradient(
         90deg,
         transparent 4%,
-        rgba(108, 92, 255, 0.35) 50%,
+        rgba(var(--bp-n1, 108, 92, 255), 0.35) 50%,
         transparent 96%
     );
-    box-shadow: 0 0 14px rgba(108, 92, 255, 0.35);
+    box-shadow: 0 0 14px rgba(var(--bp-n1, 108, 92, 255), 0.35);
     animation: bpScan 11s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 @keyframes bpScan {
@@ -6018,42 +5703,7 @@ button:focus-visible,
     --card-surface: rgba(9, 10, 14, 0.9);
     --card-hairline: rgba(216, 220, 228, 0.2);
 }
-.vy-grid-cursor.is-on {
-    opacity: 1;
-}
-.vy-hud .bp-frame-label b {
-    font-weight: 500;
-    color: rgba(220, 214, 245, 0.85);
-}
-.vy-hero .btn-primary,
-.vy-hero .btn-ghost {
-    padding: 11px 20px;
-    font-size: 13px;
-    gap: 8px;
-}
 
-
-/* entrada do hero (gate: body.site-loaded) */
-.vy-enter {
-    opacity: 0;
-    transform: translateY(22px);
-    filter: blur(6px);
-}
-body.site-loaded .vy-enter {
-    animation: vyEnter 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-body.site-loaded .vy-d1 { animation-delay: 0.05s; }
-body.site-loaded .vy-d2 { animation-delay: 0.18s; }
-body.site-loaded .vy-d3 { animation-delay: 0.34s; }
-body.site-loaded .vy-d4 { animation-delay: 0.48s; }
-body.site-loaded .vy-d5 { animation-delay: 0.62s; }
-@keyframes vyEnter {
-    to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-.vy-dna-card.is-on {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 /* ── CAP 3 · A BIFURCAÇÃO — OURO é a porta larga (produto principal);
    PLATINA é a porta estreita e seletiva ── */
@@ -6437,29 +6087,6 @@ a.vy-door .vy-door-cta {
     background: rgba(216, 220, 228, 0.08);
     color: #eef0f4;
 }
-.vy-route.is-on {
-    opacity: 1;
-    transform: translateX(0);
-}
-.vy-rail-item.is-on i {
-    background: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 10px var(--accent-glow);
-}
-.vy-rail-item:hover .vy-rail-label,
-.vy-rail-item.is-on .vy-rail-label {
-    opacity: 1;
-    transform: translateX(0);
-}
-.vy-rail-item.is-on .vy-rail-label {
-    color: var(--accent-light);
-}
-.vy-static .vy-dna-card,
-.vy-static .vy-door,
-.vy-static .vy-route {
-    opacity: 1;
-    transform: none;
-}
 
 /* ═══════════════════════════════════════════════════════════════════
    MENU NOVO — overlay em tela cheia (neobsidian + blueprint)
@@ -6613,93 +6240,6 @@ html.nv-menu-lock {
     box-shadow: 0 0 34px rgba(244, 183, 74, 0.1);
     transform: translateY(-2px);
 }
-
-/* PLATINA: serif editorial, muito ar, movimento lento */
-.tp-platina {
-    --section-pad: calc(var(--tier-pad) * 1.4);
-}
-/* na Platina, o destaque serif ganha o filme de óxido iridescente */
-.tp-platina .tp-h1--serif em,
-.tp-platina .tp-h2--serif em {
-    background: var(--tier-iris);
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: tpIrisDrift 9s ease-in-out infinite alternate;
-}
-@keyframes tpIrisDrift {
-    from { background-position: 0% 50%; }
-    to { background-position: 100% 50%; }
-}
-.tp-platina .card-2 {
-    border-color: var(--tier-hairline);
-    transition: border-color var(--tier-motion);
-}
-/* cantoneiras com as duas pontas do espectro: ciano e magenta */
-.tp-platina .card-2::before {
-    border-color: var(--tier-iris-a);
-}
-.tp-platina .card-2::after {
-    border-color: var(--tier-iris-b);
-}
-.tp-platina .btn-primary {
-    color: #0a0b0e;
-}
-
-/* ── BISMUTO — cristal hopper iridescente da Platina ──
-   degraus concêntricos em 3D (como o cristal real), cada anel num
-   ponto do espectro ciano→magenta→dourado, girando devagar */
-.bmt {
-    position: absolute;
-    right: clamp(-60px, 3vw, 90px);
-    top: 50%;
-    width: clamp(280px, 34vw, 460px);
-    aspect-ratio: 1;
-    transform: translateY(-50%);
-    perspective: 1000px;
-    /* interativo: inclina com o ponteiro; degraus abrem no hover */
-    pointer-events: auto;
-    --tiltX: 0deg;
-    --tiltY: 0deg;
-    z-index: 0;
-}
-
-
-
-/* no OURO o cristal queima em metal fundido: dourado → magenta, giro mais vivo */
-[data-tier="ouro"] .bmt-spin {
-    animation-duration: 22s;
-}
-.tp-escada {
-    margin: 0;
-    max-width: 760px;
-}
-.tp-escada-row {
-    display: grid;
-    grid-template-columns: minmax(120px, 200px) 1fr;
-    gap: 16px;
-    padding: 14px 4px;
-    border-bottom: 1px solid var(--tier-hairline);
-}
-.tp-escada-row:last-child {
-    border-bottom: none;
-}
-.tp-escada dt {
-    font-family: var(--ff-mono), monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--tier-accent);
-    align-self: center;
-}
-.tp-escada dd {
-    margin: 0;
-    font-size: 0.95rem;
-    opacity: 0.92;
-}
-
-/* A PASSAGEM entre rotas — View Transitions (progressivo) */
 @view-transition {
     navigation: auto;
 }
@@ -6719,36 +6259,16 @@ html.nv-menu-lock {
 
 /* ── responsivo ── */
 @media (max-width: 900px) {
-    .vy-hero-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    .vy-hero-space {
-        order: -1;
-        min-height: 32vh;
-    }
-    .vy-hero-copy {
-        max-width: none;
-    }
-    .vy-dna-grid,
-    .vy-fork-grid,
-    .tp-steps {
+    
+    
+    
+    .vy-fork-grid {
         grid-template-columns: 1fr;
     }
-    .tp-grid-cards,
-    .tp-duo {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .vy-rail {
-        display: none;
-    }
-    .vy-route-desc {
-        display: none;
-    }
-    .vy-sec {
-        padding-left: 18px;
-        padding-right: 18px;
-    }
+    
+    
+    
+    
 }
 @media (max-width: 600px) {
     .tp {
@@ -6766,16 +6286,7 @@ html.nv-menu-lock {
 
 /* ── reduced motion: a voyage respeita ── */
 @media (prefers-reduced-motion: reduce) {
-    .card-1,
-    .card-2,
-    .card-1::before,
-    .card-1::after,
-    .card-2::before,
-    .card-2::after,
-    .vy-hint i,
-    .vy-grid-cursor,
-    .vy-route-state i,
-    .nv-menu-state i {
+    .card-1,.card-2,.card-1::before,.card-1::after,.card-2::before,.card-2::after,.nv-menu-state i {
         animation: none !important;
     }
     ::view-transition-old(root),
@@ -6784,34 +6295,7 @@ html.nv-menu-lock {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   VOYAGE v2 — A ESCOLHA (bifurcação 3D final) + coreografia GSAP
-   ═══════════════════════════════════════════════════════════════════ */
 
-/* GSAP dirige opacity/visibility; pointer-events via .is-live */
-.vy-sec {
-    pointer-events: none;
-}
-.vy-sec.is-live {
-    pointer-events: auto;
-}
-
-/* capítulo final: cabeçalho no topo, resumos ancorados SOB as estelas 3D */
-.vy-fork-final {
-    align-items: stretch;
-}
-.vy-fork-grid--gate .vy-door {
-    padding: clamp(14px, 2vh, 20px) clamp(16px, 1.8vw, 26px);
-    background: rgba(5, 4, 10, 0.82);
-}
-.vy-fork-grid--gate .vy-door-title {
-    font-size: clamp(1.4rem, 2.6vw, 2rem);
-    margin: 6px 0 6px;
-}
-.vy-fork-grid--gate .vy-door-desc {
-    font-size: 0.84rem;
-    margin-bottom: 10px;
-}
 .vy-door-cta {
     pointer-events: none; /* o card inteiro é o clique */
 }
@@ -7289,13 +6773,7 @@ body.site-loaded .hudc {
     );
 }
 
-/* painéis da jornada: aresta topo/esquerda acesa (inset) + sombra
-   projetada para baixo-direita — sem tocar no background-image
-   (as cantoneiras HUD vivem lá) */
-.jy-svc,
-.jy-exp-link,
-.eco-panel,
-.vy-door {
+.eco-panel,.vy-door {
     box-shadow:
         inset 1px 1px 0 rgba(240, 236, 255, 0.11),
         inset 34px 40px 80px -48px rgba(210, 203, 255, 0.15),

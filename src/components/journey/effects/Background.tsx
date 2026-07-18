@@ -13,8 +13,12 @@ const vertexShader = /* glsl */ `
   }
 `;
 
-// Nebulosa contínua: a cor "viaja" com o progresso da jornada — cada capítulo
-// tem seu próprio matiz (roxo → índigo → magenta → violeta profundo → lilás).
+// COLOR SCRIPT da jornada — cada capítulo tem sua ATMOSFERA própria,
+// fundida sem corte pelo scroll:
+//   1 · INÍCIO       violeta da marca (indigo → elétrico)
+//   2 · ECOSSISTEMA  ciano-máquina (a sala de máquinas do organismo)
+//   3 · A ESCOLHA    dualidade pintada na tela: OURO à esquerda,
+//                    PLATINA à direita, o violeta morrendo no eixo
 const fragmentShader = /* glsl */ `
   varying vec2 vUv;
   uniform float uTime;
@@ -35,11 +39,26 @@ const fragmentShader = /* glsl */ `
     return v;
   }
 
-  // matiz ÚNICO violeta: do indigo profundo ao violeta claro ao longo da jornada
-  vec3 pal(float x){
-    vec3 deep = vec3(0.196, 0.153, 0.541); // #32278a (indigo profundo)
-    vec3 acc  = vec3(0.424, 0.361, 1.0);   // #6c5cff (indigo elétrico)
-    return mix(deep, acc, smoothstep(0.1, 0.9, x));
+  // paleta por capítulo (deep = sombra da névoa · acc = brilho dos glows)
+  vec3 tintFor(float x, float ux){
+    // capítulo 1 · violeta da marca
+    vec3 v1 = mix(vec3(0.196, 0.153, 0.541), vec3(0.424, 0.361, 1.0),
+                  smoothstep(0.0, 0.14, x));
+    // capítulo 2 · ciano-máquina
+    vec3 v2 = mix(vec3(0.043, 0.22, 0.31), vec3(0.18, 0.68, 0.72),
+                  0.55 + 0.45 * sin(x * 9.0));
+    // capítulo 3 · dualidade: ouro (esq) × platina (dir), violeta no eixo
+    vec3 gold = vec3(0.87, 0.62, 0.22);
+    vec3 plat = vec3(0.22, 0.72, 0.70);
+    float side = smoothstep(0.30, 0.70, ux);
+    vec3 v3 = mix(gold, plat, side);
+    v3 = mix(vec3(0.35, 0.29, 0.78), v3,
+             smoothstep(0.12, 0.42, abs(ux - 0.5)) * 0.85 + 0.15);
+
+    vec3 c = v1;
+    c = mix(c, v2, smoothstep(0.16, 0.30, x));
+    c = mix(c, v3, smoothstep(0.60, 0.80, x));
+    return c;
   }
 
   void main(){
@@ -47,7 +66,7 @@ const fragmentShader = /* glsl */ `
     float aspect = uRes.x / max(uRes.y, 1.0);
     vec2 p = vec2((uv.x - 0.5) * aspect + 0.5, uv.y);
     float t = uTime * 0.04;
-    vec3 tint = pal(uProgress);
+    vec3 tint = tintFor(uProgress, uv.x);
 
     vec3 col = vec3(0.0); // PRETO PURO (neobsidian)
 

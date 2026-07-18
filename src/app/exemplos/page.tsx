@@ -13,7 +13,7 @@ export const metadata = pageMetadata({
 export default function ExemplosPage() {
   return (
     <main id="main" className="exemplos-page">
-      <BlueprintStage />
+      <BlueprintStage accent="teal" />
       <section className="exemplos-hero">
         <div className="inner">
           <Link href="/" className="exemplos-back">

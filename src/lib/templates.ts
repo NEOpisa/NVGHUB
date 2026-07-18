@@ -1,4 +1,4 @@
-export type TemplateItem = {
+type TemplateItem = {
   slug: string;
   category: string;
   description: string;

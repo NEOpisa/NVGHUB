@@ -31,7 +31,7 @@ export default function SolucaoPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
-      <BlueprintStage />
+      <BlueprintStage accent="teal" />
       <section className="comprar-area" aria-label="Sua solução sob medida">
         <SolucaoQuiz />
       </section>

@@ -11,7 +11,7 @@
 let decided = false;
 let willPlay = false;
 
-export type IntroPhase = "load" | "handoff" | "done";
+type IntroPhase = "load" | "handoff" | "done";
 
 export const intro = {
   /** a intro desta carga vai tocar (o gate liga ao decidir tocar) */

@@ -55,12 +55,7 @@
    Para quem pede menos movimento, neutralizamos o varrimento (o resto do
    estado de hover — ticks/borda — permanece). Chuva (ObsidianRain) e
    scatter (LetterScatter) já têm guarda em JS. */
-@media (prefers-reduced-motion: reduce) {
-    .nb-scan-hover:hover .nb-scanline {
-        animation: none;
-        opacity: 0;
-    }
-}
+
 
 /* ══ #017 · reduced-transparency / reduced-data ═════════════════════════
    Remove o backdrop-blur (vidro fosco = efeito de transparência) para quem
@@ -183,10 +178,7 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
 }
 /* economia de dados: palco vira estático (sem loops infinitos) */
 @media (prefers-reduced-data: reduce) {
-    .bp-nebula,
-    .bp-grid,
-    .bp-scan,
-    .bmt-spin {
+    .bp-nebula,.bp-grid,.bp-scan {
         animation: none !important;
     }
 }

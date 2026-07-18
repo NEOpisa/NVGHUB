@@ -68,19 +68,23 @@ const QUESTIONS: Record<Tier, Question[]> = {
       ],
     },
     {
-      id: "trafego",
-      resumo: "tráfego",
-      label: "Você já investe em tráfego pago?",
-      options: ["Sim, com gestor", "Sim, por conta própria", "Ainda não"],
+      id: "operacao",
+      resumo: "operação",
+      label: "Como roda a operação hoje?",
+      options: [
+        "Sistema próprio",
+        "Planilhas e WhatsApp",
+        "Tudo no papel/na cabeça",
+      ],
     },
     {
       id: "gargalo",
       resumo: "gargalo",
       label: "Qual o maior gargalo hoje?",
       options: [
-        "Poucos leads chegando",
+        "Poucos clientes chegando",
         "Agenda ociosa",
-        "Leads que não fecham",
+        "Retrabalho manual demais",
         "Sem previsibilidade nenhuma",
       ],
     },
@@ -111,30 +115,30 @@ const COPY: Record<
 function prontidao(a: Record<string, string>) {
   let nota = 35;
   const fat = a.faturamento ?? "";
-  const tra = a.trafego ?? "";
+  const ope = a.operacao ?? "";
   const gar = a.gargalo ?? "";
   if (fat.startsWith("Acima")) nota += 25;
   else if (fat.startsWith("Entre")) nota += 18;
   else if (fat.startsWith("Até")) nota += 8;
   else if (fat) nota += 12;
-  if (tra.startsWith("Sim, com gestor")) nota += 20;
-  else if (tra.startsWith("Sim")) nota += 13;
-  else if (tra) nota += 5;
+  if (ope.startsWith("Sistema")) nota += 20;
+  else if (ope.startsWith("Planilhas")) nota += 13;
+  else if (ope) nota += 5;
   if (gar) nota += 8;
 
   const pontos: string[] = [];
-  if (gar === "Poucos leads chegando")
-    pontos.push("Funil sem topo — mídia e página precisam trabalhar juntas");
+  if (gar === "Poucos clientes chegando")
+    pontos.push("Porta de entrada fraca — a ferramenta certa converte quem já procura");
   if (gar === "Agenda ociosa")
-    pontos.push("Captação sem cadência — automação preenche a agenda");
-  if (gar === "Leads que não fecham")
-    pontos.push("Qualificação fraca — tracking e nutrição elevam o fechamento");
+    pontos.push("Agenda parada — agendamento online + lembretes preenchem sozinhos");
+  if (gar === "Retrabalho manual demais")
+    pontos.push("Horas perdidas em tarefa repetida — automação devolve o tempo");
   if (gar === "Sem previsibilidade nenhuma")
-    pontos.push("Sem dados — o sistema completo cria previsibilidade");
-  if (tra === "Ainda não")
-    pontos.push("Sem mídia ativa — todo crescimento hoje é orgânico");
-  if (tra === "Sim, por conta própria")
-    pontos.push("Mídia sem gestão dedicada — verba deixando resultado na mesa");
+    pontos.push("Sem dados — painel e histórico criam previsibilidade");
+  if (ope === "Tudo no papel/na cabeça")
+    pontos.push("Operação sem registro — cada saída de funcionário leva conhecimento junto");
+  if (ope === "Planilhas e WhatsApp")
+    pontos.push("Planilha no limite — versão errada, fórmula quebrada, zero histórico");
   return { nota: Math.min(96, nota), pontos: pontos.slice(0, 3) };
 }
 

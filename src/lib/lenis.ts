@@ -1,4 +1,4 @@
-export type LenisLike = {
+type LenisLike = {
   scrollTo: (
     target: number | string | HTMLElement,
     opts?: { offset?: number; immediate?: boolean }

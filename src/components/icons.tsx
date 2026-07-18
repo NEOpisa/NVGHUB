@@ -101,25 +101,7 @@ export function EditIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-export function BarChartIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg {...strokeProps(size)}>
-      <line x1="12" y1="20" x2="12" y2="10" />
-      <line x1="18" y1="20" x2="18" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="16" />
-    </svg>
-  );
-}
 
-export function BotIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg {...strokeProps(size)}>
-      <path d="M12 8V4H8" />
-      <rect x="4" y="8" width="16" height="12" rx="2" />
-      <path d="M2 14h2M20 14h2M9 13v2M15 13v2" />
-    </svg>
-  );
-}
 
 export function PaletteIcon({ size = 20 }: { size?: number }) {
   return (
@@ -133,17 +115,6 @@ export function PaletteIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-export function FileTextIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg {...strokeProps(size)}>
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-      <path d="M14 2v6h6" />
-      <line x1="16" y1="13" x2="8" y2="13" />
-      <line x1="16" y1="17" x2="8" y2="17" />
-      <line x1="10" y1="9" x2="8" y2="9" />
-    </svg>
-  );
-}
 
 export function ZapIcon({ size = 20 }: { size?: number }) {
   return (

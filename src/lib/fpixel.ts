@@ -14,11 +14,6 @@ export function track(event: string, options?: Record<string, unknown>) {
 }
 
 /** Dispara um evento customizado. */
-export function trackCustom(event: string, options?: Record<string, unknown>) {
-  if (typeof window !== "undefined" && window.fbq) {
-    window.fbq("trackCustom", event, options);
-  }
-}
 
 /** Dispara um PageView padrão — usado em navegação client-side (App Router). */
 export function pageview() {
