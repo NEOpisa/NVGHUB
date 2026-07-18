@@ -85,15 +85,22 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
       color: "#6c5cff", transparent: true, opacity: 0,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
-    return { white, purple, halo };
+    // esmalte do brasão: violeta-negro (não tinge — é o fundo do emblema)
+    const dark = new THREE.MeshStandardMaterial({
+      color: "#0e0a24", metalness: 0.55, roughness: 0.4,
+      emissive: new THREE.Color("#181040"), emissiveIntensity: 0.5,
+      transparent: true, opacity: 0,
+    });
+    return { white, purple, halo, dark };
   }, []);
 
-  // logo inteira: 1 peça branca + 1 roxa, sempre MONTADAS no pivô
+  // brasão inteiro (placa + aro + esmalte + lâmina), sempre MONTADO no pivô
   const { group, geos } = useMemo(() => {
     const built = buildLogoChunks(1, 1);
     const group = new THREE.Group();
     const geos: THREE.BufferGeometry[] = [];
     [...built.white.map((c) => ({ c, mat: mats.white })),
+     ...built.dark.map((c) => ({ c, mat: mats.dark })),
      ...built.purple.map((c) => ({ c, mat: mats.purple }))].forEach(({ c, mat }) => {
       const mesh = new THREE.Mesh(c.geometry, mat);
       mesh.position.copy(c.pivot);
@@ -111,6 +118,7 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
     const setOpacity = (o: number) => {
       mats.white.opacity = o;
       mats.purple.opacity = o;
+      mats.dark.opacity = o;
     };
 
     const off = txBus.on((e) => {
@@ -164,7 +172,7 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
           .to(group.rotation, { x: 0, y: 0, z: 0, duration: 0.72, ease: "power3.out" }, 0)
           .to(group.scale, { x: 0.92, y: 0.92, z: 0.92, duration: 0.65, ease: "back.out(1.4)" }, 0.05)
           .to(glow, { current: 1, duration: 0.4, ease: "power2.out" }, 0.15);
-        if (!fromHero) tl.to([mats.white, mats.purple], { opacity: 1, duration: 0.26, ease: "power2.out" }, 0);
+        if (!fromHero) tl.to([mats.white, mats.purple, mats.dark], { opacity: 1, duration: 0.26, ease: "power2.out" }, 0);
       } else if (e === "reveal") {
         tl?.kill();
         tl = gsap.timeline({ onComplete: () => onActive(false) });
@@ -173,7 +181,7 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
           .to(group.position, { x: 1.6, y: 2.2, z: 4.6, duration: 0.5, ease: "power2.in" }, 0)
           .to(group.rotation, { y: 1.6, z: 0.7, duration: 0.5, ease: "power2.in" }, 0)
           .to(group.scale, { x: 1.25, y: 1.25, z: 1.25, duration: 0.5, ease: "power2.in" }, 0)
-          .to([mats.white, mats.purple], { opacity: 0, duration: 0.3, ease: "power2.in" }, 0.16)
+          .to([mats.white, mats.purple, mats.dark], { opacity: 0, duration: 0.3, ease: "power2.in" }, 0.16)
           .to(glow, { current: 0, duration: 0.32 }, 0.1);
         if (backdropRef.current) {
           tl.to(backdropRef.current.material as THREE.Material, { opacity: 0, duration: 0.44, ease: "power2.inOut" }, 0.1);
@@ -191,6 +199,7 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
       geos.forEach((g) => g.dispose());
       mats.white.dispose();
       mats.purple.dispose();
+      mats.dark.dispose();
       mats.halo.dispose();
     };
   }, [geos, mats]);

@@ -5220,7 +5220,8 @@ body:not(.site-loaded) .jy-hero-copy {
     .jy-sec {
         padding: 84px 18px 48px;
     }
-    /* retrato: a logo 3D fica ACIMA do texto (o canvas a reposiciona) */
+    /* retrato: o brasão 3D fica ACIMA do texto (o canvas o reposiciona) e a
+       copy CENTRALIZA embaixo — uma coluna coesa, sem nada derivando */
     .jy-hero {
         align-items: flex-end;
     }
@@ -5233,6 +5234,23 @@ body:not(.site-loaded) .jy-hero-copy {
     .jy-hero-copy {
         max-width: none;
         padding: 16px 14px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .jy-hero-copy::before {
+        inset: -40px -20px;
+    }
+    .jy-hero .jy-h1 {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.7rem;
+    }
+    .jy-hero .jy-sub {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.2rem;
     }
     /* a logo 3D vive logo acima do texto — a linha de marca colidia com ela
        (e o header já assina NEOVANGUARD) */
@@ -5241,7 +5259,7 @@ body:not(.site-loaded) .jy-hero-copy {
     }
     /* desce a copy para fora da área da logo (sobra vazia embaixo) */
     .jy-hero-copy {
-        transform: translateY(min(13vh, 110px));
+        transform: translateY(min(5vh, 42px));
     }
     .jy-cta-row .btn-ghost {
         width: 100%;
@@ -5250,6 +5268,22 @@ body:not(.site-loaded) .jy-hero-copy {
     .jy-cta-row {
         flex-direction: column;
         align-items: stretch;
+        width: 100%;
+        max-width: 340px;
+    }
+    /* linha de confiança compacta e centrada no rodapé da coluna */
+    .jy-hero .jy-trust-line {
+        font-size: 0.58rem;
+        border-top: none;
+        padding-top: 0;
+    }
+    .jy-hero .jy-cta-row {
+        margin-bottom: 0.9rem;
+    }
+    /* a dica "role para explorar" colidia com a coluna — no toque o gesto
+       é natural (swipe + snap + haptics); a dica sai da frente */
+    .jy-hint {
+        display: none !important;
     }
 }
 

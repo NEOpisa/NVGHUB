@@ -42,19 +42,16 @@ function insetPoly(pts: THREE.Vector2[], k: number) {
   return pts.map((p) => p.clone().sub(c).multiplyScalar(k).add(c));
 }
 
-/* recentra a geometria no próprio pivô (pra girar/derivar em torno de si) */
-function toChunk(geo: THREE.BufferGeometry): Chunk {
+/* recentra a geometria no próprio pivô; dir = eixo da MONTAGEM (a peça
+   voa dessa direção na intro e estilhaça por ela no hover) */
+function toChunk(geo: THREE.BufferGeometry, dir: [number, number, number]): Chunk {
   const pos = geo.attributes.position as THREE.BufferAttribute;
   const pivot = new THREE.Vector3();
   for (let i = 0; i < pos.count; i++)
     pivot.add(new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)));
   pivot.multiplyScalar(1 / pos.count);
   geo.translate(-pivot.x, -pivot.y, -pivot.z);
-  const dir = pivot.clone();
-  dir.z += 0.4;
-  if (dir.lengthSq() < 1e-4) dir.set(0, 0, 1);
-  dir.normalize();
-  return { geometry: geo, pivot, dir };
+  return { geometry: geo, pivot, dir: new THREE.Vector3(...dir).normalize() };
 }
 
 /* garante winding CCW no contorno e CW no furo — senão a ExtrudeGeometry
@@ -90,7 +87,7 @@ function buildBlade(): THREE.BufferGeometry {
     const w = toWorld(p);
     return [w.x, w.y] as [number, number];
   });
-  const Z_BASE = 0.06, Z_EDGE = 0.30, Z_RIDGE = 0.46;
+  const Z_BASE = 0.055, Z_EDGE = 0.28, Z_RIDGE = 0.44;
   type V3 = [number, number, number];
   const v = (p: [number, number], z: number): V3 => [p[0], p[1], z];
   const out: number[] = [];
@@ -139,20 +136,25 @@ function buildBlade(): THREE.BufferGeometry {
 export function buildLogoChunks(_nWhite = 1, _nPurple = 1) {
   const shield = WHITE_POINTS.map(toWorld);
   const inner = insetPoly(shield, 0.84);  // borda interna do aro
-  const field = insetPoly(shield, 0.80);  // campo do esmalte
+  // o esmalte é MAIOR que o furo do aro (0.86 > 0.84): a borda dele se
+  // esconde POR BAIXO do aro — zero fresta, zero z-fight, uma peça só
+  const field = insetPoly(shield, 0.86);
 
-  // placa: corpo do escudo com bisel (frente em z≈0.05)
-  const plate = extrude(shield, null, 0.34, 0.05, -0.39);
-  // aro: anel em RELEVO na frente da placa
-  const rim = extrude(shield, inner, 0.15, 0.03, 0.03);
-  // esmalte: campo rebaixado entre o aro
-  const enamel = extrude(field, null, 0.04, 0, 0.02);
-  // lâmina: cravada sobre o esmalte
+  // placa: corpo do escudo com bisel — frente sela em z=0
+  const plate = extrude(shield, null, 0.3, 0.04, -0.34);
+  // esmalte: assenta na placa (0.005 de folga anti-coplanar)
+  const enamel = extrude(field, null, 0.05, 0, 0.005);
+  // aro: anel em RELEVO por cima do esmalte
+  const rim = extrude(shield, inner, 0.16, 0.025, 0.03);
+  // lâmina: crava por último, acima de tudo
   const blade = buildBlade();
 
+  // eixos de montagem (a coreografia da intro do emblema HTML):
+  // placa chega por TRÁS · aro e esmalte cravam pela FRENTE · lâmina desce
+  // por último, de mais longe (multiplicador de spread por índice no Hero)
   return {
-    white: [toChunk(plate), toChunk(rim)],
-    purple: [toChunk(blade)],
-    dark: [toChunk(enamel)],
+    white: [toChunk(plate, [0, 0, -1]), toChunk(rim, [0, 0.15, 1])],
+    purple: [toChunk(blade, [0, -0.2, 1])],
+    dark: [toChunk(enamel, [0, 0, 1])],
   };
 }

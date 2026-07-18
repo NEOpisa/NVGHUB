@@ -22,14 +22,21 @@ import { journey, rangeN } from "../journeyState";
 
 // posição da marca na composição do hero (paisagem / retrato)
 const HERO_POS = { x: 3.1, y: 0.15, s: 0.92 };
-// retrato: marca mais alta e menor p/ caber na banda superior (~40dvh) e
-// liberar a metade de baixo para a copy sem sobreposição (#061)
-const HERO_POS_PORTRAIT = { x: 0, y: 2.25, s: 0.44 };
+// retrato: brasão na banda superior, MAIOR e mais perto da copy — a coluna
+// mobile lê como uma coisa só (#061)
+const HERO_POS_PORTRAIT = { x: 0, y: 2.05, s: 0.5 };
 // posição durante a intro: centro da tela
 const INTRO_POS = { x: 0, y: 0.1, s: 0.62 };
-// respiração dos cacos (drift do loop antigo)
-const LOOP_AMT = 0.3;
+// respiração das camadas do brasão: SUTIL — o emblema é um corpo só;
+// o "acordeão" fica guardado pro estilhaço do hover (vista explodida)
+const LOOP_AMT = 0.045;
 const LOOP_SPEED = 0.55;
+// as três divisões orbitando o brasão (detalhes flutuantes do emblema)
+const SATS = [
+  { color: "#f4b74a", r: 3.1, sp: 0.3, ph: 0.0, s: 0.16, tilt: 0.3 },
+  { color: "#3fe0d8", r: 3.55, sp: -0.22, ph: 2.1, s: 0.12, tilt: -0.45 },
+  { color: "#9d8cff", r: 3.95, sp: 0.15, ph: 4.2, s: 0.1, tilt: 0.7 },
+];
 // bounds locais da marca em y (para o clipping da materialização) —
 // brasão: ponta inferior do escudo a -2.7, topo a +2.0
 const LOGO_MIN_Y = -2.7;
@@ -47,6 +54,7 @@ export default function HeroLogo() {
   const lookRef = useRef<THREE.Group>(null);
   const floatRef = useRef<THREE.Group>(null);
   const realGroup = useRef<THREE.Group>(null);
+  const satsRef = useRef<THREE.Group>(null);
   const build = useRef(0);
   const fillSm = useRef(0); // materialização suavizada
   const prevFill = useRef(0);
@@ -308,6 +316,25 @@ export default function HeroLogo() {
       }
     }
 
+    // ÓRBITAS das divisões: entram depois do brasão fechar, giram em
+    // planos inclinados e somem junto com a marca no scroll
+    const sg = satsRef.current;
+    if (sg) {
+      const satK = rangeN(build.current, 0.94, 1) * (1 - scatter);
+      sg.children.forEach((m, i) => {
+        const s = SATS[i];
+        const a = s.ph + t * s.sp;
+        m.position.set(
+          Math.cos(a) * s.r,
+          Math.sin(a) * s.r * Math.sin(s.tilt) * 0.45 + Math.sin(t * 0.6 + i * 2) * 0.14,
+          Math.sin(a) * s.r * 0.55,
+        );
+        m.rotation.y += dt * (0.6 + i * 0.2);
+        m.rotation.x = Math.sin(t * 0.5 + i) * 0.4;
+        m.scale.setScalar(Math.max(satK * (1 + Math.sin(t * 1.3 + i * 2.4) * 0.08), 0.001));
+      });
+    }
+
     // flutuação do conjunto (Float do hero antigo), só com a marca montada
     const fg = floatRef.current;
     if (fg) {
@@ -396,6 +423,21 @@ export default function HeroLogo() {
               <primitive key={i} object={m} />
             ))}
             <MeasureCallouts meshes={meshes} />
+          </group>
+          {/* as três divisões orbitando o brasão (ouro · platina · violeta) */}
+          <group ref={satsRef}>
+            {SATS.map((s, i) => (
+              <mesh key={i} scale={0.001}>
+                <octahedronGeometry args={[s.s, 0]} />
+                <meshStandardMaterial
+                  color={s.color}
+                  emissive={s.color}
+                  emissiveIntensity={0.55}
+                  metalness={0.8}
+                  roughness={0.25}
+                />
+              </mesh>
+            ))}
           </group>
         </group>
       </group>
