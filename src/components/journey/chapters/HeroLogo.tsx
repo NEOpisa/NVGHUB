@@ -30,9 +30,10 @@ const INTRO_POS = { x: 0, y: 0.1, s: 0.62 };
 // respiração dos cacos (drift do loop antigo)
 const LOOP_AMT = 0.3;
 const LOOP_SPEED = 0.55;
-// bounds locais da marca em y (para o clipping da materialização)
-const LOGO_MIN_Y = -2.5;
-const LOGO_MAX_Y = 2.45;
+// bounds locais da marca em y (para o clipping da materialização) —
+// brasão: ponta inferior do escudo a -2.7, topo a +2.0
+const LOGO_MIN_Y = -2.7;
+const LOGO_MAX_Y = 2.0;
 
 const _wp = new THREE.Vector3();
 const _chunkW = new THREE.Vector3();
@@ -69,8 +70,8 @@ export default function HeroLogo() {
     [],
   );
 
-  // logo REAL em cacos (mesma construção do LogoItem antigo) + halo + juntas
-  const { chunks, meshes, whiteMat, purpleMat, haloMat, seamMat, disposables } =
+  // brasão REAL em peças (placa/aro metal · esmalte negro · lâmina viva)
+  const { chunks, meshes, whiteMat, purpleMat, enamelMat, haloMat, seamMat, disposables } =
     useMemo(() => {
       const whiteMat = new THREE.MeshPhysicalMaterial({
         color: "#eef0ff",
@@ -101,6 +102,19 @@ export default function HeroLogo() {
         iridescenceThicknessRange: [140, 620],
         clippingPlanes: [clipPlane],
       });
+      // campo de esmalte: violeta-negro profundo (o fundo que faz a lâmina
+      // saltar — a leitura de badge do emblema 2D)
+      const enamelMat = new THREE.MeshPhysicalMaterial({
+        color: "#100b2c",
+        metalness: 0.6,
+        roughness: 0.35,
+        emissive: new THREE.Color("#1b1442"),
+        emissiveIntensity: 0.5,
+        envMapIntensity: 0.7,
+        clearcoat: 1,
+        clearcoatRoughness: 0.18,
+        clippingPlanes: [clipPlane],
+      });
       const haloMat = new THREE.MeshBasicMaterial({
         color: "#9d8cff",
         transparent: true,
@@ -120,24 +134,30 @@ export default function HeroLogo() {
       });
 
       const built = buildLogoChunks(1, 1);
-      const chunks: Chunk[] = [...built.white, ...built.purple];
+      const parts = [
+        ...built.white.map((c) => ({ c, mat: whiteMat, halo: false, seam: true })),
+        ...built.dark.map((c) => ({ c, mat: enamelMat, halo: false, seam: false })),
+        ...built.purple.map((c) => ({ c, mat: purpleMat, halo: true, seam: true })),
+      ];
+      const chunks: Chunk[] = parts.map((p) => p.c);
       const disposables: THREE.BufferGeometry[] = [];
-      const meshes = chunks.map((c, i) => {
-        const mat = i < built.white.length ? whiteMat : purpleMat;
+      const meshes = parts.map(({ c, mat, halo, seam }) => {
         const mesh = new THREE.Mesh(c.geometry, mat);
         mesh.position.copy(c.pivot);
         disposables.push(c.geometry);
-        const edges = new THREE.EdgesGeometry(c.geometry, 24);
-        mesh.add(new THREE.LineSegments(edges, seamMat));
-        disposables.push(edges);
-        if (i >= built.white.length) {
-          const halo = new THREE.Mesh(c.geometry, haloMat);
-          halo.scale.setScalar(1.04);
-          mesh.add(halo);
+        if (seam) {
+          const edges = new THREE.EdgesGeometry(c.geometry, 24);
+          mesh.add(new THREE.LineSegments(edges, seamMat));
+          disposables.push(edges);
+        }
+        if (halo) {
+          const h = new THREE.Mesh(c.geometry, haloMat);
+          h.scale.setScalar(1.04);
+          mesh.add(h);
         }
         return mesh;
       });
-      return { chunks, meshes, whiteMat, purpleMat, haloMat, seamMat, disposables };
+      return { chunks, meshes, whiteMat, purpleMat, enamelMat, haloMat, seamMat, disposables };
     }, [clipPlane]);
 
   useEffect(
@@ -145,10 +165,11 @@ export default function HeroLogo() {
       disposables.forEach((g) => g.dispose());
       whiteMat.dispose();
       purpleMat.dispose();
+      enamelMat.dispose();
       haloMat.dispose();
       seamMat.dispose();
     },
-    [disposables, whiteMat, purpleMat, haloMat, seamMat],
+    [disposables, whiteMat, purpleMat, enamelMat, haloMat, seamMat],
   );
 
   // avisa o gate: o palco 3D está pronto (ele revela o fundo e solta o build)

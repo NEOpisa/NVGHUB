@@ -5,23 +5,28 @@ import { join } from "node:path";
 /**
  * OG image no design "Blueprint Obsidian" — gerado pelo next/og com as
  * mesmas fontes do site (Space Grotesk + IBM Plex Mono, TTFs locais em
- * og-assets) e a marca NV desenhada como blueprint: contorno frontal em
- * traço de luz, contorno traseiro deslocado e conectores de profundidade.
+ * og-assets) e o BRASÃO (escudo + lâmina) desenhado como blueprint:
+ * contorno frontal em traço de luz, traseiro deslocado e conectores.
  */
 
 export const runtime = "nodejs";
 export const alt =
-  "Neovanguard — ecossistemas digitais que impulsionam o crescimento";
+  "Neovanguard — para cada problema do seu negócio, a ferramenta ideal";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// mesma malha 2D da logo 3D (logoGeometry), sem importar three
+// mesma malha 2D do brasão 3D (logoGeometry), sem importar three
 const WHITE: [number, number][] = [
-  [48, 25], [86, 44], [168, 93], [194, 143], [94, 78],
-  [94, 144], [155, 216], [138, 206], [71, 151], [70, 48],
+  [233.6, 42.4], [86.4, 42.4], [70.4, 84], [102.4, 197.6],
+  [160, 234.4], [217.6, 197.6], [249.6, 84],
 ];
 const PURPLE: [number, number][] = [
-  [287, 27], [202, 219], [153, 175], [110, 116], [190, 169],
+  [160, 66.4], [184, 132], [160, 207.2], [136, 132],
+];
+// bisel interno do escudo (inset 0.8 em torno do centróide)
+const INNER: [number, number][] = [
+  [218.9, 59.1], [101.1, 59.1], [88.3, 92.4], [113.9, 183.3],
+  [160, 212.7], [206.1, 183.3], [231.7, 92.4],
 ];
 const pts = (arr: [number, number][]) =>
   arr.map((p) => p.join(",")).join(" ");
@@ -139,7 +144,7 @@ export default async function OgImage() {
         >
           <div style={{ ...monoStyle, display: "flex" }}>
             <span style={{ color: "#6c5cff", marginRight: 10 }}>{"//"}</span>
-            ecossistema digital
+            ferramentas para negócios
           </div>
           <div
             style={{
@@ -153,8 +158,8 @@ export default async function OgImage() {
               marginTop: 22,
             }}
           >
-            Ecossistemas digitais que impulsionam o&nbsp;
-            <span style={{ color: "#9d8cff" }}>crescimento da sua empresa</span>
+            Para cada problema do seu negócio,&nbsp;
+            <span style={{ color: "#9d8cff" }}>a ferramenta ideal</span>
           </div>
           <div
             style={{
@@ -183,11 +188,11 @@ export default async function OgImage() {
           </div>
         </div>
 
-        {/* marca NV em blueprint (frente + trás + conectores) */}
+        {/* BRASÃO em blueprint (frente + trás + conectores) */}
         <svg
           width={440}
           height={340}
-          viewBox="0 0 330 250"
+          viewBox="0 0 330 265"
           style={{ position: "absolute", right: 64, top: 145 }}
         >
           {/* contorno traseiro (profundidade) */}
@@ -207,7 +212,7 @@ export default async function OgImage() {
               <line key={i} x1={x} y1={y} x2={x + DX} y2={y + DY} />
             ))}
           </g>
-          {/* contornos frontais em traço de luz */}
+          {/* contornos frontais em traço de luz: escudo + bisel + lâmina */}
           <polygon
             points={pts(WHITE)}
             fill="none"
@@ -215,11 +220,19 @@ export default async function OgImage() {
             strokeWidth={2.2}
           />
           <polygon
-            points={pts(PURPLE)}
+            points={pts(INNER)}
             fill="none"
+            stroke="rgba(244,183,74,0.65)"
+            strokeWidth={1.2}
+          />
+          <polygon
+            points={pts(PURPLE)}
+            fill="rgba(108,92,255,0.16)"
             stroke="#9d8cff"
             strokeWidth={2.2}
           />
+          {/* cume da lâmina */}
+          <line x1={160} y1={66.4} x2={160} y2={207.2} stroke="#cfc4ff" strokeWidth={1.2} />
           {/* nós dos vértices */}
           <g fill="#e6e9f6">
             {WHITE.map(([x, y], i) => (
@@ -231,10 +244,10 @@ export default async function OgImage() {
               <circle key={i} cx={x} cy={y} r={2.4} />
             ))}
           </g>
-          {/* crosshair de medição */}
+          {/* crosshair de medição na ponta da lâmina */}
           <g stroke="rgba(207,200,240,0.7)" strokeWidth={1}>
-            <line x1={287} y1={12} x2={287} y2={42} />
-            <line x1={272} y1={27} x2={302} y2={27} />
+            <line x1={160} y1={44} x2={160} y2={58} />
+            <line x1={146} y1={51} x2={174} y2={51} />
           </g>
         </svg>
 

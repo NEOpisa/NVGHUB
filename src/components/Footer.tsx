@@ -43,11 +43,11 @@ export default function Footer() {
         <div className="ft-brand">
           <Link href="/" className="wordmark" aria-label="NEOVANGUARD — voltar ao início">
             <img
-              src="/logo.png"
+              src="/logo.svg"
               alt=""
               aria-hidden
-              width={43}
-              height={32}
+              width={34}
+              height={36}
               className="nav-logo"
             />
             <span className="wordmark-text">

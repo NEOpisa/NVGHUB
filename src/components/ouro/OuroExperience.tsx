@@ -143,9 +143,11 @@ export default function OuroExperience() {
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="ou-hero" aria-label="Divisão Ouro">
         <div className="ou-hero-copy">
-          <span className="ou-eyebrow ou-rv">
-            DIVISÃO OURO · PRODUTO PRINCIPAL
-          </span>
+          {/* o brasão na liga da divisão: OURO */}
+          <div className="ou-brand ou-rv">
+            <img src="/logo-ouro.svg" alt="" aria-hidden="true" width={34} height={36} />
+            <span className="ou-eyebrow">DIVISÃO OURO · PRODUTO PRINCIPAL</span>
+          </div>
           <h1 className="ou-h1 ou-rv">
             A ferramenta do seu negócio, <em>funcionando</em>, em até 16 dias.
           </h1>

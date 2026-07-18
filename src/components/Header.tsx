@@ -52,11 +52,11 @@ export default function Header() {
             aria-label="NEOVANGUARD — página inicial"
           >
             <img
-              src="/logo.png"
+              src="/logo.svg"
               alt=""
               aria-hidden
-              width={36}
-              height={27}
+              width={30}
+              height={32}
               className="nav-logo"
             />
             <span className="wordmark-text">

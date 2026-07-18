@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-132 -122 264 280" role="img" aria-label="Emblema Neovanguard">
+  <defs>
+    <!-- aro cromado em bismuto: luz do topo-esquerda, matiz derrapando -->
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f2ff"/>
+      <stop offset="0.42" stop-color="#c9c2ef"/>
+      <stop offset="0.72" stop-color="#8d84c9"/>
+      <stop offset="1" stop-color="#6a628f"/>
+    </linearGradient>
+    <!-- bisel interno: sombra caindo para o esmalte -->
+    <linearGradient id="bevel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#57507a"/>
+      <stop offset="1" stop-color="#211c3c"/>
+    </linearGradient>
+    <!-- esmalte violeta profundo -->
+    <radialGradient id="enamel" cx="0.5" cy="0.38" r="0.9">
+      <stop offset="0" stop-color="#1b1442"/>
+      <stop offset="0.65" stop-color="#100b2c"/>
+      <stop offset="1" stop-color="#0a0720"/>
+    </radialGradient>
+    <!-- lâmina: água esquerda pega a key light -->
+    <linearGradient id="bladeL" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0" stop-color="#b3a6ff"/>
+      <stop offset="1" stop-color="#7c6cf0"/>
+    </linearGradient>
+    <!-- água direita na meia-sombra -->
+    <linearGradient id="bladeR" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0" stop-color="#5d4ed1"/>
+      <stop offset="1" stop-color="#42359f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- placa: sombra de espessura -->
+  <polygon points="92.0,-102.0 -92.0,-102.0 -112.0,-50.0 -72.0,92.0 0.0,138.0 72.0,92.0 112.0,-50.0"
+           fill="#0b0917" transform="translate(2.5 4)"/>
+
+  <!-- aro cromado -->
+  <polygon points="92.0,-102.0 -92.0,-102.0 -112.0,-50.0 -72.0,92.0 0.0,138.0 72.0,92.0 112.0,-50.0"
+           fill="url(#chrome)"/>
+
+  <!-- bisel interno -->
+  <polygon points="77.3,-85.3 -77.3,-85.3 -94.1,-41.6 -60.5,77.7 0.0,116.3 60.5,77.7 94.1,-41.6"
+           fill="url(#bevel)"/>
+
+  <!-- campo de esmalte -->
+  <polygon points="73.6,-81.1 -73.6,-81.1 -89.6,-39.5 -57.6,74.1 0.0,110.9 57.6,74.1 89.6,-39.5"
+           fill="url(#enamel)"/>
+
+  <!-- filete dourado -->
+  <polygon points="69.5,-76.4 -69.5,-76.4 -84.6,-37.1 -54.4,70.1 0.0,104.8 54.4,70.1 84.6,-37.1"
+           fill="none" stroke="#f4b74a" stroke-width="1.6" opacity="0.85"/>
+
+  <!-- a lâmina-lança: duas águas (cume central) -->
+  <polygon points="0.0,-72.0 -30.0,10.0 0.0,104.0" fill="url(#bladeL)"/>
+  <polygon points="0.0,-72.0 30.0,10.0 0.0,104.0" fill="url(#bladeR)"/>
+  <!-- cume: fio de luz -->
+  <line x1="0" y1="-72" x2="0" y2="104" stroke="#e9e4ff" stroke-width="1.4" opacity="0.9"/>
+  <!-- contorno da lâmina -->
+  <polygon points="0.0,-72.0 30.0,10.0 0.0,104.0 -30.0,10.0"
+           fill="none" stroke="#cfc4ff" stroke-width="1" opacity="0.45"/>
+
+  <!-- brilho do cromo no ombro esquerdo (specular fixo da key light) -->
+  <polygon points="-92.0,-102.0 -112.0,-50.0 -94.1,-41.6 -77.3,-85.3"
+           fill="#ffffff" opacity="0.18"/>
+</svg>

@@ -24,9 +24,9 @@ const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const CX = 160;
 const CY = 124;
 const SCALE = 42;
-// meia-espessura da extrusão real (buildLogoChunks: branco 0.55 · roxo 0.75)
-const HD_W = 0.275;
-const HD_P = 0.375;
+// meia-espessura do wireframe (brasão: escudo -0.39..0.21 · lâmina 0.06..0.46)
+const HD_W = 0.3;
+const HD_P = 0.2;
 
 function toLocal(points: [number, number][]) {
   return points.map(

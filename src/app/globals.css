@@ -7347,6 +7347,20 @@ body.site-loaded .hudc {
     transform: translateY(0);
 }
 
+/* o brasão dourado ao lado do selo da divisão */
+.ou-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.ou-brand img {
+    filter: drop-shadow(0 0 14px rgba(244, 183, 74, 0.35));
+}
+.ou-brand .ou-eyebrow {
+    margin-bottom: 0;
+}
+
 /* tipografia */
 .ou-eyebrow {
     display: inline-block;

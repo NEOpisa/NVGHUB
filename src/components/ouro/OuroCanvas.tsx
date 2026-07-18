@@ -60,6 +60,18 @@ function GoldWorld() {
       iridescenceThicknessRange: [140, 620],
       transparent: true,
     });
+    // campo de esmalte: bronze-negro (o fundo que faz a lâmina dourada saltar)
+    const enamel = new THREE.MeshPhysicalMaterial({
+      color: "#170e02",
+      metalness: 0.6,
+      roughness: 0.4,
+      emissive: new THREE.Color("#2a1a05"),
+      emissiveIntensity: 0.5,
+      envMapIntensity: 0.7,
+      clearcoat: 1,
+      clearcoatRoughness: 0.2,
+      transparent: true,
+    });
     // halo dourado respirando sobre as peças profundas
     const halo = new THREE.MeshBasicMaterial({
       color: "#ffcb6e",
@@ -84,25 +96,28 @@ function GoldWorld() {
       emissive: new THREE.Color("#7a5514"),
       emissiveIntensity: 0.35,
     });
-    return { goldLight, goldDeep, halo, seam, bar };
+    return { goldLight, goldDeep, enamel, halo, seam, bar };
   }, []);
 
-  // a marca NV inteira do hero, caco a caco, em ouro
+  // o brasão inteiro do hero, peça a peça, fundido em ouro
   const { group, geos } = useMemo(() => {
     const built = buildLogoChunks(1, 1);
     const g = new THREE.Group();
     const geos: THREE.BufferGeometry[] = [];
     [
-      ...built.white.map((c) => ({ c, mat: mats.goldLight, deep: false })),
-      ...built.purple.map((c) => ({ c, mat: mats.goldDeep, deep: true })),
-    ].forEach(({ c, mat, deep }) => {
+      ...built.white.map((c) => ({ c, mat: mats.goldLight, deep: false, seam: true })),
+      ...built.dark.map((c) => ({ c, mat: mats.enamel, deep: false, seam: false })),
+      ...built.purple.map((c) => ({ c, mat: mats.goldDeep, deep: true, seam: true })),
+    ].forEach(({ c, mat, deep, seam }) => {
       const mesh = new THREE.Mesh(c.geometry, mat);
       mesh.position.copy(c.pivot);
       geos.push(c.geometry);
-      // juntas de luz sobre o metal (mesma construção do HeroLogo)
-      const edges = new THREE.EdgesGeometry(c.geometry, 24);
-      mesh.add(new THREE.LineSegments(edges, mats.seam));
-      geos.push(edges);
+      if (seam) {
+        // juntas de luz sobre o metal (mesma construção do HeroLogo)
+        const edges = new THREE.EdgesGeometry(c.geometry, 24);
+        mesh.add(new THREE.LineSegments(edges, mats.seam));
+        geos.push(edges);
+      }
       if (deep) {
         const halo = new THREE.Mesh(c.geometry, mats.halo);
         halo.scale.setScalar(1.04);
@@ -168,6 +183,7 @@ function GoldWorld() {
       geos.forEach((g) => g.dispose());
       mats.goldLight.dispose();
       mats.goldDeep.dispose();
+      mats.enamel.dispose();
       mats.halo.dispose();
       mats.seam.dispose();
       mats.bar.dispose();
@@ -192,6 +208,7 @@ function GoldWorld() {
       l.visible = vis > 0.01;
       mats.goldLight.opacity = vis;
       mats.goldDeep.opacity = vis;
+      mats.enamel.opacity = vis;
 
       // LOOP do hero: brilho respirando + juntas de luz + halo pulsando
       const breathe = 0.5 + 0.5 * Math.sin(t * 1.1);

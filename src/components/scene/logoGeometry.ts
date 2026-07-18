@@ -1,34 +1,26 @@
 import * as THREE from "three";
 
-// Pontos da marca NV (coordenadas do SVG original).
+// Pontos do BRASÃO da Neovanguard (escudo + lâmina-lança, vista frontal —
+// mesma geometria do vetor oficial logo-2d.svg):
+//   · peça "branca"  = o metal (placa do escudo + ARO em relevo);
+//   · peça "roxa"    = o violeta (campo de esmalte rebaixado + LÂMINA
+//     de duas águas, com cume — salta do campo como num badge de carro).
 export const WHITE_POINTS: [number, number][] = [
-  [48, 25], [86, 44], [168, 93], [194, 143], [94, 78],
-  [94, 144], [155, 216], [138, 206], [71, 151], [70, 48],
+  [233.6, 42.4], [86.4, 42.4],   // topo
+  [70.4, 84], [102.4, 197.6],    // ombro e flanco esquerdo
+  [160, 234.4],                  // ponta inferior
+  [217.6, 197.6], [249.6, 84],   // flanco e ombro direito
 ];
 export const PURPLE_POINTS: [number, number][] = [
-  [287, 27], [202, 219], [153, 175], [110, 116], [190, 169],
+  [160, 66.4],   // ponta superior da lâmina
+  [184, 132],    // gume direito
+  [160, 207.2],  // ponta inferior
+  [136, 132],    // gume esquerdo
 ];
 
 const CX = 160;
 const CY = 124;
 const SCALE = 42;
-
-export function buildGeometry(points: [number, number][], depth: number) {
-  const shape = new THREE.Shape(
-    points.map(([x, y]) => new THREE.Vector2((x - CX) / SCALE, -(y - CY) / SCALE))
-  );
-  const geo = new THREE.ExtrudeGeometry(shape, {
-    depth,
-    steps: 2,
-    curveSegments: 24,
-    bevelEnabled: true,
-    bevelThickness: 0.06,
-    bevelSize: 0.05,
-    bevelSegments: 10,
-  });
-  geo.translate(0, 0, -depth / 2);
-  return geo;
-}
 
 export type Chunk = {
   geometry: THREE.BufferGeometry;
@@ -36,69 +28,131 @@ export type Chunk = {
   dir: THREE.Vector3;
 };
 
-// Particiona uma geometria em N cacos rígidos: ordena os triângulos pelo ângulo
-// em torno do centro e fatia em N grupos contíguos (garante N peças não-vazias).
-// Cada caco é recentrado no próprio pivô (pra girar/escalar em torno de si).
-export function splitChunks(geo: THREE.BufferGeometry, n: number): Chunk[] {
-  const g = geo.toNonIndexed();
-  const pos = g.attributes.position as THREE.BufferAttribute;
-  const nrm = g.attributes.normal as THREE.BufferAttribute | undefined;
-  const triN = pos.count / 3;
+/* px (y pra baixo) → mundo (y pra cima) */
+const toWorld = ([x, y]: [number, number]) =>
+  new THREE.Vector2((x - CX) / SCALE, -(y - CY) / SCALE);
 
-  const tris = Array.from({ length: triN }, (_, t) => {
-    const i = t * 3;
-    const cx = (pos.getX(i) + pos.getX(i + 1) + pos.getX(i + 2)) / 3;
-    const cy = (pos.getY(i) + pos.getY(i + 1) + pos.getY(i + 2)) / 3;
-    return { t, ang: Math.atan2(cy, cx) };
-  }).sort((a, b) => a.ang - b.ang);
-
-  const per = Math.ceil(triN / n);
-  const chunks: Chunk[] = [];
-  for (let b = 0; b < n; b++) {
-    const slice = tris.slice(b * per, (b + 1) * per);
-    if (!slice.length) continue;
-    const vCount = slice.length * 3;
-    const raw = new Float32Array(vCount * 3);
-    const rawN = nrm ? new Float32Array(vCount * 3) : null;
-    const pivot = new THREE.Vector3();
-    let k = 0;
-    for (const { t } of slice) {
-      const i = t * 3;
-      for (let v = 0; v < 3; v++) {
-        const x = pos.getX(i + v), y = pos.getY(i + v), z = pos.getZ(i + v);
-        raw[k * 3] = x; raw[k * 3 + 1] = y; raw[k * 3 + 2] = z;
-        if (rawN && nrm) {
-          rawN[k * 3] = nrm.getX(i + v); rawN[k * 3 + 1] = nrm.getY(i + v); rawN[k * 3 + 2] = nrm.getZ(i + v);
-        }
-        pivot.x += x; pivot.y += y; pivot.z += z;
-        k++;
-      }
-    }
-    pivot.multiplyScalar(1 / vCount);
-    for (let j = 0; j < raw.length; j += 3) {
-      raw[j] -= pivot.x; raw[j + 1] -= pivot.y; raw[j + 2] -= pivot.z;
-    }
-    const cg = new THREE.BufferGeometry();
-    cg.setAttribute("position", new THREE.BufferAttribute(raw, 3));
-    if (rawN) cg.setAttribute("normal", new THREE.BufferAttribute(rawN, 3));
-    else cg.computeVertexNormals();
-    const dir = pivot.clone();
-    dir.z += 0.4;
-    if (dir.lengthSq() < 1e-4) dir.set(0, 0, 1);
-    dir.normalize();
-    chunks.push({ geometry: cg, pivot, dir });
-  }
-  g.dispose();
-  return chunks;
+function centroid2(pts: THREE.Vector2[]) {
+  const c = new THREE.Vector2();
+  for (const p of pts) c.add(p);
+  return c.multiplyScalar(1 / pts.length);
+}
+function insetPoly(pts: THREE.Vector2[], k: number) {
+  const c = centroid2(pts);
+  return pts.map((p) => p.clone().sub(c).multiplyScalar(k).add(c));
 }
 
-/** Constrói os cacos brancos e roxos da marca de uma vez. */
-export function buildLogoChunks(nWhite: number, nPurple: number) {
-  const whiteGeo = buildGeometry(WHITE_POINTS, 0.55);
-  const purpleGeo = buildGeometry(PURPLE_POINTS, 0.75);
-  const white = splitChunks(whiteGeo, nWhite);
-  const purple = splitChunks(purpleGeo, nPurple);
-  whiteGeo.dispose();
-  purpleGeo.dispose();
-  return { white, purple };
+/* recentra a geometria no próprio pivô (pra girar/derivar em torno de si) */
+function toChunk(geo: THREE.BufferGeometry): Chunk {
+  const pos = geo.attributes.position as THREE.BufferAttribute;
+  const pivot = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++)
+    pivot.add(new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)));
+  pivot.multiplyScalar(1 / pos.count);
+  geo.translate(-pivot.x, -pivot.y, -pivot.z);
+  const dir = pivot.clone();
+  dir.z += 0.4;
+  if (dir.lengthSq() < 1e-4) dir.set(0, 0, 1);
+  dir.normalize();
+  return { geometry: geo, pivot, dir };
+}
+
+/* garante winding CCW no contorno e CW no furo — senão a ExtrudeGeometry
+   sai de dentro pra fora (normais invertidas = metal preto na cena) */
+function ccw(pts: THREE.Vector2[]) {
+  return THREE.ShapeUtils.area(pts) < 0 ? pts.slice().reverse() : pts;
+}
+function extrude(
+  outer: THREE.Vector2[],
+  hole: THREE.Vector2[] | null,
+  depth: number,
+  bevel: number,
+  zShift: number,
+) {
+  const shape = new THREE.Shape(ccw(outer));
+  if (hole) shape.holes.push(new THREE.Path(ccw(hole).slice().reverse()));
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth,
+    steps: 1,
+    curveSegments: 8,
+    bevelEnabled: bevel > 0,
+    bevelThickness: bevel,
+    bevelSize: bevel * 0.9,
+    bevelSegments: 3,
+  });
+  geo.translate(0, 0, zShift);
+  return geo;
+}
+
+/* a LÂMINA de duas águas: cume central alto, gumes baixos, paredes e costas */
+function buildBlade(): THREE.BufferGeometry {
+  const [T, R, B, L] = PURPLE_POINTS.map((p) => {
+    const w = toWorld(p);
+    return [w.x, w.y] as [number, number];
+  });
+  const Z_BASE = 0.06, Z_EDGE = 0.30, Z_RIDGE = 0.46;
+  type V3 = [number, number, number];
+  const v = (p: [number, number], z: number): V3 => [p[0], p[1], z];
+  const out: number[] = [];
+  const tri = (a: V3, b: V3, c: V3, want: V3) => {
+    const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2];
+    const vx = c[0] - a[0], vy = c[1] - a[1], vz = c[2] - a[2];
+    const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+    if (nx * want[0] + ny * want[1] + nz * want[2] < 0) { const t = b; b = c; c = t; }
+    out.push(...a, ...b, ...c);
+  };
+  const Tt = v(T, Z_RIDGE), Bt = v(B, Z_RIDGE);
+  const Rt = v(R, Z_EDGE), Lt = v(L, Z_EDGE);
+  const Tb = v(T, Z_BASE), Bb = v(B, Z_BASE);
+  const Rb = v(R, Z_BASE), Lb = v(L, Z_BASE);
+  // águas frontais (o cume pega a key light de um lado só — vida no metal)
+  tri(Tt, Lt, Bt, [-1, 0, 1]);
+  tri(Tt, Bt, Rt, [1, 0, 1]);
+  // paredes
+  const wall = (pb1: V3, pb2: V3, pt2: V3, pt1: V3) => {
+    const want: V3 = [(pb1[0] + pb2[0]) / 2, (pb1[1] + pb2[1]) / 2 + 0.3, 0.1];
+    tri(pb1, pb2, pt2, want);
+    tri(pb1, pt2, pt1, want);
+  };
+  wall(Tb, Rb, Rt, Tt);
+  wall(Rb, Bb, Bt, Rt);
+  wall(Bb, Lb, Lt, Bt);
+  wall(Lb, Tb, Tt, Lt);
+  // costas (fecha o sólido pro estilhaço)
+  tri(Tb, Bb, Lb, [0, 0, -1]);
+  tri(Tb, Rb, Bb, [0, 0, -1]);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(out, 3));
+  g.computeVertexNormals();
+  return g;
+}
+
+/**
+ * Constrói o brasão em 4 peças (mesma anatomia do emblema HTML):
+ *   white  → [placa do escudo, aro em relevo]  (metal bismuto claro)
+ *   purple → [lâmina de duas águas]            (violeta vivo, emissivo)
+ *   dark   → [campo de esmalte rebaixado]      (violeta-negro profundo)
+ * Consumidores que ignorarem `dark` ainda funcionam: a frente da placa
+ * fica visível no vão do aro (escudo todo em metal).
+ * Os parâmetros de contagem são legados (a partição agora é anatômica).
+ */
+export function buildLogoChunks(_nWhite = 1, _nPurple = 1) {
+  const shield = WHITE_POINTS.map(toWorld);
+  const inner = insetPoly(shield, 0.84);  // borda interna do aro
+  const field = insetPoly(shield, 0.80);  // campo do esmalte
+
+  // placa: corpo do escudo com bisel (frente em z≈0.05)
+  const plate = extrude(shield, null, 0.34, 0.05, -0.39);
+  // aro: anel em RELEVO na frente da placa
+  const rim = extrude(shield, inner, 0.15, 0.03, 0.03);
+  // esmalte: campo rebaixado entre o aro
+  const enamel = extrude(field, null, 0.04, 0, 0.02);
+  // lâmina: cravada sobre o esmalte
+  const blade = buildBlade();
+
+  return {
+    white: [toChunk(plate), toChunk(rim)],
+    purple: [toChunk(blade)],
+    dark: [toChunk(enamel)],
+  };
 }
