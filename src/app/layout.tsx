@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import {
-  Syne,
   Plus_Jakarta_Sans,
-  Orbitron,
   Space_Grotesk,
   IBM_Plex_Mono,
-  Fraunces,
 } from "next/font/google";
 import Header from "@/components/Header";
 import FooterGate from "@/components/FooterGate";
@@ -30,25 +27,11 @@ import "./globals.css";
 import "./c1.css";
 import "./c2.css";
 
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  variable: "--ff-syne",
-  display: "swap",
-});
-
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   variable: "--ff-jakarta",
-  display: "swap",
-});
-
-const orbitron = Orbitron({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--ff-orbitron",
   display: "swap",
 });
 
@@ -64,15 +47,6 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--ff-mono",
-  display: "swap",
-});
-
-// serif editorial leve — exclusiva da divisão PLATINA (fria, espaçosa)
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  style: ["normal", "italic"],
-  variable: "--ff-fraunces",
   display: "swap",
 });
 
@@ -224,7 +198,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${syne.variable} ${jakarta.variable} ${orbitron.variable} ${grotesk.variable} ${plexMono.variable} ${fraunces.variable}`}
+      className={`${jakarta.variable} ${grotesk.variable} ${plexMono.variable}`}
     >
       <body>
         <a href="#main" className="skip-link">

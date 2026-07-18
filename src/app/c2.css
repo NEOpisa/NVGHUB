@@ -275,12 +275,6 @@ body.bp-page {
 .tp {
     padding-top: clamp(88px, 12vh, 128px);
 }
-.tp-hero {
-    min-height: 44vh;
-}
-.tp-platina {
-    --tier-pad: clamp(72px, 10vh, 116px);
-}
 .tp-ouro {
     --tier-pad: clamp(52px, 7vh, 84px);
 }
@@ -302,48 +296,9 @@ body.bp-page {
 .tp-platina .tp-sec {
     max-width: 880px; /* coluna de leitura, não um painel largo */
 }
-.tp-platina .tp-hero {
-    min-height: 52vh; /* a única folga extra fica no hero */
-}
 .tp-platina .card-1,
 .tp-platina .card-2 {
     border-color: rgba(108, 92, 255, 0.18);
-}
-
-/* ── #088 · comparativo Ouro × Platina ── */
-.tp-compare {
-    display: flex;
-    flex-direction: column;
-    padding: 8px 0;
-    font-size: 0.92rem;
-}
-.tp-compare-row {
-    display: grid;
-    grid-template-columns: minmax(90px, 0.6fr) 1fr 1fr;
-    gap: 0 18px;
-    padding: 13px 22px;
-    border-bottom: 1px solid rgba(108, 92, 255, 0.12);
-    align-items: baseline;
-}
-.tp-compare-row:last-child {
-    border-bottom: none;
-}
-.tp-compare-head {
-    font-family: var(--ff-mono), monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(240, 240, 240, 0.5);
-}
-.tpc-attr {
-    font-family: var(--ff-mono), monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(240, 240, 240, 0.45);
-}
-.tpc-col {
-    color: rgba(240, 240, 240, 0.55);
 }
 .tpc-col.is-here {
     color: #f0f0f0;
@@ -351,23 +306,7 @@ body.bp-page {
 .tp-compare-head .tpc-col.is-here {
     color: var(--tier-accent, #6c5cff);
 }
-.tpc-link {
-    color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-.tpc-link:hover {
-    color: #f0f0f0;
-}
 @media (max-width: 640px) {
-    .tp-compare-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
-        padding: 12px 16px;
-    }
-    .tp-compare-head {
-        display: none; /* colunas viram blocos: o destaque .is-here basta */
-    }
     .tpc-col:not(.is-here) {
         font-size: 0.82rem;
         opacity: 0.75;
