@@ -10405,6 +10405,11 @@ body.site-loaded .hudc {
     background: rgba(20, 12, 2, 0.55);
     backdrop-filter: blur(3px);
 }
+/* a fita esmaece nas bordas — entra e sai da tela com elegância */
+.ou-marquee-track {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
 .ou-marquee-track {
     display: flex;
     align-items: center;
@@ -10787,6 +10792,17 @@ body.site-loaded .hudc {
 ::selection {
     background: rgba(108, 92, 255, 0.5);
     color: #ffffff;
+}
+
+/* tipografia que respira: títulos equilibrados (sem linha órfã gigante) e
+   parágrafos sem viúvas — progressive enhancement, ignora onde não suporta */
+h1,
+h2,
+h3 {
+    text-wrap: balance;
+}
+p {
+    text-wrap: pretty;
 }
 
 /* foco por teclado visível e elegante (nunca o anel azul default) */

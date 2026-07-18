@@ -59,9 +59,14 @@ export default function CameraRig() {
     }
 
     const cam = state.camera as THREE.PerspectiveCamera;
+    // respiração de câmera: deriva mínima "handheld" — o mundo nunca fica
+    // estático (no touch, onde não há parallax de mouse, é o que dá vida)
+    const bt = state.clock.elapsedTime;
+    const bx = Math.sin(bt * 0.23) * 0.055;
+    const by = Math.sin(bt * 0.31 + 1.7) * 0.045;
     cam.position.set(
-      _pos.x + mouse.current.x * 0.35,
-      _pos.y + mouse.current.y * 0.22,
+      _pos.x + mouse.current.x * 0.35 + bx,
+      _pos.y + mouse.current.y * 0.22 + by,
       _pos.z,
     );
     cam.up.set(0, 1, 0);

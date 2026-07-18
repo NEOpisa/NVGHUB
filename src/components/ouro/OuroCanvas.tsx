@@ -232,6 +232,9 @@ function GoldWorld() {
       <ambientLight intensity={0.42} />
       <directionalLight position={[-6, 8, 5]} intensity={2.6} color="#fff3dd" />
       <pointLight position={[3, 1, 3]} intensity={26} color="#f4b74a" distance={14} decay={1.8} />
+      {/* contraluz fria vinda de baixo-esquerda: o ouro ganha volume por
+          contraste quente × frio (a assinatura bismuto da casa) */}
+      <pointLight position={[-4, -2.5, 2]} intensity={7} color="#6c5cff" distance={12} decay={2} />
       {/* reflexos para o metal (bake único, sem rede) — a mesma key
           superior-esquerda domina, com um fill dourado por baixo */}
       <Environment resolution={64} frames={1}>
@@ -284,12 +287,19 @@ export default function OuroCanvas() {
     return () => document.removeEventListener("visibilitychange", update);
   }, []);
 
+  // touch: MSAA quase de graça nas GPUs tile-based — o ouro merece arestas limpas
+  const [coarse] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      !!window.matchMedia?.("(pointer: coarse)").matches,
+  );
+
   return (
     <div className="ou-canvas" aria-hidden="true">
       <Canvas
         dpr={[1, 1.75]}
         frameloop={running ? "always" : "never"}
-        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+        gl={{ antialias: coarse, alpha: true, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 6.4], fov: 52 }}
       >
         <GoldWorld />

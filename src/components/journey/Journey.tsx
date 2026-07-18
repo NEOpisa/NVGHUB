@@ -9,8 +9,20 @@ import {
   loadJourneyProgress,
 } from "./journeyState";
 import { intro } from "@/components/scene/introState";
+import { getLenisInstance } from "@/lib/lenis";
 import JourneyOverlay from "./JourneyOverlay";
 import ChapterSnap from "./ChapterSnap";
+
+/* salto programático LENIS-AWARE: window.scrollTo puro perde a briga com o
+   Lenis (ele escreve a posição antiga de volta no rAF seguinte) — era o bug
+   do "Candidatar-se à Platina" que largava o visitante no hero */
+function jumpTo(top: number) {
+  const lenis = getLenisInstance() as
+    | { scrollTo?: (t: number, o?: { immediate?: boolean; force?: boolean }) => void }
+    | undefined;
+  if (lenis?.scrollTo) lenis.scrollTo(top, { immediate: true, force: true });
+  else window.scrollTo({ top, behavior: "instant" });
+}
 
 // placeholder leve enquanto o chunk (three/fiber/drei) é buscado — evita flash
 // transparente e reserva o fundo do canvas
@@ -107,16 +119,16 @@ export default function Journey() {
     const t0 = performance.now();
     const go = () => {
       if (performance.now() - t0 > 10000) return; // teto de segurança
-      if (intro.active || !document.body.classList.contains("site-loaded")) {
+      // espera SÓ enquanto a intro realmente toca (phase done = liberado)
+      if (
+        (intro.active && intro.phase !== "done") ||
+        !document.body.classList.contains("site-loaded")
+      ) {
         raf = requestAnimationFrame(go);
         return;
       }
       const total = el.offsetHeight - window.innerHeight;
-      if (total > 0)
-        window.scrollTo({
-          top: el.offsetTop + 0.88 * total,
-          behavior: "instant",
-        });
+      if (total > 0) jumpTo(el.offsetTop + 0.88 * total);
     };
     raf = requestAnimationFrame(go);
     return () => cancelAnimationFrame(raf);
@@ -135,7 +147,7 @@ export default function Journey() {
     if (p < 0.03 || p > 0.95 || window.scrollY > 4) return;
     const total = el.offsetHeight - window.innerHeight;
     if (total <= 0) return;
-    window.scrollTo({ top: el.offsetTop + p * total, behavior: "instant" });
+    jumpTo(el.offsetTop + p * total);
   }, [mode]);
 
   const isStatic = mode === "static";

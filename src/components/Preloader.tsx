@@ -78,6 +78,10 @@ export default function Preloader() {
         window.setTimeout(
           () => {
             intro.phase = "done";
+            // CRÍTICO: desliga o flag — consumidores (deep-link ?tier=…,
+            // retomar progresso, parallax da logo) esperam active=false;
+            // preso em true, o salto pra Platina nunca acontecia
+            intro.active = false;
             markIntroDone();
             unlock();
             setPlaying(false);

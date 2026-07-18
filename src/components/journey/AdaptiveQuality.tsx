@@ -30,10 +30,9 @@ export default function AdaptiveQuality({
     acc: 0,
     n: 0,
     cool: 1.5,
-    // piso e teto de frame-time resolvidos uma vez. Piso mobile 0.68 (era
-    // 0.55): abaixo disso o 3D vira borrão — melhor nítido a 60fps que
-    // lavado a 90.
-    floor: isMobile() ? Math.min(min, 0.68) : min,
+    // piso e teto de frame-time resolvidos uma vez. Piso mobile 0.75:
+    // abaixo disso o 3D vira borrão — melhor nítido a 60fps que lavado a 90.
+    floor: isMobile() ? Math.min(min, 0.75) : min,
     downMs: isMobile() ? 0.0125 : 0.014,
   });
 

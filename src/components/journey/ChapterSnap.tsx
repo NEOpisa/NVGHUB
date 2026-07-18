@@ -99,6 +99,8 @@ export default function ChapterSnap({
       const id = ++travelId;
       // tick háptico sutil: a viagem "encaixa" na mão (no-op sem hardware)
       navigator.vibrate?.(8);
+      // ambientação: o motor de som (HudControls) toca o whoosh da viagem
+      window.dispatchEvent(new Event("nvg:travel"));
 
       stepAt = performance.now();
       const dist = Math.abs(SNAPS[to] - journey.progress);

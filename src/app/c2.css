@@ -586,6 +586,24 @@ body.bp-page {
         transform: none;
     }
 }
+/* lâmina de luz atravessa o card no hover (linguagem das portas da home) */
+.fer-card::after {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background: linear-gradient(
+        115deg,
+        transparent 42%,
+        rgba(255, 255, 255, 0.06) 50%,
+        transparent 58%
+    );
+    transform: translateX(-130%);
+    pointer-events: none;
+}
+.fer-card:hover::after {
+    transform: translateX(130%);
+    transition: transform 0.9s var(--ease-premium);
+}
 /* barra na cor da ferramenta, respirando no topo */
 .fer-bar {
     position: absolute;
@@ -691,6 +709,8 @@ body.bp-page {
 body.bp-page .btn-primary:active,
 body.bp-page .btn-ghost:active,
 .exemplos-chip:active,
+.exemplos-menu-btn:active,
+.fer-cta:active,
 .tp .btn-primary:active,
 .tp .btn-ghost:active {
     transform: translateY(1px) scale(0.985);

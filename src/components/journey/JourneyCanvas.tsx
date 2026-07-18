@@ -56,20 +56,26 @@ export default function JourneyCanvas() {
     return () => document.removeEventListener("visibilitychange", update);
   }, []);
 
+  // telas touch: MSAA praticamente de graça nas GPUs tile-based do mobile —
+  // arestas do metal e das rodas ficam limpas mesmo com DPR contido
+  const small = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      (window.innerWidth < 768 ||
+        !!window.matchMedia?.("(pointer: coarse)").matches),
+    [],
+  );
+
   const maxDpr = useMemo(() => {
     const tier = detectTier();
     journey.tier = tier;
     if (typeof window === "undefined") return 1.5;
     // #067 · telas pequenas/touch têm DPR físico alto (2–3): teto por tier.
-    // Tetos mobile elevados (1.35→1.6 no tier 2 etc): a nitidez do 3D no
-    // celular vale os fragments — o AdaptiveQuality ainda desce se o frame
-    // estourar o orçamento.
-    const small =
-      window.innerWidth < 768 ||
-      !!window.matchMedia?.("(pointer: coarse)").matches;
+    // Tetos mobile elevados: a nitidez do 3D no celular vale os fragments —
+    // o AdaptiveQuality ainda desce se o frame estourar o orçamento.
     const cap = tier === 2 ? (small ? 1.6 : 1.75) : tier === 1 ? (small ? 1.45 : 1.5) : small ? 1.15 : 1.2;
     return Math.min(window.devicePixelRatio || 1, cap);
-  }, []);
+  }, [small]);
 
   return (
     <div className="jy-canvas" aria-hidden="true">
@@ -78,7 +84,7 @@ export default function JourneyCanvas() {
         dpr={maxDpr}
         frameloop={running ? "always" : "never"}
         gl={{
-          antialias: false,
+          antialias: small,
           alpha: false,
           stencil: false,
           powerPreference: "high-performance",
@@ -108,6 +114,13 @@ export default function JourneyCanvas() {
           position={[-7, 9, 6]}
           intensity={2.4}
           color="#ffffff"
+        />
+        {/* rim violeta por trás-direita: recorta as silhuetas do metal e
+            das rodas contra o fundo escuro — profundidade sem custo */}
+        <directionalLight
+          position={[8, 3, -6]}
+          intensity={0.7}
+          color="#9d8cff"
         />
         {/* reflexos para os metais (bake único, sem rede) — a mesma luz
             superior-esquerda domina o environment */}
