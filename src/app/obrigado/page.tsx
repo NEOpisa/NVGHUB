@@ -1,6 +1,6 @@
 import Link from "next/link";
-import BlueprintStage from "@/components/BlueprintStage";
-import { WhatsAppIcon } from "@/components/icons";
+import Foot from "@/components/shell/Foot";
+import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
 import { pageMetadata } from "@/lib/seo";
 import { WA } from "@/lib/constants";
 
@@ -11,78 +11,69 @@ export const metadata = {
       "Tudo certo — sua mensagem chegou. Veja o que acontece agora e adiante a conversa pelo WhatsApp.",
     path: "/obrigado",
   }),
-  // página de pós-conversão: não indexar
+  // pós-conversão: não indexar
   robots: { index: false, follow: true },
 };
 
 const PASSOS = [
   {
     n: "01",
-    tag: "RECEBIDO",
-    title: "Sua mensagem chegou",
-    desc: "Já está na nossa fila — nada de robô, quem lê é gente do time.",
+    t: "Sua mensagem chegou",
+    d: "Já está na nossa fila — nada de robô, quem lê é gente do time.",
   },
   {
     n: "02",
-    tag: "ANÁLISE",
-    title: "Entendemos seu momento",
-    desc: "Damos uma olhada rápida no seu contexto pra chegar já com direção.",
+    t: "Entendemos seu momento",
+    d: "Damos uma olhada no seu contexto pra chegar já com direção.",
   },
   {
     n: "03",
-    tag: "RESPOSTA",
-    title: "Falamos com você",
-    desc: "Retornamos em até 3 horas úteis, direto no canal que você preferir.",
+    t: "Falamos com você",
+    d: "Retornamos em até 3 horas úteis, no canal que você preferir.",
   },
 ];
 
 export default function ObrigadoPage() {
   return (
-    <main id="main">
-      <BlueprintStage accent="gold" />
-      <section className="obg-page" aria-label="Mensagem recebida">
-        <div className="inner">
-          <span className="section-eyebrow">Tudo certo</span>
-          <h1 className="section-heading">
-            Recebemos sua <span className="text-accent-nvg">mensagem.</span>
-          </h1>
-          <p className="section-sub">
-            Obrigado pelo contato. Enquanto a gente prepara seu retorno, veja o
-            que acontece agora — e, se preferir agilizar, é só chamar no
-            WhatsApp.
-          </p>
-
-          <ol className="obg-steps" aria-label="Próximos passos">
-            {PASSOS.map((p) => (
-              <li key={p.n} className="obg-step card-1">
-                <span className="obg-step-tag">
-                  <b>{p.n}</b> {p.tag}
-                </span>
-                <h2 className="obg-step-title">{p.title}</h2>
-                <p className="obg-step-desc">{p.desc}</p>
-              </li>
-            ))}
-          </ol>
-
-          <div className="obg-cta">
-            <a
-              href={WA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary btn-whatsapp"
-            >
-              <WhatsAppIcon />
-              Adiantar pelo WhatsApp
-            </a>
-            <Link href="/exemplos" className="btn-ghost">
-              Ver exemplos enquanto isso
-            </Link>
-            <Link href="/" className="obg-back">
-              ← Voltar para o início
-            </Link>
-          </div>
+    <>
+      <section className="panel" aria-labelledby="obg-h">
+        <span className="eyebrow">Tudo certo</span>
+        <h1 id="obg-h" className="h-xl">
+          Recebemos <em className="h-accent">sua mensagem.</em>
+        </h1>
+        <p className="lead">
+          Enquanto a gente lê com calma, você pode adiantar a conversa pelo
+          WhatsApp — ou dar uma olhada no que já construímos.
+        </p>
+        <div className="pill-row">
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="pill">
+            <WhatsAppIcon />
+            Adiantar pelo WhatsApp
+          </a>
+          <Link href="/exemplos" className="pill pill--ghost">
+            Ver exemplos
+            <ArrowUpRight />
+          </Link>
         </div>
       </section>
-    </main>
+
+      <section className="panel" aria-label="O que acontece agora">
+        <header className="sec-head">
+          <span className="eyebrow">O que acontece agora</span>
+          <h2 className="h-lg">Três passos, <em className="h-accent">sem mistério.</em></h2>
+        </header>
+        <div className="cards">
+          {PASSOS.map((p) => (
+            <article key={p.n} className="card">
+              <span className="card-n">{p.n}</span>
+              <h3 className="card-t">{p.t}</h3>
+              <p className="card-d">{p.d}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <Foot />
+    </>
   );
 }

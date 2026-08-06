@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/seo";
-import BlueprintStage from "@/components/BlueprintStage";
+import Foot from "@/components/shell/Foot";
 
 export const metadata = pageMetadata({
   title: "Termos de uso",
@@ -11,11 +11,10 @@ export const metadata = pageMetadata({
    comerciais são formalizadas na consulta). ⚠ Revisão do Mizael recomendada. */
 export default function TermosPage() {
   return (
-    <main id="main" className="legal">
-      <BlueprintStage />
-      <article className="legal-body card-1">
-        <span className="section-eyebrow">Termos de uso</span>
-        <h1 className="section-heading">Termos de uso do site</h1>
+    <>
+      <article className="panel prose">
+        <span className="eyebrow">Termos de uso</span>
+        <h1 className="h-lg">Termos de uso do site</h1>
 
         <h2>Conteúdo</h2>
         <p>
@@ -42,6 +41,7 @@ export default function TermosPage() {
           contato do site. Veja também a <a href="/privacidade">política de privacidade</a>.
         </p>
       </article>
-    </main>
+      <Foot />
+    </>
   );
 }

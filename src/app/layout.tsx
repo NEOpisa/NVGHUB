@@ -4,42 +4,23 @@ import {
   Space_Grotesk,
   IBM_Plex_Mono,
 } from "next/font/google";
-import Header from "@/components/Header";
-import FooterGate from "@/components/FooterGate";
-import Preloader from "@/components/Preloader";
-import ScrollJuice from "@/components/ScrollJuice";
-import PageTransition from "@/components/PageTransition";
-import TransitionCanvas from "@/components/scene/TransitionCanvas";
-import FpsMeter from "@/components/FpsMeter";
-import ScrollToSection from "@/components/ScrollToSection";
-import ClickFX from "@/components/ClickFX";
+import RailLeft from "@/components/shell/RailLeft";
+import RailRight from "@/components/shell/RailRight";
 import MetaPixel from "@/components/MetaPixel";
-import ViewportProbe from "@/components/ViewportProbe";
-import LetterScatter from "@/components/LetterScatter";
-import ObsidianRain from "@/components/ObsidianRain";
-import HudControls from "@/components/HudControls";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL } from "@/lib/constants";
-import "./globals.css";
-// Zonas de CSS por owner (paralelismo sem conflito — ver /inc2.md).
-// Ordem importa: importadas após globals.css para vencer a cascata.
-import "./c1.css";
-import "./c2.css";
-// home creme (linguagem editorial) — última na cascata
-import "./home.css";
+import "./shell.css";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700"],
   variable: "--ff-jakarta",
   display: "swap",
 });
 
-// tipografia da jornada (linguagem igloo): grotesca técnica + mono terminal
 const grotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   variable: "--ff-grotesk",
   display: "swap",
 });
@@ -47,7 +28,7 @@ const grotesk = Space_Grotesk({
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--ff-mono",
+  variable: "--ff-mono-var",
   display: "swap",
 });
 
@@ -55,8 +36,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  // #027 · cor da UI do navegador casa com o obsidian do site
-  themeColor: "#040309",
+  themeColor: "#06070b",
 };
 
 export const metadata: Metadata = {
@@ -103,7 +83,6 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     siteName: "Neovanguard",
     url: SITE_URL,
-    // imagem OG: gerada pelo app/opengraph-image.tsx (Blueprint Obsidian)
   },
   twitter: {
     card: "summary_large_image",
@@ -141,56 +120,15 @@ const JSON_LD = {
         telephone: "+5519994425132",
         availableLanguage: ["pt-BR"],
       },
-      makesOffer: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Ferramenta sob medida",
-            description:
-              "Sistemas, automações e integrações desenhados para o problema específico do seu negócio.",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Sistema para Negócio",
-            description:
-              "Cardápio digital, agendamento online e catálogos com painel de controle.",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Automação & Integrações",
-            description:
-              "Robôs, integrações e rotinas que eliminam o trabalho manual do negócio.",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Manutenção & Suporte",
-            description:
-              "Suporte via WhatsApp, atualizações e monitoramento contínuo.",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "SaaS por segmento",
-            description: "Plataformas prontas para clínicas e restaurantes.",
-          },
-        },
-      ],
     },
   ],
 };
 
+/**
+ * A "telinha" do site: trilho de rotas à esquerda, coluna de painéis no
+ * meio, trilho de utilidades à direita. Os trilhos são sticky e nunca
+ * somem — toda página é montada dentro desse mesmo esqueleto.
+ */
 export default function RootLayout({
   children,
 }: {
@@ -209,25 +147,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
-        <ViewportProbe />
-        <Preloader />
-        <PageTransition />
-        <TransitionCanvas />
-        <ScrollJuice />
-        <ScrollToSection />
-        <ClickFX />
-        {/* fundo das páginas internas: BlueprintStage (por página) — o antigo
-            SceneCanvas global saiu junto com a linguagem antiga */}
-        <div className="scroll-progress" aria-hidden="true" />
-        <Header />
-        {children}
-        <FooterGate />
-        <div className="site-frame" aria-hidden="true" />
-        <HudControls />
-        <LetterScatter />
-        <ObsidianRain />
+        <div className="sh">
+          <RailLeft />
+          <main className="sh-main" id="main">
+            {children}
+          </main>
+          <RailRight />
+        </div>
         <MetaPixel />
-        <FpsMeter />
         <Analytics />
       </body>
     </html>

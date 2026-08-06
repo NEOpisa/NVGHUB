@@ -1,40 +1,52 @@
-import dynamic from "next/dynamic";
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
-import BlueprintStage from "@/components/BlueprintStage";
-
-// #006 · quiz pesado fora do chunk inicial da rota (carrega após hidratar)
-const SolucaoQuiz = dynamic(() => import("@/components/SolucaoQuiz"));
+import Foot from "@/components/shell/Foot";
+import ConsultaQuiz from "@/components/blocos/ConsultaQuiz";
+import { ArrowUpRight } from "@/components/icons";
 
 export const metadata = pageMetadata({
-  title: "Consulta rápida — sua solução em 3 perguntas",
+  title: "Consulta rápida — monte a sua solução",
   description:
-    "Responda 3 perguntas rápidas e montamos a solução ideal para o seu negócio. Sem formulário gigante, sem compromisso — fale com a equipe na hora.",
+    "Três perguntas rápidas e já entendemos o seu momento: a Neovanguard indica a ferramenta certa para o seu negócio, sem formulário gigante e sem compromisso.",
   path: "/solucao",
 });
 
-// #026 · JSON-LD Service (sem Offer/preço — modelo consultivo, valor na consulta)
-const JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  name: "Consulta rápida Neovanguard",
-  serviceType: "Diagnóstico digital e proposta de solução",
-  description:
-    "Três perguntas rápidas e a equipe monta a solução ideal para o negócio — sem formulário gigante e sem compromisso.",
-  provider: { "@type": "Organization", name: "Neovanguard" },
-  areaServed: "BR",
-};
-
 export default function SolucaoPage() {
   return (
-    <main id="main">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-      />
-      <BlueprintStage accent="teal" />
-      <section className="comprar-area" aria-label="Sua solução sob medida">
-        <SolucaoQuiz />
+    <>
+      <section className="panel" aria-labelledby="sol-h">
+        <span className="eyebrow">Consulta rápida</span>
+        <h1 id="sol-h" className="h-xl">
+          Vamos montar a <em className="h-accent">sua solução.</em>
+        </h1>
+        <p className="lead">
+          Responda 3 perguntas rápidas e já entendemos o seu momento — sem
+          formulário gigante, sem compromisso.
+        </p>
       </section>
-    </main>
+
+      <section className="panel" aria-label="Perguntas da consulta">
+        <ConsultaQuiz />
+      </section>
+
+      <section className="closer" aria-label="Outros caminhos">
+        <h2 className="h-xl">Prefere ver antes de decidir?</h2>
+        <p className="lead">
+          Os exemplos mostram o formato do que entregamos — problema,
+          ferramenta e resultado, caso a caso.
+        </p>
+        <div className="pill-row">
+          <Link href="/exemplos" className="pill">
+            Ver exemplos
+            <ArrowUpRight />
+          </Link>
+          <Link href="/ouro" className="pill pill--ghost">
+            Conhecer o Ouro
+          </Link>
+        </div>
+      </section>
+
+      <Foot />
+    </>
   );
 }

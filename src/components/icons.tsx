@@ -131,3 +131,20 @@ export function ShieldIcon({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
+
+/** Seta diagonal — o gesto de "ir" em tiles, links e CTAs do sistema. */
+export function ArrowUpRight() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M7 17L17 7M9 7h8v8" />
+    </svg>
+  );
+}

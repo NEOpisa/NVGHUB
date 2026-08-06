@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-// #079 · erro de runtime na linguagem Neobsidian, com recuperação (reset).
 export default function Error({
   error,
   reset,
@@ -11,23 +10,21 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <main id="main" className="nf-stage">
-      <div className="nf-card card-1" role="alert">
-        <span className="section-eyebrow">falha de sistema</span>
-        <h1 className="nf-code">500</h1>
-        <p className="nf-msg">
-          Algo quebrou do nosso lado. O incidente foi registrado
-          {error.digest ? ` (ref ${error.digest})` : ""} — tente de novo.
-        </p>
-        <div className="nf-actions">
-          <button type="button" className="btn-primary" onClick={reset}>
-            Tentar novamente
-          </button>
-          <Link href="/" className="btn-ghost">
-            Voltar ao início
-          </Link>
-        </div>
+    <section className="panel" role="alert" aria-labelledby="err-h">
+      <span className="eyebrow">Falha de sistema</span>
+      <h1 id="err-h" className="h-xl">500</h1>
+      <p className="lead">
+        Algo quebrou do nosso lado. O incidente foi registrado
+        {error.digest ? ` (ref ${error.digest})` : ""} — tente de novo.
+      </p>
+      <div className="pill-row">
+        <button type="button" className="pill" onClick={reset}>
+          Tentar de novo
+        </button>
+        <Link href="/" className="pill pill--ghost">
+          Voltar ao início
+        </Link>
       </div>
-    </main>
+    </section>
   );
 }

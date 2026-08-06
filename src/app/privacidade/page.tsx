@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/seo";
-import BlueprintStage from "@/components/BlueprintStage";
+import Foot from "@/components/shell/Foot";
 
 export const metadata = pageMetadata({
   title: "Privacidade — como tratamos seus dados",
@@ -12,11 +12,10 @@ export const metadata = pageMetadata({
    ⚠ Revisão do responsável (Mizael) recomendada antes do deploy público. */
 export default function PrivacidadePage() {
   return (
-    <main id="main" className="legal">
-      <BlueprintStage />
-      <article className="legal-body card-1">
-        <span className="section-eyebrow">Privacidade · LGPD</span>
-        <h1 className="section-heading">Como tratamos seus dados</h1>
+    <>
+      <article className="panel prose">
+        <span className="eyebrow">Privacidade · LGPD</span>
+        <h1 className="h-lg">Como tratamos seus dados</h1>
 
         <h2>O que coletamos</h2>
         <ul>
@@ -55,6 +54,7 @@ export default function PrivacidadePage() {
           atendimento e a obrigações legais.
         </p>
       </article>
-    </main>
+      <Foot />
+    </>
   );
 }
