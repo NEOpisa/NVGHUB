@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import RailLeft from "@/components/shell/RailLeft";
 import RailRight from "@/components/shell/RailRight";
+import MobileBar from "@/components/shell/MobileBar";
 import MetaPixel from "@/components/MetaPixel";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL } from "@/lib/constants";
@@ -147,6 +148,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
+        <MobileBar />
         <div className="sh">
           <RailLeft />
           <main className="sh-main" id="main">

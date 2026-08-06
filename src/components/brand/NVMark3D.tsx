@@ -11,9 +11,9 @@ import { buildVHalf } from "./vGeometry";
  *
  * As duas metades do V nascem afastadas e se encaixam no eixo (montagem),
  * depois entram em deriva: flutuação lenta, respiração das metades e
- * inclinação que segue o ponteiro. Metal cornflower com clearcoat, facetas
- * em MediumBlue emissivo e um halo que pulsa por trás — a luz vem de dois
- * lightformers (estúdio inline, sem HDR remoto).
+ * inclinação que segue o ponteiro. Metal cornflower com clearcoat e facetas
+ * em MediumBlue emissivo — a luz vem de lightformers (estúdio inline, sem
+ * HDR remoto). A marca tem coluna própria no hero: nunca fica sob o texto.
  */
 
 const CORN = "#6495ed";
@@ -27,7 +27,6 @@ function Mark({ motion }: { motion: boolean }) {
   const group = useRef<THREE.Group>(null);
   const right = useRef<THREE.Group>(null);
   const left = useRef<THREE.Group>(null);
-  const halo = useRef<THREE.Mesh>(null);
   const t0 = useRef(0);
   const aim = useRef({ x: 0, y: 0 });
 
@@ -46,19 +45,12 @@ function Mark({ motion }: { motion: boolean }) {
       metalness: 0.7,
       roughness: 0.24,
       emissive: new THREE.Color(BLUE),
-      emissiveIntensity: 0.55,
+      emissiveIntensity: 0.28,
       envMapIntensity: 1.3,
       clearcoat: 1,
       clearcoatRoughness: 0.14,
     });
-    const glow = new THREE.MeshBasicMaterial({
-      color: CORN,
-      transparent: true,
-      opacity: 0.08,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    return { body, facet, glow };
+    return { body, facet };
   }, []);
 
   useEffect(() => {
@@ -94,7 +86,6 @@ function Mark({ motion }: { motion: boolean }) {
     if (left.current) left.current.position.x = -gap;
     g.scale.setScalar(0.82 + assemble * 0.18);
     g.position.z = -1.2;
-    g.position.x = 0;
 
     if (!motion) return;
 
@@ -103,21 +94,12 @@ function Mark({ motion }: { motion: boolean }) {
     const tx = aim.current.x * 0.5;
     g.rotation.y += (-0.22 + tx * 0.7 + Math.sin(t * 0.4) * 0.14 - g.rotation.y) * Math.min(1, dt * 2.4);
     g.rotation.x += (-ty * 0.35 + Math.sin(t * 0.53) * 0.05 - g.rotation.x) * Math.min(1, dt * 2.4);
-    g.position.y = 0.15 + Math.sin(t * 0.7) * 0.09;
+    g.position.y = Math.sin(t * 0.7) * 0.09;
 
-    if (halo.current) {
-      const s = 1 + Math.sin(t * 0.9) * 0.06;
-      halo.current.scale.set(s, s, 1);
-      (halo.current.material as THREE.MeshBasicMaterial).opacity =
-        (0.055 + Math.sin(t * 0.9) * 0.02) * assemble;
-    }
   });
 
   return (
     <group ref={group}>
-      <mesh ref={halo} position={[0, 0, -1.6]} material={mats.glow}>
-        <circleGeometry args={[2.6, 48]} />
-      </mesh>
       {/* metade direita = a do vetor; esquerda = espelho em X */}
       <group ref={right}>
         <mesh geometry={parts.body} material={mats.body} />
@@ -172,15 +154,15 @@ export default function NVMark3D({ className }: { className?: string }) {
           // ACES puxava o MediumBlue pro violeta — a marca não tem esse matiz
           toneMapping: THREE.NoToneMapping,
         }}
-        camera={{ position: [0, 0, 11.2], fov: 38 }}
+        camera={{ position: [0, 0, 10.4], fov: 38 }}
         frameloop={motion ? "always" : "demand"}
       >
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[-3, 4, 6]} intensity={2.8} color="#ffffff" />
-        <directionalLight position={[4, -2, 3]} intensity={1.4} color={CORN} />
+        <ambientLight intensity={0.32} />
+        <directionalLight position={[-3, 4, 6]} intensity={2.0} color="#ffffff" />
+        <directionalLight position={[4, -2, 3]} intensity={0.7} color={CORN} />
         <Mark motion={motion} />
         <Environment resolution={64} frames={1}>
-          <Lightformer form="rect" intensity={2.2} position={[-4, 4, 5]} scale={8} color="#ffffff" />
+          <Lightformer form="rect" intensity={1.7} position={[-4, 4, 5]} scale={8} color="#ffffff" />
           <Lightformer form="rect" intensity={0.9} position={[5, -2, 3]} scale={6} color={CORN} />
           <Lightformer form="circle" intensity={0.6} position={[0, -4, 2]} scale={5} color={BLUE} />
         </Environment>

@@ -44,9 +44,6 @@ export default function Home() {
   return (
     <>
       <section className="hero" aria-label="Apresentação da Neovanguard">
-        <div className="hero-art">
-          <NVMark3D />
-        </div>
         <div className="hero-copy">
           <span className="eyebrow">Estúdio de tecnologia · desde 2023</span>
           <h1 className="h-xl">
@@ -68,6 +65,9 @@ export default function Home() {
               Conhecer o Ouro
             </Link>
           </div>
+        </div>
+        <div className="hero-art">
+          <NVMark3D />
         </div>
         <p className="hero-note">
           entrega em até 16 dias · escopo fechado antes de começar · suporte

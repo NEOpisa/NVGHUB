@@ -152,12 +152,7 @@ a {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: calc(100svh - var(--gap) * 2);
-    overflow-y: auto;
-    scrollbar-width: none;
-}
-.rail::-webkit-scrollbar {
-    display: none;
+    min-width: 0;
 }
 
 .rail-brand {
@@ -390,9 +385,7 @@ a {
     border-color: transparent;
 }
 .panel--deep {
-    background:
-        radial-gradient(90% 120% at 50% 0%, rgba(100, 149, 237, 0.28), transparent 62%),
-        var(--nv-blue-deep);
+    background: var(--nv-blue-deep);
     border-color: transparent;
 }
 
@@ -685,56 +678,35 @@ a.card:hover,
 /* ═══ HERO com a marca 3D ════════════════════════════════════════ */
 .hero {
     position: relative;
-    min-height: min(880px, calc(100svh - 28px));
+    min-height: min(720px, calc(100svh - 28px));
     border-radius: var(--r);
     overflow: hidden;
     padding: clamp(30px, 4vw, 64px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
     align-items: center;
-    text-align: center;
+    gap: clamp(20px, 3vw, 48px);
     border: 1px solid var(--line);
-    background:
-        radial-gradient(120% 90% at 12% 6%, rgba(100, 149, 237, 0.34), transparent 60%),
-        radial-gradient(90% 80% at 88% 98%, rgba(0, 0, 205, 0.7), transparent 58%),
-        linear-gradient(150deg, #0a1330 0%, #070c20 46%, #04060f 100%);
+    background: #080c18;
 }
+/* a marca ocupa a PRÓPRIA coluna: nada de texto por cima de metal */
 .hero-art {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
+    position: relative;
+    align-self: stretch;
+    min-height: 340px;
     pointer-events: none;
 }
-.hero-art::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        62% 50% at 50% 48%,
-        rgba(3, 6, 22, 0.76),
-        rgba(3, 6, 22, 0.2) 72%,
-        transparent 100%
-    );
-}
 .hero-copy {
-    position: relative;
-    z-index: 1;
-    width: min(920px, 94%);
+    min-width: 0;
+}
+.hero .h-xl {
+    font-size: clamp(2.1rem, 3.5vw, 3.5rem);
 }
 .hero-copy .eyebrow {
     margin-bottom: 20px;
 }
 .hero-copy .lead {
-    margin-inline: auto;
-    color: rgba(255, 255, 255, 0.88);
-    text-shadow: 0 1px 20px rgba(3, 6, 22, 0.8);
-}
-.hero-copy .pill-row {
-    justify-content: center;
-}
-.hero h1 {
-    text-shadow: 0 2px 42px rgba(3, 6, 22, 0.6);
+    color: var(--tx-2);
 }
 .hero-note {
     position: absolute;
@@ -1022,7 +994,7 @@ a.card:hover,
     border: 1px solid var(--line);
 }
 .door--gold {
-    background: linear-gradient(150deg, #7a5410, #c8912c 60%, #f4b74a);
+    background: var(--nv-gold);
     color: #1b1200;
 }
 .door-flag {
@@ -1078,9 +1050,7 @@ a.card:hover,
     border-radius: var(--r);
     padding: clamp(44px, 6vw, 92px) clamp(28px, 4vw, 64px);
     text-align: center;
-    background:
-        radial-gradient(90% 120% at 50% 0%, rgba(100, 149, 237, 0.32), transparent 62%),
-        var(--nv-blue-deep);
+    background: var(--nv-blue-deep);
 }
 .closer .lead {
     margin-inline: auto;
@@ -1130,27 +1100,25 @@ a.card:hover,
     }
 }
 @media (max-width: 980px) {
-    /* os trilhos continuam sempre visíveis — viram faixas empilhadas */
+    /* no mobile fica SÓ a coluna do meio: os trilhos viram o menu da barra */
     .sh {
         grid-template-columns: minmax(0, 1fr);
+        padding-top: calc(var(--gap) + 62px);
     }
     .rail {
-        position: static;
-        max-height: none;
-        overflow: visible;
-    }
-    .rail-nav {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
-    }
-    .rail-right {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        align-items: start;
+        display: none;
     }
     .hero {
-        min-height: 620px;
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+        padding-bottom: 78px;
+    }
+    .hero-art {
+        min-height: 230px;
+        order: -1;
+    }
+    .hero .h-xl {
+        font-size: clamp(2rem, 8vw, 2.6rem);
     }
     .step {
         grid-template-columns: minmax(0, 1fr);
@@ -1179,10 +1147,8 @@ a.card:hover,
 
 /* ── tema OURO (a divisão tem cor própria dentro do mesmo sistema) ── */
 .panel--gold-hero {
-    background:
-        radial-gradient(100% 120% at 8% 0%, rgba(244, 183, 74, 0.22), transparent 58%),
-        var(--panel);
-    border-color: rgba(244, 183, 74, 0.28);
+    background: var(--panel);
+    border-color: rgba(244, 183, 74, 0.4);
 }
 .h-gold {
     font-style: normal;
@@ -1265,11 +1231,12 @@ a.card:hover,
     margin: 16px 0 0;
     padding: 11px 14px;
     border-radius: 10px;
-    background: rgba(100, 149, 237, 0.12);
-    border: 1px solid rgba(100, 149, 237, 0.3);
+    background: var(--panel-3);
+    border-left: 3px solid var(--nv-corn);
+    border-radius: 0 10px 10px 0;
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--nv-corn-pale);
+    color: var(--tx);
 }
 
 /* ── diagnóstico da consulta ── */
@@ -1422,4 +1389,152 @@ a.card:hover,
     font-size: 0.88rem;
     line-height: 1.4;
     color: var(--tx);
+}
+
+/* ═══ BARRA E MENU MOBILE ════════════════════════════════════════ */
+.mbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 10px var(--gap);
+    background: var(--ink);
+    border-bottom: 1px solid var(--line);
+}
+.mbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-right: auto;
+    text-decoration: none;
+    font-family: var(--ff-display);
+    font-size: 1.12rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--tx);
+}
+.mbar-brand img {
+    height: 22px;
+    width: auto;
+}
+.mbar-brand b {
+    color: var(--nv-corn);
+}
+.mbar-cta {
+    padding: 11px 18px;
+    border-radius: 999px;
+    background: var(--nv-blue);
+    color: #fff;
+    font-family: var(--ff-display);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.mbar-burger {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border: 0;
+    border-radius: 13px;
+    background: var(--tx);
+    cursor: pointer;
+}
+.mbar-burger span {
+    display: grid;
+    gap: 4px;
+    width: 18px;
+}
+.mbar-burger i {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: #06070b;
+    transition: transform 260ms var(--ease), opacity 200ms var(--ease);
+}
+.mbar-burger .is-x i:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+.mbar-burger .is-x i:nth-child(2) {
+    opacity: 0;
+}
+.mbar-burger .is-x i:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+body.menu-aberto {
+    overflow: hidden;
+}
+.mmenu {
+    position: fixed;
+    inset: 62px 0 0;
+    z-index: 79;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    padding: 30px var(--gap) 48px;
+    background: var(--ink);
+    overflow-y: auto;
+    text-align: center;
+}
+.mmenu-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+.mmenu-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 0;
+    font-family: var(--ff-display);
+    font-size: clamp(2rem, 9vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    color: var(--tx);
+    text-decoration: none;
+}
+.mmenu-item.is-on {
+    color: var(--nv-corn);
+}
+.mmenu-n {
+    font-family: var(--ff-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--tx-3);
+}
+.mmenu-wa {
+    width: 100%;
+    justify-content: center;
+}
+.mmenu-fatos,
+.mmenu-uteis {
+    width: 100%;
+    padding: 18px;
+    border-radius: var(--r-sm);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    text-align: left;
+}
+.mmenu-fatos .rstatus {
+    margin: 0 0 12px;
+}
+
+/* a barra mobile entra depois da própria definição (senão a cascata
+   devolve o display:none base) */
+@media (max-width: 980px) {
+    .mbar {
+        display: flex;
+    }
 }
