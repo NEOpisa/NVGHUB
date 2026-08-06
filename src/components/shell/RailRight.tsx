@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { WA, UTEIS } from "@/lib/constants";
+import { UTEIS, FATOS } from "@/lib/constants";
 import { ArrowUpRight } from "@/components/icons";
 
 /**
- * TRILHO DIREITO — o que o visitante costuma precisar DEPOIS de já estar
- * numa página: estado do estúdio, atalhos utilitários, consulta rápida,
- * legal e voltar ao topo. Espelha o trilho esquerdo e também nunca some.
+ * TRILHO DIREITO — não repete o esquerdo. Lá ficam os DESTINOS (para onde
+ * ir); aqui fica o CONTEXTO: se estamos aceitando projeto, o que já está
+ * combinado antes de você perguntar, o que dá para ler sobre a casa, e a
+ * única ação que não é uma página — a consulta rápida.
  */
 export default function RailRight() {
   const [topo, setTopo] = useState(false);
@@ -29,8 +30,7 @@ export default function RailRight() {
           Aceitando projetos
         </p>
         <p className="rcard-note">
-          Resposta em até 3h úteis · entrega em até 16 dias · escopo fechado
-          antes de começar.
+          Respondemos em até 3h úteis, de segunda a sexta.
         </p>
       </div>
 
@@ -38,9 +38,22 @@ export default function RailRight() {
         Consulta rápida
         <ArrowUpRight />
       </Link>
+      <p className="rcta-note">3 perguntas · sem compromisso</p>
 
       <div className="rcard">
-        <span className="rcard-h">Úteis</span>
+        <span className="rcard-h">Já combinado</span>
+        <dl className="rfatos">
+          {FATOS.map(([k, v]) => (
+            <div key={k}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div className="rcard">
+        <span className="rcard-h">Sobre a casa</span>
         <div className="rlinks">
           {UTEIS.map((u) => (
             <Link key={u.href} href={u.href} className="rlink">
@@ -48,15 +61,6 @@ export default function RailRight() {
               <ArrowUpRight />
             </Link>
           ))}
-          <a
-            href={WA}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rlink"
-          >
-            WhatsApp
-            <ArrowUpRight />
-          </a>
         </div>
       </div>
 
@@ -75,7 +79,6 @@ export default function RailRight() {
       <div className="rmeta">
         <Link href="/privacidade">Privacidade</Link>
         <Link href="/termos">Termos</Link>
-        <span>CNPJ 100% remoto · BR</span>
       </div>
     </aside>
   );

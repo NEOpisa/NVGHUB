@@ -1386,3 +1386,40 @@ a.card:hover,
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* ── cartão de fatos e nota do CTA (trilho direito) ── */
+.rcta-note {
+    margin: -4px 0 2px;
+    padding: 0 8px;
+    font-family: var(--ff-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx-3);
+}
+.rfatos {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+.rfatos > div {
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+}
+.rfatos > div:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+.rfatos dt {
+    font-family: var(--ff-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tx-3);
+}
+.rfatos dd {
+    margin: 3px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: var(--tx);
+}
