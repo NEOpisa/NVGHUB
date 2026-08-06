@@ -120,7 +120,7 @@ export default function JourneyCanvas() {
         <directionalLight
           position={[8, 3, -6]}
           intensity={0.7}
-          color="#9d8cff"
+          color="#a8c0f5"
         />
         {/* reflexos para os metais (bake único, sem rede) — a mesma luz
             superior-esquerda domina o environment */}
@@ -137,7 +137,7 @@ export default function JourneyCanvas() {
             intensity={0.45}
             position={[5, -2, 3]}
             scale={6}
-            color="#6c5cff"
+            color="#6495ed"
           />
         </Environment>
         <AdaptiveQuality start={maxDpr} min={0.75} />

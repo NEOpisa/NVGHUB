@@ -251,7 +251,7 @@ function GoldWorld() {
       <pointLight position={[3, 1, 3]} intensity={26} color="#f4b74a" distance={14} decay={1.8} />
       {/* contraluz fria vinda de baixo-esquerda: o ouro ganha volume por
           contraste quente × frio (a assinatura bismuto da casa) */}
-      <pointLight position={[-4, -2.5, 2]} intensity={7} color="#6c5cff" distance={12} decay={2} />
+      <pointLight position={[-4, -2.5, 2]} intensity={7} color="#6495ed" distance={12} decay={2} />
       {/* reflexos para o metal (bake único, sem rede) — a mesma key
           superior-esquerda domina, com um fill dourado por baixo */}
       <Environment resolution={64} frames={1}>

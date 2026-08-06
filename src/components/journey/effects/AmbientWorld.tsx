@@ -38,7 +38,7 @@ function Structures() {
     const tier = journey.tier;
     const n = STRUCT_COUNT[tier];
     const mat = new THREE.LineBasicMaterial({
-      color: "#6c5cff",
+      color: "#6495ed",
       transparent: true,
       opacity: 0.17,
       blending: THREE.AdditiveBlending,
@@ -138,7 +138,7 @@ function TagSprites() {
       const num = String(Math.floor(10 + rnd() * 88));
       const sprite = makeLabelSprite(
         num,
-        i % 3 === 0 ? "#9d8cff" : "#6f6a8f",
+        i % 3 === 0 ? "#a8c0f5" : "#6f6a8f",
         0.24,
       );
       const z = 8 - (i / Math.max(1, n - 1)) * 80 - rnd() * 5;

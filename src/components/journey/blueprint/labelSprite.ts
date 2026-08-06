@@ -7,7 +7,7 @@ import * as THREE from "three";
  */
 export function makeLabelSprite(
   text: string,
-  color = "#c2b3ff",
+  color = "#c3d5f9",
   worldHeight = 0.34,
 ): THREE.Sprite {
   const pr = Math.min(

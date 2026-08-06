@@ -61,7 +61,7 @@ export default function WarpGates() {
     () =>
       Array.from({ length: N }, () =>
         new THREE.LineBasicMaterial({
-          color: "#9d8cff",
+          color: "#a8c0f5",
           transparent: true,
           opacity: 0,
           blending: THREE.AdditiveBlending,
@@ -118,7 +118,7 @@ export default function WarpGates() {
       const near = THREE.MathUtils.clamp(1 - Math.abs(d) / 7, 0, 1);
       const flash = THREE.MathUtils.clamp(1 - Math.abs(d) / 1.6, 0, 1);
       mats[k].opacity = on * (0.06 + near * near * 0.55 + flash * 0.4);
-      mats[k].color.setStyle(flash > 0.55 ? "#efeaff" : "#9d8cff");
+      mats[k].color.setStyle(flash > 0.55 ? "#efeaff" : "#a8c0f5");
       // respiro: o portão “abre” um tique quando a câmera está perto
       const s = gd.scale * (1 + flash * 0.08);
       gate.scale.setScalar(s);

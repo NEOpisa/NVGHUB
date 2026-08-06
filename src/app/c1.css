@@ -145,7 +145,7 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
     font-family: var(--ff-mono), monospace;
     font-size: clamp(3.4rem, 10vw, 5.4rem);
     line-height: 1;
-    color: #6c5cff;
+    color: #6495ed;
     letter-spacing: -0.04em;
     margin: 10px 0 12px;
 }
@@ -192,7 +192,7 @@ body.site-loaded .jy-d5 { animation-delay: 0.42s; }
     max-width: 330px;
     padding: 18px 20px;
     background: rgba(10, 8, 18, 0.97);
-    border: 1px solid rgba(108, 92, 255, 0.35);
+    border: 1px solid rgba(100, 149, 237, 0.35);
     font-size: 0.88rem;
     color: rgba(240, 240, 240, 0.85);
     animation: exitNudgeIn 0.35s cubic-bezier(0.19, 1, 0.22, 1);
@@ -235,7 +235,7 @@ body.bp-page::after {
 /* ══ LUXO · scrollbar do design system ══════════════════════════════════ */
 html {
     scrollbar-width: thin;
-    scrollbar-color: rgba(108, 92, 255, 0.45) #06050c;
+    scrollbar-color: rgba(100, 149, 237, 0.45) #06050c;
 }
 ::-webkit-scrollbar {
     width: 10px;
@@ -244,15 +244,15 @@ html {
     background: #06050c;
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(108, 92, 255, 0.4);
+    background: rgba(100, 149, 237, 0.4);
     border: 2px solid #06050c; /* hairline de respiro, mantém o bevel reto */
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(108, 92, 255, 0.7);
+    background: rgba(100, 149, 237, 0.7);
 }
 
 /* ══ LUXO · seleção de texto na marca ═══════════════════════════════════ */
 ::selection {
-    background: rgba(108, 92, 255, 0.85);
+    background: rgba(100, 149, 237, 0.85);
     color: #ffffff;
 }

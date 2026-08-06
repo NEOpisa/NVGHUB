@@ -23,8 +23,8 @@ export default function EstiloPage() {
         <h2>Cores</h2>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           {[
-            ["#6c5cff", "violeta único"],
-            ["#9d8cff", "violeta claro"],
+            ["#6495ed", "violeta único"],
+            ["#a8c0f5", "violeta claro"],
             ["#040309", "obsidian"],
             ["#f0f0f0", "texto"],
           ].map(([hex, name]) => (
@@ -62,7 +62,7 @@ export default function EstiloPage() {
 
         <h2>Regras de ouro</h2>
         <ul>
-          <li>Violeta único <code>#6c5cff</code> — sem cores concorrentes (tier pages: hue só em detalhes).</li>
+          <li>Violeta único <code>#6495ed</code> — sem cores concorrentes (tier pages: hue só em detalhes).</li>
           <li>Nada redondo: bevel e cantos retos; hairline de 1px.</li>
           <li>Labels mono com prefixo <code>{"// "}</code> (via ::before do eyebrow).</li>
           <li>Todo motion respeita <code>prefers-reduced-motion</code>.</li>

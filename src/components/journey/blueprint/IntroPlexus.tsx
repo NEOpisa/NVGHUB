@@ -58,7 +58,7 @@ export default function IntroPlexus() {
     [pointGeo, lineGeo],
   );
 
-  const violet = useMemo(() => new THREE.Color("#6c5cff"), []);
+  const violet = useMemo(() => new THREE.Color("#6495ed"), []);
 
   useFrame((_, delta) => {
     const g = group.current;
@@ -129,7 +129,7 @@ export default function IntroPlexus() {
       <points ref={pointsRef} geometry={pointGeo}>
         <pointsMaterial
           size={0.05}
-          color="#c2b3ff"
+          color="#c3d5f9"
           transparent
           opacity={0}
           depthWrite={false}

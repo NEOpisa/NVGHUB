@@ -7,7 +7,6 @@ import {
 import Header from "@/components/Header";
 import FooterGate from "@/components/FooterGate";
 import Preloader from "@/components/Preloader";
-import SmoothScroll from "@/components/SmoothScroll";
 import ScrollJuice from "@/components/ScrollJuice";
 import PageTransition from "@/components/PageTransition";
 import TransitionCanvas from "@/components/scene/TransitionCanvas";
@@ -26,6 +25,8 @@ import "./globals.css";
 // Ordem importa: importadas após globals.css para vencer a cascata.
 import "./c1.css";
 import "./c2.css";
+// home creme (linguagem editorial) — última na cascata
+import "./home.css";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -212,7 +213,6 @@ export default function RootLayout({
         <Preloader />
         <PageTransition />
         <TransitionCanvas />
-        <SmoothScroll />
         <ScrollJuice />
         <ScrollToSection />
         <ClickFX />

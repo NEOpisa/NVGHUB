@@ -109,7 +109,7 @@ export default function Ecosystem() {
     () =>
       Array.from({ length: ECO_COUNT }, () =>
         new THREE.LineBasicMaterial({
-          color: "#9d8cff",
+          color: "#a8c0f5",
           transparent: true,
           opacity: 0,
           blending: THREE.AdditiveBlending,
@@ -176,7 +176,7 @@ export default function Ecosystem() {
   const rimMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#6c5cff",
+        color: "#6495ed",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -275,7 +275,7 @@ export default function Ecosystem() {
       fillMats[i].opacity = reveal * Math.min(1, face * 1.8);
       fillMats[i].color.set(isActive ? "#181240" : "#0c0918");
       frameMats[i].opacity = reveal * (0.05 + faceQ * (isActive ? 0.95 : 0.5));
-      frameMats[i].color.set(isActive ? "#e9e4ff" : "#9d8cff");
+      frameMats[i].color.set(isActive ? "#e9e4ff" : "#a8c0f5");
       glyphMats[i].opacity = reveal * (0.04 + faceQ * (isActive ? 0.96 : 0.6));
 
       const gl = glyphRefs.current[i];

@@ -72,7 +72,7 @@ export const FERRAMENTAS: FerramentaItem[] = [
       "Área logada onde cada cliente acompanha o serviço, baixa documentos e abre chamados sozinho.",
     resultado: "Menos ligações, cliente informado 24/7",
     tags: ["Login", "Status", "2ª via"],
-    accent: "#9d8cff",
+    accent: "#a8c0f5",
   },
   {
     slug: "contador-lavoura",
@@ -178,7 +178,7 @@ export const AUTOMACOES: FerramentaItem[] = [
       "Venda aprovada → NF-e emitida, enviada ao cliente e arquivada sozinha, com o contador copiado.",
     resultado: "Nota emitida em segundos, sem fila",
     tags: ["NF-e", "Contador", "Arquivo"],
-    accent: "#9d8cff",
+    accent: "#a8c0f5",
   },
   {
     slug: "funil-followup",

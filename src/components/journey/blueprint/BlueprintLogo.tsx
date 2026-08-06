@@ -267,7 +267,7 @@ export default function BlueprintLogo({
   const purpleMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#9d8cff",
+        color: "#a8c0f5",
         transparent: true,
         opacity: 0.95,
         blending: THREE.AdditiveBlending,
@@ -278,7 +278,7 @@ export default function BlueprintLogo({
   const backMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#6c5cff",
+        color: "#6495ed",
         transparent: true,
         opacity: 0.4,
         blending: THREE.AdditiveBlending,
@@ -289,7 +289,7 @@ export default function BlueprintLogo({
   const riserMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#cfc4ff",
+        color: "#d6e2fb",
         transparent: true,
         opacity: 0.55,
         blending: THREE.AdditiveBlending,
@@ -300,7 +300,7 @@ export default function BlueprintLogo({
   const ribMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#6c5cff",
+        color: "#6495ed",
         transparent: true,
         opacity: 0.22,
         blending: THREE.AdditiveBlending,
@@ -311,7 +311,7 @@ export default function BlueprintLogo({
   const ghostMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#6c5cff",
+        color: "#6495ed",
         transparent: true,
         opacity: 0.1,
         blending: THREE.AdditiveBlending,
@@ -322,7 +322,7 @@ export default function BlueprintLogo({
   const calloutMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: "#cfc4ff",
+        color: "#d6e2fb",
         transparent: true,
         opacity: 0.5,
         blending: THREE.AdditiveBlending,
@@ -346,7 +346,7 @@ export default function BlueprintLogo({
   const beadMatP = useMemo(
     () =>
       new THREE.PointsMaterial({
-        color: "#9d8cff",
+        color: "#a8c0f5",
         size: 0.055,
         sizeAttenuation: true,
         transparent: true,
@@ -359,7 +359,7 @@ export default function BlueprintLogo({
   const scanBarMat = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
-        color: "#c2b3ff",
+        color: "#c3d5f9",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -513,7 +513,7 @@ export default function BlueprintLogo({
       <primitive object={objs.wBeads} />
       <primitive object={objs.pBeads} />
       <ScanHead color="#e6e9f6" headRef={whiteHead} />
-      <ScanHead color="#9d8cff" headRef={purpleHead} />
+      <ScanHead color="#a8c0f5" headRef={purpleHead} />
       {/* anotações de medição (mono + linha-guia + crosshair) */}
       <Callout
         anchor={[0.19, 0.74, HD_W]}

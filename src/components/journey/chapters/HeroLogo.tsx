@@ -35,7 +35,7 @@ const LOOP_SPEED = 0.55;
 const SATS = [
   { color: "#f4b74a", r: 3.1, sp: 0.3, ph: 0.0, s: 0.16, tilt: 0.3 },
   { color: "#3fe0d8", r: 3.55, sp: -0.22, ph: 2.1, s: 0.12, tilt: -0.45 },
-  { color: "#9d8cff", r: 3.95, sp: 0.15, ph: 4.2, s: 0.1, tilt: 0.7 },
+  { color: "#a8c0f5", r: 3.95, sp: 0.15, ph: 4.2, s: 0.1, tilt: 0.7 },
 ];
 // bounds locais da marca em y (para o clipping da materialização) —
 // brasão: ponta inferior do escudo a -2.7, topo a +2.0
@@ -85,7 +85,7 @@ export default function HeroLogo() {
         color: "#eef0ff",
         metalness: 1.0,
         roughness: 0.1,
-        emissive: new THREE.Color("#6c5cff"),
+        emissive: new THREE.Color("#6495ed"),
         emissiveIntensity: 0.06,
         envMapIntensity: 1.6,
         clearcoat: 1,
@@ -97,10 +97,10 @@ export default function HeroLogo() {
         clippingPlanes: [clipPlane],
       });
       const purpleMat = new THREE.MeshPhysicalMaterial({
-        color: "#6c5cff",
+        color: "#6495ed",
         metalness: 0.92,
         roughness: 0.14,
-        emissive: new THREE.Color("#9d8cff"),
+        emissive: new THREE.Color("#a8c0f5"),
         emissiveIntensity: 0.9,
         envMapIntensity: 1.8,
         clearcoat: 1,
@@ -124,7 +124,7 @@ export default function HeroLogo() {
         clippingPlanes: [clipPlane],
       });
       const haloMat = new THREE.MeshBasicMaterial({
-        color: "#9d8cff",
+        color: "#a8c0f5",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -133,7 +133,7 @@ export default function HeroLogo() {
       });
       // juntas luminosas sobre o metal (as "seams" do igloo)
       const seamMat = new THREE.LineBasicMaterial({
-        color: "#cfc4ff",
+        color: "#d6e2fb",
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -447,9 +447,9 @@ export default function HeroLogo() {
         size={2.2}
         speed={0.28}
         opacity={0.35}
-        color="#9d8cff"
+        color="#a8c0f5"
       />
-      <pointLight position={[-1.8, 1.8, 2.5]} intensity={22} color="#6c5cff" />
+      <pointLight position={[-1.8, 1.8, 2.5]} intensity={22} color="#6495ed" />
     </group>
   );
 }

@@ -34,14 +34,14 @@ export default function MeasureCallouts({
       new THREE.BufferAttribute(new Float32Array((NODES - 1) * 2 * 3), 3),
     );
     const lineMat = new THREE.LineBasicMaterial({
-      color: "#cfc4ff",
+      color: "#d6e2fb",
       transparent: true,
       opacity: 0,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
     const sprites = picks.map((p, i) =>
-      makeLabelSprite(String(17 + ((p * 7 + i * 13) % 78)), "#c2b3ff", 0.3),
+      makeLabelSprite(String(17 + ((p * 7 + i * 13) % 78)), "#c3d5f9", 0.3),
     );
     return { picks, lineGeo, lineMat, sprites };
   }, [meshes]);

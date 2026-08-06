@@ -4,11 +4,14 @@ import { usePathname } from "next/navigation";
 import Footer from "@/components/Footer";
 
 /**
- * Na home o rodapé vive DENTRO do capítulo final da jornada (jy-cta-foot) —
- * o footer global só renderiza nas demais páginas.
+ * Gate legado da jornada (a home tinha rodapé próprio no capítulo final).
+ * Hoje a home é uma página normal e assina com o mesmo rodapé do site —
+ * o gate segue aqui só para páginas que peçam exceção no futuro.
  */
+const SEM_FOOTER: string[] = [];
+
 export default function FooterGate() {
   const pathname = usePathname();
-  if (pathname === "/") return null;
+  if (SEM_FOOTER.includes(pathname)) return null;
   return <Footer />;
 }

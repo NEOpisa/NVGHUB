@@ -30,7 +30,7 @@ export default function ExploreTunnel() {
   const ringMat = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
-        color: "#9d8cff",
+        color: "#a8c0f5",
         transparent: true,
         opacity: 0.7,
         blending: THREE.AdditiveBlending,
@@ -162,7 +162,7 @@ export default function ExploreTunnel() {
       new THREE.PointsMaterial({
         size: 0.045,
         sizeAttenuation: true,
-        color: "#cfc4ff",
+        color: "#d6e2fb",
         transparent: true,
         opacity: 0.8,
         depthWrite: false,
@@ -230,7 +230,7 @@ export default function ExploreTunnel() {
           material={starMat}
           frustumCulled={false}
         />
-        <pointLight intensity={40} color="#6c5cff" distance={12} />
+        <pointLight intensity={40} color="#6495ed" distance={12} />
       </group>
     </group>
   );

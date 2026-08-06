@@ -26,10 +26,10 @@ const TINTS: Record<
   default: {
     whiteEm: "#6b57c9",
     purpleCol: "#251a63",
-    purpleEm: "#6c5cff",
-    halo: "#6c5cff",
+    purpleEm: "#6495ed",
+    halo: "#6495ed",
     dir: "#b3a1ff",
-    point: "#5a45f0",
+    point: "#0000cd",
   },
   ouro: {
     whiteEm: "#c9962e",
@@ -79,10 +79,10 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
     });
     const purple = new THREE.MeshStandardMaterial({
       color: "#251a63", metalness: 0.7, roughness: 0.36,
-      emissive: new THREE.Color("#6c5cff"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
+      emissive: new THREE.Color("#6495ed"), emissiveIntensity: 0.8, transparent: true, opacity: 0,
     });
     const halo = new THREE.MeshBasicMaterial({
-      color: "#6c5cff", transparent: true, opacity: 0,
+      color: "#6495ed", transparent: true, opacity: 0,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     // esmalte do brasão: violeta-negro (não tinge — é o fundo do emblema)
@@ -235,7 +235,7 @@ function TransitionLogo({ onActive }: { onActive: (a: boolean) => void }) {
         ref={pointLight}
         position={[-5, -2, 4]}
         intensity={30}
-        color="#5a45f0"
+        color="#0000cd"
       />
       <primitive object={group} />
     </group>
