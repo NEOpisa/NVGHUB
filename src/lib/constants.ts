@@ -68,7 +68,9 @@ export const ASSUNTOS = [
   },
 ] as const;
 
-/** Compromissos em uma linha — o cartão de fatos do trilho direito. */
+/** Compromissos em uma linha. Vive só no menu mobile: no desktop quem
+    carrega esse peso é o deck de assuntos, e o trilho não tinha altura
+    para os dois (ver o comentário em RailRight). */
 export const FATOS = [
   ["Prazo", "até 16 dias, por escrito"],
   ["Suporte", "incluso, no WhatsApp"],

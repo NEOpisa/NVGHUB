@@ -62,11 +62,13 @@ describe("os SVGs gerados em public/", () => {
     ...bothHalves(HALF_OUTLINE, { dx: DX, dy: DY }),
   ];
 
-  /** [arquivo, tem extrusão?] — o favicon é silhueta chapada de propósito */
+  /** [arquivo, tem extrusão?] — o vetor inline e o favicon são chapados de
+      propósito: a 16–32px a extrusão não desenha relevo, só engrossa */
   const MASTERS: [string, boolean][] = [
     ["public/perfil.svg", true],
     ["public/icone-app.svg", true],
     ["public/icone.svg", false],
+    ["public/logo.svg", false],
   ];
 
   for (const [rel, comExtrusao] of MASTERS) {

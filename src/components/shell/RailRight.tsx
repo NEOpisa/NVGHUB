@@ -2,15 +2,20 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FATOS } from "@/lib/constants";
 import { ArrowUpRight } from "@/components/icons";
 import AssuntosDeck from "@/components/shell/AssuntosDeck";
 
 /**
  * TRILHO DIREITO — não é menu nenhum. O esquerdo diz para onde ir; aqui a
- * casa fala: em que pé está o estúdio, o que ela pensa sobre o próprio
- * trabalho (o deck de assuntos, que troca com a roda do mouse) e o que já
- * está combinado antes de você perguntar.
+ * casa fala: em que pé está o estúdio e o que ela pensa sobre o próprio
+ * trabalho (o deck de assuntos, que troca com a roda do mouse).
+ *
+ * O trilho é sticky pelo TOPO, e isso impõe um teto: o que passar da altura
+ * da janela fica abaixo da dobra para sempre, porque uma vez grudado ele não
+ * rola mais. Com o deck, o trilho chegou a 899px — mais alto que a janela de
+ * um notebook comum. O cartão "Já combinado" saiu por isso, e sem perda: os
+ * três compromissos já estão na linha do hero e o deck fala dos três com mais
+ * profundidade. Antes de acrescentar peça aqui, meça (scripts/visual-qa.mjs).
  */
 export default function RailRight() {
   const [topo, setTopo] = useState(false);
@@ -42,18 +47,6 @@ export default function RailRight() {
       <p className="rcta-note">3 perguntas · sem compromisso</p>
 
       <AssuntosDeck />
-
-      <div className="rcard">
-        <span className="rcard-h">Já combinado</span>
-        <dl className="rfatos">
-          {FATOS.map(([k, v]) => (
-            <div key={k}>
-              <dt>{k}</dt>
-              <dd>{v}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
 
       {topo && (
         <button

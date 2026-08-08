@@ -15,11 +15,15 @@
  *
  * Três masters, porque o mesmo desenho não serve aos três usos:
  *
+ *   logo.svg       o vetor chapado, sem campo. É o que o site usa inline
+ *                  nos trilhos, a 30px — nesse tamanho extrusão não desenha
+ *                  relevo, só engrossa.
  *   perfil.svg     campo escuro + V cromado. Foto de perfil das redes e
  *                  logo da organização — vive grande, pode ter material.
- *   icone.svg      campo azul + V, com canto arredondado. Aba do navegador.
- *   icone-app.svg  campo azul + V, sangrando até a borda. Tela inicial e
- *                  PWA, onde o sistema aplica a própria máscara.
+ *   icone.svg      campo azul + V em silhueta, canto arredondado. Aba do
+ *                  navegador, 16 a 32px.
+ *   icone-app.svg  campo azul + V inteiro, sangrando até a borda. Tela
+ *                  inicial e PWA, onde o sistema aplica a própria máscara.
  *
  * Precisa do rsvg-convert (pacote librsvg). Sem ele, nada é escrito.
  */
@@ -182,6 +186,41 @@ const PERFIL = `${CABECA(`       Foto de perfil das redes e logo da organizaçã
 </svg>
 `;
 
+/* ── logo: o vetor chapado que o site usa inline ───────────────────── */
+const LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${malha.viewBox}" role="img" aria-label="NEOVANGUARD">
+  <!-- GERADO por scripts/marca.mjs a partir de src/lib/v-malha.json.
+       Não edite à mão: rode o script.
+
+       O vetor da marca sem campo e sem extrusão, para uso inline no site
+       (trilho esquerdo, barra mobile, reserva do 3D). A 30px de altura a
+       extrusão não desenha relevo — só engrossa a peça e suja o entalhe.
+
+       Os degradês são os mesmos do avatar e em espaço de usuário, então a
+       luz atravessa as duas metades como uma luz só, igual ao resto do
+       sistema. -->
+  <defs>
+    <linearGradient id="nv-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.36" stop-color="#dbe5fc"/>
+      <stop offset="0.72" stop-color="#9dbaf5"/>
+      <stop offset="1" stop-color="#6495ED"/>
+    </linearGradient>
+    <linearGradient id="nv-esmalte" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
+      <stop offset="0" stop-color="#4f7ce8"/>
+      <stop offset="0.5" stop-color="#2b54e3"/>
+      <stop offset="1" stop-color="#0000CD"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="url(#nv-lamina)">
+${ambas(outline).map((d) => `    <path d="${d}"/>`).join("\n")}
+  </g>
+  <g fill="url(#nv-esmalte)">
+${facets.flatMap((f) => ambas(f)).map((d) => `    <path d="${d}"/>`).join("\n")}
+  </g>
+</svg>
+`;
+
 /* ── ícones: campo azul, o V oficial ───────────────────────────────── */
 const CAMPO_AZUL = `    <linearGradient id="i-campo" x1="0" y1="0" x2="0.35" y2="1">
       <stop offset="0" stop-color="#3f63e8"/>
@@ -252,6 +291,7 @@ try {
 }
 
 const MASTERS = [
+  ["public/logo.svg", LOGO],
   ["public/perfil.svg", PERFIL],
   ["public/icone.svg", ICONE],
   ["public/icone-app.svg", ICONE_APP],
