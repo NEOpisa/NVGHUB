@@ -46,3 +46,40 @@ export function bothHalves(
     vPath(pts, { mirror: true, ...offset }),
   ];
 }
+
+/**
+ * As PAREDES da extrusão em 2D: um quadrilátero por aresta do contorno,
+ * ligando a face da frente à cópia deslocada em (dx, dy).
+ *
+ * Desenhadas todas e por baixo das faces, elas preenchem exatamente o vão
+ * entre as duas cópias — as que ficariam escondidas num sólido de verdade
+ * acabam cobertas pela face frontal, então não é preciso decidir quais
+ * arestas formam a silhueta.
+ *
+ * Cada parede vem com um `tom` de 0 a 1: 1 para a que encara a luz (aresta
+ * subindo para a direita) e 0 para a que foge dela. É esse número que o
+ * chamador usa para escolher a cor e a peça deixar de parecer uma sombra.
+ */
+export function wallPaths(
+  pts: [number, number][],
+  { dx, dy, mirror = false }: { dx: number; dy: number; mirror?: boolean },
+): { d: string; tom: number }[] {
+  const p = pts.map(([x, y]) => [mirror ? MIRROR - x : x, y] as const);
+
+  return p.map((a, i) => {
+    const b = p[(i + 1) % p.length];
+    const d = [
+      `M${a[0]} ${a[1]}`,
+      `L${b[0]} ${b[1]}`,
+      `L${b[0] + dx} ${b[1] + dy}`,
+      `L${a[0] + dx} ${a[1] + dy}`,
+      "Z",
+    ].join(" ");
+
+    // normal da aresta contra a direção da luz (do alto à esquerda)
+    const [ex, ey] = [b[0] - a[0], b[1] - a[1]];
+    const len = Math.hypot(ex, ey) || 1;
+    const luz = (-ey / len) * -0.6 + (ex / len) * -0.8;
+    return { d, tom: (luz + 1) / 2 };
+  });
+}

@@ -1,14 +1,15 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { HALF_OUTLINE, HALF_FACETS, bothHalves } from "@/lib/vShape";
+import { HALF_OUTLINE, HALF_FACETS, bothHalves, wallPaths } from "@/lib/vShape";
 
 /**
  * AS IMAGENS DE LINK (OG) — uma peça só, três variantes.
  *
  * O símbolo aqui é o V da marca nova; o brasão roxo com escudo e lâmina saiu
- * de cena. Profundidade sem degradê: a lâmina é desenhada duas vezes, uma
- * deslocada atrás em tom fechado, do mesmo jeito que a extrusão do 3D.
+ * de cena. Profundidade sem degradê nenhum: a lâmina vira sólido com face
+ * de trás e paredes laterais em dois tons — a mesma anatomia da extrusão do
+ * 3D da home, congelada num ângulo.
  *
  * Variantes: `site` (cornflower), `ouro` (a divisão principal) e `platina`
  * (a divisão sem vitrine, que não tem página própria mas precisa de imagem
@@ -32,8 +33,12 @@ type Tema = {
   corpo: string;
   /** esmalte de acento sobre a lâmina */
   esmalte: string;
-  /** a cópia deslocada que finge a extrusão */
+  /** a face de trás da extrusão */
   sombra: string;
+  /** parede lateral que encara a luz */
+  paredeClara: string;
+  /** parede lateral que foge dela */
+  paredeEscura: string;
 };
 
 const TEMAS: Record<Variante, Tema> = {
@@ -46,7 +51,9 @@ const TEMAS: Record<Variante, Tema> = {
     accent: "#6495ed",
     corpo: "#d6e2fb",
     esmalte: "#2b54e3",
-    sombra: "#00008f",
+    sombra: "#101a38",
+    paredeClara: "#5f80c9",
+    paredeEscura: "#26365e",
   },
   ouro: {
     alt: "Neovanguard Ouro — a ferramenta do seu negócio no ar em até 16 dias",
@@ -57,7 +64,9 @@ const TEMAS: Record<Variante, Tema> = {
     accent: "#f4b74a",
     corpo: "#ffe9c2",
     esmalte: "#d99a2e",
-    sombra: "#5e3d08",
+    sombra: "#33230a",
+    paredeClara: "#c9a256",
+    paredeEscura: "#5e4413",
   },
   platina: {
     alt: "Neovanguard Platina — parceria completa para poucas operações por vez",
@@ -68,7 +77,9 @@ const TEMAS: Record<Variante, Tema> = {
     accent: "#cfd6e6",
     corpo: "#eef1f7",
     esmalte: "#8f9bb3",
-    sombra: "#333b4d",
+    sombra: "#232833",
+    paredeClara: "#9aa4b8",
+    paredeEscura: "#454d5e",
   },
 };
 
@@ -88,10 +99,26 @@ const mono = {
   color: TX_3,
 };
 
-/** a marca inteira: extrusão atrás, lâmina, esmalte */
+/**
+ * A marca em sólido: paredes da extrusão, face de trás, face da frente e o
+ * esmalte cravado por cima. A parede é o que separa isto de um vulto
+ * deslocado — sem ela, a cópia atrás lê como sombra projetada, não como
+ * espessura.
+ */
 function VMark({ t }: { t: Tema }) {
+  const paredes = [false, true].flatMap((mirror) =>
+    wallPaths(HALF_OUTLINE, { dx: DX, dy: DY, mirror }),
+  );
+
   return (
-    <svg width={430} height={317} viewBox="260 290 760 560">
+    <svg width={452} height={333} viewBox="260 290 760 560">
+      {paredes.map((p, i) => (
+        <path
+          key={`w${i}`}
+          d={p.d}
+          fill={p.tom > 0.5 ? t.paredeClara : t.paredeEscura}
+        />
+      ))}
       {bothHalves(HALF_OUTLINE, { dx: DX, dy: DY }).map((d, i) => (
         <path key={`s${i}`} d={d} fill={t.sombra} />
       ))}
@@ -237,8 +264,8 @@ export async function renderOg(v: Variante) {
         <div
           style={{
             position: "absolute",
-            right: 78,
-            top: 157,
+            right: 68,
+            top: 149,
             display: "flex",
           }}
         >

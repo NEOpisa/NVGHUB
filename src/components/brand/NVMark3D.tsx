@@ -12,16 +12,12 @@ import { buildVHalf } from "./vGeometry";
  * As duas metades do V nascem afastadas e se encaixam no eixo (montagem),
  * depois entram em deriva: flutuação lenta, respiração das metades e
  * inclinação que segue o ponteiro. Metal cornflower com clearcoat e facetas
- * de esmalte MediumBlue que sobem do corpo por rampa — sem emissivo, para o
- * acento ganhar sombra em vez de virar mancha chapada. A luz vem de
- * lightformers (estúdio inline, sem HDR remoto), com um contraluz pálido só
- * para acender a quina do acento. A marca tem coluna própria no hero.
+ * em MediumBlue emissivo — a luz vem de lightformers (estúdio inline, sem
+ * HDR remoto). A marca tem coluna própria no hero: nunca fica sob o texto.
  */
 
 const CORN = "#6495ed";
 const BLUE = "#0000cd";
-const PALE = "#d6e2fb";
-const CHROME = "#c8d8fa";
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -36,30 +32,23 @@ function Mark({ motion }: { motion: boolean }) {
 
   const parts = useMemo(() => buildVHalf(), []);
   const mats = useMemo(() => {
-    // A base da lâmina é PÁLIDA, não cornflower. No vetor o corpo é um
-    // degradê que vai do branco ao #6495ED — quase todo claro; pintar a
-    // malha de cornflower cheio afundava a peça num azul médio uniforme.
-    // Aqui o claro é a cor de base e o cornflower nasce do estúdio, que é o
-    // que dá a variação de face em face.
     const body = new THREE.MeshPhysicalMaterial({
-      color: CHROME,
-      metalness: 0.62,
-      roughness: 0.24,
-      envMapIntensity: 2.2,
+      color: CORN,
+      metalness: 0.92,
+      roughness: 0.17,
+      envMapIntensity: 1.7,
       clearcoat: 1,
-      clearcoatRoughness: 0.09,
+      clearcoatRoughness: 0.08,
     });
-    // sem emissivo: luz própria apaga o degradê da rampa e é exatamente
-    // isso que deixava o acento com cara de adesivo chapado. O relevo aqui
-    // vem de reflexo, não de brilho.
     const facet = new THREE.MeshPhysicalMaterial({
       color: BLUE,
-      metalness: 0.42,
-      roughness: 0.32,
-      envMapIntensity: 1.8,
+      metalness: 0.7,
+      roughness: 0.24,
+      emissive: new THREE.Color(BLUE),
+      emissiveIntensity: 0.28,
+      envMapIntensity: 1.3,
       clearcoat: 1,
-      clearcoatRoughness: 0.12,
-      flatShading: true,
+      clearcoatRoughness: 0.14,
     });
     return { body, facet };
   }, []);
@@ -98,19 +87,13 @@ function Mark({ motion }: { motion: boolean }) {
     g.scale.setScalar(0.82 + assemble * 0.18);
     g.position.z = -1.2;
 
-    if (!motion) {
-      // sem animação, a peça ainda precisa da pose de três quartos
-      g.rotation.set(0.08, -0.3, 0);
-      return;
-    }
+    if (!motion) return;
 
-    // deriva: flutuação + inclinação amortecida pelo ponteiro. O repouso é
-    // deliberadamente torto — de frente, uma chapa extrudada não mostra
-    // parede lateral nenhuma e volta a parecer recorte de papel.
+    // deriva: flutuação + inclinação amortecida pelo ponteiro
     const ty = 0.34 - aim.current.y * 0.22;
     const tx = aim.current.x * 0.5;
-    g.rotation.y += (-0.3 + tx * 0.55 + Math.sin(t * 0.4) * 0.14 - g.rotation.y) * Math.min(1, dt * 2.4);
-    g.rotation.x += (0.08 - ty * 0.28 + Math.sin(t * 0.53) * 0.06 - g.rotation.x) * Math.min(1, dt * 2.4);
+    g.rotation.y += (-0.22 + tx * 0.7 + Math.sin(t * 0.4) * 0.14 - g.rotation.y) * Math.min(1, dt * 2.4);
+    g.rotation.x += (-ty * 0.35 + Math.sin(t * 0.53) * 0.05 - g.rotation.x) * Math.min(1, dt * 2.4);
     g.position.y = Math.sin(t * 0.7) * 0.09;
 
   });
@@ -174,23 +157,14 @@ export default function NVMark3D({ className }: { className?: string }) {
         camera={{ position: [0, 0, 10.4], fov: 38 }}
         frameloop={motion ? "always" : "demand"}
       >
-        {/* ambiente baixo de propósito: é a sombra que desenha o relevo */}
-        <ambientLight intensity={0.24} />
-        <directionalLight position={[-3, 4, 6]} intensity={2.1} color="#ffffff" />
-        <directionalLight position={[4, -2, 3]} intensity={0.6} color={CORN} />
-        {/* contraluz rasante: acende a quina da rampa do acento, que é o
-            único jeito de ler profundidade num azul quase preto */}
-        <directionalLight position={[-5, -1, -4]} intensity={1.5} color={PALE} />
+        <ambientLight intensity={0.32} />
+        <directionalLight position={[-3, 4, 6]} intensity={2.0} color="#ffffff" />
+        <directionalLight position={[4, -2, 3]} intensity={0.7} color={CORN} />
         <Mark motion={motion} />
-        {/* metal a 0.9 quase só enxerga o ambiente: se o estúdio for pequeno,
-            a peça inteira apaga. O softbox de cima é o que mantém a lâmina
-            cromada em vez de azul-marinho. */}
-        <Environment resolution={128} frames={1}>
-          <Lightformer form="rect" intensity={3.2} position={[0, 7, 3]} rotation={[-Math.PI / 2, 0, 0]} scale={[12, 9, 1]} color="#ffffff" />
-          <Lightformer form="rect" intensity={2.4} position={[-5, 3, 6]} scale={9} color="#ffffff" />
-          <Lightformer form="rect" intensity={1.4} position={[6, -2, 3]} scale={7} color={CORN} />
-          <Lightformer form="rect" intensity={1.6} position={[-6, 0, -3]} scale={[1, 8, 1]} color={PALE} />
-          <Lightformer form="circle" intensity={0.7} position={[0, -4, 2]} scale={5} color={BLUE} />
+        <Environment resolution={64} frames={1}>
+          <Lightformer form="rect" intensity={1.7} position={[-4, 4, 5]} scale={8} color="#ffffff" />
+          <Lightformer form="rect" intensity={0.9} position={[5, -2, 3]} scale={6} color={CORN} />
+          <Lightformer form="circle" intensity={0.6} position={[0, -4, 2]} scale={5} color={BLUE} />
         </Environment>
       </Canvas>
     </div>

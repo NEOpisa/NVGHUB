@@ -344,24 +344,104 @@ a {
     opacity: 0.7;
 }
 
-/* ASSUNTOS — a matéria do trilho direito. Não é lista de links: rótulo,
-   uma afirmação e o argumento dela em uma linha. */
-.assuntos {
+/* ═══ DECK DE ASSUNTOS ════════════════════════════════════════════
+   Um verbete por vez num cartão do tamanho dos outros do trilho. A roda
+   do mouse troca; o medidor à esquerda diz onde se está e a dica no pé
+   diz que a peça responde à rolagem. Altura fixa de propósito: se o
+   cartão crescesse e encolhesse a cada troca, o trilho inteiro pularia.
+   ═══════════════════════════════════════════════════════════════════ */
+.deck {
+    position: relative;
+    padding: 14px;
+    border-radius: var(--r-sm);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+.deck:focus-visible {
+    outline: 2px solid var(--nv-corn);
+    outline-offset: 2px;
+}
+.deck-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+.deck-top .rcard-h {
+    margin-bottom: 0;
+}
+.deck-cont {
+    font-family: var(--ff-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--tx-3);
+    font-variant-numeric: tabular-nums;
+}
+.deck-cont i {
+    font-style: normal;
+    margin: 0 1px;
+    opacity: 0.5;
+}
+
+.deck-corpo {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+    /* segura a troca sem sanfona: medido no verbete mais alto da lista
+       (248px hoje) com uma folga de respiro */
+    min-height: 254px;
+}
+
+/* medidor — um traço por verbete, o atual aceso e mais longo */
+.deck-medidor {
     display: flex;
     flex-direction: column;
+    gap: 5px;
+    padding-top: 3px;
 }
-.assunto {
-    display: block;
-    padding: 12px 0;
-    border-top: 1px solid var(--line);
-    text-decoration: none;
-    transition: opacity 200ms var(--ease);
+.deck-tr {
+    width: 3px;
+    height: 14px;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: var(--line-strong);
+    cursor: pointer;
+    transition:
+        height 260ms var(--ease),
+        background 260ms var(--ease);
 }
-.assunto:first-of-type {
-    border-top: 0;
-    padding-top: 2px;
+.deck-tr:hover {
+    background: var(--nv-corn-soft);
 }
-.assunto-k {
+.deck-tr.is-on {
+    height: 26px;
+    background: var(--nv-corn);
+}
+
+.deck-verbete {
+    min-width: 0;
+    animation: deck-entra 380ms var(--ease) both;
+}
+.deck-verbete--sobe {
+    animation-name: deck-entra-sobe;
+}
+@keyframes deck-entra {
+    from {
+        opacity: 0;
+        transform: translateY(9px);
+    }
+}
+@keyframes deck-entra-sobe {
+    from {
+        opacity: 0;
+        transform: translateY(-9px);
+    }
+}
+.deck-k {
     display: block;
     font-family: var(--ff-mono);
     font-size: 0.62rem;
@@ -370,40 +450,109 @@ a {
     text-transform: uppercase;
     color: var(--nv-corn);
 }
-.assunto-t {
+.deck-num {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-top: 5px;
+    align-items: baseline;
+    gap: 7px;
+    margin: 9px 0 0;
+}
+.deck-num b {
     font-family: var(--ff-display);
-    font-size: 0.94rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--tx);
+}
+.deck-num span {
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: var(--tx-3);
+}
+.deck-t {
+    margin: 10px 0 0;
+    font-family: var(--ff-display);
+    font-size: 0.98rem;
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: -0.02em;
     color: var(--tx);
 }
-.assunto-t svg {
-    width: 13px;
-    height: 13px;
-    flex: none;
-    opacity: 0.45;
-    transition: transform 200ms var(--ease);
-}
-.assunto:hover .assunto-t svg {
-    opacity: 0.9;
-    transform: translate(1px, -1px);
-}
-.assunto-d {
-    display: block;
-    margin-top: 5px;
+.deck-d {
+    margin: 6px 0 0;
     font-size: 0.79rem;
-    line-height: 1.45;
+    line-height: 1.5;
     color: var(--tx-2);
 }
-.assunto:hover .assunto-t {
+.deck-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 11px;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--nv-corn);
+    text-decoration: none;
 }
+.deck-cta svg {
+    width: 12px;
+    height: 12px;
+    transition: transform 200ms var(--ease);
+}
+.deck-cta:hover svg {
+    transform: translate(1px, -1px);
+}
+
+/* dica — a roda desenhada com a bolinha descendo dentro dela */
+.deck-dica {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px solid var(--line);
+    font-family: var(--ff-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tx-3);
+}
+.deck-roda {
+    position: relative;
+    flex: none;
+    width: 15px;
+    height: 23px;
+    border: 1.5px solid var(--tx-2);
+    border-radius: 8px;
+}
+.deck-roda i {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    width: 2.5px;
+    height: 5px;
+    margin-left: -1.25px;
+    border-radius: 2px;
+    background: var(--nv-corn);
+    animation: deck-roda 1.9s var(--ease) infinite;
+}
+@keyframes deck-roda {
+    0%, 12% { transform: translateY(0); opacity: 0; }
+    28% { opacity: 1; }
+    68% { transform: translateY(9px); opacity: 0; }
+    100% { transform: translateY(9px); opacity: 0; }
+}
+/* depois da primeira troca a dica já cumpriu o papel: para de pulsar e
+   recua, mas continua legível para quem quiser o contador */
+.deck-dica.is-usada {
+    opacity: 0.62;
+}
+.deck-dica.is-usada .deck-roda i {
+    animation: none;
+    opacity: 0.7;
+    transform: translateY(4px);
+}
+
 .rmeta {
     display: flex;
     flex-direction: column;
@@ -1611,6 +1760,56 @@ body.menu-aberto {
 }
 .mmenu-assuntos .rcard-h {
     margin-bottom: 12px;
+}
+/* assuntos empilhados do menu mobile — o número puxa a leitura à esquerda */
+.massunto {
+    display: grid;
+    /* a coluna do número precisa caber "100%" sem encostar no rótulo */
+    grid-template-columns: 62px minmax(0, 1fr) 14px;
+    align-items: start;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+}
+.massunto:first-of-type {
+    border-top: 0;
+    padding-top: 2px;
+}
+.massunto-n {
+    font-family: var(--ff-display);
+    font-size: 1.32rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: var(--nv-corn);
+}
+.massunto-tx {
+    display: block;
+    min-width: 0;
+}
+.massunto-t {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--ff-display);
+    font-size: 0.96rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--tx);
+}
+.massunto-d {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--tx-2);
+}
+.massunto > svg {
+    width: 14px;
+    height: 14px;
+    margin-top: 6px;
+    opacity: 0.45;
 }
 
 /* a barra mobile entra depois da própria definição (senão a cascata

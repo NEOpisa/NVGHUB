@@ -14,32 +14,56 @@ export const NAV = [
   { n: "07", label: "Contato", href: "/contato", tone: "b" },
 ] as const;
 
-/** ASSUNTOS DA CASA — a matéria do trilho direito. Não é menu: cada item
-    conta uma coisa que a Neovanguard pensa sobre o próprio trabalho, e o
-    destino é só a consequência de ter ficado curioso. */
+/** ASSUNTOS DA CASA — a matéria do trilho direito, que o leitor percorre
+    com a roda do mouse. Não é menu e não é lista de links: cada verbete é
+    uma posição da Neovanguard sobre o próprio trabalho, ancorada num
+    número que dá o que discutir. Se o link sumisse, o cartão continuava
+    valendo por si — é esse o teste que um item precisa passar para entrar
+    aqui. Ordem importa: o primeiro é o que mais se pergunta. */
 export const ASSUNTOS = [
   {
     k: "Prazo",
-    t: "16 dias é teto, não meta",
-    d: "O prazo entra no papel como limite máximo. Quase toda entrega sai antes dele.",
+    n: "16",
+    nl: "dias, no teto",
+    t: "Prazo é teto, não meta",
+    d: "O número entra no contrato como limite — o que vale contra nós, não a favor. Quase toda entrega sai antes.",
+    cta: "Como o prazo é medido",
+    href: "/metodologia",
+  },
+  {
+    k: "Escopo",
+    n: "0",
+    nl: "surpresa no meio",
+    t: "O que não entra também é escrito",
+    d: "A lista do que fica de fora é combinada junto com a do que entra. É ela que evita a conversa difícil no dia 12.",
+    cta: "Ver como fechamos escopo",
     href: "/metodologia",
   },
   {
     k: "IA",
+    n: "4",
+    nl: "frentes de automação",
     t: "Automação com dono",
-    d: "IA aqui tira trabalho manual do caminho — orçamento, cobrança, triagem. Não é enfeite de home.",
+    d: "IA aqui tira trabalho manual do caminho: orçamento, cobrança, triagem e relatório. Nada que só sirva de enfeite na home.",
+    cta: "Ver o que já construímos",
     href: "/exemplos",
   },
   {
     k: "Bastidor",
+    n: "1",
+    nl: "interlocutor, sempre",
     t: "Quem constrói é quem responde",
-    d: "Sem camada de atendimento no meio: o WhatsApp é de quem escreveu o código.",
+    d: "Não existe camada de atendimento no meio. O WhatsApp que você usa é o de quem escreveu o código.",
+    cta: "Conhecer a casa",
     href: "/sobre",
   },
   {
     k: "Posse",
+    n: "100%",
+    nl: "seu, desde o dia 1",
     t: "O código sai no seu nome",
-    d: "Domínio, repositório e dados são seus desde o primeiro dia — inclusive se você for embora.",
+    d: "Domínio, repositório, dados e acessos ficam com você — inclusive no dia em que decidir seguir com outra pessoa.",
+    cta: "Perguntas frequentes",
     href: "/faq",
   },
 ] as const;

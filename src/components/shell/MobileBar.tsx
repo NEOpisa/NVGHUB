@@ -100,16 +100,20 @@ export default function MobileBar() {
             </dl>
           </div>
 
+          {/* no desktop os assuntos são um deck que troca com a roda; aqui
+              eles ficam empilhados. Um deck de arrastar dentro de um menu
+              que já rola por arrasto brigaria com o próprio menu. */}
           <div className="mmenu-assuntos">
             <span className="rcard-h">Assuntos da casa</span>
             {ASSUNTOS.map((a) => (
-              <Link key={a.k} href={a.href} className="assunto">
-                <span className="assunto-k">{a.k}</span>
-                <span className="assunto-t">
-                  {a.t}
-                  <ArrowUpRight />
+              <Link key={a.k} href={a.href} className="massunto">
+                <span className="massunto-n">{a.n}</span>
+                <span className="massunto-tx">
+                  <span className="deck-k">{a.k}</span>
+                  <span className="massunto-t">{a.t}</span>
+                  <span className="massunto-d">{a.d}</span>
                 </span>
-                <span className="assunto-d">{a.d}</span>
+                <ArrowUpRight />
               </Link>
             ))}
           </div>
