@@ -1,28 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Neovanguard">
-  <!-- MESTRE QUADRADO DA MARCA — foto de perfil das redes, favicon e ícone
-       do app saem daqui (node scripts/marca.mjs rasteriza).
+  <!-- GERADO por scripts/marca.mjs a partir de src/lib/v-malha.json.
+       Não edite à mão: rode o script.
 
-       Três decisões que mandam no desenho:
-
-       1. TUDO DENTRO DO CÍRCULO. Instagram, WhatsApp e LinkedIn recortam em
-          círculo; X e GitHub em quadrado arredondado. Nada que importe pode
-          passar de r=460 a partir do centro — por isso o aro fica em 452 e
-          a marca ocupa só o miolo.
-       2. RELEVO, NÃO CHAPADO. A lâmina é desenhada duas vezes: a de trás
-          deslocada em (+16,+13) faz a parede da extrusão, e as paredes
-          laterais são quads ligando as duas. É a mesma anatomia do 3D da
-          home, congelada num ângulo.
-       3. SOBREVIVER A 16px. Nenhum traço abaixo de ~10 unidades de 1024, e
-          o contraste entre lâmina clara e esmalte azul é o que segura a
-          leitura quando o resto vira sopa. -->
+       Foto de perfil das redes e logo da organização. Vive de 40 a 400px
+       numa timeline, então pode ter material — mas TUDO precisa caber no
+       círculo: Instagram, WhatsApp e LinkedIn recortam redondo, X e GitHub
+       em quadrado arredondado. Por isso o aro fica em r=452 e a marca no
+       miolo. O halo existe para descolar a peça do campo: sem ele a beirada
+       escura do V encosta no fundo e a silhueta some na miniatura. -->
   <defs>
-    <!-- campo: não é degradê decorativo, é a queda de luz do canto -->
     <radialGradient id="p-campo" cx="0.32" cy="0.24" r="0.92">
       <stop offset="0" stop-color="#141a2e"/>
       <stop offset="0.55" stop-color="#0a0d18"/>
       <stop offset="1" stop-color="#06070b"/>
     </radialGradient>
-    <linearGradient id="p-chrome" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
+    <radialGradient id="p-halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6495ED" stop-opacity="0.36"/>
+      <stop offset="0.6" stop-color="#3559c9" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#6495ED" stop-opacity="0"/>
+    </radialGradient>
+    <!-- espaço de usuário: uma luz só atravessa as duas metades. No padrão
+         (objectBoundingBox) cada caminho ganha a sua própria rampa, e a
+         peça passa a parecer duas peças encostadas. -->
+    <linearGradient id="p-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
       <stop offset="0.36" stop-color="#dbe5fc"/>
       <stop offset="0.72" stop-color="#9dbaf5"/>
@@ -33,65 +33,51 @@
       <stop offset="0.5" stop-color="#2b54e3"/>
       <stop offset="1" stop-color="#0000CD"/>
     </linearGradient>
-    <!-- parede da extrusão: sempre mais escura que a face que ela sustenta -->
     <linearGradient id="p-parede" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
-      <stop offset="0" stop-color="#2f4a86"/>
+      <stop offset="0" stop-color="#5f80c9"/>
       <stop offset="1" stop-color="#101a38"/>
     </linearGradient>
-    <!-- halo: descola a peça do campo. Sem ele o V escuro nas beiradas
-         encosta no fundo e a silhueta se perde na miniatura. -->
-    <radialGradient id="p-halo" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#6495ED" stop-opacity="0.36"/>
-      <stop offset="0.6" stop-color="#3559c9" stop-opacity="0.1"/>
-      <stop offset="1" stop-color="#6495ED" stop-opacity="0"/>
-    </radialGradient>
   </defs>
 
   <rect width="1024" height="1024" fill="url(#p-campo)"/>
-
-  <!-- aro: fecha a composição no recorte circular sem virar moldura -->
+  <circle cx="512" cy="498" r="360" fill="url(#p-halo)"/>
   <circle cx="512" cy="512" r="452" fill="none" stroke="#6495ED" stroke-opacity="0.42" stroke-width="3"/>
   <circle cx="512" cy="512" r="452" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="12"/>
 
-  <circle cx="512" cy="498" r="360" fill="url(#p-halo)"/>
-
   <g transform="translate(512,506) scale(0.87) translate(-640,-568)">
-    <!-- paredes: quad por aresta do contorno, ligando frente e trás -->
-    <g fill="url(#p-parede)">
-      <path d="M492 306 L278 369 L294 382 L508 319 Z"/>
-      <path d="M278 369 L424 578 L440 591 L294 382 Z"/>
-      <path d="M640 830 L656 843 L536 321 L520 308 Z"/>
-      <path d="M424 578 L350 409 L366 422 L440 591 Z"/>
-      <path d="M788 306 L1002 369 L986 382 L772 319 Z"/>
-      <path d="M1002 369 L856 578 L840 591 L986 382 Z"/>
-      <path d="M640 830 L624 843 L744 321 L760 308 Z"/>
-      <path d="M856 578 L930 409 L914 422 L840 591 Z"/>
-    </g>
-
-    <!-- face de trás, deslocada: o volume que a parede sustenta -->
-    <g fill="#16224a" transform="translate(16,13)">
-      <path d="M492 306 L278 369 L424 578 L350 409 L477 377 L640 830 L520 308 Z"/>
-      <path d="M788 306 L1002 369 L856 578 L930 409 L803 377 L640 830 L760 308 Z"/>
-    </g>
-
-    <!-- face da frente -->
-    <g fill="url(#p-chrome)">
-      <path d="M492 306 L278 369 L424 578 L350 409 L477 377 L640 830 L520 308 Z"/>
-      <path d="M788 306 L1002 369 L856 578 L930 409 L803 377 L640 830 L760 308 Z"/>
-    </g>
-
-    <!-- esmalte de acento, cravado por cima -->
-    <g fill="url(#p-esmalte)">
-      <path d="M520 308 L577 348 L629 782 Z"/>
-      <path d="M477 377 L350 409 L424 578 L396 421 L485 404 Z"/>
-      <path d="M760 308 L703 348 L651 782 Z"/>
-      <path d="M803 377 L930 409 L856 578 L884 421 L795 404 Z"/>
-    </g>
-
-    <!-- fio de luz na quina superior: a aresta que pega a chave de luz -->
-    <g stroke="#ffffff" stroke-opacity="0.55" stroke-width="5" fill="none" stroke-linecap="round">
-      <path d="M492 306 L278 369"/>
-      <path d="M788 306 L1002 369"/>
-    </g>
+      <g fill="url(#p-parede)">
+        <path d="M492 306 L278 369 L294 382 L508 319 Z" opacity="0.98"/>
+        <path d="M278 369 L424 578 L440 591 L294 382 Z" opacity="0.73"/>
+        <path d="M424 578 L350 409 L366 422 L440 591 Z" opacity="0.66"/>
+        <path d="M350 409 L477 377 L493 390 L366 422 Z" opacity="0.47"/>
+        <path d="M477 377 L640 830 L656 843 L493 390 Z" opacity="0.81"/>
+        <path d="M640 830 L520 308 L536 321 L656 843 Z" opacity="0.61"/>
+        <path d="M520 308 L492 306 L508 319 L536 321 Z" opacity="0.93"/>
+        <path d="M788 306 L1002 369 L1018 382 L804 319 Z" opacity="0.56"/>
+        <path d="M1002 369 L856 578 L872 591 L1018 382 Z" opacity="0.99"/>
+        <path d="M856 578 L930 409 L946 422 L872 591 Z" opacity="0.49"/>
+        <path d="M930 409 L803 377 L819 390 L946 422 Z" opacity="0.90"/>
+        <path d="M803 377 L640 830 L656 843 L819 390 Z" opacity="0.95"/>
+        <path d="M640 830 L760 308 L776 321 L656 843 Z" opacity="0.51"/>
+        <path d="M760 308 L788 306 L804 319 L776 321 Z" opacity="0.49"/>
+      </g>
+      <g fill="#16224a">
+        <path d="M508 319 L294 382 L440 591 L366 422 L493 390 L656 843 L536 321 Z"/>
+        <path d="M804 319 L1018 382 L872 591 L946 422 L819 390 L656 843 L776 321 Z"/>
+      </g>
+      <g fill="url(#p-lamina)">
+        <path d="M492 306 L278 369 L424 578 L350 409 L477 377 L640 830 L520 308 Z"/>
+        <path d="M788 306 L1002 369 L856 578 L930 409 L803 377 L640 830 L760 308 Z"/>
+      </g>
+      <g fill="url(#p-esmalte)">
+        <path d="M520 308 L577 348 L629 782 Z"/>
+        <path d="M760 308 L703 348 L651 782 Z"/>
+        <path d="M477 377 L350 409 L424 578 L396 421 L485 404 Z"/>
+        <path d="M803 377 L930 409 L856 578 L884 421 L795 404 Z"/>
+      </g>
+      <g stroke="#ffffff" stroke-opacity="0.5" stroke-width="5" fill="none" stroke-linecap="round">
+        <path d="M492 306 L278 369"/>
+        <path d="M788 306 L1002 369"/>
+      </g>
   </g>
 </svg>

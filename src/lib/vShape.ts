@@ -1,26 +1,23 @@
+import malha from "@/lib/v-malha.json";
+
 /**
- * A MALHA DO V — fonte única da anatomia da marca, em coordenadas do vetor
- * oficial (public/logo.svg, viewBox 260 290 760 560).
+ * A ANATOMIA DO V em código — as coordenadas vêm de lib/v-malha.json, que é
+ * a fonte única: o mesmo arquivo é lido por scripts/marca.mjs para gerar os
+ * SVGs de public/. Aqui ela ganha os helpers que o site e a OG usam.
  *
  * Mora aqui, e não junto do 3D, porque quem desenha o V não é só o WebGL: a
- * OG e os ícones precisam da mesma malha sem arrastar o `three` para dentro
- * do runtime Node. O 3D importa daqui.
+ * OG e os ícones precisam da malha sem arrastar o `three` para dentro do
+ * runtime Node. O 3D importa daqui.
  */
 
-/** contorno da metade direita — a lâmina em cromado */
-export const HALF_OUTLINE: [number, number][] = [
-  [492, 306], [278, 369], [424, 578], [350, 409],
-  [477, 377], [640, 830], [520, 308],
-];
+/** contorno de uma metade — a lâmina em cromado */
+export const HALF_OUTLINE = malha.outline as [number, number][];
 
 /** as duas peças de acento que dão o corte de esmalte */
-export const HALF_FACETS: [number, number][][] = [
-  [[520, 308], [577, 348], [629, 782]],
-  [[477, 377], [350, 409], [424, 578], [396, 421], [485, 404]],
-];
+export const HALF_FACETS = malha.facets as [number, number][][];
 
 /** eixo de espelhamento: x = 640, então o espelho é x → 1280 − x */
-const MIRROR = 1280;
+const MIRROR = malha.mirror;
 
 /** polígono → atributo `d`, opcionalmente espelhado e deslocado */
 function vPath(

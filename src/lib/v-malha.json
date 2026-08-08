@@ -1,0 +1,28 @@
+{
+  "_": "A MALHA DO V — fonte única da anatomia da marca, em coordenadas do vetor oficial (viewBox 260 290 760 560). Mora em JSON porque tem dois consumidores que não compartilham runtime: src/lib/vShape.ts (site e OG) e scripts/marca.mjs (gera os SVGs de public/). Mexer aqui muda a marca em todos os lugares de uma vez — que é exatamente o ponto.",
+  "outline": [
+    [492, 306],
+    [278, 369],
+    [424, 578],
+    [350, 409],
+    [477, 377],
+    [640, 830],
+    [520, 308]
+  ],
+  "facets": [
+    [
+      [520, 308],
+      [577, 348],
+      [629, 782]
+    ],
+    [
+      [477, 377],
+      [350, 409],
+      [424, 578],
+      [396, 421],
+      [485, 404]
+    ]
+  ],
+  "mirror": 1280,
+  "viewBox": "260 290 760 560"
+}
