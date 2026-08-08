@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { WA, ROTAS, UTEIS, FATOS } from "@/lib/constants";
+import { WA, NAV, ASSUNTOS, FATOS } from "@/lib/constants";
 import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
 
 /**
@@ -63,7 +63,7 @@ export default function MobileBar() {
       {aberto && (
         <div className="mmenu" role="dialog" aria-modal="true" aria-label="Menu">
           <nav className="mmenu-nav">
-            {ROTAS.map((r) => (
+            {NAV.map((r) => (
               <Link
                 key={r.href}
                 href={r.href}
@@ -100,13 +100,21 @@ export default function MobileBar() {
             </dl>
           </div>
 
-          <div className="mmenu-uteis">
-            {UTEIS.map((u) => (
-              <Link key={u.href} href={u.href} className="rlink">
-                {u.label}
-                <ArrowUpRight />
+          <div className="mmenu-assuntos">
+            <span className="rcard-h">Assuntos da casa</span>
+            {ASSUNTOS.map((a) => (
+              <Link key={a.k} href={a.href} className="assunto">
+                <span className="assunto-k">{a.k}</span>
+                <span className="assunto-t">
+                  {a.t}
+                  <ArrowUpRight />
+                </span>
+                <span className="assunto-d">{a.d}</span>
               </Link>
             ))}
+          </div>
+
+          <div className="mmenu-uteis">
             <Link href="/privacidade" className="rlink">
               Privacidade
               <ArrowUpRight />

@@ -6,8 +6,8 @@
  * Uso:  node scripts/visual-qa.mjs [baseURL]   (padrão http://localhost:3000)
  * Saída: .qa-shots/<rota>-<bp>.png  (a pasta está no .gitignore)
  *
- * Nota: a home usa intro + WebGL; o headless captura o estado pré-settle.
- * Para as internas a captura é fiel.
+ * Nota: a home usa WebGL; no headless a marca 3D pode sair no fallback em
+ * vetor. Para as internas a captura é fiel.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync } from "node:fs";
@@ -18,7 +18,7 @@ const BASE = process.argv[2] ?? "http://localhost:3000";
 const OUT = ".qa-shots";
 
 const ROUTES = [
-  "/", "/ouro", "/platina", "/solucao", "/sobre",
+  "/", "/ouro", "/solucao", "/sobre", "/obrigado",
   "/metodologia", "/exemplos", "/faq", "/contato", "/privacidade", "/termos",
 ];
 const BREAKPOINTS = [

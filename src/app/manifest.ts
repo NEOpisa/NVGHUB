@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-// #027 · manifest PWA básico — instala como app, cores do Neobsidian.
+// manifest PWA básico — instala como app, nas cores do site.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Neovanguard — Ferramentas para o seu negócio",
@@ -9,8 +9,11 @@ export default function manifest(): MetadataRoute.Manifest {
       "Para cada problema do seu negócio, construímos a ferramenta ideal.",
     start_url: "/",
     display: "standalone",
-    background_color: "#040309",
-    theme_color: "#040309",
-    icons: [{ src: "/logo.png", sizes: "any", type: "image/png" }],
+    background_color: "#06070b",
+    theme_color: "#06070b",
+    icons: [
+      { src: "/logo.png", sizes: "512x512", type: "image/png" },
+      { src: "/perfil.png", sizes: "1024x1024", type: "image/png" },
+    ],
   };
 }

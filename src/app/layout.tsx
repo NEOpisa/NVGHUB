@@ -110,7 +110,7 @@ const JSON_LD = {
       name: "Neovanguard",
       url: SITE_URL,
       logo: `${SITE_URL}/logo.png`,
-      image: `${SITE_URL}/og.png`,
+      image: `${SITE_URL}/opengraph-image`,
       description:
         "Estúdio de tecnologia 100% remoto: resolvemos problemas de negócio criando a ferramenta certa — sistemas, automações, IA e lojas sob medida — para empresas de todo o Brasil.",
       areaServed: { "@type": "Country", name: "Brasil" },

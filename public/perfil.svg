@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Neovanguard">
+  <!-- MESTRE QUADRADO DA MARCA — foto de perfil das redes, favicon e ícone
+       do app saem todos daqui (scripts/marca.mjs rasteriza). Fundo chapado
+       porque toda rede recorta em círculo ou em quadrado arredondado: se a
+       borda tivesse desenho, ela seria a primeira coisa a ser cortada. -->
+  <defs>
+    <linearGradient id="p-chrome" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.38" stop-color="#dbe5fc"/>
+      <stop offset="0.74" stop-color="#9dbaf5"/>
+      <stop offset="1" stop-color="#6495ED"/>
+    </linearGradient>
+    <linearGradient id="p-facet" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#c3d5f9"/>
+      <stop offset="0.5" stop-color="#6495ED"/>
+      <stop offset="1" stop-color="#0000CD"/>
+    </linearGradient>
+    <g id="p-half">
+      <path fill="url(#p-chrome)" d="M492 306 L278 369 L424 578 L350 409 L477 377 L640 830 L520 308 Z"/>
+      <path fill="url(#p-facet)" d="M520 308 L577 348 L629 782 Z"/>
+      <path fill="url(#p-facet)" d="M477 377 L350 409 L424 578 L396 421 L485 404 Z"/>
+    </g>
+  </defs>
+  <rect width="1024" height="1024" fill="#06070b"/>
+  <g transform="translate(-134.7,-64) scale(1.0105)">
+    <use href="#p-half"/>
+    <use href="#p-half" transform="translate(1280,0) scale(-1,1)"/>
+  </g>
+</svg>

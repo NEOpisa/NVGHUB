@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { UTEIS, FATOS } from "@/lib/constants";
+import { ASSUNTOS, FATOS } from "@/lib/constants";
 import { ArrowUpRight } from "@/components/icons";
 
 /**
- * TRILHO DIREITO — não repete o esquerdo. Lá ficam os DESTINOS (para onde
- * ir); aqui fica o CONTEXTO: se estamos aceitando projeto, o que já está
- * combinado antes de você perguntar, o que dá para ler sobre a casa, e a
- * única ação que não é uma página — a consulta rápida.
+ * TRILHO DIREITO — não é menu nenhum. O esquerdo diz para onde ir; aqui a
+ * casa fala: em que pé está o estúdio, o que ela pensa sobre o próprio
+ * trabalho (os assuntos) e o que já está combinado antes de você perguntar.
+ * Cada assunto tem um argumento em uma linha — se o link fosse tirado, o
+ * cartão continuaria valendo por si.
  */
 export default function RailRight() {
   const [topo, setTopo] = useState(false);
@@ -22,7 +23,7 @@ export default function RailRight() {
   }, []);
 
   return (
-    <aside className="rail rail-right" aria-label="Atalhos e informações">
+    <aside className="rail rail-right" aria-label="Assuntos da casa">
       <div className="rcard">
         <span className="rcard-h">Estado do estúdio</span>
         <p className="rstatus">
@@ -41,6 +42,22 @@ export default function RailRight() {
       <p className="rcta-note">3 perguntas · sem compromisso</p>
 
       <div className="rcard">
+        <span className="rcard-h">Assuntos da casa</span>
+        <div className="assuntos">
+          {ASSUNTOS.map((a) => (
+            <Link key={a.k} href={a.href} className="assunto">
+              <span className="assunto-k">{a.k}</span>
+              <span className="assunto-t">
+                {a.t}
+                <ArrowUpRight />
+              </span>
+              <span className="assunto-d">{a.d}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="rcard">
         <span className="rcard-h">Já combinado</span>
         <dl className="rfatos">
           {FATOS.map(([k, v]) => (
@@ -50,18 +67,6 @@ export default function RailRight() {
             </div>
           ))}
         </dl>
-      </div>
-
-      <div className="rcard">
-        <span className="rcard-h">Sobre a casa</span>
-        <div className="rlinks">
-          {UTEIS.map((u) => (
-            <Link key={u.href} href={u.href} className="rlink">
-              {u.label}
-              <ArrowUpRight />
-            </Link>
-          ))}
-        </div>
       </div>
 
       {topo && (

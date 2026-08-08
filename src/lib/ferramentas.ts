@@ -3,7 +3,7 @@
  * problema → ferramenta → resultado. Cada item é uma ferramenta real que
  * a Neovanguard constrói sob medida; o accent colore o card.
  */
-export type FerramentaItem = {
+type FerramentaItem = {
   slug: string;
   /** grupo de filtro na página de exemplos */
   category: string;
@@ -15,19 +15,6 @@ export type FerramentaItem = {
   tags: string[];
   accent: string;
 };
-
-export const FERRAMENTA_CATS = [
-  "Gestão & Painéis",
-  "IA & Visão",
-  "Dados & Integração",
-] as const;
-
-export const AUTOMACAO_CATS = [
-  "Atendimento",
-  "Financeiro",
-  "Vendas & Follow-up",
-  "Operação",
-] as const;
 
 export const FERRAMENTAS: FerramentaItem[] = [
   {

@@ -88,17 +88,6 @@ a {
     outline-offset: 3px;
     border-radius: 6px;
 }
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
 .skip-link {
     position: fixed;
     top: -100px;
@@ -187,68 +176,110 @@ a {
     color: var(--tx-3);
 }
 
-/* tile numerado — a peça de navegação da casa */
-.tile {
-    position: relative;
-    display: block;
-    min-height: 124px;
-    padding: 14px;
+/* NAVEGAÇÃO — cartão único com uma linha por destino. Mesmo material dos
+   cartões do trilho direito; a cor da rota virou uma lasca vertical, que é
+   o que sobrou de útil dos blocos chapados que se encavalavam aqui. */
+.navcard {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 10px 10px;
     border-radius: var(--r-sm);
+    background: var(--panel);
+    border: 1px solid var(--line);
+}
+.navcard .rcard-h {
+    padding: 0 6px;
+    margin-bottom: 8px;
+}
+.nlink {
+    --nlink-tone: var(--nv-corn);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px 9px 14px;
+    border-radius: 11px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--tx-2);
     text-decoration: none;
-    color: #fff;
     transition:
-        transform 320ms var(--ease),
-        filter 320ms var(--ease);
+        background 200ms var(--ease),
+        color 200ms var(--ease);
 }
-.tile:hover,
-.tile:focus-visible {
-    transform: translateY(-3px);
-    filter: brightness(1.1);
+/* a lasca de cor: fina em repouso, cheia na rota aberta */
+.nlink::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    width: 3px;
+    height: 13px;
+    margin-top: -6.5px;
+    border-radius: 2px;
+    background: var(--nlink-tone);
+    opacity: 0.5;
+    transition:
+        height 240ms var(--ease),
+        margin-top 240ms var(--ease),
+        opacity 240ms var(--ease);
 }
-.tile[aria-current="page"] {
-    box-shadow: 0 0 0 2px var(--tx);
+.nlink:hover {
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--tx);
 }
-.tile-n {
+.nlink:hover::before {
+    opacity: 1;
+}
+.nlink[aria-current="page"] {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--tx);
+    font-weight: 600;
+}
+.nlink[aria-current="page"]::before {
+    height: 22px;
+    margin-top: -11px;
+    opacity: 1;
+}
+.nlink-n {
     font-family: var(--ff-mono);
-    font-size: 0.74rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.08em;
-    opacity: 0.92;
+    color: var(--tx-3);
 }
-.tile-arrow {
-    position: absolute;
-    top: 13px;
-    right: 13px;
-    width: 17px;
-    height: 17px;
-    transition: transform 320ms var(--ease);
+.nlink[aria-current="page"] .nlink-n {
+    color: var(--nlink-tone);
 }
-.tile:hover .tile-arrow {
-    transform: translate(2px, -2px);
+.nlink-label {
+    flex: 1;
+    min-width: 0;
+    letter-spacing: -0.01em;
 }
-.tile-label {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 12px;
-    font-family: var(--ff-display);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+.nlink svg {
+    width: 13px;
+    height: 13px;
+    flex: none;
+    opacity: 0;
+    transition:
+        opacity 200ms var(--ease),
+        transform 200ms var(--ease);
 }
-.tile--a {
-    background: var(--nv-blue);
+.nlink:hover svg {
+    opacity: 0.6;
+    transform: translate(1px, -1px);
 }
-.tile--b {
-    background: var(--nv-blue-mid);
+.nlink--a {
+    --nlink-tone: var(--nv-blue-mid);
 }
-.tile--c {
-    background: var(--nv-corn);
-    color: #06070b;
+.nlink--b {
+    --nlink-tone: var(--nv-corn);
 }
-.tile--d {
-    background: var(--nv-corn-soft);
-    color: #06070b;
+.nlink--c {
+    --nlink-tone: var(--nv-corn-soft);
+}
+.nlink--d {
+    --nlink-tone: var(--nv-corn-pale);
 }
 
 /* cartões do trilho direito */
@@ -288,10 +319,6 @@ a {
     line-height: 1.5;
     color: var(--tx-2);
 }
-.rlinks {
-    display: flex;
-    flex-direction: column;
-}
 .rlink {
     display: flex;
     align-items: center;
@@ -315,6 +342,67 @@ a {
     width: 14px;
     height: 14px;
     opacity: 0.7;
+}
+
+/* ASSUNTOS — a matéria do trilho direito. Não é lista de links: rótulo,
+   uma afirmação e o argumento dela em uma linha. */
+.assuntos {
+    display: flex;
+    flex-direction: column;
+}
+.assunto {
+    display: block;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+    transition: opacity 200ms var(--ease);
+}
+.assunto:first-of-type {
+    border-top: 0;
+    padding-top: 2px;
+}
+.assunto-k {
+    display: block;
+    font-family: var(--ff-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--nv-corn);
+}
+.assunto-t {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 5px;
+    font-family: var(--ff-display);
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--tx);
+}
+.assunto-t svg {
+    width: 13px;
+    height: 13px;
+    flex: none;
+    opacity: 0.45;
+    transition: transform 200ms var(--ease);
+}
+.assunto:hover .assunto-t svg {
+    opacity: 0.9;
+    transform: translate(1px, -1px);
+}
+.assunto-d {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.79rem;
+    line-height: 1.45;
+    color: var(--tx-2);
+}
+.assunto:hover .assunto-t {
+    color: var(--nv-corn);
 }
 .rmeta {
     display: flex;
@@ -376,16 +464,8 @@ a {
     border: 1px solid var(--line);
     padding: clamp(26px, 3.4vw, 56px);
 }
-.panel--flush {
-    padding: 0;
-    overflow: hidden;
-}
 .panel--accent {
     background: var(--nv-blue);
-    border-color: transparent;
-}
-.panel--deep {
-    background: var(--nv-blue-deep);
     border-color: transparent;
 }
 
@@ -429,8 +509,7 @@ h4 {
     font-style: normal;
     color: var(--nv-corn);
 }
-.panel--accent .h-accent,
-.panel--deep .h-accent {
+.panel--accent .h-accent {
     color: var(--nv-corn-pale);
 }
 
@@ -1095,8 +1174,9 @@ a.card:hover,
     .sh {
         grid-template-columns: 200px minmax(0, 1fr) 210px;
     }
-    .tile {
-        min-height: 108px;
+    .nlink {
+        font-size: 0.87rem;
+        padding: 8px 8px 8px 13px;
     }
 }
 @media (max-width: 980px) {
@@ -1132,9 +1212,6 @@ a.card:hover,
     :root {
         --r: 18px;
         --gap: 10px;
-    }
-    .rail-nav {
-        grid-template-columns: repeat(2, 1fr);
     }
     .acc-a p {
         padding-left: 0;
@@ -1496,9 +1573,10 @@ body.menu-aberto {
     align-items: baseline;
     justify-content: center;
     gap: 12px;
-    padding: 14px 0;
+    padding: 9px 0;
     font-family: var(--ff-display);
-    font-size: clamp(2rem, 9vw, 2.8rem);
+    /* sete destinos agora, não quatro: o tipo cede para o menu caber */
+    font-size: clamp(1.55rem, 6.4vw, 2.1rem);
     font-weight: 700;
     letter-spacing: -0.045em;
     color: var(--tx);
@@ -1519,6 +1597,7 @@ body.menu-aberto {
     justify-content: center;
 }
 .mmenu-fatos,
+.mmenu-assuntos,
 .mmenu-uteis {
     width: 100%;
     padding: 18px;
@@ -1529,6 +1608,9 @@ body.menu-aberto {
 }
 .mmenu-fatos .rstatus {
     margin: 0 0 12px;
+}
+.mmenu-assuntos .rcard-h {
+    margin-bottom: 12px;
 }
 
 /* a barra mobile entra depois da própria definição (senão a cascata

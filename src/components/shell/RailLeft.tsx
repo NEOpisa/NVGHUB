@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { WA, ROTAS } from "@/lib/constants";
+import { WA, NAV } from "@/lib/constants";
 import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
 
 /**
- * TRILHO ESQUERDO — as rotas principais do site, sempre visíveis (sticky em
- * desktop, faixa no topo em telas estreitas). Substitui o header + overlay
- * de menu antigos: navegação é peça de layout, não modal.
+ * TRILHO ESQUERDO — NAVEGAÇÃO, e só. Aqui estão todos os destinos do site,
+ * em linhas compactas no mesmo padrão de cartão do trilho direito: os blocos
+ * chapados de 124px viviam encavalados e roubavam a coluna inteira. A cor da
+ * rota sobrou onde importa — uma lasca vertical no canto esquerdo da linha.
  */
 export default function RailLeft() {
   const path = usePathname();
@@ -23,19 +24,18 @@ export default function RailLeft() {
         <span className="rail-tag">ferramentas para negócios</span>
       </Link>
 
-      <nav className="rail-nav" aria-label="Seções">
-        {ROTAS.map((r) => (
+      <nav className="navcard" aria-label="Seções">
+        <span className="rcard-h">Ir para</span>
+        {NAV.map((r) => (
           <Link
             key={r.href}
             href={r.href}
-            className={`tile tile--${r.tone}`}
+            className={`nlink nlink--${r.tone}`}
             aria-current={path === r.href ? "page" : undefined}
           >
-            <span className="tile-n">{r.n}</span>
-            <span className="tile-arrow">
-              <ArrowUpRight />
-            </span>
-            <span className="tile-label">{r.label}</span>
+            <span className="nlink-n">{r.n}</span>
+            <span className="nlink-label">{r.label}</span>
+            <ArrowUpRight />
           </Link>
         ))}
       </nav>
