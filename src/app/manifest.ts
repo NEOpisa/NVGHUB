@@ -11,9 +11,18 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     background_color: "#06070b",
     theme_color: "#06070b",
+    /* Campo azul cheio, não o avatar escuro: na tela inicial o ícone fica
+       sobre o papel de parede do usuário, e quadrado escuro com marca clara
+       desaparece em metade dos papéis de parede.
+
+       O mesmo arquivo entra como `any` e como `maskable` — ele sangra até a
+       borda e o V cabe no círculo seguro de 80%, então serve aos dois casos.
+       O tipo do Next só aceita um propósito por entrada, daí a repetição. */
     icons: [
-      { src: "/logo.png", sizes: "512x512", type: "image/png" },
-      { src: "/perfil.png", sizes: "1024x1024", type: "image/png" },
+      { src: "/icone-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icone-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icone-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+      { src: "/icone-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   };
 }

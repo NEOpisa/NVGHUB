@@ -22,31 +22,40 @@
       <stop offset="0.55" stop-color="#0a0d18"/>
       <stop offset="1" stop-color="#06070b"/>
     </radialGradient>
-    <linearGradient id="p-chrome" x1="0.08" y1="0" x2="0.86" y2="1">
+    <linearGradient id="p-chrome" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
       <stop offset="0.36" stop-color="#dbe5fc"/>
       <stop offset="0.72" stop-color="#9dbaf5"/>
       <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>
-    <linearGradient id="p-esmalte" x1="0.2" y1="0" x2="0.8" y2="1">
+    <linearGradient id="p-esmalte" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#4f7ce8"/>
       <stop offset="0.5" stop-color="#2b54e3"/>
       <stop offset="1" stop-color="#0000CD"/>
     </linearGradient>
     <!-- parede da extrusão: sempre mais escura que a face que ela sustenta -->
-    <linearGradient id="p-parede" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="p-parede" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#2f4a86"/>
       <stop offset="1" stop-color="#101a38"/>
     </linearGradient>
+    <!-- halo: descola a peça do campo. Sem ele o V escuro nas beiradas
+         encosta no fundo e a silhueta se perde na miniatura. -->
+    <radialGradient id="p-halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6495ED" stop-opacity="0.36"/>
+      <stop offset="0.6" stop-color="#3559c9" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#6495ED" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
   <rect width="1024" height="1024" fill="url(#p-campo)"/>
 
   <!-- aro: fecha a composição no recorte circular sem virar moldura -->
-  <circle cx="512" cy="512" r="452" fill="none" stroke="#6495ED" stroke-opacity="0.34" stroke-width="3"/>
+  <circle cx="512" cy="512" r="452" fill="none" stroke="#6495ED" stroke-opacity="0.42" stroke-width="3"/>
   <circle cx="512" cy="512" r="452" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="12"/>
 
-  <g transform="translate(512,512) scale(0.75) translate(-640,-568)">
+  <circle cx="512" cy="498" r="360" fill="url(#p-halo)"/>
+
+  <g transform="translate(512,506) scale(0.87) translate(-640,-568)">
     <!-- paredes: quad por aresta do contorno, ligando frente e trás -->
     <g fill="url(#p-parede)">
       <path d="M492 306 L278 369 L294 382 L508 319 Z"/>

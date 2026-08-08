@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Neovanguard">
+  <!-- MESTRE DO ÍCONE (favicon, ícone de app) — desenho separado do avatar,
+       porque o trabalho é outro.
+
+       O avatar (perfil.svg) vive a 400px numa timeline e pode se dar ao luxo
+       de campo escuro, aro e cromado. O favicon vive a 16px numa aba, ao
+       lado de dezenas de outras, sobre uma barra que pode ser clara ou
+       escura. Três consequências:
+
+       1. CAMPO CHEIO E SATURADO. Um V claro sobre campo escuro desaparece na
+          aba escura do navegador — era exatamente o que estava acontecendo.
+          O campo azul cheio dá silhueta antes de qualquer detalhe.
+       2. UMA COR NA MARCA. O esmalte de acento e o cromado não sobrevivem a
+          16px: viram sujeira cinza. Aqui a lâmina é branca chapada.
+       3. GLIFO PRÓPRIO, NÃO O LOGOTIPO REDUZIDO. É por isso que este arquivo
+          existe. No V oficial cada metade tem uma farpa externa curta e uma
+          lâmina longa, separadas por um entalhe de ~30 unidades de 1024 —
+          meio pixel a 16px. O entalhe fecha, as pontas afinam e sobra uma
+          mancha. Este glifo guarda o que resta legível quando tudo encolhe:
+          o ombro em diagonal, a abertura central larga e a ponta única
+          embaixo. As farpas externas saíram: com elas o glifo teria sete
+          detalhes atravessando 15px, e nenhum sobreviveria. É variante de
+          ícone, não a marca — a marca continua sendo lib/vShape. -->
+  <defs>
+    <linearGradient id="i-campo" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#3f63e8"/>
+      <stop offset="0.52" stop-color="#1230d6"/>
+      <stop offset="1" stop-color="#0000a8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" rx="196" fill="url(#i-campo)"/>
+  <!-- fio de luz na borda de cima: volume de botão sem custar nitidez -->
+  <path d="M196 3 H828 A193 193 0 0 1 1021 196" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="6"/>
+
+  <g fill="#ffffff">
+    <!-- Braço: ombro em diagonal (como no V oficial) · aresta interna mais
+         íngreme que a externa, para o entalhe central descer fundo sem que a
+         base engrosse · costura no eixo · aresta externa de volta.
+         Medidas conferidas a 16px: braço ≥2,4px, abertura central 5px. -->
+    <path d="M128 300 L382 244 L512 720 L512 856 Z"/>
+    <path d="M896 300 L642 244 L512 720 L512 856 Z"/>
+  </g>
+</svg>
