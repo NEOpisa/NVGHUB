@@ -23,7 +23,7 @@ import { HALF_OUTLINE, HALF_FACETS, bothHalves, wallPaths } from "@/lib/vShape";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
-type Variante = "site" | "ouro" | "platina";
+type Variante = "site" | "parceria";
 
 type Tema = {
   alt: string;
@@ -58,10 +58,10 @@ const TEMAS: Record<Variante, Tema> = {
     parede: ["#5f80c9", "#1d2a4d"],
     fundo: "#111b3d",
   },
-  ouro: {
-    alt: "Neovanguard Ouro — a ferramenta do seu negócio no ar em até 16 dias",
-    selo: "divisão ouro",
-    promessa: "A ferramenta do seu negócio\nno ar em até 16 dias.",
+  parceria: {
+    alt: "Neovanguard — seja nosso parceiro ou parceira",
+    selo: "trabalhar junto",
+    promessa: "Seja nosso parceiro\nou parceira.",
     rodape: "escopo fechado · suporte incluso",
     accent: "#f4b74a",
     halo: "rgba(244, 183, 74, 0.16)",
@@ -69,18 +69,6 @@ const TEMAS: Record<Variante, Tema> = {
     esmalte: ["#d9a848", "#b87d1e", "#7a4f0c"],
     parede: ["#c9a256", "#4a3510"],
     fundo: "#2b1e08",
-  },
-  platina: {
-    alt: "Neovanguard Platina — parceria completa para poucas operações por vez",
-    selo: "divisão platina",
-    promessa: "Parceria completa, para poucas\noperações por vez.",
-    rodape: "candidatura · análise · retorno em 48h",
-    accent: "#cfd6e6",
-    halo: "rgba(207, 214, 230, 0.14)",
-    chrome: ["#ffffff", "#eef1f7", "#c3cad8", "#98a2b8"],
-    esmalte: ["#8f9bb3", "#6b7689", "#454d5e"],
-    parede: ["#7d879b", "#2a2f3a"],
-    fundo: "#242832",
   },
 };
 

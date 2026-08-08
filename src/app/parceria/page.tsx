@@ -5,10 +5,10 @@ import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
 import { WA } from "@/lib/constants";
 
 export const metadata = pageMetadata({
-  title: "Ouro — a ferramenta do seu negócio no ar em até 16 dias",
+  title: "Seja nosso parceiro ou parceira",
   description:
-    "A divisão Ouro da Neovanguard: sistemas, automações e lojas com escopo fechado e consulta objetiva. Valor apresentado na consulta.",
-  path: "/ouro",
+    "A parceria da Neovanguard: sistemas, automações e lojas com escopo fechado, prazo por escrito e consulta objetiva. O valor é apresentado na consulta.",
+  path: "/parceria",
 });
 
 const LEVA = [
@@ -48,15 +48,13 @@ const NUMEROS = [
   ["0", "contrato mínimo"],
 ] as const;
 
-export default function OuroPage() {
+export default function ParceriaPage() {
   return (
     <>
-      <section className="panel panel--gold-hero" aria-labelledby="ouro-h">
-        <span className="eyebrow">Divisão Ouro · produto principal</span>
-        <h1 id="ouro-h" className="h-xl">
-          A ferramenta do seu negócio,
-          <br />
-          <em className="h-gold">funcionando</em>, em até 16 dias.
+      <section className="panel panel--gold-hero" aria-labelledby="parceria-h">
+        <span className="eyebrow">Trabalhar junto</span>
+        <h1 id="parceria-h" className="h-xl">
+          Seja nosso <em className="h-gold">parceiro ou parceira</em>.
         </h1>
         <p className="lead">
           Sistema, automação ou loja com escopo fechado e produção
@@ -96,7 +94,7 @@ export default function OuroPage() {
         </div>
       </section>
 
-      <section className="panel panel--accent" aria-label="Números do Ouro">
+      <section className="panel panel--accent" aria-label="Números da parceria">
         <dl className="nums">
           {NUMEROS.map(([n, l]) => (
             <div key={l} className="num">
@@ -130,7 +128,7 @@ export default function OuroPage() {
         </ol>
       </section>
 
-      <section className="closer" aria-label="Entrar no Ouro">
+      <section className="closer" aria-label="Começar a parceria">
         <h2 className="h-xl">Uma consulta define tudo.</h2>
         <p className="lead">
           Três perguntas rápidas e já entendemos o seu momento — o escopo e o

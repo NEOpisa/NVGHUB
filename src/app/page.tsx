@@ -6,8 +6,8 @@ import { WA } from "@/lib/constants";
 
 /**
  * HOME — o hero é a marca V em 3D se montando; abaixo, no mesmo ritmo de
- * painéis do resto do site: frentes de trabalho, números, as duas divisões
- * e o fecho. Rolagem nativa do começo ao fim.
+ * painéis do resto do site: frentes de trabalho, números, o convite à
+ * parceria e o fecho. Rolagem nativa do começo ao fim.
  */
 
 const FRENTES = [
@@ -45,7 +45,7 @@ export default function Home() {
     <>
       <section className="hero" aria-label="Apresentação da Neovanguard">
         <div className="hero-copy">
-          <span className="eyebrow">Estúdio de tecnologia · desde 2023</span>
+          <span className="eyebrow">Estúdio de tecnologia</span>
           <h1 className="h-xl">
             A ferramenta certa
             <br />
@@ -61,8 +61,8 @@ export default function Home() {
               Quero resolver um problema
               <ArrowUpRight />
             </Link>
-            <Link href="/ouro" className="pill pill--ghost">
-              Conhecer o Ouro
+            <Link href="/parceria" className="pill pill--ghost">
+              Ser parceiro
             </Link>
           </div>
         </div>
@@ -104,39 +104,29 @@ export default function Home() {
         </dl>
       </section>
 
+      {/* Antes eram duas portas, Ouro e Platina. Com o Platina fora e o Ouro
+          virando a parceria, sobrou UMA — e uma porta não se anuncia como
+          escolha. Virou convite: uma peça só, larga, com o que a parceria
+          entrega em três linhas. */}
       <section className="panel" aria-labelledby="div-h">
         <header className="sec-head">
-          <span className="eyebrow">As divisões</span>
+          <span className="eyebrow">Trabalhar junto</span>
           <h2 id="div-h" className="h-lg">
-            Duas portas. <em className="h-accent">O mesmo DNA.</em>
+            Seja nosso <em className="h-accent">parceiro ou parceira.</em>
           </h2>
         </header>
-        <div className="doors">
-          <Link href="/ouro" className="door door--gold">
-            <span className="door-flag">Comece por aqui</span>
-            <h3>Ouro</h3>
-            <p>
-              O caminho direto: a ferramenta que o negócio precisa, escopo
-              fechado e entrega rápida. Uma consulta objetiva define o plano.
-            </p>
-            <span className="door-cta">
-              Entrar no Ouro
-              <ArrowUpRight />
-            </span>
-          </Link>
-          <Link href="/contato" className="door door--dark">
-            <span className="door-flag">Vagas limitadas</span>
-            <h3>Platina</h3>
-            <p>
-              Parceria completa e sob medida, para poucas operações por vez.
-              Você se candidata, nós analisamos e retornamos em até 48h.
-            </p>
-            <span className="door-cta">
-              Candidatar-se
-              <ArrowUpRight />
-            </span>
-          </Link>
-        </div>
+        <Link href="/parceria" className="door door--gold door--wide">
+          <span className="door-flag">Comece por aqui</span>
+          <p>
+            O caminho direto: a ferramenta que o negócio precisa, com escopo
+            fechado por escrito e entrega em até 16 dias. Uma consulta
+            objetiva define o plano — e é nela que o valor aparece.
+          </p>
+          <span className="door-cta">
+            Ver como funciona
+            <ArrowUpRight />
+          </span>
+        </Link>
       </section>
 
       <section className="closer" aria-label="Fale com a gente">

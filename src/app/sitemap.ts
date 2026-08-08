@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/constants";
    declara noindex — é destino de formulário, não de busca. */
 const ROUTES = [
   { path: "/", priority: 1 },
-  { path: "/ouro", priority: 0.9 },
+  { path: "/parceria", priority: 0.9 },
   { path: "/sobre", priority: 0.8 },
   { path: "/metodologia", priority: 0.7 },
   { path: "/solucao", priority: 0.9 },

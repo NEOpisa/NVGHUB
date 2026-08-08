@@ -3,10 +3,14 @@ export const SITE_URL = "https://neovanguard.com.br";
 
 /** NAVEGAÇÃO — o trilho esquerdo é só isto e nada mais: para onde ir. Todos
     os destinos do site moram aqui, inclusive os três que antes ficavam no
-    trilho direito fingindo ser leitura. Nenhum deles se repete lá. */
+    trilho direito fingindo ser leitura. Nenhum deles se repete lá.
+
+    Os rótulos são curtos porque o trilho tem ~200px: "Parceria" no menu, e
+    a frase inteira ("Seja nosso parceiro ou parceira") no título da página,
+    na porta da home e na OG, onde há espaço para ela respirar. */
 export const NAV = [
   { n: "01", label: "Início", href: "/", tone: "a" },
-  { n: "02", label: "Ouro", href: "/ouro", tone: "b" },
+  { n: "02", label: "Parceria", href: "/parceria", tone: "b" },
   { n: "03", label: "Exemplos", href: "/exemplos", tone: "c" },
   { n: "04", label: "Metodologia", href: "/metodologia", tone: "c" },
   { n: "05", label: "Quem somos", href: "/sobre", tone: "d" },
@@ -80,7 +84,7 @@ export const FATOS = [
 /** Rodapé compacto que assina toda página. */
 export const RODAPE = [
   { label: "Início", href: "/" },
-  { label: "Ouro", href: "/ouro" },
+  { label: "Parceria", href: "/parceria" },
   { label: "Exemplos", href: "/exemplos" },
   { label: "Quem somos", href: "/sobre" },
   { label: "Contato", href: "/contato" },

@@ -19,8 +19,12 @@ const nextConfig: NextConfig = {
     return [
       { source: "/orcamento", destination: "/solucao", permanent: true },
       { source: "/pacotes", destination: "/solucao", permanent: true },
-      // a Platina não tem mais vitrine: candidatura no fim da home
-      { source: "/platina", destination: "/?tier=platina", permanent: false },
+      // A divisão Ouro virou "Seja nosso parceiro ou parceira" e o endereço
+      // acompanhou. O redirecionamento não é apego ao nome antigo: /ouro já
+      // circulou em conversa e em link, e link que morre é cliente perdido.
+      { source: "/ouro", destination: "/parceria", permanent: true },
+      // O Platina saiu do site por inteiro.
+      { source: "/platina", destination: "/parceria", permanent: true },
     ];
   },
 };

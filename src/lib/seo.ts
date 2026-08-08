@@ -14,7 +14,7 @@ type PageMetaInput = {
  *
  * A imagem NÃO é declarada aqui de propósito: quem responde por ela é o
  * arquivo `opengraph-image` do segmento — o da raiz vale para o site
- * inteiro, e /ouro sobrescreve com a cor da divisão. Fixar uma URL aqui
+ * inteiro, e /parceria sobrescreve com a cor própria. Fixar uma URL aqui
  * anularia essa herança e traria de volta o PNG velho para todas as rotas.
  */
 export function pageMetadata({ title, description, path }: PageMetaInput): Metadata {

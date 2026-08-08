@@ -40,8 +40,8 @@ export default function SolucaoPage() {
             Ver exemplos
             <ArrowUpRight />
           </Link>
-          <Link href="/ouro" className="pill pill--ghost">
-            Conhecer o Ouro
+          <Link href="/parceria" className="pill pill--ghost">
+            Ser parceiro
           </Link>
         </div>
       </section>
