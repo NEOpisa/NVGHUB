@@ -7,7 +7,6 @@ import {
 import RailLeft from "@/components/shell/RailLeft";
 import RailRight from "@/components/shell/RailRight";
 import MobileBar from "@/components/shell/MobileBar";
-import MetaPixel from "@/components/MetaPixel";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL } from "@/lib/constants";
 import "./shell.css";
@@ -43,23 +42,23 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Neovanguard — Ferramentas para o seu negócio",
-    template: "%s · Neovanguard",
+    default: "Neovanguard OS — a máquina é sua, inclusive a identidade",
+    template: "%s · Neovanguard OS",
   },
   description:
-    "Resolvemos problemas de negócio criando a ferramenta certa: sistemas, automações, IA aplicada e lojas sob medida. Entrega com prazo definido, sem contrato mínimo, atendendo o Brasil inteiro de forma 100% remota.",
-  applicationName: "Neovanguard",
+    "Distribuição Linux baseada em Arch onde a sua chave Nostr é a conta do sistema. Nó Bitcoin, Lightning e relay rodando na sua máquina, endurecimento de fábrica e 55 comandos para operar tudo isso. Código aberto, GPL-3.0.",
+  applicationName: "Neovanguard OS",
   keywords: [
-    "ferramentas para negócios",
-    "sistemas web sob medida",
-    "automação de processos",
-    "IA para empresas",
-    "sistema para comércio",
-    "agendamento online",
-    "e-commerce",
-    "desenvolvimento sob medida Brasil",
-    "landing page",
-    "Neovanguard",
+    "Neovanguard OS",
+    "distribuição Linux",
+    "Arch Linux",
+    "Linux Bitcoin",
+    "Linux Nostr",
+    "sistema operacional soberano",
+    "nó Bitcoin",
+    "Lightning Network",
+    "relay Nostr",
+    "distro brasileira",
   ],
   authors: [{ name: "Neovanguard" }],
   creator: "Neovanguard",
@@ -77,19 +76,19 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Neovanguard — Ferramentas para o seu negócio",
+    title: "Neovanguard OS — a máquina é sua, inclusive a identidade",
     description:
-      "Resolvemos problemas de negócio criando a ferramenta certa: sistemas, automações, IA e lojas sob medida. Prazo definido, sem contrato mínimo, 100% remoto.",
+      "Distribuição Linux baseada em Arch: a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina. Três imagens, instalador próprio, GPL-3.0.",
     type: "website",
     locale: "pt_BR",
-    siteName: "Neovanguard",
+    siteName: "Neovanguard OS",
     url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Neovanguard — Ferramentas para o seu negócio",
+    title: "Neovanguard OS — a máquina é sua, inclusive a identidade",
     description:
-      "A ferramenta certa para cada problema do seu negócio: sistemas, automações e IA sob medida. 100% remoto, sem contrato mínimo.",
+      "Linux sobre Arch onde a sua chave é a conta do sistema. Nó Bitcoin, Lightning e relay Nostr locais. Livre e de código aberto.",
   },
 };
 
@@ -105,22 +104,34 @@ const JSON_LD = {
       publisher: { "@id": `${SITE_URL}/#org` },
     },
     {
-      "@type": ["Organization", "ProfessionalService"],
+      "@type": "Organization",
       "@id": `${SITE_URL}/#org`,
       name: "Neovanguard",
       url: SITE_URL,
       logo: `${SITE_URL}/logo.png`,
+    },
+    {
+      // O que este site descreve é um sistema operacional, e o schema tem de
+      // dizer isso: `SoftwareApplication` com `operatingSystem`, não
+      // `ProfessionalService` com faixa de preço e telefone de atendimento.
+      "@type": "SoftwareApplication",
+      "@id": `${SITE_URL}/#os`,
+      name: "Neovanguard OS",
+      url: SITE_URL,
+      applicationCategory: "OperatingSystem",
+      operatingSystem: "Linux",
+      softwareVersion: "1.0.0",
       image: `${SITE_URL}/opengraph-image`,
       description:
-        "Estúdio de tecnologia 100% remoto: resolvemos problemas de negócio criando a ferramenta certa — sistemas, automações, IA e lojas sob medida — para empresas de todo o Brasil.",
-      areaServed: { "@type": "Country", name: "Brasil" },
-      priceRange: "$$",
-      contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "customer service",
-        telephone: "+5519994425132",
-        availableLanguage: ["pt-BR"],
+        "Distribuição Linux baseada em Arch em que a chave Nostr do usuário é a conta do sistema. Nó Bitcoin, Lightning e relay Nostr locais, endurecimento de fábrica e 55 comandos neo-* para operá-los.",
+      license: "https://www.gnu.org/licenses/gpl-3.0.html",
+      isAccessibleForFree: true,
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "BRL",
       },
+      author: { "@id": `${SITE_URL}/#org` },
     },
   ],
 };
@@ -156,7 +167,6 @@ export default function RootLayout({
           </main>
           <RailRight />
         </div>
-        <MetaPixel />
         <Analytics />
       </body>
     </html>

@@ -1,68 +1,73 @@
 import Link from "next/link";
 import NVMark3D from "@/components/brand/NVMark3D";
 import Foot from "@/components/shell/Foot";
-import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
-import { WA } from "@/lib/constants";
+import { ArrowUpRight } from "@/components/icons";
+import { VERSAO, IMAGENS } from "@/lib/constants";
 
 /**
  * HOME — o hero é a marca V em 3D se montando; abaixo, no mesmo ritmo de
- * painéis do resto do site: frentes de trabalho, números, o convite à
- * parceria e o fecho. Rolagem nativa do começo ao fim.
+ * painéis do resto do site: o que a distro é, as três imagens, os números e
+ * o fecho. Rolagem nativa do começo ao fim.
+ *
+ * A ordem das seções é a de quem chega sem saber o que é isto. Primeiro a
+ * frase que diz o que muda (a chave é a conta), depois o que vem dentro, só
+ * então qual mídia pegar. Um site de distro que abre com a tabela de download
+ * está pedindo uma decisão antes de dar a informação para tomá-la.
  */
 
-const FRENTES = [
+const PILARES = [
   {
     n: "01",
-    t: "Sistemas sob medida",
-    d: "Painéis, cadastros e fluxos desenhados para a operação que você já tem — não para um manual genérico.",
+    t: "A sua chave é a sua conta",
+    d: "Na instalação você informa a chave Nostr, e a conta do sistema nasce dela — cifrada pela sua própria senha. Formatou, trocou de máquina? Digita a chave e as configurações voltam. Sem nuvem, sem cadastro, sem intermediário.",
   },
   {
     n: "02",
-    t: "Automação & IA aplicada",
-    d: "Robôs e integrações que tiram o trabalho manual do caminho: orçamento, cobrança, atendimento e relatório.",
+    t: "A pilha inteira é sua",
+    d: "Nó Bitcoin, Lightning, carteira e relay Nostr rodam na sua máquina, não na de outra pessoa. Vêm instalados e configurados; 55 comandos neo-* existem para operar isso sem decorar flag de ninguém.",
   },
   {
     n: "03",
-    t: "Lojas e catálogos",
-    d: "Cardápio digital, agendamento e e-commerce com painel próprio — no ar, vendendo, com você no controle.",
+    t: "O que a máquina fez não fica no disco",
+    d: "O log do sistema vive em memória e /var/log é tmpfs. /dev/shm e /var/tmp não executam nada. Desligou, foi embora — que é o que significa não deixar rastro, em vez de prometer privacidade e escrever tudo.",
   },
   {
     n: "04",
-    t: "Suporte que responde",
-    d: "WhatsApp direto com quem construiu, atualizações e monitoramento. Sem fila, sem ticket, sem contrato mínimo.",
+    t: "Arch embaixo, sem esconder",
+    d: "Os repositórios são os do Arch e o pacman é o pacman. O que a distro acrescenta vem de um repositório próprio e assinado, em pacotes com nome e versão — e que dá para desinstalar.",
   },
 ];
 
 const NUMEROS = [
-  ["16 dias", "prazo máximo de entrega"],
-  ["20–30 min", "consulta que fecha o escopo"],
-  ["3 h", "janela típica de resposta"],
-  ["100%", "remoto, Brasil inteiro"],
+  ["3", "imagens, três públicos"],
+  ["55", "comandos neo-*"],
+  ["0", "contas para criar"],
+  ["GPL-3.0", "código aberto"],
 ] as const;
 
 export default function Home() {
   return (
     <>
-      <section className="hero" aria-label="Apresentação da Neovanguard">
+      <section className="hero" aria-label="Apresentação do Neovanguard OS">
         <div className="hero-copy">
-          <span className="eyebrow">Estúdio de tecnologia</span>
+          <span className="eyebrow">Sistema operacional · Arch Linux</span>
           <h1 className="h-xl">
-            A ferramenta certa
+            A máquina é sua.
             <br />
-            para o seu problema.
+            Inclusive a identidade.
           </h1>
           <p className="lead">
-            Sistemas, automações e IA sob medida. Entendemos a dor, fechamos o
-            escopo e entregamos funcionando — com prazo definido e sem contrato
-            mínimo.
+            Neovanguard OS é uma distribuição Linux em que a sua chave Nostr é a
+            conta do sistema, e o nó Bitcoin, o Lightning e o relay são seus,
+            rodando aqui. Formatou? Digita a chave e a máquina volta a ser a sua.
           </p>
           <div className="pill-row">
-            <Link href="/solucao" className="pill">
-              Quero resolver um problema
+            <Link href="/baixar" className="pill">
+              Baixar a versão {VERSAO}
               <ArrowUpRight />
             </Link>
-            <Link href="/parceria" className="pill pill--ghost">
-              Ser parceiro
+            <Link href="/recursos" className="pill pill--ghost">
+              O que vem dentro
             </Link>
           </div>
         </div>
@@ -70,84 +75,90 @@ export default function Home() {
           <NVMark3D />
         </div>
         <p className="hero-note">
-          entrega em até 16 dias · escopo fechado antes de começar · suporte
-          via WhatsApp
+          três imagens · instalador próprio · repositório assinado · sem edição
+          paga
         </p>
       </section>
 
-      <section className="panel" aria-labelledby="frentes-h">
-        <header className="sec-head">
-          <span className="eyebrow">O que fazemos</span>
-          <h2 id="frentes-h" className="h-lg">
-            Quatro frentes, <em className="h-accent">um organismo só.</em>
+      <section className="panel" aria-labelledby="pilares">
+        <div className="sec-head">
+          <span className="eyebrow">O que muda</span>
+          <h2 className="h-lg" id="pilares">
+            Quatro coisas que esta distro faz{" "}
+            <span className="h-accent">diferente</span>
           </h2>
-        </header>
+        </div>
         <div className="cards">
-          {FRENTES.map((f) => (
-            <article key={f.n} className="card">
-              <span className="card-n">{f.n}</span>
-              <h3 className="card-t">{f.t}</h3>
-              <p className="card-d">{f.d}</p>
+          {PILARES.map((p) => (
+            <article className="card" key={p.n}>
+              <span className="card-n">{p.n}</span>
+              <h3 className="card-t">{p.t}</h3>
+              <p className="card-d">{p.d}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="panel panel--accent" aria-label="Como trabalhamos">
-        <dl className="nums">
-          {NUMEROS.map(([n, l]) => (
-            <div key={l} className="num">
-              <dt>{n}</dt>
-              <dd>{l}</dd>
+      <section className="panel panel--accent" aria-label="Números">
+        <div className="nums">
+          {NUMEROS.map(([n, d]) => (
+            <div className="num" key={d}>
+              <strong>{n}</strong>
+              <span>{d}</span>
             </div>
           ))}
-        </dl>
+        </div>
       </section>
 
-      {/* Antes eram duas portas, Ouro e Platina. Com o Platina fora e o Ouro
-          virando a parceria, sobrou UMA — e uma porta não se anuncia como
-          escolha. Virou convite: uma peça só, larga, com o que a parceria
-          entrega em três linhas. */}
-      <section className="panel" aria-labelledby="div-h">
-        <header className="sec-head">
-          <span className="eyebrow">Trabalhar junto</span>
-          <h2 id="div-h" className="h-lg">
-            Seja nosso <em className="h-accent">parceiro ou parceira.</em>
+      <section className="panel" aria-labelledby="imagens">
+        <div className="sec-head">
+          <span className="eyebrow">As mídias</span>
+          <h2 className="h-lg" id="imagens">
+            Uma ISO servia mal a <span className="h-accent">três pessoas</span>
           </h2>
-        </header>
-        <Link href="/parceria" className="door door--gold door--wide">
-          <span className="door-flag">Comece por aqui</span>
-          <p>
-            O caminho direto: a ferramenta que o negócio precisa, com escopo
-            fechado por escrito e entrega em até 16 dias. Uma consulta
-            objetiva define o plano — e é nela que o valor aparece.
+          <p className="lead">
+            Quem quer só experimentar, quem já decidiu e quer instalar, e quem
+            quer escolher cada peça. A mídia que você grava no pendrive já decide
+            o que vai acontecer — o instalador não pergunta o que a escolha da
+            imagem já respondeu.
           </p>
-          <span className="door-cta">
-            Ver como funciona
-            <ArrowUpRight />
-          </span>
-        </Link>
-      </section>
-
-      <section className="closer" aria-label="Fale com a gente">
-        <h2 className="h-xl">
-          Conta o problema.
-          <br />A gente devolve a ferramenta.
-        </h2>
+        </div>
+        <div className="cards">
+          {IMAGENS.map((im) => (
+            <article className="card" key={im.id}>
+              <span className="card-n">{im.tamanho}</span>
+              <h3 className="card-t">{im.nome}</h3>
+              <p className="card-d">{im.d}</p>
+              <div className="card-tags">
+                <span className="tag">{im.para}</span>
+                <span className="tag">boot: {im.boot}</span>
+                <span className="tag">rede: {im.rede}</span>
+              </div>
+            </article>
+          ))}
+        </div>
         <div className="pill-row">
-          <Link href="/solucao" className="pill">
-            Fazer a consulta rápida
+          <Link href="/baixar" className="pill">
+            Escolher e baixar
             <ArrowUpRight />
           </Link>
-          <a
-            href={WA}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pill pill--ghost"
-          >
-            <WhatsAppIcon />
-            WhatsApp
-          </a>
+        </div>
+      </section>
+
+      <section className="closer" aria-label="Começar">
+        <h2 className="h-xl">
+          Experimente sem instalar.
+          <br />
+          A Live roda do pendrive.
+        </h2>
+        <div className="pill-row">
+          <Link href="/baixar" className="pill">
+            Baixar {VERSAO}
+            <ArrowUpRight />
+          </Link>
+          <Link href="/instalacao" className="pill pill--ghost">
+            Como instalar
+          </Link>
         </div>
       </section>
 

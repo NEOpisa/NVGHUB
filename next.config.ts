@@ -16,16 +16,30 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   async redirects() {
-    return [
-      { source: "/orcamento", destination: "/solucao", permanent: true },
-      { source: "/pacotes", destination: "/solucao", permanent: true },
-      // A divisão Ouro virou "Seja nosso parceiro ou parceira" e o endereço
-      // acompanhou. O redirecionamento não é apego ao nome antigo: /ouro já
-      // circulou em conversa e em link, e link que morre é cliente perdido.
-      { source: "/ouro", destination: "/parceria", permanent: true },
-      // O Platina saiu do site por inteiro.
-      { source: "/platina", destination: "/parceria", permanent: true },
+    // O site deixou de ser comercial, e estes endereços já circularam em link,
+    // conversa e busca. Link que morre é a pior forma de comunicar uma mudança
+    // de rumo: manda para a home, que explica o que o site virou.
+    //
+    // `permanent: false` (307) e não 308 **de propósito**: o 308 fica gravado no
+    // navegador de quem visitou e não sai de lá. Se a operação comercial voltar
+    // a ter endereço próprio, um 307 se desfaz e um 308 não.
+    const idos = [
+      "/parceria",
+      "/solucao",
+      "/exemplos",
+      "/metodologia",
+      "/contato",
+      "/obrigado",
+      "/orcamento",
+      "/pacotes",
+      "/ouro",
+      "/platina",
     ];
+    return idos.map((source) => ({
+      source,
+      destination: "/",
+      permanent: false,
+    }));
   },
 };
 

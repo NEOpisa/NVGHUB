@@ -13,7 +13,7 @@ export default function Foot() {
           </Link>
         ))}
       </nav>
-      <span>Brasil · 100% remoto</span>
+      <span>GPL-3.0 · código aberto</span>
     </footer>
   );
 }

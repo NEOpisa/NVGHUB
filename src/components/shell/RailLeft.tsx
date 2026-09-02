@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowUpRight } from "@/components/icons";
 import { usePathname } from "next/navigation";
-import { WA, NAV } from "@/lib/constants";
-import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
+import { NAV, VERSAO } from "@/lib/constants";
 
 /**
  * TRILHO ESQUERDO — NAVEGAÇÃO, e só. Aqui estão todos os destinos do site,
@@ -21,7 +21,7 @@ export default function RailLeft() {
         <span className="rail-brand-word">
           neovanguard<b>.</b>
         </span>
-        <span className="rail-tag">ferramentas para negócios</span>
+        <span className="rail-tag">Arch Linux · GPL-3.0</span>
       </Link>
 
       <nav className="navcard" aria-label="Seções">
@@ -40,18 +40,16 @@ export default function RailLeft() {
         ))}
       </nav>
 
-      <a
-        href={WA}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="rail-cta"
-      >
-        <WhatsAppIcon />
-        Falar no WhatsApp
-      </a>
+      {/* O CTA de um site de distro é um só, e é baixar. Interno e não
+          externo: a página de download explica as três imagens antes de
+          entregar um arquivo de 4 GB para alguém que não sabe qual quer. */}
+      <Link href="/baixar" className="rail-cta">
+        Baixar o Neovanguard OS
+        <span className="rail-cta-v">{VERSAO}</span>
+      </Link>
 
       <div className="rmeta">
-        <span>Brasil · 100% remoto</span>
+        <span>livre e de código aberto</span>
         <span>© {new Date().getFullYear()} Neovanguard</span>
       </div>
     </aside>

@@ -3,10 +3,10 @@ import type { MetadataRoute } from "next";
 // manifest PWA básico — instala como app, nas cores do site.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Neovanguard — Ferramentas para o seu negócio",
-    short_name: "Neovanguard",
+    name: "Neovanguard OS",
+    short_name: "Neovanguard OS",
     description:
-      "Para cada problema do seu negócio, construímos a ferramenta ideal.",
+      "Distribuição Linux onde a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina.",
     start_url: "/",
     display: "standalone",
     background_color: "#06070b",

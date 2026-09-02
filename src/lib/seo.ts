@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/constants";
 type PageMetaInput = {
   title: string;
   description: string;
-  /** Caminho da rota começando com "/" (ex.: "/solucao"). Use "/" para a home. */
+  /** Caminho da rota começando com "/" (ex.: "/baixar"). Use "/" para a home. */
   path: string;
 };
 
@@ -14,7 +14,7 @@ type PageMetaInput = {
  *
  * A imagem NÃO é declarada aqui de propósito: quem responde por ela é o
  * arquivo `opengraph-image` do segmento — o da raiz vale para o site
- * inteiro, e /parceria sobrescreve com a cor própria. Fixar uma URL aqui
+ * inteiro, e /baixar sobrescreve com a cor própria. Fixar uma URL aqui
  * anularia essa herança e traria de volta o PNG velho para todas as rotas.
  */
 export function pageMetadata({ title, description, path }: PageMetaInput): Metadata {

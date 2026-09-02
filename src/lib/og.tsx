@@ -47,10 +47,10 @@ type Tema = {
 
 const TEMAS: Record<Variante, Tema> = {
   site: {
-    alt: "Neovanguard — para cada problema do seu negócio, a ferramenta ideal",
+    alt: "Neovanguard OS — a máquina é sua, inclusive a identidade",
     selo: "",
-    promessa: "Para cada problema do seu negócio,\nconstruímos a ferramenta ideal.",
-    rodape: "ferramentas para negócios · brasil",
+    promessa: "A máquina é sua.\nInclusive a identidade.",
+    rodape: "sistema operacional · arch linux · gpl-3.0",
     accent: "#6495ed",
     halo: "rgba(100, 149, 237, 0.20)",
     chrome: ["#ffffff", "#dbe5fc", "#9dbaf5", "#6495ed"],

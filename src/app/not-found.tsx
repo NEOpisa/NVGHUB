@@ -17,8 +17,8 @@ export default function NotFound() {
             Voltar ao início
             <ArrowUpRight />
           </Link>
-          <Link href="/solucao" className="pill pill--ghost">
-            Consulta rápida
+          <Link href="/baixar" className="pill pill--ghost">
+            Baixar o sistema
           </Link>
         </div>
       </section>

@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowUpRight } from "@/components/icons";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { WA, NAV, ASSUNTOS, FATOS } from "@/lib/constants";
-import { WhatsAppIcon, ArrowUpRight } from "@/components/icons";
+import { NAV, ASSUNTOS, FATOS, VERSAO } from "@/lib/constants";
 
 /**
  * MOBILE — no lugar dos dois trilhos (que somem abaixo de 980px), uma barra
@@ -41,8 +41,8 @@ export default function MobileBar() {
           </span>
         </Link>
 
-        <Link href="/solucao" className="mbar-cta">
-          Consulta rápida
+        <Link href="/baixar" className="mbar-cta">
+          Baixar
         </Link>
 
         <button
@@ -75,15 +75,9 @@ export default function MobileBar() {
             ))}
           </nav>
 
-          <a
-            href={WA}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="pill mmenu-wa"
-          >
-            <WhatsAppIcon />
-            Falar no WhatsApp
-          </a>
+          <Link href="/baixar" className="pill mmenu-wa">
+            Baixar o Neovanguard OS {VERSAO}
+          </Link>
 
           <div className="mmenu-fatos">
             <p className="rstatus">

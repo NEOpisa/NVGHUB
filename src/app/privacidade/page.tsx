@@ -20,20 +20,34 @@ export default function PrivacidadePage() {
         <h2>O que coletamos</h2>
         <ul>
           <li>
-            <strong>Formulários de contato e consulta:</strong> nome, e-mail,
-            telefone/WhatsApp e a mensagem que você escreve. Usamos esses dados
-            exclusivamente para responder ao seu pedido.
-          </li>
-          <li>
             <strong>Medição de audiência:</strong> estatísticas anônimas de
-            navegação (sem cookies de identificação individual).
+            navegação, sem cookies de identificação individual. É a única coisa
+            que este site coleta.
           </li>
           <li>
-            <strong>Pixel de campanha (opcional):</strong> só é carregado se
-            você aceitar no aviso de privacidade. Serve para medir o alcance de
-            anúncios. Você pode recusar sem perder nenhuma função do site.
+            <strong>Nada mais.</strong> Este site deixou de ter formulários: não
+            há campo de nome, e-mail ou telefone em página nenhuma, e não existe
+            rota que receba dados. O pixel de campanha da Meta, que existia para
+            medir anúncios, foi removido junto com a operação comercial.
           </li>
         </ul>
+
+        <h2>O repositório de pacotes</h2>
+        <p>
+          O endereço <code>/repo</code> serve arquivos assinados para o gerenciador
+          de pacotes de quem tem o Neovanguard OS instalado. Ele entrega arquivos
+          e não recebe nada: não há login, não há identificação de máquina, e o
+          que a hospedagem registra é o mesmo que qualquer servidor web registra
+          ao entregar um arquivo.
+        </p>
+
+        <h2>E o sistema operacional?</h2>
+        <p>
+          O Neovanguard OS não envia telemetria. O registro do que a máquina faz
+          vive na memória dela e não sobrevive ao desligamento. A identidade
+          Nostr é sua e não passa por nenhum servidor nosso — os relays são os
+          que você escolher. Nada disso depende deste site.
+        </p>
 
         <h2>O que NÃO fazemos</h2>
         <ul>

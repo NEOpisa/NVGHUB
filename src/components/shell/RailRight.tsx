@@ -40,11 +40,11 @@ export default function RailRight() {
         </p>
       </div>
 
-      <Link href="/solucao" className="rail-cta rail-cta--accent">
-        Consulta rápida
+      <Link href="/baixar" className="rail-cta rail-cta--accent">
+        Baixar a versão 1.0.0
         <ArrowUpRight />
       </Link>
-      <p className="rcta-note">3 perguntas · sem compromisso</p>
+      <p className="rcta-note">três imagens · livre e de código aberto</p>
 
       <AssuntosDeck />
 
