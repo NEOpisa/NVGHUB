@@ -41,10 +41,10 @@ export default function RailRight() {
       </div>
 
       <Link href="/baixar" className="rail-cta rail-cta--accent">
-        Baixar a versão 1.0.0
+        Baixar a versão 1.1.0
         <ArrowUpRight />
       </Link>
-      <p className="rcta-note">três imagens · livre e de código aberto</p>
+      <p className="rcta-note">duas imagens · livre e de código aberto</p>
 
       <AssuntosDeck />
 

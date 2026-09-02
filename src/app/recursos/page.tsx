@@ -156,8 +156,8 @@ export default function Recursos() {
           gerados de uma fonte só.
         </p>
         <p className="lead">
-          Na MYO você escolhe outro ambiente, ou nenhum: Plasma, GNOME, Hyprland,
-          niri, i3.
+          Trocar de ambiente depois é um <code>pacman -S</code> como em qualquer
+          Arch — nada aqui prende você ao Plasma.
         </p>
       </section>
 

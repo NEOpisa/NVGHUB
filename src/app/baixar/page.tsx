@@ -7,7 +7,7 @@ import { VERSAO, IMAGENS, CHAVE_FPR, REPO_URL, REPO_PACOTES } from "@/lib/consta
 export const metadata: Metadata = {
   title: "Baixar",
   description:
-    "As três imagens do Neovanguard OS — Live para experimentar, Install para instalar sem rede, MYO para montar o seu — e como conferir o que você baixou.",
+    "As duas imagens do Neovanguard OS — Live para experimentar, Install para instalar sem rede — e como conferir o que você baixou.",
 };
 
 /**
@@ -29,7 +29,7 @@ export default function Baixar() {
           <span className="eyebrow">Versão {VERSAO}</span>
           <h1 className="h-xl">Escolha a sua mídia.</h1>
           <p className="lead">
-            São três, e a diferença não é de tamanho: é de para que servem. A
+            São duas, e a diferença não é de tamanho: é de para que servem. A
             que você gravar no pendrive já decide o que vai acontecer quando a
             máquina ligar.
           </p>
@@ -72,7 +72,7 @@ export default function Baixar() {
 
       <section className="panel" aria-labelledby="as-tres">
         <div className="sec-head">
-          <span className="eyebrow">As três</span>
+          <span className="eyebrow">As duas</span>
           <h2 className="h-lg" id="as-tres">
             Qual delas é a <span className="h-accent">sua</span>
           </h2>
@@ -99,10 +99,10 @@ export default function Baixar() {
         </ol>
 
         <p className="grid-note">
-          Na dúvida entre as duas MBN: grave a <strong>Live</strong>, use o
-          sistema do pendrive por uma tarde e, se gostar, grave a{" "}
-          <strong>Install</strong>. É literalmente o mesmo sistema — o que a
-          Install copia para o disco é o mesmo arquivo que a Live roda.
+          Na dúvida: grave a <strong>Live</strong>, use o sistema do pendrive
+          por uma tarde e, se gostar, grave a <strong>Install</strong>. É
+          literalmente o mesmo sistema — o que a Install copia para o disco é o
+          mesmo arquivo que a Live roda.
         </p>
       </section>
 

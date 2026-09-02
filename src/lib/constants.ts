@@ -8,7 +8,7 @@ export const REPO_PACOTES = "https://neovanguard.com.br/repo/x86_64";
 
 /** A versão que o site descreve. Uma constante, e não um texto solto em cinco
     páginas: quando a 1.1 sair, é aqui que se troca. */
-export const VERSAO = "1.0.0";
+export const VERSAO = "1.1.0";
 
 /** A chave que assina os pacotes e as imagens. Aparece na página de download
     porque conferir a assinatura só é possível para quem sabe qual esperar. */
@@ -30,12 +30,12 @@ export const NAV = [
   { n: "07", label: "Sobre", href: "/sobre", tone: "b" },
 ] as const;
 
-/** AS TRÊS IMAGENS. A fonte é `documentation/tres-isos.md` da distro, e os
-    tamanhos são os medidos na última build — não estimativas.
+/** AS IMAGENS. A fonte é `documentation/as-isos.md` da distro, e os tamanhos são
+    os medidos na build — não estimativas.
 
-    Elas existem porque uma ISO só servia mal a três pessoas ao mesmo tempo:
-    quem quer montar o próprio sistema, quem quer só experimentar, e quem já
-    decidiu e quer instalar. */
+    Eram três até a 1.1. A MYO — que montava o sistema pela rede, escolhendo cada
+    peça — saiu: servia a um público que já tem um Arch e quer da gente os
+    pacotes, não a imagem, e os pacotes agora chegam pelo repositório. */
 export const IMAGENS = [
   {
     id: "live",
@@ -55,17 +55,7 @@ export const IMAGENS = [
     para: "Instalar o sistema pronto",
     boot: "terminal",
     rede: "não precisa",
-    d: "O mesmo sistema da Live viaja dentro dela e é copiado para o disco — literalmente o mesmo arquivo, então não há diferença entre o que você experimentou e o que foi instalado. Seis etapas.",
-  },
-  {
-    id: "myo",
-    nome: "MYO",
-    arquivo: "NeovanguardOS-MYO",
-    tamanho: "1,5 GB",
-    para: "Montar o seu",
-    boot: "terminal",
-    rede: "obrigatória",
-    d: "Você escolhe disco, formato, núcleo, gerenciador de arranque, ambiente gráfico, programas e quais módulos de soberania entram. O sistema é baixado e montado na hora. Doze etapas.",
+    d: "O mesmo sistema da Live viaja dentro dela e é copiado para o disco — literalmente o mesmo arquivo, então não há diferença entre o que você experimentou e o que foi instalado. Sete etapas.",
   },
 ] as const;
 
@@ -92,11 +82,11 @@ export const ASSUNTOS = [
   },
   {
     k: "Mídias",
-    n: "3",
-    nl: "imagens, três públicos",
-    t: "Uma ISO servia mal a três pessoas",
-    d: "Quem quer experimentar, quem já decidiu e quer instalar, e quem quer montar cada peça. Cada uma é uma mídia, e a que você bota no pendrive já decide o que vai acontecer.",
-    cta: "Escolher a sua",
+    n: "2",
+    nl: "imagens, duas perguntas",
+    t: "Experimentar e instalar são coisas diferentes",
+    d: "A Live roda do pendrive e não instala nada — é para olhar antes de decidir. A Install leva o mesmo sistema dentro dela e o copia para o disco, sem rede. A mídia que você grava já decide o que vai acontecer.",
+    cta: "Ver as duas",
     href: "/baixar",
   },
   {

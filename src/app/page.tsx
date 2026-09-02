@@ -6,7 +6,7 @@ import { VERSAO, IMAGENS } from "@/lib/constants";
 
 /**
  * HOME — o hero é a marca V em 3D se montando; abaixo, no mesmo ritmo de
- * painéis do resto do site: o que a distro é, as três imagens, os números e
+ * painéis do resto do site: o que a distro é, as duas imagens, os números e
  * o fecho. Rolagem nativa do começo ao fim.
  *
  * A ordem das seções é a de quem chega sem saber o que é isto. Primeiro a
@@ -39,7 +39,7 @@ const PILARES = [
 ];
 
 const NUMEROS = [
-  ["3", "imagens, três públicos"],
+  ["2", "imagens, duas perguntas"],
   ["55", "comandos neo-*"],
   ["0", "contas para criar"],
   ["GPL-3.0", "código aberto"],
@@ -75,7 +75,7 @@ export default function Home() {
           <NVMark3D />
         </div>
         <p className="hero-note">
-          três imagens · instalador próprio · repositório assinado · sem edição
+          duas imagens · instalador próprio · repositório assinado · sem edição
           paga
         </p>
       </section>
@@ -114,13 +114,14 @@ export default function Home() {
         <div className="sec-head">
           <span className="eyebrow">As mídias</span>
           <h2 className="h-lg" id="imagens">
-            Uma ISO servia mal a <span className="h-accent">três pessoas</span>
+            Experimentar e instalar são{" "}
+            <span className="h-accent">coisas diferentes</span>
           </h2>
           <p className="lead">
-            Quem quer só experimentar, quem já decidiu e quer instalar, e quem
-            quer escolher cada peça. São três imagens, e a que você grava no
-            pendrive já decide o que vai acontecer — o instalador não pergunta o
-            que a escolha da mídia já respondeu.
+            A Live roda do pendrive e não instala nada — existe para você olhar
+            antes de decidir. A Install leva o mesmo sistema dentro dela e o
+            copia para o disco, sem precisar de rede. A mídia que você grava já
+            decide o que vai acontecer.
           </p>
         </div>
         <dl className="ficha">
@@ -143,7 +144,7 @@ export default function Home() {
         </h2>
         <div className="pill-row">
           <Link href="/baixar" className="pill">
-            Comparar as três imagens
+            Comparar as duas imagens
             <ArrowUpRight />
           </Link>
           <Link href="/instalacao" className="pill pill--ghost">

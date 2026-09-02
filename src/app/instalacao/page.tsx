@@ -44,20 +44,6 @@ const MBN = [
   ["Instalação", "o sistema sai da própria mídia, sem baixar nada"],
 ] as const;
 
-const MYO = [
-  ["Início", "o que esta mídia faz, e que ela precisa de rede"],
-  ["Rede", "obrigatória: o sistema é baixado"],
-  ["Identidade", "a sua chave Nostr, se você tiver uma"],
-  ["Idioma e região", "locale, teclado e fuso"],
-  ["Sistema", "ambiente gráfico, núcleo, gerenciador de arranque, soberania"],
-  ["Disco", "onde instalar"],
-  ["Formato", "ext4, btrfs com subvolumes, xfs ou f2fs · LUKS · swap ou ZRAM"],
-  ["Conta", "usuário e senha"],
-  ["Programas", "os conjuntos que entram"],
-  ["Aparência", "a paleta"],
-  ["Revisão", "tudo o que vai acontecer"],
-  ["Instalação", "pacstrap, e o sistema é montado na hora"],
-] as const;
 
 export default function Instalacao() {
   return (
@@ -102,39 +88,13 @@ export default function Instalacao() {
           <p className="lead">
             O sistema inteiro viaja dentro da mídia e é copiado para o disco.
             Não há tela de Formato, de Programas nem de Aparência — o que já
-            está pronto define os três, e oferecer uma escolha que não muda
-            nada seria mentir sobre o que a escolha faz.
+            está pronto define os três, e oferecer escolha que não muda nada
+            seria mentir sobre o que a escolha faz. A rede aparece uma vez, e é
+            opcional: ela só serve para trazer a sua identidade Nostr.
           </p>
         </div>
         <ol className="steps">
           {MBN.map(([t, d], i) => (
-            <li className="step" key={t}>
-              <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
-              <div>
-                <div className="step-top">
-                  <h3 className="step-name">{t}</h3>
-                </div>
-                <p className="step-desc">{d}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="panel" aria-labelledby="myo">
-        <div className="sec-head">
-          <span className="eyebrow">MYO</span>
-          <h2 className="h-lg" id="myo">
-            Doze etapas, <span className="h-accent">tudo escolhido</span>
-          </h2>
-          <p className="lead">
-            Um archinstall de verdade, com a camada de soberania como itens
-            marcáveis. Precisa de internet do começo ao fim — e o instalador
-            avisa disso na primeira tela, não na décima.
-          </p>
-        </div>
-        <ol className="steps">
-          {MYO.map(([t, d], i) => (
             <li className="step" key={t}>
               <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
               <div>

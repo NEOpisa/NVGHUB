@@ -25,17 +25,17 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Qual máquina roda isso?",
-    a: "Qualquer PC x86-64 com UEFI ou BIOS legado. A Install precisa de disco para o sistema aberto mais folga — o instalador mostra o número exato na tela de Disco, e recusa um disco pequeno demais dizendo os dois tamanhos. Para rodar um nó Bitcoin completo, conte com algumas centenas de GB a mais.",
+    a: "Qualquer PC x86-64 com UEFI ou BIOS legado. O instalador mostra na tela de Disco quanto espaço a instalação exige, medido na build, e recusa um disco pequeno demais dizendo os dois tamanhos. Para rodar um nó Bitcoin completo, conte com algumas centenas de GB a mais.",
     tag: "Hardware",
   },
   {
     q: "Qual imagem eu baixo?",
-    a: "A Live, se quer só experimentar — ela roda do pendrive e não instala nada. A Install, se já decidiu: ela leva o sistema inteiro dentro e não precisa de internet. A MYO, se quer escolher cada peça: disco, formato, núcleo, ambiente gráfico e programas, baixados na hora.",
+    a: "A Live, se quer só experimentar — ela roda do pendrive e não instala nada. A Install, se já decidiu: ela leva o sistema inteiro dentro e não precisa de internet. São o mesmo sistema; a diferença é só se há instalador na mídia.",
     tag: "Mídias",
   },
   {
     q: "Dá para instalar sem internet?",
-    a: "Com a Install, sim — o sistema viaja dentro da mídia. A MYO precisa de internet do começo ao fim, porque é ela que baixa e monta o sistema, e o instalador avisa isso na primeira tela em vez de deixar você descobrir na décima.",
+    a: "Sim, do começo ao fim. O sistema viaja dentro da mídia e é copiado para o disco. A rede aparece uma vez no instalador e é opcional: ela serve para trazer a sua identidade Nostr, e você pode pular.",
     tag: "Mídias",
   },
   {

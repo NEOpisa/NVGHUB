@@ -7,7 +7,7 @@ import { REPO_URL, REPO_PACOTES, CHAVE_FPR } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Documentação",
   description:
-    "Onde ler sobre o Neovanguard OS: as três imagens, como a build funciona, o repositório de pacotes e a chave que assina tudo.",
+    "Onde ler sobre o Neovanguard OS: as duas imagens, como a build funciona, o repositório de pacotes e a chave que assina tudo.",
 };
 
 /**
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 
 const DOCS = [
   {
-    f: "documentation/tres-isos.md",
-    t: "As três ISOs",
-    d: "Por que uma virou três, como a Install carrega o sistema inteiro dentro de si, como o instalador acha a mídia mesmo quando o sistema de arquivos de boot já foi desmontado, e o que cada modo do instalador pergunta.",
+    f: "documentation/as-isos.md",
+    t: "As imagens",
+    d: "Por que uma virou três e depois duas, como a Install carrega o sistema inteiro dentro de si, e como o instalador acha a mídia mesmo quando o sistema de arquivos de boot já foi desmontado.",
   },
   {
     f: "documentation/COMO-CONSTRUIR.md",
