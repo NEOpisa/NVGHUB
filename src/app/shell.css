@@ -1892,3 +1892,82 @@ body.menu-aberto {
         display: flex;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   COMANDO — o bloco de código.
+
+   O site não tinha um: um site de vendas não mostra terminal. Um site de
+   distro mostra o tempo todo, e usar `.acc-code` no lugar (que é o
+   rótulo curto ao lado de uma pergunta do acordeão, `flex: none` e
+   0.74rem) rendia comando em letra miúda e sem caixa.
+
+   `overflow-x: auto` porque comando não quebra: uma linha de `gpg
+   --verify` com nome de arquivo longo passa de qualquer coluna, e
+   quebrá-la produziria um comando que não funciona se for copiado.
+   ═══════════════════════════════════════════════════════════════════ */
+.cmd {
+    margin: 16px 0 0;
+    padding: 16px 18px;
+    border-radius: var(--r-sm);
+    background: var(--ink);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+}
+.cmd code {
+    display: block;
+    font-family: var(--ff-mono);
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: var(--nv-corn-soft);
+    white-space: pre;
+}
+/* O cifrão é enfeite e não conteúdo: quem copia a linha não quer levá-lo
+   junto, então ele é desenhado e não escrito. */
+.cmd code::before {
+    content: "$ ";
+    color: var(--tx-3);
+}
+.cmd--sem-cifrao code::before {
+    content: "";
+}
+
+/* FICHA — pares rótulo/valor, para o que é dado e não prosa (impressão de
+   chave, rótulo de partição, tamanho). Vive dentro de um painel. */
+.ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px 22px;
+    margin: 18px 0 0;
+    padding: 18px;
+    border-radius: var(--r-sm);
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+}
+.ficha dt {
+    font-family: var(--ff-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--tx-3);
+}
+.ficha dd {
+    margin: 5px 0 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--tx);
+}
+
+/* O nome do comando dentro de uma lista de prosa. Mono e acento, para o
+   olho separar "o que se digita" de "o que aquilo faz" sem precisar de
+   duas colunas — que numa lista de 22 itens viraria uma tabela. */
+.scan-lista code,
+.prose code,
+.step-desc code,
+.lead code {
+    font-family: var(--ff-mono);
+    font-size: 0.86em;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgba(100, 149, 237, 0.12);
+    color: var(--nv-corn-soft);
+}

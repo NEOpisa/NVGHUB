@@ -123,19 +123,22 @@ export default function Recursos() {
           </p>
         </div>
         <div className="scan">
+          <div className="scan-nota">
+            <strong>55</strong>
+            <span>e todos respondem a --help</span>
+          </div>
           <ul className="scan-lista">
             {COMANDOS.map(([c, d]) => (
               <li key={c}>
-                <code>{c}</code>
-                <span>{d}</span>
+                <code>{c}</code> — {d}
               </li>
             ))}
           </ul>
-          <p className="scan-nota">
-            E mais 33, entre gestão de energia, rede, memória e limpeza de
-            rastro.
-          </p>
         </div>
+        <p className="grid-note">
+          O recorte acima tem 22. Os outros 33 cobrem energia, rede, memória e
+          limpeza de rastro.
+        </p>
       </section>
 
       <section className="panel" aria-labelledby="ambiente">

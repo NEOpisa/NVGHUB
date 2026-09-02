@@ -106,11 +106,16 @@ export default function Instalacao() {
             nada seria mentir sobre o que a escolha faz.
           </p>
         </div>
-        <ol className="scan-lista">
-          {MBN.map(([t, d]) => (
-            <li key={t}>
-              <code>{t}</code>
-              <span>{d}</span>
+        <ol className="steps">
+          {MBN.map(([t, d], i) => (
+            <li className="step" key={t}>
+              <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <div className="step-top">
+                  <h3 className="step-name">{t}</h3>
+                </div>
+                <p className="step-desc">{d}</p>
+              </div>
             </li>
           ))}
         </ol>
@@ -128,11 +133,16 @@ export default function Instalacao() {
             avisa disso na primeira tela, não na décima.
           </p>
         </div>
-        <ol className="scan-lista">
-          {MYO.map(([t, d]) => (
-            <li key={t}>
-              <code>{t}</code>
-              <span>{d}</span>
+        <ol className="steps">
+          {MYO.map(([t, d], i) => (
+            <li className="step" key={t}>
+              <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <div className="step-top">
+                  <h3 className="step-name">{t}</h3>
+                </div>
+                <p className="step-desc">{d}</p>
+              </div>
             </li>
           ))}
         </ol>
@@ -145,25 +155,34 @@ export default function Instalacao() {
             Três coisas que valem saber antes
           </h2>
         </div>
-        <div className="acc">
-          <div className="acc-q">O disco é apagado por inteiro</div>
-          <p className="acc-a">
-            No modo padrão, sim. Existe o modo manual, para quem quer usar
-            partições que já existem — mas a tela de Revisão diz qual disco vai
-            embora, e ela vem antes de qualquer comando destrutivo.
-          </p>
-          <div className="acc-q">A chave Nostr é opcional</div>
-          <p className="acc-a">
-            Dá para instalar sem nenhuma e criar uma conta comum. A tela de
-            Identidade nunca bloqueia a instalação: sem rede, sem chave ou com o
-            relay mudo, você segue adiante do jeito de sempre.
-          </p>
-          <div className="acc-q">Se algo falhar no fim, você fica sabendo</div>
-          <p className="acc-a">
-            As últimas etapas não derrubam uma instalação com o disco já
-            escrito. O que não deu certo é registrado, e o assistente do
-            primeiro boot repete a lista antes de qualquer pergunta.
-          </p>
+        <div className="cards">
+          <article className="card">
+            <span className="card-n">01</span>
+            <h3 className="card-t">O disco é apagado por inteiro</h3>
+            <p className="card-d">
+              No modo padrão, sim. Existe o modo manual, para usar partições que
+              já existem — e a tela de Revisão diz qual disco vai embora, antes
+              de qualquer comando destrutivo.
+            </p>
+          </article>
+          <article className="card">
+            <span className="card-n">02</span>
+            <h3 className="card-t">A chave Nostr é opcional</h3>
+            <p className="card-d">
+              Dá para instalar sem nenhuma e criar uma conta comum. A tela de
+              Identidade nunca bloqueia: sem rede, sem chave ou com o relay
+              mudo, você segue adiante.
+            </p>
+          </article>
+          <article className="card">
+            <span className="card-n">03</span>
+            <h3 className="card-t">Se algo falhar no fim, você fica sabendo</h3>
+            <p className="card-d">
+              As últimas etapas não derrubam uma instalação com o disco já
+              escrito. O que não deu certo é registrado, e o assistente do
+              primeiro boot repete a lista antes de qualquer pergunta.
+            </p>
+          </article>
         </div>
       </section>
 

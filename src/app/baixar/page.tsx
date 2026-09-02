@@ -78,26 +78,25 @@ export default function Baixar() {
           </h2>
         </div>
 
-        <div className="steps">
+        <ol className="steps">
           {IMAGENS.map((im) => (
-            <article className="step" key={im.id}>
-              <div className="step-top">
-                <span className="step-code">{im.arquivo}</span>
-                <span className="step-dur">{im.tamanho}</span>
+            <li className="step" key={im.id}>
+              <span className="step-code">{im.nome}</span>
+              <div>
+                <div className="step-top">
+                  <h3 className="step-name">{im.para}</h3>
+                  <span className="step-dur">{im.tamanho}</span>
+                </div>
+                <p className="step-desc">{im.d}</p>
+                <div className="card-tags">
+                  <span className="tag">{im.arquivo}</span>
+                  <span className="tag">boot: {im.boot}</span>
+                  <span className="tag">internet: {im.rede}</span>
+                </div>
               </div>
-              <h3 className="step-name">
-                {im.nome} — {im.para}
-              </h3>
-              <p className="step-desc">{im.d}</p>
-              <div className="card-tags">
-                <span className="tag">dá boot em: {im.boot}</span>
-                <span className="tag">
-                  internet: {im.rede === "obrigatória" ? "obrigatória" : "não precisa"}
-                </span>
-              </div>
-            </article>
+            </li>
           ))}
-        </div>
+        </ol>
 
         <p className="grid-note">
           Na dúvida entre as duas MBN: grave a <strong>Live</strong>, use o
@@ -121,37 +120,46 @@ export default function Baixar() {
           </p>
         </div>
 
-        <div className="acc">
-          <div className="acc-q">1 · A soma, contra corrupção de download</div>
-          <p className="acc-a">
-            Pega erro de rede e disco cheio. Não pega adulteração: quem trocar a
-            imagem troca a soma junto.
-          </p>
-          <pre className="acc-code">
-            <code>sha256sum -c NeovanguardOS-Live-{VERSAO}-x86_64.iso.sha256</code>
-          </pre>
-
-          <div className="acc-q">2 · A assinatura, contra adulteração</div>
-          <p className="acc-a">
-            Esta é a que importa. A imagem é assinada pela chave de lançamento, e
-            a assinatura só fecha se o arquivo for byte a byte o que saiu daqui.
-          </p>
-          <pre className="acc-code">
-            <code>gpg --verify NeovanguardOS-Live-{VERSAO}-x86_64.iso.asc</code>
-          </pre>
-          <p className="acc-a">
-            O gpg vai dizer qual chave assinou. Ela tem de ser esta, e conferir a
-            impressão inteira é o ponto — os últimos oito caracteres não bastam:
-          </p>
-          <pre className="acc-code">
-            <code>{CHAVE_FPR}</code>
-          </pre>
-          <p className="acc-a">
-            A mesma chave assina o repositório de pacotes, e as três imagens já a
-            trazem dentro: o sistema instalado recusa pacote nosso que não venha
-            assinado por ela.
-          </p>
-        </div>
+        <ol className="steps">
+          <li className="step">
+            <span className="step-code">1 · soma</span>
+            <div>
+              <div className="step-top">
+                <h3 className="step-name">Contra download corrompido</h3>
+              </div>
+              <p className="step-desc">
+                Pega erro de rede e disco cheio. <strong>Não</strong> pega
+                adulteração: quem trocar a imagem troca a soma junto.
+              </p>
+              <pre className="cmd">
+                <code>sha256sum -c NeovanguardOS-Live-{VERSAO}-x86_64.iso.sha256</code>
+              </pre>
+            </div>
+          </li>
+          <li className="step">
+            <span className="step-code">2 · assinatura</span>
+            <div>
+              <div className="step-top">
+                <h3 className="step-name">Contra adulteração</h3>
+              </div>
+              <p className="step-desc">
+                Esta é a que importa. A assinatura só fecha se o arquivo for byte
+                a byte o que saiu daqui, e ela não pode ser refeita por quem não
+                tem a chave.
+              </p>
+              <pre className="cmd">
+                <code>gpg --verify NeovanguardOS-Live-{VERSAO}-x86_64.iso.asc</code>
+              </pre>
+              <p className="step-desc">
+                O gpg dirá qual chave assinou. Tem de ser esta — e é a impressão
+                inteira que se confere, não os últimos oito caracteres:
+              </p>
+              <pre className="cmd cmd--sem-cifrao">
+                <code>{CHAVE_FPR}</code>
+              </pre>
+            </div>
+          </li>
+        </ol>
       </section>
 
       <section className="closer" aria-label="Próximo passo">

@@ -39,8 +39,8 @@ const FAQ: FaqItem[] = [
     tag: "Mídias",
   },
   {
-    q: "É Arch? Posso usar o AUR e o pacman normalmente?",
-    a: "É Arch, e sim. Os repositórios são os do Arch e o pacman é o pacman. O que a distro acrescenta vem de um repositório próprio e assinado, em pacotes com nome e versão — que dá para desinstalar sem quebrar o resto.",
+    q: "Posso usar o AUR e o pacman normalmente?",
+    a: "Sim, sem ressalva. É um Arch, e nada do que a distro acrescenta muda como o pacman se comporta.",
     tag: "Base",
   },
   {
@@ -50,12 +50,12 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Meus dados vão para algum servidor de vocês?",
-    a: "Não existe servidor nosso no caminho. O relay Nostr, o nó Bitcoin e o Lightning rodam na sua máquina. A identidade vive nos relays que você escolher. O que hospedamos é o repositório de pacotes, que serve arquivos assinados e não recebe nada.",
+    a: "O único endereço nosso que a sua máquina procura é o repositório de pacotes, e ele entrega arquivos assinados sem receber nada — sem login e sem identificação de máquina. Todo o resto roda localmente ou nos relays que você escolher.",
     tag: "Privacidade",
   },
   {
-    q: "O log fica mesmo só na memória?",
-    a: "Fica. O journald grava em RAM e /var/log é tmpfs, então o registro do que a máquina fez não sobrevive ao desligamento. É uma troca: você perde o histórico para depurar um problema de ontem.",
+    q: "O log só em memória não atrapalha para depurar?",
+    a: "Atrapalha, e é a troca. Você não tem o registro de ontem para investigar um problema de hoje. Se precisar, journalctl aceita gravar em disco de novo — é uma linha em /etc/systemd/journald.conf, e a decisão passa a ser sua.",
     tag: "Privacidade",
   },
   {

@@ -86,17 +86,20 @@ export default function Documentacao() {
             O que existe, e o que <span className="h-accent">responde</span>
           </h2>
         </div>
-        <div className="steps">
-          {DOCS.map((d) => (
-            <article className="step" key={d.f}>
-              <div className="step-top">
-                <span className="step-code">{d.f}</span>
+        <ol className="steps">
+          {DOCS.map((d, i) => (
+            <li className="step" key={d.f}>
+              <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <div className="step-top">
+                  <h3 className="step-name">{d.t}</h3>
+                  <span className="step-dur">{d.f}</span>
+                </div>
+                <p className="step-desc">{d.d}</p>
               </div>
-              <h3 className="step-name">{d.t}</h3>
-              <p className="step-desc">{d.d}</p>
-            </article>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       <section className="panel panel--accent" aria-labelledby="repo">
@@ -112,7 +115,7 @@ export default function Documentacao() {
             configurar nada.
           </p>
         </div>
-        <pre className="acc-code">
+        <pre className="cmd cmd--sem-cifrao">
           <code>{`[neovanguard]
 SigLevel = Required DatabaseOptional
 Server = ${REPO_PACOTES.replace("/x86_64", "/$arch")}`}</code>
@@ -121,7 +124,7 @@ Server = ${REPO_PACOTES.replace("/x86_64", "/$arch")}`}</code>
           A chave que assina os pacotes e as imagens é esta, e conferir a
           impressão inteira é o ponto:
         </p>
-        <pre className="acc-code">
+        <pre className="cmd cmd--sem-cifrao">
           <code>{CHAVE_FPR}</code>
         </pre>
       </section>
@@ -138,7 +141,7 @@ Server = ${REPO_PACOTES.replace("/x86_64", "/$arch")}`}</code>
           o que fazem, para que servem e o que esperam. Não há um manual à parte
           para eles porque um manual à parte seria a primeira coisa a divergir.
         </p>
-        <pre className="acc-code">
+        <pre className="cmd">
           <code>{`neo-status --help
 neo-zap --help
 nvginstall --help`}</code>

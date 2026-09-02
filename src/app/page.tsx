@@ -19,22 +19,22 @@ const PILARES = [
   {
     n: "01",
     t: "A sua chave é a sua conta",
-    d: "Na instalação você informa a chave Nostr, e a conta do sistema nasce dela — cifrada pela sua própria senha. Formatou, trocou de máquina? Digita a chave e as configurações voltam. Sem nuvem, sem cadastro, sem intermediário.",
+    d: "Sem cadastro, sem servidor de senha. Digitou a chave, a máquina volta a ser a sua.",
   },
   {
     n: "02",
     t: "A pilha inteira é sua",
-    d: "Nó Bitcoin, Lightning, carteira e relay Nostr rodam na sua máquina, não na de outra pessoa. Vêm instalados e configurados; 55 comandos neo-* existem para operar isso sem decorar flag de ninguém.",
+    d: "Nó Bitcoin, Lightning e relay Nostr rodando aqui — você não é cliente da infraestrutura de ninguém.",
   },
   {
     n: "03",
     t: "O que a máquina fez não fica no disco",
-    d: "O log do sistema vive em memória e /var/log é tmpfs. /dev/shm e /var/tmp não executam nada. Desligou, foi embora — que é o que significa não deixar rastro, em vez de prometer privacidade e escrever tudo.",
+    d: "O registro do sistema vive em memória. Desligou, foi embora.",
   },
   {
     n: "04",
     t: "Arch embaixo, sem esconder",
-    d: "Os repositórios são os do Arch e o pacman é o pacman. O que a distro acrescenta vem de um repositório próprio e assinado, em pacotes com nome e versão — e que dá para desinstalar.",
+    d: "O pacman é o pacman. O que a distro acrescenta tem nome, versão e desinstala.",
   },
 ];
 
@@ -100,14 +100,14 @@ export default function Home() {
       </section>
 
       <section className="panel panel--accent" aria-label="Números">
-        <div className="nums">
+        <dl className="nums">
           {NUMEROS.map(([n, d]) => (
             <div className="num" key={d}>
-              <strong>{n}</strong>
-              <span>{d}</span>
+              <dt>{n}</dt>
+              <dd>{d}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       </section>
 
       <section className="panel" aria-labelledby="imagens">
@@ -118,31 +118,21 @@ export default function Home() {
           </h2>
           <p className="lead">
             Quem quer só experimentar, quem já decidiu e quer instalar, e quem
-            quer escolher cada peça. A mídia que você grava no pendrive já decide
-            o que vai acontecer — o instalador não pergunta o que a escolha da
-            imagem já respondeu.
+            quer escolher cada peça. São três imagens, e a que você grava no
+            pendrive já decide o que vai acontecer — o instalador não pergunta o
+            que a escolha da mídia já respondeu.
           </p>
         </div>
-        <div className="cards">
+        <dl className="ficha">
           {IMAGENS.map((im) => (
-            <article className="card" key={im.id}>
-              <span className="card-n">{im.tamanho}</span>
-              <h3 className="card-t">{im.nome}</h3>
-              <p className="card-d">{im.d}</p>
-              <div className="card-tags">
-                <span className="tag">{im.para}</span>
-                <span className="tag">boot: {im.boot}</span>
-                <span className="tag">rede: {im.rede}</span>
-              </div>
-            </article>
+            <div key={im.id}>
+              <dt>{im.nome}</dt>
+              <dd>
+                {im.para} · {im.tamanho}
+              </dd>
+            </div>
           ))}
-        </div>
-        <div className="pill-row">
-          <Link href="/baixar" className="pill">
-            Escolher e baixar
-            <ArrowUpRight />
-          </Link>
-        </div>
+        </dl>
       </section>
 
       <section className="closer" aria-label="Começar">
@@ -153,7 +143,7 @@ export default function Home() {
         </h2>
         <div className="pill-row">
           <Link href="/baixar" className="pill">
-            Baixar {VERSAO}
+            Comparar as três imagens
             <ArrowUpRight />
           </Link>
           <Link href="/instalacao" className="pill pill--ghost">
