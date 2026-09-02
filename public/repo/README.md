@@ -24,9 +24,18 @@ Os `neovanguard.db` e `neovanguard.files` são cópias reais de `.db.tar.gz` e
 `.files.tar.gz`, e não links simbólicos: são os nomes que o pacman pede, e
 hospedagem estática não garante link.
 
-## O que ainda falta
+## Assinatura
 
-O repositório **não está assinado** — `SigLevel = Optional TrustAll`. Servido
-pela rede, isso é confiança depositada só no transporte, e se repete a cada
-atualização. A correção é `./neo/packaging/gen-release-key.sh` na distro e
-republicar; o `SigLevel` vira sozinho quando a chave existir.
+Cada pacote e o banco vêm com um `.sig` ao lado, feitos pela chave de lançamento
+do Neovanguard. As três ISOs carregam a **metade pública** dessa chave e a
+instalam no chaveiro do pacman, então o `SigLevel` de `[neovanguard]` é
+`Required DatabaseOptional`: um pacote sem assinatura, ou assinado por outra
+chave, é recusado.
+
+Os `neovanguard.db.sig` e `neovanguard.files.sig` são cópias reais e não os links
+que o `repo-add` cria — é por esses nomes que o pacman pede a assinatura do
+banco, e link em hospedagem estática não é garantido.
+
+Impressão da chave:
+
+    9ED7 92DC EA8D 869E CD79  CE72 5F86 3B33 9A1E 5762
