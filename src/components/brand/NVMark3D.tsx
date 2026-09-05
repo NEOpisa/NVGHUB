@@ -1,64 +1,48 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 
-/**
- * A MARCA NV NO HERO — a casca leve.
- *
- * Este arquivo não conhece three.js. Ele decide UMA coisa: se este aparelho
- * merece a cena 3D. Se sim, puxa VScene por import dinâmico; se não, o vetor
- * oficial segura a composição.
- *
- * A casca existe porque `three` + fiber + drei somam ~900KB crus. Enquanto
- * viviam no mesmo módulo, entravam no carregamento inicial da home inteira —
- * inclusive para quem não tem WebGL, para quem pediu menos movimento e para
- * quem vai fechar a aba antes de rolar. Agora só descem depois da hidratação
- * e só quando vão ser usados.
- *
- * A reserva é a mesma peça em vetor, não um espaço vazio: o hero tem coluna
- * própria para a marca, e deixá-la em branco durante o download faria a
- * página saltar quando a cena chegasse.
- */
+function FlatMark() {
+  return <div className="nv3d nv3d-flat" aria-hidden="true"><img src="/logo.svg" alt="" width={280} height={206} /></div>;
+}
+const VScene = dynamic(() => import("./VScene"), { ssr: false, loading: FlatMark });
 
-const RESERVA = (
-  <div className="nv3d nv3d-flat">
-    <img src="/logo.svg" alt="" aria-hidden="true" width={280} height={206} />
-  </div>
-);
+class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  render() { return this.state.failed ? <FlatMark /> : this.props.children; }
+}
 
-const VScene = dynamic(() => import("./VScene"), {
-  // sem SSR: a cena só existe depois que sabemos que há WebGL, e isso é uma
-  // pergunta que só o navegador responde
-  ssr: false,
-  loading: () => RESERVA,
-});
-
-export default function NVMark3D({ className }: { className?: string }) {
-  const [mode, setMode] = useState<"pending" | "gl" | "flat">("pending");
-  const [motion, setMotion] = useState(true);
+/** Keep the official SVG visible until WebGL is available. Offscreen scenes
+ * stop rendering, and reduced-motion users never need to download Three.js. */
+export default function NVMark3D() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [enabled, setEnabled] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let gl = false;
-    try {
-      const c = document.createElement("canvas");
-      gl = !!(c.getContext("webgl2") || c.getContext("webgl"));
-    } catch {
-      gl = false;
-    }
-    setMotion(!reduced);
-    setMode(gl ? "gl" : "flat");
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const choose = () => {
+      if (preference.matches) { setEnabled(false); return; }
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl2");
+      setEnabled(!!gl);
+      gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    };
+    try { choose(); } catch { setEnabled(false); }
+    preference.addEventListener("change", choose);
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .05 });
+    if (ref.current) observer.observe(ref.current);
+    const visibility = () => setPageVisible(!document.hidden);
+    visibility();
+    document.addEventListener("visibilitychange", visibility);
+    return () => { observer.disconnect(); preference.removeEventListener("change", choose); document.removeEventListener("visibilitychange", visibility); };
   }, []);
 
-  // sem WebGL (ou antes de decidir): o vetor oficial segura a composição
-  if (mode !== "gl") {
-    return (
-      <div className={`nv3d nv3d-flat ${className ?? ""}`}>
-        <img src="/logo.svg" alt="" aria-hidden="true" width={280} height={206} />
-      </div>
-    );
-  }
-
-  return <VScene className={className} motion={motion} />;
+  return <div className="nv3d" ref={ref} aria-hidden="true">
+    {enabled && !failed ? <SceneBoundary><VScene active={visible && pageVisible} onFailure={() => setFailed(true)} /></SceneBoundary> : <FlatMark />}
+  </div>;
 }

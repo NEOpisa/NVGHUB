@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
-import Foot from "@/components/shell/Foot";
 import FaqList, { type FaqItem } from "@/components/blocos/FaqList";
 import { ArrowUpRight } from "@/components/icons";
 import { REPO_URL, VERSAO } from "@/lib/constants";
@@ -130,8 +129,6 @@ export default function FaqPage() {
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }

@@ -18,8 +18,8 @@ const BASE = process.argv[2] ?? "http://localhost:3000";
 const OUT = ".qa-shots";
 
 const ROUTES = [
-  "/", "/ouro", "/solucao", "/sobre", "/obrigado",
-  "/metodologia", "/exemplos", "/faq", "/contato", "/privacidade", "/termos",
+  "/", "/baixar", "/recursos", "/instalacao", "/documentacao",
+  "/sobre", "/faq", "/privacidade", "/termos",
 ];
 const BREAKPOINTS = [
   ["desktop", 1440, 900],

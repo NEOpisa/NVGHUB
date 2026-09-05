@@ -1,9 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/recursos" },
   title: "Recursos",
   description:
     "O que vem no Neovanguard OS: identidade Nostr como conta do sistema, nó Bitcoin e Lightning próprios, relay local, endurecimento por padrão e 55 comandos neo-*.",
@@ -173,8 +173,6 @@ export default function Recursos() {
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }

@@ -1,29 +1,21 @@
 import Link from "next/link";
+import CodeBlock from "@/components/blocos/CodeBlock";
 import type { Metadata } from "next";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
-import { REPO_URL, REPO_PACOTES, CHAVE_FPR } from "@/lib/constants";
+import { REPO_URL, REPO_PACOTES, CHAVE_FPR, DOCS_URL, VERSAO } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/documentacao" },
   title: "Documentação",
   description:
     "Onde ler sobre o Neovanguard OS: as duas imagens, como a build funciona, o repositório de pacotes e a chave que assina tudo.",
 };
 
-/**
- * DOCUMENTAÇÃO — um índice honesto, e não uma wiki que não existe.
- *
- * A documentação de verdade desta distro mora no repositório, ao lado do
- * código que ela descreve, e é lá que ela é mantida. Copiá-la para cá criaria
- * uma segunda versão que envelhece sozinha — que é o defeito que os próprios
- * documentos passam metade do tempo consertando.
- */
-
 const DOCS = [
   {
     f: "documentation/as-isos.md",
     t: "As imagens",
-    d: "Por que uma virou três e depois duas, como a Install carrega o sistema inteiro dentro de si, e como o instalador acha a mídia mesmo quando o sistema de arquivos de boot já foi desmontado.",
+    d: "Como funcionam as imagens Live e Install, o sistema incluído na mídia e a detecção do pendrive.",
   },
   {
     f: "documentation/COMO-CONSTRUIR.md",
@@ -33,12 +25,12 @@ const DOCS = [
   {
     f: "documentation/briefing-tecnico.md",
     t: "Briefing técnico",
-    d: "A visão de dentro: decisões, defeitos já corrigidos e o que ainda pode melhorar. É o documento que diz onde estão as bordas.",
+    d: "Arquitetura, decisões de implementação, validações e limitações conhecidas.",
   },
   {
     f: "documentation/estrutura.md",
     t: "Estrutura do repositório",
-    d: "O que vive onde, e por quê. Útil antes do primeiro patch.",
+    d: "Diretórios, fontes e arquivos gerados. O ponto de partida para o primeiro patch.",
   },
   {
     f: "documentation/heranca-do-live.md",
@@ -57,13 +49,11 @@ export default function Documentacao() {
     <>
       <section className="hero" aria-label="Documentação">
         <div className="hero-copy">
-          <span className="eyebrow">Ler mais</span>
-          <h1 className="h-xl">A documentação mora no repositório.</h1>
+          <span className="eyebrow">Documentação · versão {VERSAO}</span>
+          <h1 className="h-xl">Um caminho para cada etapa.</h1>
           <p className="lead">
-            Ao lado do código que ela descreve, e é lá que é mantida. Uma cópia
-            aqui viraria uma segunda versão da verdade, e a de fora envelhece
-            primeiro — que é justamente o defeito que estes documentos passam
-            metade do tempo consertando.
+            Guias para instalar, conhecer o sistema e contribuir. A referência
+            técnica é mantida junto ao código, no repositório do projeto.
           </p>
           <div className="pill-row">
             <a
@@ -79,11 +69,36 @@ export default function Documentacao() {
         </div>
       </section>
 
+      <section className="panel" aria-labelledby="comecar">
+        <div className="sec-head"><span className="eyebrow">Comece aqui</span><h2 className="h-lg" id="comecar">O que você quer fazer?</h2></div>
+        <div className="doc-paths">
+          <Link className="doc-path" href="/baixar"><strong>Experimentar</strong><span>Compare Live e Install e confira o estado das imagens.</span><ArrowUpRight /></Link>
+          <Link className="doc-path" href="/instalacao"><strong>Instalar</strong><span>Prepare a mídia e acompanhe as etapas do instalador.</span><ArrowUpRight /></Link>
+          <a className="doc-path" href="#primeiros-passos"><strong>Usar o sistema</strong><span>Consulte o estado dos serviços e encontre ajuda.</span><ArrowUpRight /></a>
+        </div>
+      </section>
+
+      <section className="panel" aria-labelledby="primeiros-passos">
+        <div className="sec-head"><span className="eyebrow">Depois da instalação</span><h2 className="h-lg" id="primeiros-passos">Conheça o estado da máquina</h2></div>
+        <p className="lead">No terminal do Neovanguard OS, execute o painel de diagnóstico. Ele mostra rede, Bitcoin, Lightning, Nostr e memória.</p>
+        <CodeBlock>{"neo-status"}</CodeBlock>
+        <p className="step-desc">O resultado indica quais serviços estão ativos ou parados. Um serviço parado não significa, por si só, que a instalação falhou. Antes de ativá-lo, consulte sua configuração e os recursos necessários.</p>
+        <p className="lead">Para consultar as opções disponíveis, abra a ajuda. O comando abaixo exibe instruções de uso.</p>
+        <CodeBlock>{"neo-status --help"}</CodeBlock>
+        <p className="grid-note">Esses comandos pertencem ao sistema operacional; não são comandos de desenvolvimento deste site.</p>
+      </section>
+
+      <section className="panel" aria-labelledby="problemas">
+        <div className="sec-head"><span className="eyebrow">Resolver problemas</span><h2 className="h-lg" id="problemas">Uma informação de cada vez</h2></div>
+        <p className="lead">Comece pelas <Link href="/faq">perguntas frequentes</Link>. Se o problema continuar, abra uma issue com a versão do sistema, a mídia usada, os passos para reproduzir e a mensagem de erro. Remova chaves privadas, senhas e outras informações pessoais antes de compartilhar a saída de um comando.</p>
+        <div className="pill-row"><a className="pill pill--ghost" href={`${REPO_URL}/issues`}>Relatar um problema <ArrowUpRight /></a></div>
+      </section>
+
       <section className="panel" aria-labelledby="indice">
         <div className="sec-head">
           <span className="eyebrow">Índice</span>
           <h2 className="h-lg" id="indice">
-            O que existe, e o que <span className="h-accent">responde</span>
+            Referência para <span className="h-accent">contribuir</span>
           </h2>
         </div>
         <ol className="steps">
@@ -92,7 +107,7 @@ export default function Documentacao() {
               <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
               <div>
                 <div className="step-top">
-                  <h3 className="step-name">{d.t}</h3>
+                  <h3 className="step-name"><a href={`${DOCS_URL}/${d.f.replace("documentation/", "")}`}>{d.t}</a></h3>
                   <span className="step-dur">{d.f}</span>
                 </div>
                 <p className="step-desc">{d.d}</p>
@@ -115,18 +130,14 @@ export default function Documentacao() {
             configurar nada.
           </p>
         </div>
-        <pre className="cmd cmd--sem-cifrao">
-          <code>{`[neovanguard]
+        <CodeBlock label="pacman.conf">{`[neovanguard]
 SigLevel = Required DatabaseOptional
-Server = ${REPO_PACOTES.replace("/x86_64", "/$arch")}`}</code>
-        </pre>
+Server = ${REPO_PACOTES.replace("/x86_64", "/$arch")}`}</CodeBlock>
         <p className="lead">
           A chave que assina os pacotes e as imagens é esta, e conferir a
           impressão inteira é o ponto:
         </p>
-        <pre className="cmd cmd--sem-cifrao">
-          <code>{CHAVE_FPR}</code>
-        </pre>
+        <CodeBlock label="Impressão da chave">{CHAVE_FPR}</CodeBlock>
       </section>
 
       <section className="panel" aria-labelledby="ajuda">
@@ -138,14 +149,11 @@ Server = ${REPO_PACOTES.replace("/x86_64", "/$arch")}`}</code>
         </div>
         <p className="lead">
           Os 55 comandos <code>neo-*</code> respondem a <code>--help</code> com
-          o que fazem, para que servem e o que esperam. Não há um manual à parte
-          para eles porque um manual à parte seria a primeira coisa a divergir.
+          o que fazem, para que servem e o que esperam. Use a ajuda como referência de opções e os guias acima para acompanhar uma tarefa.
         </p>
-        <pre className="cmd">
-          <code>{`neo-status --help
+        <CodeBlock>{`neo-status --help
 neo-zap --help
-nvginstall --help`}</code>
-        </pre>
+nvginstall --help`}</CodeBlock>
       </section>
 
       <section className="closer" aria-label="Próximo passo">
@@ -165,8 +173,6 @@ nvginstall --help`}</code>
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }

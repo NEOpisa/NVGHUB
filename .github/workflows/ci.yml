@@ -52,7 +52,7 @@ jobs:
           npm start & sleep 8
           npx --yes @lhci/cli autorun \
             --collect.url=http://localhost:3000/ \
-            --collect.url=http://localhost:3000/ouro \
-            --collect.url=http://localhost:3000/solucao \
+            --collect.url=http://localhost:3000/baixar \
+            --collect.url=http://localhost:3000/documentacao \
             --collect.numberOfRuns=1 \
             --upload.target=temporary-public-storage || true

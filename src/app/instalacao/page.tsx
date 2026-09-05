@@ -1,13 +1,14 @@
 import Link from "next/link";
+import CodeBlock from "@/components/blocos/CodeBlock";
 import type { Metadata } from "next";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
 import { VERSAO } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/instalacao" },
   title: "Instalação",
   description:
-    "Como instalar o Neovanguard OS: gravar o pendrive, dar boot, e as etapas do instalador em cada uma das duas mídias que instalam.",
+    "Como instalar o Neovanguard OS: gravar o pendrive, dar boot, e as etapas do instalador na mídia Install.",
 };
 
 /**
@@ -53,14 +54,17 @@ export default function Instalacao() {
           <span className="eyebrow">Guia · versão {VERSAO}</span>
           <h1 className="h-xl">Do pendrive ao disco.</h1>
           <p className="lead">
-            O instalador é próprio, roda no terminal e é um comando que você
-            digita: <code>nvginstall</code>. Ele não abre sozinho, e isso é uma
-            decisão — uma mídia que toma o terminal de quem só queria olhar o
-            disco é uma mídia que alguém atravessa sem ler.
+            Use a imagem MBN Install para instalar o sistema sem internet.
+            Depois de iniciar pelo pendrive, abra o instalador no terminal.
+            A imagem Live serve para experimentar e não inclui o instalador.
           </p>
         </div>
       </section>
 
+      <section className="panel" aria-labelledby="preparar">
+        <div className="sec-head"><span className="eyebrow">Preparação</span><h2 className="h-lg" id="preparar">Antes de começar</h2></div>
+        <p className="lead">Confira a disponibilidade da imagem na <Link href="/baixar">página de download</Link> e faça uma cópia dos arquivos que deseja manter. A instalação padrão apaga o disco escolhido. O instalador informa o espaço necessário antes de continuar.</p>
+      </section>
       <section className="panel" aria-labelledby="gravar">
         <div className="sec-head">
           <span className="eyebrow">Antes</span>
@@ -79,6 +83,11 @@ export default function Instalacao() {
         </div>
       </section>
 
+      <section className="panel" aria-labelledby="iniciar">
+        <div className="sec-head"><span className="eyebrow">Na mídia Install</span><h2 className="h-lg" id="iniciar">Abra o instalador</h2></div>
+        <CodeBlock>{"nvginstall"}</CodeBlock>
+        <p className="step-desc">O resultado esperado é a tela de início do instalador no terminal. Se o comando não for encontrado, confira se você iniciou pela imagem Install.</p>
+      </section>
       <section className="panel" aria-labelledby="mbn">
         <div className="sec-head">
           <span className="eyebrow">MBN Install</span>
@@ -86,11 +95,9 @@ export default function Instalacao() {
             Sete etapas, <span className="h-accent">sem internet</span>
           </h2>
           <p className="lead">
-            O sistema inteiro viaja dentro da mídia e é copiado para o disco.
-            Não há tela de Formato, de Programas nem de Aparência — o que já
-            está pronto define os três, e oferecer escolha que não muda nada
-            seria mentir sobre o que a escolha faz. A rede aparece uma vez, e é
-            opcional: ela só serve para trazer a sua identidade Nostr.
+            O sistema incluído na mídia é copiado para o disco. A rede é
+            opcional e permite trazer sua identidade Nostr. Antes de gravar,
+            a etapa de revisão apresenta o disco escolhido e as alterações.
           </p>
         </div>
         <ol className="steps">
@@ -147,9 +154,9 @@ export default function Instalacao() {
       </section>
 
       <section className="closer" aria-label="Próximo passo">
-        <h2 className="h-xl">Instalou. E agora?</h2>
+        <h2 className="h-xl">Continue pelos primeiros passos.</h2>
         <div className="pill-row">
-          <Link href="/documentacao" className="pill">
+          <Link href="/documentacao#primeiros-passos" className="pill">
             Documentação
             <ArrowUpRight />
           </Link>
@@ -158,8 +165,6 @@ export default function Instalacao() {
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }

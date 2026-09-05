@@ -13,16 +13,16 @@
  * ele não espelha. Aqui isso é uma linha de código, não oito caminhos
  * digitados. O teste em src/lib/vShape.test.ts prende esta conta à do site.
  *
- * Três masters, porque o mesmo desenho não serve aos três usos:
+ * Quatro masters, porque o mesmo desenho não serve aos três usos:
  *
  *   logo.svg       o vetor chapado, sem campo. É o que o site usa inline
  *                  nos trilhos, a 30px — nesse tamanho extrusão não desenha
  *                  relevo, só engrossa.
  *   perfil.svg     campo escuro + V cromado. Foto de perfil das redes e
  *                  logo da organização — vive grande, pode ter material.
- *   icone.svg      campo azul + V em silhueta, canto arredondado. Aba do
+ *   icone.svg      campo azul-marinho + V em silhueta, canto arredondado. Aba do
  *                  navegador, 16 a 32px.
- *   icone-app.svg  campo azul + V inteiro, sangrando até a borda. Tela
+ *   icone-app.svg  campo azul-marinho + V inteiro, sangrando até a borda. Tela
  *                  inicial e PWA, onde o sistema aplica a própria máscara.
  *
  * Precisa do rsvg-convert (pacote librsvg). Sem ele, nada é escrito.
@@ -135,18 +135,18 @@ ${nota} -->`;
 const PERFIL = `${CABECA(`       Foto de perfil das redes e logo da organização. Vive de 40 a 400px
        numa timeline, então pode ter material — mas TUDO precisa caber no
        círculo: Instagram, WhatsApp e LinkedIn recortam redondo, X e GitHub
-       em quadrado arredondado. Por isso o aro fica em r=452 e a marca no
+       em quadrado arredondado. Por isso o contorno fica afastado da borda e a marca no
        miolo. O halo existe para descolar a peça do campo: sem ele a beirada
        escura do V encosta no fundo e a silhueta some na miniatura.`)}
   <defs>
     <radialGradient id="p-campo" cx="0.32" cy="0.24" r="0.92">
-      <stop offset="0" stop-color="#141a2e"/>
-      <stop offset="0.55" stop-color="#0a0d18"/>
-      <stop offset="1" stop-color="#06070b"/>
+      <stop offset="0" stop-color="#172940"/>
+      <stop offset="0.55" stop-color="#0c1422"/>
+      <stop offset="1" stop-color="#060b13"/>
     </radialGradient>
     <radialGradient id="p-halo" cx="0.5" cy="0.5" r="0.5">
       <stop offset="0" stop-color="#6495ED" stop-opacity="0.36"/>
-      <stop offset="0.6" stop-color="#3559c9" stop-opacity="0.1"/>
+      <stop offset="0.6" stop-color="#3d65a8" stop-opacity="0.1"/>
       <stop offset="1" stop-color="#6495ED" stop-opacity="0"/>
     </radialGradient>
     <!-- espaço de usuário: uma luz só atravessa as duas metades. No padrão
@@ -154,14 +154,14 @@ const PERFIL = `${CABECA(`       Foto de perfil das redes e logo da organizaçã
          peça passa a parecer duas peças encostadas. -->
     <linearGradient id="p-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.36" stop-color="#dbe5fc"/>
-      <stop offset="0.72" stop-color="#9dbaf5"/>
+      <stop offset="0.36" stop-color="#d0e0fc"/>
+      <stop offset="0.72" stop-color="#a2c1f5"/>
       <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>
     <linearGradient id="p-esmalte" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
-      <stop offset="0" stop-color="#4f7ce8"/>
-      <stop offset="0.5" stop-color="#2b54e3"/>
-      <stop offset="1" stop-color="#0000CD"/>
+      <stop offset="0" stop-color="#86adf3"/>
+      <stop offset="0.5" stop-color="#6495ED"/>
+      <stop offset="1" stop-color="#3d65a8"/>
     </linearGradient>
     <linearGradient id="p-parede" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#5f80c9"/>
@@ -171,8 +171,8 @@ const PERFIL = `${CABECA(`       Foto de perfil das redes e logo da organizaçã
 
   <rect width="1024" height="1024" fill="url(#p-campo)"/>
   <circle cx="512" cy="498" r="360" fill="url(#p-halo)"/>
-  <circle cx="512" cy="512" r="452" fill="none" stroke="#6495ED" stroke-opacity="0.42" stroke-width="3"/>
-  <circle cx="512" cy="512" r="452" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="12"/>
+  <rect x="84" y="84" width="856" height="856" rx="200" fill="none" stroke="#6495ED" stroke-opacity="0.42" stroke-width="3"/>
+  <rect x="104" y="104" width="816" height="816" rx="182" fill="none" stroke="#6495ED" stroke-opacity="0.10" stroke-width="2"/>
 
   <g transform="${posicao(0.87, -6)}">
       ${marca({
@@ -201,14 +201,14 @@ const LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${malha.viewBox}"
   <defs>
     <linearGradient id="nv-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.36" stop-color="#dbe5fc"/>
-      <stop offset="0.72" stop-color="#9dbaf5"/>
+      <stop offset="0.36" stop-color="#d0e0fc"/>
+      <stop offset="0.72" stop-color="#a2c1f5"/>
       <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>
     <linearGradient id="nv-esmalte" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
-      <stop offset="0" stop-color="#4f7ce8"/>
-      <stop offset="0.5" stop-color="#2b54e3"/>
-      <stop offset="1" stop-color="#0000CD"/>
+      <stop offset="0" stop-color="#86adf3"/>
+      <stop offset="0.5" stop-color="#6495ED"/>
+      <stop offset="1" stop-color="#3d65a8"/>
     </linearGradient>
   </defs>
 
@@ -221,23 +221,23 @@ ${facets.flatMap((f) => ambas(f)).map((d) => `    <path d="${d}"/>`).join("\n")}
 </svg>
 `;
 
-/* ── ícones: campo azul, o V oficial ───────────────────────────────── */
+/* ── ícones: campo azul-marinho, o V oficial ───────────────────────────────── */
 const CAMPO_AZUL = `    <linearGradient id="i-campo" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0" stop-color="#3f63e8"/>
-      <stop offset="0.52" stop-color="#1230d6"/>
-      <stop offset="1" stop-color="#0000a8"/>
+      <stop offset="0" stop-color="#182d49"/>
+      <stop offset="0.52" stop-color="#101c2e"/>
+      <stop offset="1" stop-color="#0c1422"/>
     </linearGradient>
     <linearGradient id="i-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.6" stop-color="#f2f6ff"/>
-      <stop offset="1" stop-color="#cddcfb"/>
+      <stop offset="0.6" stop-color="#b1cbf8"/>
+      <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>`;
 
 const TINTA_AZUL = {
-  parede: "#000c66",
-  fundo: "#000a57",
+  parede: "#223d60",
+  fundo: "#101c2e",
   lamina: "url(#i-lamina)",
-  esmalte: "#1a3ada",
+  esmalte: "#6495ED",
   fio: "0.45",
 };
 
@@ -257,10 +257,10 @@ ${CAMPO_AZUL}
   </defs>
 
   <rect width="1024" height="1024" rx="196" fill="url(#i-campo)"/>
-  <path d="M196 3 H828 A193 193 0 0 1 1021 196" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="6"/>
+  <rect x="24" y="24" width="976" height="976" rx="180" fill="none" stroke="#6495ED" stroke-opacity="0.6" stroke-width="24"/>
 
   <g transform="${posicao(0.98, 4)}">
-      ${marca({ ...TINTA_AZUL, lamina: "#ffffff", silhueta: true })}
+      ${marca({ ...TINTA_AZUL, lamina: "#6495ED", silhueta: true })}
   </g>
 </svg>
 `;
@@ -274,6 +274,7 @@ ${CAMPO_AZUL}
   </defs>
 
   <rect width="1024" height="1024" fill="url(#i-campo)"/>
+  <rect x="100" y="100" width="824" height="824" rx="172" fill="none" stroke="#6495ED" stroke-opacity="0.32" stroke-width="4"/>
 
   <g transform="${posicao(0.9, 4)}">
       ${marca(TINTA_AZUL)}

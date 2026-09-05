@@ -1,5 +1,5 @@
+import { REPO_URL } from "@/lib/constants";
 import { pageMetadata } from "@/lib/seo";
-import Foot from "@/components/shell/Foot";
 
 export const metadata = pageMetadata({
   title: "Termos de uso",
@@ -7,8 +7,7 @@ export const metadata = pageMetadata({
   path: "/termos",
 });
 
-/* #080 · Termos de USO DO SITE (não é contrato de serviço — propostas
-   comerciais são formalizadas na consulta). ⚠ Revisão do Mizael recomendada. */
+/* Termos de uso do site. */
 export default function TermosPage() {
   return (
     <>
@@ -22,11 +21,11 @@ export default function TermosPage() {
           não podem ser reproduzidos sem autorização.
         </p>
 
-        <h2>Propostas e valores</h2>
+        <h2>Informações sobre o sistema</h2>
         <p>
-          As informações do site têm caráter informativo. Escopo, prazos e
-          valores são definidos e formalizados na consulta — nenhum conteúdo
-          aqui constitui oferta vinculante.
+          As informações do site descrevem o Neovanguard OS. Consulte o
+          repositório para o código-fonte, a licença do sistema e as condições
+          de distribuição.
         </p>
 
         <h2>Disponibilidade</h2>
@@ -38,10 +37,10 @@ export default function TermosPage() {
         <h2>Contato</h2>
         <p>
           Dúvidas sobre estes termos ou sobre privacidade: use o canal de
-          contato do site. Veja também a <a href="/privacidade">política de privacidade</a>.
+          contato no <a href={`${REPO_URL}/issues`}>repositório do projeto</a>. Veja também a <a href="/privacidade">política de privacidade</a>.
         </p>
       </article>
-      <Foot />
+
     </>
   );
 }

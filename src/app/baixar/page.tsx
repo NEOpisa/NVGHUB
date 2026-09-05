@@ -1,26 +1,16 @@
 import Link from "next/link";
+import CodeBlock from "@/components/blocos/CodeBlock";
 import type { Metadata } from "next";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
-import { VERSAO, IMAGENS, CHAVE_FPR, REPO_URL, REPO_PACOTES } from "@/lib/constants";
+import { VERSAO, IMAGENS, CHAVE_FPR, REPO_PACOTES, DOCS_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/baixar" },
   title: "Baixar",
   description:
     "As duas imagens do Neovanguard OS — Live para experimentar, Install para instalar sem rede — e como conferir o que você baixou.",
 };
 
-/**
- * BAIXAR — a página que mais pode mentir num site de distro, então ela diz o
- * estado real: as imagens da 1.0.0 existem e **ainda não foram publicadas**.
- * Um botão que leva a 404 é pior que a ausência dele, e "em breve" sem motivo
- * é pior que os dois.
- *
- * A ordem também é deliberada: escolher a mídia vem antes de baixar, e
- * conferir vem antes de gravar. Numa distro que fala de soberania, ensinar a
- * verificar a assinatura não é rodapé — é a única coisa que separa "eu baixei"
- * de "eu sei o que baixei".
- */
 export default function Baixar() {
   return (
     <>
@@ -44,15 +34,14 @@ export default function Baixar() {
           </h2>
         </div>
         <p className="lead">
-          Elas são construídas e testadas, e o repositório de pacotes que o
-          sistema usa já está no ar. O que falta é a publicação das imagens em
-          si — enquanto isso não acontece, esta página descreve o que elas são e
-          como conferi-las, e não oferece um botão que levaria a lugar nenhum.
+          O repositório de pacotes está disponível. As ISOs ainda aguardam
+          publicação; por enquanto, você pode consultar o guia de construção
+          ou conhecer as diferenças entre as mídias abaixo.
         </p>
         <div className="pill-row">
           <a
             className="pill"
-            href={REPO_URL}
+            href={`${DOCS_URL}/COMO-CONSTRUIR.md`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -70,10 +59,10 @@ export default function Baixar() {
         </div>
       </section>
 
-      <section className="panel" aria-labelledby="as-tres">
+      <section className="panel" aria-labelledby="imagens">
         <div className="sec-head">
           <span className="eyebrow">As duas</span>
-          <h2 className="h-lg" id="as-tres">
+          <h2 className="h-lg" id="imagens">
             Qual delas é a <span className="h-accent">sua</span>
           </h2>
         </div>
@@ -131,9 +120,8 @@ export default function Baixar() {
                 Pega erro de rede e disco cheio. <strong>Não</strong> pega
                 adulteração: quem trocar a imagem troca a soma junto.
               </p>
-              <pre className="cmd">
-                <code>sha256sum -c NeovanguardOS-Live-{VERSAO}-x86_64.iso.sha256</code>
-              </pre>
+              <CodeBlock>{`sha256sum -c NeovanguardOS-Live-${VERSAO}-x86_64.iso.sha256`}</CodeBlock>
+              <p className="step-desc">O resultado esperado é o nome do arquivo seguido de OK. Isso confirma a integridade; confira também a assinatura.</p>
             </div>
           </li>
           <li className="step">
@@ -147,16 +135,12 @@ export default function Baixar() {
                 a byte o que saiu daqui, e ela não pode ser refeita por quem não
                 tem a chave.
               </p>
-              <pre className="cmd">
-                <code>gpg --verify NeovanguardOS-Live-{VERSAO}-x86_64.iso.asc</code>
-              </pre>
+              <CodeBlock>{`gpg --verify NeovanguardOS-Live-${VERSAO}-x86_64.iso.asc NeovanguardOS-Live-${VERSAO}-x86_64.iso`}</CodeBlock>
               <p className="step-desc">
                 O gpg dirá qual chave assinou. Tem de ser esta — e é a impressão
                 inteira que se confere, não os últimos oito caracteres:
               </p>
-              <pre className="cmd cmd--sem-cifrao">
-                <code>{CHAVE_FPR}</code>
-              </pre>
+              <CodeBlock label="Impressão da chave">{CHAVE_FPR}</CodeBlock>
             </div>
           </li>
         </ol>
@@ -174,8 +158,6 @@ export default function Baixar() {
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }

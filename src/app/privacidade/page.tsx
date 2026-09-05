@@ -1,5 +1,4 @@
 import { pageMetadata } from "@/lib/seo";
-import Foot from "@/components/shell/Foot";
 
 export const metadata = pageMetadata({
   title: "Privacidade — como tratamos seus dados",
@@ -68,7 +67,7 @@ export default function PrivacidadePage() {
           atendimento e a obrigações legais.
         </p>
       </article>
-      <Foot />
+
     </>
   );
 }

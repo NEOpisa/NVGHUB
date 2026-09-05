@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
 
 export default function NotFound() {
@@ -22,7 +21,7 @@ export default function NotFound() {
           </Link>
         </div>
       </section>
-      <Foot />
+
     </>
   );
 }

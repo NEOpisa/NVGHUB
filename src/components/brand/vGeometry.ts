@@ -40,13 +40,13 @@ export type VParts = {
 };
 
 /**
- * Constrói UMA metade do V em 3D. O corpo é uma chapa biselada; as facetas
+ * Constrói UMA metade do V em 3D. O contorno tem pontas agudas: sem bisel para evitar auto-interseções. As facetas
  * salientam alguns décimos à frente, então a luz rasante separa as duas
  * cores como no vetor (cromado claro × acento cheio).
  */
 export function buildVHalf(): VParts {
   return {
-    body: extrude(HALF_OUTLINE, 0.34, 0.035, -0.17),
-    facets: HALF_FACETS.map((f) => extrude(f, 0.1, 0.012, 0.17)),
+    body: extrude(HALF_OUTLINE, 0.34, 0, -0.17),
+    facets: HALF_FACETS.map((f) => extrude(f, 0.035, 0, 0.175)),
   };
 }

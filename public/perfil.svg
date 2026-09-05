@@ -5,18 +5,18 @@
        Foto de perfil das redes e logo da organização. Vive de 40 a 400px
        numa timeline, então pode ter material — mas TUDO precisa caber no
        círculo: Instagram, WhatsApp e LinkedIn recortam redondo, X e GitHub
-       em quadrado arredondado. Por isso o aro fica em r=452 e a marca no
+       em quadrado arredondado. Por isso o contorno fica afastado da borda e a marca no
        miolo. O halo existe para descolar a peça do campo: sem ele a beirada
        escura do V encosta no fundo e a silhueta some na miniatura. -->
   <defs>
     <radialGradient id="p-campo" cx="0.32" cy="0.24" r="0.92">
-      <stop offset="0" stop-color="#141a2e"/>
-      <stop offset="0.55" stop-color="#0a0d18"/>
-      <stop offset="1" stop-color="#06070b"/>
+      <stop offset="0" stop-color="#172940"/>
+      <stop offset="0.55" stop-color="#0c1422"/>
+      <stop offset="1" stop-color="#060b13"/>
     </radialGradient>
     <radialGradient id="p-halo" cx="0.5" cy="0.5" r="0.5">
       <stop offset="0" stop-color="#6495ED" stop-opacity="0.36"/>
-      <stop offset="0.6" stop-color="#3559c9" stop-opacity="0.1"/>
+      <stop offset="0.6" stop-color="#3d65a8" stop-opacity="0.1"/>
       <stop offset="1" stop-color="#6495ED" stop-opacity="0"/>
     </radialGradient>
     <!-- espaço de usuário: uma luz só atravessa as duas metades. No padrão
@@ -24,14 +24,14 @@
          peça passa a parecer duas peças encostadas. -->
     <linearGradient id="p-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.36" stop-color="#dbe5fc"/>
-      <stop offset="0.72" stop-color="#9dbaf5"/>
+      <stop offset="0.36" stop-color="#d0e0fc"/>
+      <stop offset="0.72" stop-color="#a2c1f5"/>
       <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>
     <linearGradient id="p-esmalte" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
-      <stop offset="0" stop-color="#4f7ce8"/>
-      <stop offset="0.5" stop-color="#2b54e3"/>
-      <stop offset="1" stop-color="#0000CD"/>
+      <stop offset="0" stop-color="#86adf3"/>
+      <stop offset="0.5" stop-color="#6495ED"/>
+      <stop offset="1" stop-color="#3d65a8"/>
     </linearGradient>
     <linearGradient id="p-parede" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#5f80c9"/>
@@ -41,8 +41,8 @@
 
   <rect width="1024" height="1024" fill="url(#p-campo)"/>
   <circle cx="512" cy="498" r="360" fill="url(#p-halo)"/>
-  <circle cx="512" cy="512" r="452" fill="none" stroke="#6495ED" stroke-opacity="0.42" stroke-width="3"/>
-  <circle cx="512" cy="512" r="452" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="12"/>
+  <rect x="84" y="84" width="856" height="856" rx="200" fill="none" stroke="#6495ED" stroke-opacity="0.42" stroke-width="3"/>
+  <rect x="104" y="104" width="816" height="816" rx="182" fill="none" stroke="#6495ED" stroke-opacity="0.10" stroke-width="2"/>
 
   <g transform="translate(512,506) scale(0.87) translate(-640,-568)">
       <g fill="url(#p-parede)">

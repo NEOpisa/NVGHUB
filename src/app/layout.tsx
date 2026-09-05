@@ -4,11 +4,12 @@ import {
   Space_Grotesk,
   IBM_Plex_Mono,
 } from "next/font/google";
-import RailLeft from "@/components/shell/RailLeft";
-import RailRight from "@/components/shell/RailRight";
-import MobileBar from "@/components/shell/MobileBar";
+import Motion from "@/components/shell/Motion";
+import Header from "@/components/shell/Header";
+import TableOfContents from "@/components/shell/TableOfContents";
+import Foot from "@/components/shell/Foot";
 import { Analytics } from "@vercel/analytics/next";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, VERSAO } from "@/lib/constants";
 import "./shell.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -36,7 +37,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#06070b",
+  themeColor: "#0c1422",
 };
 
 export const metadata: Metadata = {
@@ -78,7 +79,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Neovanguard OS — a máquina é sua, inclusive a identidade",
     description:
-      "Distribuição Linux baseada em Arch: a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina. Três imagens, instalador próprio, GPL-3.0.",
+      "Distribuição Linux baseada em Arch: a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina. Duas imagens, instalador próprio, GPL-3.0.",
     type: "website",
     locale: "pt_BR",
     siteName: "Neovanguard OS",
@@ -120,7 +121,7 @@ const JSON_LD = {
       url: SITE_URL,
       applicationCategory: "OperatingSystem",
       operatingSystem: "Linux",
-      softwareVersion: "1.0.0",
+      softwareVersion: VERSAO,
       image: `${SITE_URL}/opengraph-image`,
       description:
         "Distribuição Linux baseada em Arch em que a chave Nostr do usuário é a conta do sistema. Nó Bitcoin, Lightning e relay Nostr locais, endurecimento de fábrica e 55 comandos neo-* para operá-los.",
@@ -136,11 +137,6 @@ const JSON_LD = {
   ],
 };
 
-/**
- * A "telinha" do site: trilho de rotas à esquerda, coluna de painéis no
- * meio, trilho de utilidades à direita. Os trilhos são sticky e nunca
- * somem — toda página é montada dentro desse mesmo esqueleto.
- */
 export default function RootLayout({
   children,
 }: {
@@ -159,14 +155,17 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
-        <MobileBar />
-        <div className="sh">
-          <RailLeft />
-          <main className="sh-main" id="main">
-            {children}
-          </main>
-          <RailRight />
+        <div className="site-frame">
+          <Header />
+          <div className="sh">
+            <main className="sh-main" id="main" tabIndex={-1}>
+              {children}
+            </main>
+            <TableOfContents />
+          </div>
+          <Foot />
         </div>
+        <Motion />
         <Analytics />
       </body>
     </html>

@@ -12,14 +12,14 @@
   <defs>
     <linearGradient id="nv-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.36" stop-color="#dbe5fc"/>
-      <stop offset="0.72" stop-color="#9dbaf5"/>
+      <stop offset="0.36" stop-color="#d0e0fc"/>
+      <stop offset="0.72" stop-color="#a2c1f5"/>
       <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>
     <linearGradient id="nv-esmalte" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
-      <stop offset="0" stop-color="#4f7ce8"/>
-      <stop offset="0.5" stop-color="#2b54e3"/>
-      <stop offset="1" stop-color="#0000CD"/>
+      <stop offset="0" stop-color="#86adf3"/>
+      <stop offset="0.5" stop-color="#6495ED"/>
+      <stop offset="1" stop-color="#3d65a8"/>
     </linearGradient>
   </defs>
 

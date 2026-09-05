@@ -11,22 +11,22 @@
        marca; o material é o que ela veste quando tem espaço. -->
   <defs>
     <linearGradient id="i-campo" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0" stop-color="#3f63e8"/>
-      <stop offset="0.52" stop-color="#1230d6"/>
-      <stop offset="1" stop-color="#0000a8"/>
+      <stop offset="0" stop-color="#182d49"/>
+      <stop offset="0.52" stop-color="#101c2e"/>
+      <stop offset="1" stop-color="#0c1422"/>
     </linearGradient>
     <linearGradient id="i-lamina" gradientUnits="userSpaceOnUse" x1="300" y1="300" x2="1000" y2="850">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.6" stop-color="#f2f6ff"/>
-      <stop offset="1" stop-color="#cddcfb"/>
+      <stop offset="0.6" stop-color="#b1cbf8"/>
+      <stop offset="1" stop-color="#6495ED"/>
     </linearGradient>
   </defs>
 
   <rect width="1024" height="1024" rx="196" fill="url(#i-campo)"/>
-  <path d="M196 3 H828 A193 193 0 0 1 1021 196" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="6"/>
+  <rect x="24" y="24" width="976" height="976" rx="180" fill="none" stroke="#6495ED" stroke-opacity="0.6" stroke-width="24"/>
 
   <g transform="translate(512,516) scale(0.98) translate(-640,-568)">
-      <g fill="#ffffff">
+      <g fill="#6495ED">
         <path d="M492 306 L278 369 L424 578 L350 409 L477 377 L640 830 L520 308 Z"/>
         <path d="M788 306 L1002 369 L856 578 L930 409 L803 377 L640 830 L760 308 Z"/>
       </g>

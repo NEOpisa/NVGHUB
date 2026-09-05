@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export type FaqItem = { q: string; a: string; tag: string };
 
 /** Acordeão do sistema — uma resposta aberta por vez, tudo sempre no DOM. */
 export default function FaqList({ itens }: { itens: FaqItem[] }) {
   const [open, setOpen] = useState(0);
+  const id = useId();
 
   return (
     <div>
@@ -18,6 +19,7 @@ export default function FaqList({ itens }: { itens: FaqItem[] }) {
               type="button"
               className="acc-q"
               aria-expanded={isOpen}
+              aria-controls={`${id}-${i}`}
               onClick={() => setOpen(isOpen ? -1 : i)}
             >
               <span className="acc-code" aria-hidden="true">
@@ -29,7 +31,7 @@ export default function FaqList({ itens }: { itens: FaqItem[] }) {
               </span>
               <span className="acc-sign" aria-hidden="true" />
             </button>
-            <div className="acc-a">
+            <div className="acc-a" id={`${id}-${i}`} hidden={!isOpen}>
               <div>
                 <p>{f.a}</p>
               </div>

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
 import { REPO_URL, VERSAO } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/sobre" },
   title: "Sobre",
   description:
     "Por que o Neovanguard OS existe, o que ele assume, e o que ele não é. Uma distribuição Linux construída em torno de uma ideia fixa: a máquina é sua.",
@@ -148,8 +148,6 @@ export default function Sobre() {
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }

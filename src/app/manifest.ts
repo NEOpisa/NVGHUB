@@ -9,8 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Distribuição Linux onde a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina.",
     start_url: "/",
     display: "standalone",
-    background_color: "#06070b",
-    theme_color: "#06070b",
+    background_color: "#0c1422",
+    theme_color: "#0c1422",
     /* Campo azul cheio, não o avatar escuro: na tela inicial o ícone fica
        sobre o papel de parede do usuário, e quadrado escuro com marca clara
        desaparece em metade dos papéis de parede.

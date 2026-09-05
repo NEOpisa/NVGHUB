@@ -1,19 +1,7 @@
 import Link from "next/link";
 import NVMark3D from "@/components/brand/NVMark3D";
-import Foot from "@/components/shell/Foot";
 import { ArrowUpRight } from "@/components/icons";
 import { VERSAO, IMAGENS } from "@/lib/constants";
-
-/**
- * HOME — o hero é a marca V em 3D se montando; abaixo, no mesmo ritmo de
- * painéis do resto do site: o que a distro é, as duas imagens, os números e
- * o fecho. Rolagem nativa do começo ao fim.
- *
- * A ordem das seções é a de quem chega sem saber o que é isto. Primeiro a
- * frase que diz o que muda (a chave é a conta), depois o que vem dentro, só
- * então qual mídia pegar. Um site de distro que abre com a tabela de download
- * está pedindo uma decisão antes de dar a informação para tomá-la.
- */
 
 const PILARES = [
   {
@@ -48,35 +36,35 @@ const NUMEROS = [
 export default function Home() {
   return (
     <>
-      <section className="hero" aria-label="Apresentação do Neovanguard OS">
+      <section className="hero hero--home" aria-label="Apresentação do Neovanguard OS">
         <div className="hero-copy">
           <span className="eyebrow">Sistema operacional · Arch Linux</span>
           <h1 className="h-xl">
             A máquina é sua.
             <br />
-            Inclusive a identidade.
+            Sua identidade também.
           </h1>
           <p className="lead">
-            Neovanguard OS é uma distribuição Linux em que a sua chave Nostr é a
-            conta do sistema, e o nó Bitcoin, o Lightning e o relay são seus,
-            rodando aqui. Formatou? Digita a chave e a máquina volta a ser a sua.
+            Um Linux baseado em Arch, com KDE Plasma e ferramentas para operar
+            sua identidade Nostr, Bitcoin e Lightning na sua própria máquina.
           </p>
           <div className="pill-row">
             <Link href="/baixar" className="pill">
-              Baixar a versão {VERSAO}
+              Conhecer a versão {VERSAO}
               <ArrowUpRight />
             </Link>
-            <Link href="/recursos" className="pill pill--ghost">
-              O que vem dentro
+            <Link href="/instalacao" className="pill pill--ghost">
+              Guia de instalação
             </Link>
           </div>
         </div>
         <div className="hero-art">
+          <span className="art-label">Neovanguard OS / {VERSAO}</span>
           <NVMark3D />
+          <span className="art-caption">Sua máquina. Suas possibilidades.</span>
         </div>
         <p className="hero-note">
-          duas imagens · instalador próprio · repositório assinado · sem edição
-          paga
+          <span>Arch Linux</span><span>KDE Plasma</span><span>Código aberto</span><span>Duas imagens</span>
         </p>
       </section>
 
@@ -84,8 +72,7 @@ export default function Home() {
         <div className="sec-head">
           <span className="eyebrow">O que muda</span>
           <h2 className="h-lg" id="pilares">
-            Quatro coisas que esta distro faz{" "}
-            <span className="h-accent">diferente</span>
+            Controle para ir <span className="h-accent">além.</span>
           </h2>
         </div>
         <div className="cards">
@@ -152,8 +139,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      <Foot />
     </>
   );
 }
