@@ -229,9 +229,13 @@ h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 500; letter-spacin
   .toc-mobile summary { cursor: pointer; padding: 0 0 16px; font-size: var(--text-sm); font-weight: 600; }
   .toc-mobile nav { display: grid; border: 0; padding-bottom: 16px; gap: 0; }
   .toc-mobile a { padding: 10px 0; }
-  .hero--home { grid-template-columns: 1fr 1fr; }
-  .hero--home .h-xl { font-size: 2.8rem; }
-  .hero-art { height: 380px; }
+  /* Duas colunas abaixo de 900 deixavam o título quebrando a cada duas
+     palavras: a marca desce para baixo do texto. */
+  .hero--home { grid-template-columns: 1fr; gap: 28px; }
+  .hero--home .h-xl { font-size: clamp(2.4rem, 5.6vw, 3.2rem); max-width: 18ch; }
+  .hero--home .lead { max-width: 56ch; }
+  .hero-art { height: 300px; }
+  .nv3d-flat img { width: min(52%, 260px); }
   .hero-note { gap: 16px; }
 }
 @media (max-width: 680px) {
@@ -243,15 +247,19 @@ h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 500; letter-spacin
   .header-download { font-size: .8125rem; padding: 9px 12px; gap: 0; white-space: nowrap; min-height: 44px; }
   .download-suffix { display: none; }
   .header-download svg { display: none; }
-  .sh { padding: 0 22px; }
-  .hero { padding: 44px 0 40px; }
-  .hero--home { grid-template-columns: 1fr; gap: 30px; }
-  .hero--home .h-xl { font-size: clamp(2.65rem,10vw,3.5rem); max-width: 14ch; }
-  .hero-art { height: 330px; }
-  .hero-note { gap: 12px; margin: 0; font-size: .8125rem; }
-  .hero-note span { gap: 0; }
+  /* O painel do hero já recua por dentro: o trilho da página afina para o
+     texto não ficar espremido entre dois recuos. */
+  .sh { padding: 0 18px; }
+  .hero { padding: 40px 0 36px; }
+  .hero--home { grid-template-columns: 1fr; gap: 26px; margin-top: 20px; padding: 24px 18px; }
+  .hero--home .h-xl { font-size: clamp(2.1rem,8.4vw,3rem); max-width: 15ch; }
+  .hero--home .lead { max-width: none; }
+  .hero-art { height: 250px; }
+  .nv3d-flat img { width: min(62%, 220px); }
+  .hero-note { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 22px 0 0; padding-top: 18px; font-size: .66rem; letter-spacing: .06em; }
+  .hero-note span { gap: 0; overflow-wrap: anywhere; }
+  /* Quebrando em duas linhas, o separador sobraria no começo da segunda. */
   .hero-note span + span::before { display: none; }
-  .hero-note { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
   .lead { font-size: 1rem; }
   .panel { padding: 40px 0; }
   .panel--accent { padding: 26px 22px; }
@@ -270,6 +278,9 @@ h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 500; letter-spacin
   .foot { padding: 28px 22px; }
 }
 @media (max-width: 380px) {
+  .sh { padding: 0 12px; }
+  .hero--home { padding: 20px 16px; }
+  .hero-art { height: 220px; }
   .header-inner { padding: 0 16px; gap: 8px; }
   .brand { font-size: 1.05rem; }
   .brand-symbol { width: 32px; height: 32px; }
