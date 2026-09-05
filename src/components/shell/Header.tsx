@@ -28,7 +28,7 @@ export default function Header() {
           <span>neovanguard<span className="brand-dot">.</span></span>
         </Link>
         <nav className="desktop-nav" aria-label="Navegação principal">
-          {NAV.filter(r => r.href !== "/" && r.href !== "/baixar").map(r => (
+          {NAV.filter(r => r.href !== "/baixar").map(r => (
             <Link key={r.href} href={r.href} aria-current={path === r.href ? "page" : undefined}>
               {r.href === "/faq" ? "FAQ" : r.label}
             </Link>

@@ -3,6 +3,7 @@ import NVMark3D from "@/components/brand/NVMark3D";
 import { ArrowUpRight } from "@/components/icons";
 import { VERSAO, IMAGENS } from "@/lib/constants";
 
+
 const PILARES = [
   {
     n: "01",
@@ -59,9 +60,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-art">
-          <span className="art-label">Neovanguard OS / {VERSAO}</span>
           <NVMark3D />
-          <span className="art-caption">Sua máquina. Suas possibilidades.</span>
         </div>
         <p className="hero-note">
           <span>Arch Linux</span><span>KDE Plasma</span><span>Código aberto</span><span>Duas imagens</span>
