@@ -20,7 +20,7 @@ function Mark() {
     const mark = group.current;
     if (!mark) return;
     const dt = Math.min(delta, .05);
-    mark.rotation.y = THREE.MathUtils.damp(mark.rotation.y, -.16 + state.pointer.x * .16, 3, dt);
+    mark.rotation.y = THREE.MathUtils.damp(mark.rotation.y, -.16 + state.pointer.x * .10 + Math.sin(state.clock.elapsedTime * .25) * .035, 3, dt);
     mark.rotation.x = THREE.MathUtils.damp(mark.rotation.x, -.08 - state.pointer.y * .08, 3, dt);
     // Both halves stay joined; restrained movement preserves the silhouette.
     mark.position.y = Math.sin(state.clock.elapsedTime * .45) * .035;
@@ -29,10 +29,10 @@ function Mark() {
   return <group ref={group} rotation={[-.08, -.16, 0]}>
     {[1, -1].map(side => <group key={side} scale={[side, 1, 1]}>
       <mesh geometry={parts.body}>
-        <meshStandardMaterial color="#b1cbf8" metalness={.38} roughness={.34} />
+        <meshStandardMaterial color="#6495ed" metalness={.65} roughness={.3} />
       </mesh>
       {parts.facets.map((geometry, i) => <mesh key={i} geometry={geometry}>
-        <meshStandardMaterial color="#6495ED" metalness={.2} roughness={.4} />
+        <meshStandardMaterial color="#304c91" metalness={.5} roughness={.36} />
       </mesh>)}
     </group>)}
     <Cleanup parts={parts} />
@@ -59,9 +59,9 @@ export default function VScene({ active, onFailure }: { active: boolean; onFailu
   return <Canvas orthographic camera={{ position: [0, 0, 10], zoom: 50, near: .1, far: 30 }}
     dpr={[1, 1.5]} frameloop={active ? "always" : "demand"}
     gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}>
-    <hemisphereLight args={["#e4efff", "#25457b", 2]} />
-    <directionalLight position={[-3, 5, 6]} intensity={3} color="#ffffff" />
-    <directionalLight position={[4, -1, 4]} intensity={1.8} color="#6495ED" />
+    <hemisphereLight args={["#c4d8ff", "#101a35", 1.4]} />
+    <directionalLight position={[-3, 5, 6]} intensity={2.4} color="#dce8ff" />
+    <directionalLight position={[4, -1, 4]} intensity={1.6} color="#6495ED" />
     <Mark />
     <ContextGuard onFailure={onFailure} />
   </Canvas>;

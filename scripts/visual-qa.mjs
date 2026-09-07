@@ -13,6 +13,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { createRequire } from "node:module";
 
 const BASE = process.argv[2] ?? "http://localhost:3000";
 const OUT = ".qa-shots";
@@ -26,6 +27,36 @@ const BREAKPOINTS = [
   ["tablet", 820, 1180],
   ["mobile", 390, 844],
 ];
+
+// Opcional: reutiliza uma sessão Playwright instalada pelo ambiente de QA.
+// Evita abrir 27 processos Chromium avulsos; não adiciona dependência ao site.
+// PLAYWRIGHT_PATH=/caminho/node_modules/playwright node scripts/visual-qa.mjs
+if (process.env.PLAYWRIGHT_PATH) {
+  const require = createRequire(import.meta.url);
+  const { chromium } = require(process.env.PLAYWRIGHT_PATH);
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
+  mkdirSync(OUT, { recursive: true });
+  let failures = 0;
+  try {
+    for (const route of ROUTES) {
+      for (const [bp, width, height] of BREAKPOINTS) {
+        const slug = route === "/" ? "home" : route.slice(1);
+        const page = await browser.newPage({ viewport: { width, height }, reducedMotion: "reduce" });
+        try {
+          const response = await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
+          if (!response.ok()) throw new Error(`HTTP ${response.status()}`);
+          await page.screenshot({ path: join(OUT, `${slug}-${bp}.png`), fullPage: true });
+          console.log(`ok   ${slug}-${bp}`);
+        } catch (error) {
+          console.error(`FAIL ${slug}-${bp}: ${error.message}`);
+          failures++;
+        } finally { await page.close(); }
+      }
+    }
+  } finally { await browser.close(); }
+  console.log(failures ? `${failures} capturas falharam` : "todas as capturas ok");
+  process.exit(failures ? 1 : 0);
+}
 
 // localiza o chromium do playwright (qualquer versão instalada)
 const mpRoot = join(homedir(), ".cache", "ms-playwright");
@@ -52,6 +83,8 @@ for (const route of ROUTES) {
         [
           "--headless=new", "--no-sandbox", "--disable-gpu-sandbox",
           "--enable-unsafe-swiftshader", "--use-gl=angle", "--use-angle=swiftshader",
+          // Capturas determinísticas; WebGL e movimento têm QA separado.
+          "--force-prefers-reduced-motion", "--disable-webgl",
           "--hide-scrollbars", "--force-device-scale-factor=1",
           `--window-size=${w},${h}`, "--virtual-time-budget=8000",
           `--screenshot=${file}`, `${BASE}${route}`,
