@@ -13,7 +13,7 @@ type PageMetaInput = {
  * OpenGraph e Twitter card. Centraliza OG + canonical em todas as páginas.
  *
  * A imagem NÃO é declarada aqui de propósito: quem responde por ela é o
- * arquivo `opengraph-image` do segmento — o da raiz vale para o site
+ * arquivo `opengraph-image` do segmento : o da raiz vale para o site
  * inteiro, e /baixar sobrescreve com a cor própria. Fixar uma URL aqui
  * anularia essa herança e traria de volta o PNG velho para todas as rotas.
  */

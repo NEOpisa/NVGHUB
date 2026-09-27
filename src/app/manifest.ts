@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
+import { SITE_DESCRIPTION } from "@/lib/constants";
 
-// manifest PWA básico — instala como app, nas cores do site.
+// manifest PWA básico : instala como app, nas cores do site.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Neovanguard OS",
     short_name: "Neovanguard OS",
     description:
-      "Distribuição Linux onde a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina.",
+      SITE_DESCRIPTION,
     start_url: "/",
     display: "standalone",
     background_color: "#0c1422",
@@ -15,7 +16,7 @@ export default function manifest(): MetadataRoute.Manifest {
        sobre o papel de parede do usuário, e quadrado escuro com marca clara
        desaparece em metade dos papéis de parede.
 
-       O mesmo arquivo entra como `any` e como `maskable` — ele sangra até a
+       O mesmo arquivo entra como `any` e como `maskable` : ele sangra até a
        borda e o V cabe no círculo seguro de 80%, então serve aos dois casos.
        O tipo do Next só aceita um propósito por entrada, daí a repetição. */
     icons: [

@@ -5,71 +5,71 @@ import { ArrowUpRight } from "@/components/icons";
 import { REPO_URL, VERSAO } from "@/lib/constants";
 
 export const metadata = pageMetadata({
-  title: "Perguntas frequentes — Neovanguard OS",
+  title: "Perguntas frequentes",
   description:
-    "O que se pergunta antes de instalar o Neovanguard OS: hardware, chave Nostr, Bitcoin, atualizações e o que acontece se você perder a chave.",
+    "Respostas sobre instalação, hardware, identidade Nostr, atualizações, privacidade e licença do Neovanguard OS.",
   path: "/faq",
 });
 
 const FAQ: FaqItem[] = [
   {
-    q: "Preciso entender de Bitcoin ou de Nostr para usar?",
-    a: "Não. A área de trabalho é o KDE Plasma e o sistema funciona como qualquer Linux — navegador, arquivos, terminal. A camada de soberania fica ali, ligada, para quando você quiser. Dá para instalar sem chave nenhuma e criar uma conta comum.",
-    tag: "Começar",
+    q: "Preciso conhecer Bitcoin e Nostr para usar o sistema?",
+    a: "Não para usar o ambiente KDE Plasma e os aplicativos comuns. A instalação aceita uma conta local sem chave Nostr. Para administrar nós, canais e relays, é necessário conhecer os serviços e sua configuração.",
+    tag: "Uso",
   },
   {
     q: "O que acontece se eu perder a minha chave Nostr?",
-    a: "A identidade se perde, e não há recuperação — é essa a contrapartida de não haver cadastro nem servidor de senha. O sistema continua funcionando e a sua conta local continua sendo sua; o que se perde é o perfil e o cofre de configurações guardados na rede. Por isso a instalação, quando cria uma chave nova, mostra as palavras e insiste que você as anote antes de seguir.",
+    a: "Sem a chave privada ou um backup, você perde o acesso à identidade Nostr e ao cofre associado. A conta local continua funcionando. Ao criar uma chave na instalação, guarde as palavras de recuperação em local seguro. O projeto não oferece recuperação de chaves.",
     tag: "Identidade",
   },
   {
-    q: "Qual máquina roda isso?",
-    a: "Qualquer PC x86-64 com UEFI ou BIOS legado. O instalador mostra na tela de Disco quanto espaço a instalação exige, medido na build, e recusa um disco pequeno demais dizendo os dois tamanhos. Para rodar um nó Bitcoin completo, conte com algumas centenas de GB a mais.",
+    q: "Quais são os requisitos de hardware?",
+    a: "O sistema é destinado a PCs x86-64 com UEFI ou BIOS legado. O instalador informa o espaço mínimo em disco e impede a instalação quando ele é insuficiente. Um nó Bitcoin exige recursos adicionais, conforme a configuração e a retenção de blocos. Use a Live para verificar a compatibilidade do hardware.",
     tag: "Hardware",
   },
   {
-    q: "Qual imagem eu baixo?",
-    a: "A Live, se quer só experimentar — ela roda do pendrive e não instala nada. A Install, se já decidiu: ela leva o sistema inteiro dentro e não precisa de internet. São o mesmo sistema; a diferença é só se há instalador na mídia.",
+    q: "Qual imagem devo usar?",
+    a: "Use a Live para testar pelo pendrive e a Install para instalar no disco. Ambas contêm o mesmo sistema e funcionam sem internet. Somente a Install inclui o instalador. Consulte a página de imagens para verificar a disponibilidade.",
     tag: "Mídias",
   },
   {
-    q: "Dá para instalar sem internet?",
-    a: "Sim, do começo ao fim. O sistema viaja dentro da mídia e é copiado para o disco. A rede aparece uma vez no instalador e é opcional: ela serve para trazer a sua identidade Nostr, e você pode pular.",
+    q: "Posso instalar sem internet?",
+    a: "Sim. A imagem Install contém os arquivos necessários. A etapa de rede é opcional e permite recuperar dados da identidade Nostr.",
     tag: "Mídias",
   },
   {
     q: "Posso usar o AUR e o pacman normalmente?",
-    a: "Sim, sem ressalva. É um Arch, e nada do que a distro acrescenta muda como o pacman se comporta.",
+    a: "Sim. O sistema usa o pacman e permite o uso do AUR. Os componentes do Neovanguard são distribuídos em um repositório adicional.",
     tag: "Base",
   },
   {
-    q: "Como as atualizações chegam?",
-    a: "Por pacman -Syu, como no Arch. O que é da distro vem do repositório neovanguard, assinado pela chave de lançamento que as imagens já trazem no chaveiro — um pacote nosso que não venha assinado por ela é recusado.",
+    q: "Como atualizar o sistema?",
+    a: "Use pacman -Syu com privilégios de administrador. Os pacotes do projeto vêm do repositório neovanguard e têm suas assinaturas verificadas com a chave de lançamento incluída no sistema.",
     tag: "Atualização",
   },
   {
-    q: "Meus dados vão para algum servidor de vocês?",
-    a: "O único endereço nosso que a sua máquina procura é o repositório de pacotes, e ele entrega arquivos assinados sem receber nada — sem login e sem identificação de máquina. Todo o resto roda localmente ou nos relays que você escolher.",
+    q: "O sistema envia telemetria?",
+    a: "O Neovanguard OS não envia telemetria. O repositório fornece pacotes sem exigir cadastro, mas o acesso pode gerar registros na hospedagem. As conexões com nós e relays dependem dos serviços configurados pelo usuário.",
     tag: "Privacidade",
   },
   {
-    q: "O log só em memória não atrapalha para depurar?",
-    a: "Atrapalha, e é a troca. Você não tem o registro de ontem para investigar um problema de hoje. Se precisar, journalctl aceita gravar em disco de novo — é uma linha em /etc/systemd/journald.conf, e a decisão passa a ser sua.",
+    q: "Como os logs em RAM afetam o diagnóstico?",
+    a: "Os logs mantidos em RAM são descartados ao desligar, o que limita a investigação de sessões anteriores. Para diagnosticar uma falha, consulte ou exporte os registros antes de encerrar a sessão.",
     tag: "Privacidade",
   },
   {
-    q: "Custa alguma coisa? Tem edição paga?",
-    a: "Não e não. É GPL-3.0, código aberto, sem edição empresarial, sem recurso atrás de assinatura.",
+    q: "O sistema é gratuito?",
+    a: "Sim. O Neovanguard OS é software livre sob a GPL-3.0, sem edição paga ou recursos por assinatura.",
     tag: "Licença",
   },
   {
-    q: "Como eu sei que a imagem que baixei é a de vocês?",
-    a: "Conferindo a assinatura, não só a soma. A soma pega download corrompido; a assinatura pega adulteração, porque quem trocar a imagem troca a soma junto. A página de download traz o comando e a impressão inteira da chave.",
+    q: "Como verificar a imagem ISO?",
+    a: "Verifique a soma SHA-256 e a assinatura GPG. A soma detecta corrupção do arquivo; a assinatura permite conferir sua origem com a chave esperada. Os comandos e a impressão digital da chave estão na página de imagens.",
     tag: "Segurança",
   },
   {
-    q: "Posso contribuir?",
-    a: "O código é aberto e as issues estão abertas. Todo defeito de classe nova vira uma verificação automática no repositório — é a regra da casa, e é o tipo de contribuição que mais vale.",
+    q: "Como contribuir?",
+    a: "Use o repositório para relatar problemas, propor alterações e enviar correções. Inclua passos para reproduzir falhas e, quando possível, um teste de regressão. A documentação descreve a estrutura do código e o processo de build.",
     tag: "Comunidade",
   },
 ];
@@ -93,14 +93,13 @@ export default function FaqPage() {
       />
 
       <section className="panel" aria-labelledby="faq-h">
-        <span className="eyebrow">FAQ · {FAQ.length} registros · versão {VERSAO}</span>
+        <span className="eyebrow">FAQ · {FAQ.length} perguntas · versão {VERSAO}</span>
         <h1 id="faq-h" className="h-xl">
-          Perguntas <em className="h-accent">frequentes.</em>
+          Perguntas <em className="h-accent">frequentes</em>
         </h1>
         <p className="lead">
-          Hardware, chave, Bitcoin, atualizações e o que acontece quando algo dá
-          errado — respondido sem rodeio, inclusive quando a resposta é
-          desconfortável.
+          Consulte os requisitos de hardware, as opções de instalação e as
+          informações sobre chaves, atualizações e privacidade.
         </p>
       </section>
 
@@ -109,10 +108,10 @@ export default function FaqPage() {
       </section>
 
       <section className="closer" aria-label="Ainda com dúvida">
-        <h2 className="h-xl">Não achou sua resposta?</h2>
+        <h2 className="h-xl">Suporte no repositório</h2>
         <p className="lead">
-          As issues do repositório são o canal — e ficam abertas para quem vier
-          depois com a mesma dúvida.
+          Para dúvidas e problemas não cobertos aqui, consulte as issues
+          existentes ou abra uma nova no repositório.
         </p>
         <div className="pill-row">
           <a

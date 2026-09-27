@@ -8,41 +8,37 @@ export const metadata: Metadata = {
   alternates: { canonical: "/instalacao" },
   title: "Instalação",
   description:
-    "Como instalar o Neovanguard OS: gravar o pendrive, dar boot, e as etapas do instalador na mídia Install.",
+    "Guia de instalação do Neovanguard OS: preparação do pendrive, inicialização e configuração com a imagem MBN Install.",
 };
 
-/**
- * INSTALAÇÃO — o guia. Ele descreve o instalador que existe, incluindo o que
- * ele **não** pergunta e por quê: quase todo mal-entendido de instalação nasce
- * de alguém procurando uma tela que a mídia escolhida não tem.
- */
+/** Preparação da mídia e etapas do instalador MBN Install. */
 
 const GRAVAR = [
   {
     n: "01",
     t: "Confira a imagem",
-    d: "A assinatura antes da soma. Está na página de download, com a impressão da chave.",
+    d: "Verifique a soma SHA-256 e a assinatura GPG seguindo as instruções da página de imagens.",
   },
   {
     n: "02",
     t: "Grave no pendrive",
-    d: "A imagem é híbrida: dd, Ventoy, Impressor de USB do GNOME, Etcher — qualquer um serve. Não descompacte nada.",
+    d: "Use uma ferramenta compatível com imagens ISO híbridas, como dd, Ventoy, Gravador de imagens USB do GNOME ou Etcher. Não descompacte a ISO.",
   },
   {
     n: "03",
-    t: "Dê boot pelo pendrive",
-    d: "Na maioria das máquinas é F12, F11 ou Esc no ligar. Em UEFI com Secure Boot ligado, desligue-o antes: as imagens ainda não são assinadas para ele.",
+    t: "Inicie pelo pendrive",
+    d: "Selecione o pendrive no menu de inicialização do computador. Desative o Secure Boot em sistemas UEFI, pois as imagens ainda não têm assinatura compatível.",
   },
 ];
 
 const MBN = [
-  ["Início", "o que esta mídia faz, e que ela não precisa de rede"],
-  ["Rede", "opcional aqui — só serve para trazer a sua identidade"],
-  ["Identidade", "a sua chave Nostr, se você tiver uma"],
-  ["Disco", "onde instalar, com o espaço que a instalação exige na tela"],
-  ["Conta", "usuário, senha, teclado e fuso"],
-  ["Revisão", "tudo o que vai acontecer, antes do primeiro comando destrutivo"],
-  ["Instalação", "o sistema sai da própria mídia, sem baixar nada"],
+  ["Início", "Apresentação do instalador e da instalação sem internet."],
+  ["Rede", "Conexão opcional para recuperar dados da identidade Nostr."],
+  ["Identidade", "Configuração opcional da chave Nostr."],
+  ["Disco", "Seleção do disco e verificação do espaço necessário."],
+  ["Conta", "Definição de usuário, senha, teclado e fuso horário."],
+  ["Revisão", "Conferência das alterações antes de gravar no disco."],
+  ["Instalação", "Cópia do sistema da mídia para o disco."],
 ] as const;
 
 
@@ -52,7 +48,7 @@ export default function Instalacao() {
       <section className="hero" aria-label="Instalar o Neovanguard OS">
         <div className="hero-copy">
           <span className="eyebrow">Guia · versão {VERSAO}</span>
-          <h1 className="h-xl">Do pendrive ao disco.</h1>
+          <h1 className="h-xl">Instalação</h1>
           <p className="lead">
             Use a imagem MBN Install para instalar o sistema sem internet.
             Depois de iniciar pelo pendrive, abra o instalador no terminal.
@@ -67,9 +63,9 @@ export default function Instalacao() {
       </section>
       <section className="panel" aria-labelledby="gravar">
         <div className="sec-head">
-          <span className="eyebrow">Antes</span>
+          <span className="eyebrow">Mídia de instalação</span>
           <h2 className="h-lg" id="gravar">
-            Gravar e dar <span className="h-accent">boot</span>
+            Preparação do <span className="h-accent">pendrive</span>
           </h2>
         </div>
         <div className="cards">
@@ -117,44 +113,43 @@ export default function Instalacao() {
 
       <section className="panel panel--accent" aria-labelledby="cuidados">
         <div className="sec-head">
-          <span className="eyebrow">O que costuma pegar</span>
+          <span className="eyebrow">Cuidados</span>
           <h2 className="h-lg" id="cuidados">
-            Três coisas que valem saber antes
+            Disco, identidade e conclusão
           </h2>
         </div>
         <div className="cards">
           <article className="card">
             <span className="card-n">01</span>
-            <h3 className="card-t">O disco é apagado por inteiro</h3>
+            <h3 className="card-t">Apagamento do disco</h3>
             <p className="card-d">
-              No modo padrão, sim. Existe o modo manual, para usar partições que
-              já existem — e a tela de Revisão diz qual disco vai embora, antes
-              de qualquer comando destrutivo.
+              A instalação padrão apaga todo o disco selecionado. O modo manual
+              permite usar partições existentes. Confira o disco e as
+              alterações na tela de revisão antes de confirmar.
             </p>
           </article>
           <article className="card">
             <span className="card-n">02</span>
             <h3 className="card-t">A chave Nostr é opcional</h3>
             <p className="card-d">
-              Dá para instalar sem nenhuma e criar uma conta comum. A tela de
-              Identidade nunca bloqueia: sem rede, sem chave ou com o relay
-              mudo, você segue adiante.
+              É possível criar uma conta local sem chave Nostr. A instalação
+              pode continuar sem rede ou quando o relay está indisponível.
             </p>
           </article>
           <article className="card">
             <span className="card-n">03</span>
-            <h3 className="card-t">Se algo falhar no fim, você fica sabendo</h3>
+            <h3 className="card-t">Avisos de conclusão</h3>
             <p className="card-d">
-              As últimas etapas não derrubam uma instalação com o disco já
-              escrito. O que não deu certo é registrado, e o assistente do
-              primeiro boot repete a lista antes de qualquer pergunta.
+              Falhas nas etapas finais são registradas como avisos quando o
+              sistema já foi gravado. O assistente da primeira inicialização
+              reapresenta essas pendências.
             </p>
           </article>
         </div>
       </section>
 
       <section className="closer" aria-label="Próximo passo">
-        <h2 className="h-xl">Continue pelos primeiros passos.</h2>
+        <h2 className="h-xl">Primeiros passos</h2>
         <div className="pill-row">
           <Link href="/documentacao#primeiros-passos" className="pill">
             Documentação

@@ -11,7 +11,7 @@ export default function Foot() {
         <Link href="/privacidade">Privacidade</Link>
         <Link href="/termos">Termos</Link>
       </nav>
-      <span>Feito para ser seu.</span>
+      <span>Software livre · GPL-3.0</span>
     </footer>
   );
 }

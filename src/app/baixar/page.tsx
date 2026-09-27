@@ -6,9 +6,9 @@ import { VERSAO, IMAGENS, CHAVE_FPR, REPO_PACOTES, DOCS_URL } from "@/lib/consta
 
 export const metadata: Metadata = {
   alternates: { canonical: "/baixar" },
-  title: "Baixar",
+  title: "Imagens ISO",
   description:
-    "As duas imagens do Neovanguard OS — Live para experimentar, Install para instalar sem rede — e como conferir o que você baixou.",
+    "Imagens Live e Install do Neovanguard OS: disponibilidade, diferenças e verificação de integridade e assinatura.",
 };
 
 export default function Baixar() {
@@ -17,20 +17,20 @@ export default function Baixar() {
       <section className="hero" aria-label="Baixar o Neovanguard OS">
         <div className="hero-copy">
           <span className="eyebrow">Versão {VERSAO}</span>
-          <h1 className="h-xl">Escolha a sua mídia.</h1>
+          <h1 className="h-xl">Imagens ISO</h1>
           <p className="lead">
-            São duas, e a diferença não é de tamanho: é de para que servem. A
-            que você gravar no pendrive já decide o que vai acontecer quando a
-            máquina ligar.
+            A Live executa o sistema pelo pendrive. A Install permite instalá-lo
+            no disco. Consulte a disponibilidade e as instruções de verificação
+            antes de preparar a mídia.
           </p>
         </div>
       </section>
 
       <section className="panel panel--accent" aria-label="Estado das imagens">
         <div className="sec-head">
-          <span className="eyebrow">Antes de tudo</span>
+          <span className="eyebrow">Disponibilidade</span>
           <h2 className="h-lg">
-            As imagens da {VERSAO} <span className="h-accent">ainda não estão publicadas</span>
+            Versão {VERSAO}: <span className="h-accent">ISOs não publicadas</span>
           </h2>
         </div>
         <p className="lead">
@@ -61,9 +61,9 @@ export default function Baixar() {
 
       <section className="panel" aria-labelledby="imagens">
         <div className="sec-head">
-          <span className="eyebrow">As duas</span>
+          <span className="eyebrow">Comparação</span>
           <h2 className="h-lg" id="imagens">
-            Qual delas é a <span className="h-accent">sua</span>
+            Live e <span className="h-accent">Install</span>
           </h2>
         </div>
 
@@ -79,7 +79,7 @@ export default function Baixar() {
                 <p className="step-desc">{im.d}</p>
                 <div className="card-tags">
                   <span className="tag">{im.arquivo}</span>
-                  <span className="tag">boot: {im.boot}</span>
+                  <span className="tag">inicialização: {im.boot}</span>
                   <span className="tag">internet: {im.rede}</span>
                 </div>
               </div>
@@ -88,10 +88,9 @@ export default function Baixar() {
         </ol>
 
         <p className="grid-note">
-          Na dúvida: grave a <strong>Live</strong>, use o sistema do pendrive
-          por uma tarde e, se gostar, grave a <strong>Install</strong>. É
-          literalmente o mesmo sistema — o que a Install copia para o disco é o
-          mesmo arquivo que a Live roda.
+          A <strong>Live</strong> permite testar o ambiente e a compatibilidade
+          do hardware. Para instalar, prepare um pendrive com a imagem
+          <strong> Install</strong>.
         </p>
       </section>
 
@@ -99,26 +98,25 @@ export default function Baixar() {
         <div className="sec-head">
           <span className="eyebrow">Depois de baixar</span>
           <h2 className="h-lg" id="conferir">
-            Conferir vem <span className="h-accent">antes</span> de gravar
+            Verificação da <span className="h-accent">imagem</span>
           </h2>
           <p className="lead">
-            Uma imagem de sistema operacional roda como root na sua máquina
-            antes de qualquer senha existir. Baixar sem conferir é confiar no
-            transporte e em quem hospeda — que é exatamente o que esta distro
-            existe para não fazer.
+            Antes de gravar a ISO, verifique a soma SHA-256 e a assinatura GPG.
+            Os exemplos abaixo usam a imagem Live; para a Install, use os
+            arquivos correspondentes.
           </p>
         </div>
 
         <ol className="steps">
           <li className="step">
-            <span className="step-code">1 · soma</span>
+            <span className="step-code">1 · SHA-256</span>
             <div>
               <div className="step-top">
-                <h3 className="step-name">Contra download corrompido</h3>
+                <h3 className="step-name">Verificar integridade</h3>
               </div>
               <p className="step-desc">
-                Pega erro de rede e disco cheio. <strong>Não</strong> pega
-                adulteração: quem trocar a imagem troca a soma junto.
+                A soma detecta diferenças entre o arquivo baixado e o valor
+                publicado. Ela não comprova a origem da imagem.
               </p>
               <CodeBlock>{`sha256sum -c NeovanguardOS-Live-${VERSAO}-x86_64.iso.sha256`}</CodeBlock>
               <p className="step-desc">O resultado esperado é o nome do arquivo seguido de OK. Isso confirma a integridade; confira também a assinatura.</p>
@@ -128,33 +126,33 @@ export default function Baixar() {
             <span className="step-code">2 · assinatura</span>
             <div>
               <div className="step-top">
-                <h3 className="step-name">Contra adulteração</h3>
+                <h3 className="step-name">Verificar assinatura</h3>
               </div>
               <p className="step-desc">
-                Esta é a que importa. A assinatura só fecha se o arquivo for byte
-                a byte o que saiu daqui, e ela não pode ser refeita por quem não
-                tem a chave.
+                A assinatura vincula a imagem à chave de lançamento. Para
+                verificá-la, a chave pública correspondente deve estar
+                importada no GPG.
               </p>
               <CodeBlock>{`gpg --verify NeovanguardOS-Live-${VERSAO}-x86_64.iso.asc NeovanguardOS-Live-${VERSAO}-x86_64.iso`}</CodeBlock>
               <p className="step-desc">
-                O gpg dirá qual chave assinou. Tem de ser esta — e é a impressão
-                inteira que se confere, não os últimos oito caracteres:
+                Confira a impressão digital completa da chave usada na assinatura.
+                O valor esperado é:
               </p>
-              <CodeBlock label="Impressão da chave">{CHAVE_FPR}</CodeBlock>
+              <CodeBlock label="Impressão digital da chave">{CHAVE_FPR}</CodeBlock>
             </div>
           </li>
         </ol>
       </section>
 
       <section className="closer" aria-label="Próximo passo">
-        <h2 className="h-xl">Gravou o pendrive?</h2>
+        <h2 className="h-xl">Guia de instalação</h2>
         <div className="pill-row">
           <Link href="/instalacao" className="pill">
-            Como instalar
+            Consultar o guia
             <ArrowUpRight />
           </Link>
           <Link href="/recursos" className="pill pill--ghost">
-            O que vem dentro
+            Recursos
           </Link>
         </div>
       </section>

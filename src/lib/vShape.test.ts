@@ -6,7 +6,7 @@ import { HALF_OUTLINE, bothHalves, wallPaths } from "@/lib/vShape";
 /**
  * Estes testes existem por causa de um bug real: nas metades espelhadas dos
  * SVGs de public/ eu tinha espelhado TAMBÉM o deslocamento da extrusão. O
- * deslocamento é a direção da profundidade — ele não espelha. O resultado
+ * deslocamento é a direção da profundidade : ele não espelha. O resultado
  * era sutil o bastante para passar despercebido em miniatura e evidente com
  * zoom: as duas paredes se cruzavam por baixo da ponta do V em vez de se
  * encontrarem nela.
@@ -62,7 +62,7 @@ describe("os SVGs gerados em public/", () => {
     ...bothHalves(HALF_OUTLINE, { dx: DX, dy: DY }),
   ];
 
-  /** [arquivo, tem extrusão?] — o vetor inline e o favicon são chapados de
+  /** [arquivo, tem extrusão?] : o vetor inline e o favicon são chapados de
       propósito: a 16–32px a extrusão não desenha relevo, só engrossa */
   const MASTERS: [string, boolean][] = [
     ["public/perfil.svg", true],
