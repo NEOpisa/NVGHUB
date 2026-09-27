@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  agentRules: false,
+  // Há outro package-lock.json acima deste repositório. Declare a raiz para
+  // impedir que o Next/Turbopack trate todo o diretório pessoal como workspace.
+  outputFileTracingRoot: process.cwd(),
+  turbopack: {
+    root: process.cwd(),
+  },
   // Otimização de imagem LIGADA (estava unoptimized: os 17MB de
   // public/templates eram servidos brutos, anulando o next/image do #002).
   // Em produção o Next serve AVIF/WebP redimensionado por device.

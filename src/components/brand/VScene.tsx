@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrthographicCamera } from "@react-three/drei";
 import * as THREE from "three";
 import { buildVHalf } from "./vGeometry";
 
@@ -11,10 +12,6 @@ function Mark() {
   const { size } = useThree();
   // Fit both dimensions: a narrow mobile stage must not crop the wing tips.
   const zoom = Math.min(size.width / 8.4, size.height / 7.2);
-  const camera = useThree(state => state.camera);
-  useEffect(() => {
-    if (camera instanceof THREE.OrthographicCamera) { camera.zoom = zoom; camera.updateProjectionMatrix(); }
-  }, [camera, zoom]);
 
   useFrame((state, delta) => {
     const mark = group.current;
@@ -26,17 +23,20 @@ function Mark() {
     mark.position.y = Math.sin(state.clock.elapsedTime * .45) * .035;
   });
 
-  return <group ref={group} rotation={[-.08, -.16, 0]}>
-    {[1, -1].map(side => <group key={side} scale={[side, 1, 1]}>
-      <mesh geometry={parts.body}>
-        <meshStandardMaterial color="#6495ed" metalness={.65} roughness={.3} />
-      </mesh>
-      {parts.facets.map((geometry, i) => <mesh key={i} geometry={geometry}>
-        <meshStandardMaterial color="#304c91" metalness={.5} roughness={.36} />
-      </mesh>)}
-    </group>)}
-    <Cleanup parts={parts} />
-  </group>;
+  return <>
+    <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={zoom} near={.1} far={30} />
+    <group ref={group} rotation={[-.08, -.16, 0]}>
+      {[1, -1].map(side => <group key={side} scale={[side, 1, 1]}>
+        <mesh geometry={parts.body}>
+          <meshStandardMaterial color="#6495ed" metalness={.65} roughness={.3} />
+        </mesh>
+        {parts.facets.map((geometry, i) => <mesh key={i} geometry={geometry}>
+          <meshStandardMaterial color="#304c91" metalness={.5} roughness={.36} />
+        </mesh>)}
+      </group>)}
+      <Cleanup parts={parts} />
+    </group>
+  </>;
 }
 
 function Cleanup({ parts }: { parts: ReturnType<typeof buildVHalf> }) {
@@ -56,8 +56,7 @@ function ContextGuard({ onFailure }: { onFailure: () => void }) {
 }
 
 export default function VScene({ active, onFailure }: { active: boolean; onFailure: () => void }) {
-  return <Canvas orthographic camera={{ position: [0, 0, 10], zoom: 50, near: .1, far: 30 }}
-    dpr={[1, 1.5]} frameloop={active ? "always" : "demand"}
+  return <Canvas dpr={[1, 1.5]} frameloop={active ? "always" : "demand"}
     gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}>
     <hemisphereLight args={["#c4d8ff", "#101a35", 1.4]} />
     <directionalLight position={[-3, 5, 6]} intensity={2.4} color="#dce8ff" />

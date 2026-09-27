@@ -1,24 +1,18 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  { ignores: ["templates/**", "public/templates/**", ".next/**", "next-env.d.ts"] },
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTypescript,
   {
     rules: {
       // Uso intencional de <img>: logo é um PNG decorativo de ~2KB (aria-hidden)
-      // e o projeto roda com images.unoptimized, então <Image> não traria ganho.
+      // e não precisa da sobrecarga do componente <Image>.
       "@next/next/no-img-element": "off",
     },
   },
-];
+  globalIgnores(["templates/**", "public/templates/**", ".next/**", "next-env.d.ts"]),
+]);
 
 export default eslintConfig;

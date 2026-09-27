@@ -29,7 +29,7 @@ export default function Motion() {
       stop();
       if (preference.matches) return;
       document.querySelectorAll<HTMLElement>(".hero-line > span").forEach((line, index) => {
-        const animation = line.animate([{ transform: "translateY(105%)", opacity: 0 }, { transform: "translateY(0)", opacity: 1 }], { duration: duration - stagger, delay: index * stagger, easing });
+        const animation = line.animate([{ transform: "translateY(105%)", opacity: 0 }, { transform: "translateY(0)", opacity: 1 }], { duration: Math.max(0, duration - stagger), delay: index * stagger, easing });
         animations.add(animation);
         animation.onfinish = () => animations.delete(animation);
       });

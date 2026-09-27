@@ -5,11 +5,11 @@ export default function NotFound() {
   return (
     <>
       <section className="panel" aria-labelledby="nf-h">
-        <span className="eyebrow">Rota não mapeada</span>
+        <span className="eyebrow">Página não encontrada</span>
         <h1 id="nf-h" className="h-xl">404</h1>
         <p className="lead">
-          Esta coordenada não existe por aqui. O caminho pode ter sido movido —
-          ou nunca foi traçado.
+          A página solicitada não foi encontrada. Verifique o endereço ou
+          volte à página inicial.
         </p>
         <div className="pill-row">
           <Link href="/" className="pill">
@@ -17,7 +17,7 @@ export default function NotFound() {
             <ArrowUpRight />
           </Link>
           <Link href="/baixar" className="pill pill--ghost">
-            Baixar o sistema
+            Consultar imagens
           </Link>
         </div>
       </section>

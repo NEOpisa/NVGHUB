@@ -11,15 +11,15 @@ export default function Error({
 }) {
   return (
     <section className="panel" role="alert" aria-labelledby="err-h">
-      <span className="eyebrow">Falha de sistema</span>
+      <span className="eyebrow">Erro ao carregar a página</span>
       <h1 id="err-h" className="h-xl">500</h1>
       <p className="lead">
-        Algo quebrou do nosso lado. O incidente foi registrado
-        {error.digest ? ` (ref ${error.digest})` : ""} — tente de novo.
+        Não foi possível carregar esta página. Tente novamente.
+        {error.digest ? ` Referência do erro: ${error.digest}.` : ""}
       </p>
       <div className="pill-row">
         <button type="button" className="pill" onClick={reset}>
-          Tentar de novo
+          Tentar novamente
         </button>
         <Link href="/" className="pill pill--ghost">
           Voltar ao início

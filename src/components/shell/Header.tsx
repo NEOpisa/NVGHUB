@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link href="/" className="brand" aria-label="Neovanguard OS — início">
+        <Link href="/" className="brand" aria-label="Neovanguard OS: início">
           <span className="brand-symbol"><img src="/logo.svg" width={32} height={24} alt="" /></span>
           <span>neovanguard<span className="brand-dot">.</span></span>
         </Link>
@@ -34,7 +34,7 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        <Link href="/baixar" className="header-download"><span>Obter<span className="download-suffix"> o sistema</span></span> <ArrowUpRight /></Link>
+        <Link href="/baixar" className="header-download"><span>Imagens<span className="download-suffix"> ISO</span></span> <ArrowUpRight /></Link>
         <button ref={trigger} className="menu-trigger" type="button" aria-label="Abrir menu" aria-haspopup="dialog" aria-controls="site-menu"
           onClick={() => { dialog.current?.showModal(); document.body.style.overflow = "hidden"; }}>
           <span /> <span />
@@ -50,8 +50,8 @@ export default function Header() {
           else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
         }}
         onClose={() => { document.body.style.overflow = ""; trigger.current?.focus(); }}>
-        <div className="menu-heading"><span id="menu-title">Explorar Neovanguard</span><button type="button" onClick={close} autoFocus aria-label="Fechar menu"><CloseIcon /></button></div>
-        <nav aria-label="Navegação mobile">
+        <div className="menu-heading"><span id="menu-title">Menu principal</span><button type="button" onClick={close} autoFocus aria-label="Fechar menu"><CloseIcon /></button></div>
+        <nav aria-label="Navegação para dispositivos móveis">
           {NAV.map(r => <Link key={r.href} href={r.href} onClick={close} aria-current={path === r.href ? "page" : undefined}>{r.label}<ArrowUpRight /></Link>)}
         </nav>
         <p className="menu-note">Neovanguard OS {VERSAO}<br />Arch Linux · livre e de código aberto</p>

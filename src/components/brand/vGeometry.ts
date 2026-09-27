@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { HALF_OUTLINE, HALF_FACETS } from "@/lib/vShape";
 
 /* A anatomia (contorno + facetas, em coordenadas do vetor oficial) vem de
-   lib/vShape — a mesma malha que a OG e os ícones usam. Aqui ela só ganha
+   lib/vShape : a mesma malha que a OG e os ícones usam. Aqui ela só ganha
    espessura: metade direita em coordenadas de tela (y pra baixo), a
    esquerda é o espelho em torno de x = 640. */
 
@@ -33,9 +33,9 @@ function extrude(pts: [number, number][], depth: number, bevel: number, z: numbe
 }
 
 export type VParts = {
-  /** corpo da lâmina — metal cornflower */
+  /** corpo da lâmina : metal cornflower */
   body: THREE.BufferGeometry;
-  /** facetas de acento — MediumBlue, cravadas por cima do corpo */
+  /** facetas de acento : MediumBlue, cravadas por cima do corpo */
   facets: THREE.BufferGeometry[];
 };
 

@@ -12,14 +12,19 @@ export default function TableOfContents() {
   useEffect(() => {
     if (!enabled) return;
     const nodes = Array.from(document.querySelectorAll<HTMLElement>("main h2[id]"));
-    setHeadings(nodes.map(node => ({ id: node.id, text: node.textContent ?? "" })));
     const update = () => {
       const current = nodes.filter(node => node.getBoundingClientRect().top <= 180).at(-1) ?? nodes[0];
       setActive(current?.id ?? "");
     };
-    update();
+    const frame = requestAnimationFrame(() => {
+      setHeadings(nodes.map(node => ({ id: node.id, text: node.textContent ?? "" })));
+      update();
+    });
     window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", update);
+    };
   }, [path, enabled]);
 
   if (!enabled) return null;
