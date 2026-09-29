@@ -57,6 +57,7 @@ Ao publicar uma versão, atualize `VERSAO` e `IMAGENS` em `constants.ts`, confir
 os nomes dos arquivos e o estado de publicação em `/baixar`. Só adicione links
 de download depois de verificar que as imagens e assinaturas estão disponíveis.
 Não publique uma impressão de chave diferente sem verificar sua origem.
+Ao alterar uma página indexável, atualize também sua data em `src/app/sitemap.ts`.
 
 As rotas do QA visual e do Lighthouse precisam acompanhar as páginas atuais.
 O CI executa lint, tipos, testes, build e um limite de tamanho do bundle da home.

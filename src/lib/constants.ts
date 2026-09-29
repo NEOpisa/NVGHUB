@@ -6,6 +6,10 @@ export const SITE_URL = "https://neovanguard.com.br";
 export const REPO_URL = "https://github.com/NEOpisa/neovanguard";
 export const DOCS_URL = `${REPO_URL}/blob/main/documentation`;
 export const REPO_PACOTES = "https://neovanguard.com.br/repo/x86_64";
+export const MIZAEL_LINKEDIN =
+  "https://www.linkedin.com/in/mizael-ribeiro-8a3b42385";
+export const JOAO_LINKEDIN =
+  "https://www.linkedin.com/in/jo%C3%A3o-ant%C3%B4nio-rodrigues-884093303";
 
 /** A versão que o site descreve. Uma constante, e não um texto solto em cinco
     páginas: quando a 1.1 sair, é aqui que se troca. */

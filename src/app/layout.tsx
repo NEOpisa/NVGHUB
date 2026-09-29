@@ -8,8 +8,15 @@ import Motion from "@/components/shell/Motion";
 import Header from "@/components/shell/Header";
 import TableOfContents from "@/components/shell/TableOfContents";
 import Foot from "@/components/shell/Foot";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { Analytics } from "@vercel/analytics/next";
-import { SITE_URL, VERSAO } from "@/lib/constants";
+import {
+  JOAO_LINKEDIN,
+  MIZAEL_LINKEDIN,
+  REPO_URL,
+  SITE_URL,
+  VERSAO,
+} from "@/lib/constants";
 import "./shell.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -110,6 +117,21 @@ const JSON_LD = {
       name: "Neovanguard",
       url: SITE_URL,
       logo: `${SITE_URL}/logo.png`,
+      sameAs: [REPO_URL, MIZAEL_LINKEDIN, JOAO_LINKEDIN],
+      founder: [
+        {
+          "@type": "Person",
+          name: "Mizael Ribeiro",
+          url: MIZAEL_LINKEDIN,
+          jobTitle: "Cofundador e CEO",
+        },
+        {
+          "@type": "Person",
+          name: "João Antônio Rodrigues",
+          url: JOAO_LINKEDIN,
+          jobTitle: "Cofundador e COO",
+        },
+      ],
     },
     {
       // O que este site descreve é um sistema operacional, e o schema tem de
@@ -155,6 +177,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
+        <BreadcrumbJsonLd />
         <div className="site-frame">
           <Header />
           <div className="sh">

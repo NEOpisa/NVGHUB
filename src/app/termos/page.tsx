@@ -3,7 +3,8 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Termos de uso",
-  description: "Termos de uso do site da Neovanguard.",
+  description:
+    "Consulte os termos de uso do site da Neovanguard, as condições sobre conteúdo, informações do Neovanguard OS e disponibilidade.",
   path: "/termos",
 });
 
