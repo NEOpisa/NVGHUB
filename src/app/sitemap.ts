@@ -11,7 +11,7 @@ const ROUTES = [
   { path: "/instalacao", priority: 0.8, lastModified: "2026-09-05" },
   { path: "/documentacao", priority: 0.7, lastModified: "2026-09-05" },
   { path: "/faq", priority: 0.7, lastModified: "2026-09-05" },
-  { path: "/sobre", priority: 0.6, lastModified: "2026-09-05" },
+  { path: "/sobre", priority: 0.6, lastModified: "2026-09-29" },
   { path: "/privacidade", priority: 0.3, lastModified: "2026-09-05" },
   { path: "/termos", priority: 0.3, lastModified: "2026-09-29" },
 ];

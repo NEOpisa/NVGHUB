@@ -1,7 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowUpRight } from "@/components/icons";
-import { REPO_URL, VERSAO } from "@/lib/constants";
+import {
+  JOAO_LINKEDIN,
+  MIZAEL_LINKEDIN,
+  REPO_URL,
+  VERSAO,
+} from "@/lib/constants";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/sobre" },
@@ -81,6 +86,31 @@ export default function Sobre() {
           nada passa por um servidor nosso, o nó e o relay têm de ser seus — e
           alguém precisa escrever os comandos que tornam isso operável.
         </p>
+      </section>
+
+      <section className="panel" aria-labelledby="quem-faz">
+        <div className="sec-head">
+          <span className="eyebrow">Quem faz</span>
+          <h2 className="h-lg" id="quem-faz">
+            Empresa e produto, cada um com seu <span className="h-accent">nome</span>
+          </h2>
+        </div>
+        <p className="lead">
+          A Neovanguard é a empresa. O Neovanguard OS é o produto de código
+          aberto que ela desenvolve. Mizael Ribeiro, cofundador e CEO, lidera
+          produto e desenvolvimento. João Antônio Rodrigues, cofundador e COO,
+          lidera operação, qualidade e segurança.
+        </p>
+        <div className="pill-row">
+          <a className="pill pill--ghost" href={MIZAEL_LINKEDIN} target="_blank" rel="noopener noreferrer">
+            Mizael Ribeiro
+            <ArrowUpRight />
+          </a>
+          <a className="pill pill--ghost" href={JOAO_LINKEDIN} target="_blank" rel="noopener noreferrer">
+            João Antônio Rodrigues
+            <ArrowUpRight />
+          </a>
+        </div>
       </section>
 
       <section className="panel panel--accent" aria-labelledby="naoe">

@@ -3,6 +3,10 @@
 Site do Neovanguard OS: apresentação, disponibilidade das imagens, instalação
 e documentação. Construído com Next.js App Router, React e TypeScript.
 
+Desenvolvido pela [Neovanguard](https://neovanguard.com.br), cofundada por
+[Mizael Ribeiro](https://www.linkedin.com/in/mizael-ribeiro-8a3b42385) e
+[João Antônio Rodrigues](https://www.linkedin.com/in/jo%C3%A3o-ant%C3%B4nio-rodrigues-884093303).
+
 ## Executar localmente
 
 Use Node.js 22 (a versão usada no CI) e npm.
