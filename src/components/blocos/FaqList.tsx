@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 
 export type FaqItem = { q: string; a: string; tag: string };
 
-/** Acordeão do sistema — uma resposta aberta por vez, tudo sempre no DOM. */
+/** Acordeão do sistema : uma resposta aberta por vez, tudo sempre no DOM. */
 export default function FaqList({ itens }: { itens: FaqItem[] }) {
   const [open, setOpen] = useState(0);
   const id = useId();

@@ -72,7 +72,7 @@ function VMark({ t }: { t: Tema }) {
 }
 
 export function ogAlt() {
-  return "Neovanguard OS — A máquina é sua. Sua identidade também. Arch Linux, KDE Plasma e código aberto.";
+  return "Neovanguard OS. Linux para Bitcoin, Lightning e Nostr. Arch Linux, KDE Plasma e software livre.";
 }
 
 /** The social card shares the site's dark frame and cornflower palette.
@@ -93,10 +93,10 @@ export async function renderOg() {
         </div>
         <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "space-between", gap: 32 }}>
           <div style={{ display: "flex", flexDirection: "column", width: 640 }}>
-            <span style={{ color: "#6495ED", fontFamily: "Mono", fontSize: 14, letterSpacing: 2, marginBottom: 22 }}>SEU SISTEMA. SUAS ESCOLHAS.</span>
+            <span style={{ color: "#6495ED", fontFamily: "Mono", fontSize: 14, letterSpacing: 2, marginBottom: 22 }}>DISTRIBUIÇÃO LINUX</span>
             <div style={{ display: "flex", flexDirection: "column", fontSize: 56, fontWeight: 600, lineHeight: 1.13, letterSpacing: -2 }}>
-              <span>A máquina é sua.</span>
-              <span style={{ color: "#a2c1f5" }}>Sua identidade também.</span>
+              <span>Linux para Bitcoin,</span>
+              <span style={{ color: "#a2c1f5" }}>Lightning e Nostr</span>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 348, height: 310, flexShrink: 0, borderRadius: 18, border: "1px solid #354e70", backgroundImage: "radial-gradient(ellipse at 50% 40%, #233e65, #101c2e)" }}>

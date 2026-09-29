@@ -15,6 +15,8 @@ import {
   MIZAEL_LINKEDIN,
   REPO_URL,
   SITE_URL,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
   VERSAO,
 } from "@/lib/constants";
 import "./shell.css";
@@ -50,11 +52,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Neovanguard OS — a máquina é sua, inclusive a identidade",
+    default: SITE_TITLE,
     template: "%s · Neovanguard OS",
   },
   description:
-    "Distribuição Linux baseada em Arch onde a sua chave Nostr é a conta do sistema. Nó Bitcoin, Lightning e relay rodando na sua máquina, endurecimento de fábrica e 55 comandos para operar tudo isso. Código aberto, GPL-3.0.",
+    SITE_DESCRIPTION,
   applicationName: "Neovanguard OS",
   keywords: [
     "Neovanguard OS",
@@ -62,7 +64,7 @@ export const metadata: Metadata = {
     "Arch Linux",
     "Linux Bitcoin",
     "Linux Nostr",
-    "sistema operacional soberano",
+    "sistema operacional de código aberto",
     "nó Bitcoin",
     "Lightning Network",
     "relay Nostr",
@@ -84,9 +86,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Neovanguard OS — a máquina é sua, inclusive a identidade",
+    title: SITE_TITLE,
     description:
-      "Distribuição Linux baseada em Arch: a sua chave Nostr é a conta do sistema, e o nó Bitcoin, o Lightning e o relay rodam na sua máquina. Duas imagens, instalador próprio, GPL-3.0.",
+      SITE_DESCRIPTION,
     type: "website",
     locale: "pt_BR",
     siteName: "Neovanguard OS",
@@ -94,9 +96,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Neovanguard OS — a máquina é sua, inclusive a identidade",
+    title: SITE_TITLE,
     description:
-      "Linux sobre Arch onde a sua chave é a conta do sistema. Nó Bitcoin, Lightning e relay Nostr locais. Livre e de código aberto.",
+      SITE_DESCRIPTION,
   },
 };
 
@@ -146,7 +148,7 @@ const JSON_LD = {
       softwareVersion: VERSAO,
       image: `${SITE_URL}/opengraph-image`,
       description:
-        "Distribuição Linux baseada em Arch em que a chave Nostr do usuário é a conta do sistema. Nó Bitcoin, Lightning e relay Nostr locais, endurecimento de fábrica e 55 comandos neo-* para operá-los.",
+        SITE_DESCRIPTION,
       license: "https://www.gnu.org/licenses/gpl-3.0.html",
       isAccessibleForFree: true,
       offers: {

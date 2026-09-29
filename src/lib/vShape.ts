@@ -1,7 +1,7 @@
 import malha from "@/lib/v-malha.json";
 
 /**
- * A ANATOMIA DO V em código — as coordenadas vêm de lib/v-malha.json, que é
+ * A ANATOMIA DO V em código : as coordenadas vêm de lib/v-malha.json, que é
  * a fonte única: o mesmo arquivo é lido por scripts/marca.mjs para gerar os
  * SVGs de public/. Aqui ela ganha os helpers que o site e a OG usam.
  *
@@ -10,7 +10,7 @@ import malha from "@/lib/v-malha.json";
  * runtime Node. O 3D importa daqui.
  */
 
-/** contorno de uma metade — a lâmina em cromado */
+/** contorno de uma metade : a lâmina em cromado */
 export const HALF_OUTLINE = malha.outline as [number, number][];
 
 /** as duas peças de acento que dão o corte de esmalte */
@@ -49,7 +49,7 @@ export function bothHalves(
  * ligando a face da frente à cópia deslocada em (dx, dy).
  *
  * Desenhadas todas e por baixo das faces, elas preenchem exatamente o vão
- * entre as duas cópias — as que ficariam escondidas num sólido de verdade
+ * entre as duas cópias : as que ficariam escondidas num sólido de verdade
  * acabam cobertas pela face frontal, então não é preciso decidir quais
  * arestas formam a silhueta.
  *

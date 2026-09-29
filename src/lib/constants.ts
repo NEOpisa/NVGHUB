@@ -1,8 +1,9 @@
 export const SITE_URL = "https://neovanguard.com.br";
+export const SITE_TITLE = "Neovanguard OS · Linux para Bitcoin, Lightning e Nostr";
+export const SITE_DESCRIPTION =
+  "Distribuição baseada em Arch Linux, com KDE Plasma e ferramentas para Bitcoin, Lightning e Nostr. Software livre sob a GPL-3.0.";
 
-/** Onde a distro é feita e conversada. Não há WhatsApp comercial aqui: este
-    deixou de ser um site de vendas e passou a ser o site de um sistema
-    operacional, e o canal de um sistema operacional é o repositório. */
+/** Repositório do sistema operacional e da documentação. */
 export const REPO_URL = "https://github.com/NEOpisa/neovanguard";
 export const DOCS_URL = `${REPO_URL}/blob/main/documentation`;
 export const REPO_PACOTES = "https://neovanguard.com.br/repo/x86_64";
@@ -11,8 +12,7 @@ export const MIZAEL_LINKEDIN =
 export const JOAO_LINKEDIN =
   "https://www.linkedin.com/in/jo%C3%A3o-ant%C3%B4nio-rodrigues-884093303";
 
-/** A versão que o site descreve. Uma constante, e não um texto solto em cinco
-    páginas: quando a 1.1 sair, é aqui que se troca. */
+/** Versão do sistema descrita no site. */
 export const VERSAO = "1.1.0";
 
 /** A chave que assina os pacotes e as imagens. Aparece na página de download
@@ -22,7 +22,7 @@ export const CHAVE_FPR = "9ED7 92DC EA8D 869E CD79  CE72 5F86 3B33 9A1E 5762";
 /** Destinos compartilhados entre desktop e mobile. */
 export const NAV = [
   { label: "Início", href: "/" },
-  { label: "Obter o sistema", href: "/baixar" },
+  { label: "Imagens ISO", href: "/baixar" },
   { label: "Recursos", href: "/recursos" },
   { label: "Instalação", href: "/instalacao" },
   { label: "Documentação", href: "/documentacao" },
@@ -30,12 +30,7 @@ export const NAV = [
   { label: "Sobre", href: "/sobre" },
 ] as const;
 
-/** AS IMAGENS. A fonte é `documentation/as-isos.md` da distro, e os tamanhos são
-    os medidos na build — não estimativas.
-
-    Eram três até a 1.1. A MYO — que montava o sistema pela rede, escolhendo cada
-    peça — saiu: servia a um público que já tem um Arch e quer da gente os
-    pacotes, não a imagem, e os pacotes agora chegam pelo repositório. */
+/** Imagens descritas em documentation/as-isos.md, com tamanhos medidos na build. */
 export const IMAGENS = [
   {
     id: "live",
@@ -44,17 +39,17 @@ export const IMAGENS = [
     tamanho: "3,6 GB",
     para: "Experimentar sem instalar",
     boot: "Plasma",
-    rede: "não precisa",
-    d: "O sistema inteiro, rodando do pendrive. Sem instalador dentro, de propósito: é a mídia para olhar, mexer e decidir. Quem decidir instalar usa a Install.",
+    rede: "opcional",
+    d: "Executa o sistema pelo pendrive, com KDE Plasma. Não inclui instalador e não exige conexão com a internet.",
   },
   {
     id: "install",
     nome: "MBN Install",
     arquivo: "NeovanguardOS-Install",
     tamanho: "4,7 GB",
-    para: "Instalar o sistema pronto",
+    para: "Instalar no disco",
     boot: "terminal",
-    rede: "não precisa",
-    d: "O mesmo sistema da Live viaja dentro dela e é copiado para o disco — literalmente o mesmo arquivo, então não há diferença entre o que você experimentou e o que foi instalado. Sete etapas.",
+    rede: "opcional",
+    d: "Inclui o sistema da Live e um instalador de sete etapas no terminal. A instalação no disco não exige conexão com a internet.",
   },
 ] as const;

@@ -12,37 +12,31 @@ export const metadata: Metadata = {
   alternates: { canonical: "/sobre" },
   title: "Sobre",
   description:
-    "Por que o Neovanguard OS existe, o que ele assume, e o que ele não é. Uma distribuição Linux construída em torno de uma ideia fixa: a máquina é sua.",
+    "Objetivos, requisitos e desenvolvimento do Neovanguard OS, uma distribuição baseada em Arch Linux para Bitcoin, Lightning e Nostr.",
 };
 
-/**
- * SOBRE — a página que diz por que isto existe, e o que custa.
- *
- * A seção "o que ele não é" não é modéstia: é a informação mais útil da
- * página. Um sistema que promete tudo é um sistema que ninguém consegue
- * avaliar, e quem chega aqui está avaliando.
- */
+/** Objetivos, limitações e desenvolvimento do projeto. */
 
 const NAO_E = [
   {
     n: "01",
-    t: "Não é uma distro para iniciantes em Linux",
-    d: "A área de trabalho é amigável, mas a camada que dá sentido a ela — nó, relay, cofre — pressupõe que você queira operar isso. Se a sua pergunta é qual Linux instalar no primeiro computador, existem escolhas melhores, e elas são honestamente melhores.",
+    t: "Conhecimento de Linux",
+    d: "A administração de nós, relays e carteiras exige familiaridade com Linux, terminal e redes. O projeto é voltado a quem pretende operar esses serviços.",
   },
   {
     n: "02",
-    t: "Não é anonimato",
-    d: "Há Tor, killswitch, MAC aleatório e log em RAM. Nada disso torna ninguém anônimo — torna difícil o rastro acidental. Quem precisa de anonimato contra um adversário sério precisa de um projeto que faça só isso, e existe.",
+    t: "Limites de privacidade",
+    d: "Tor, bloqueio de tráfego fora do túnel, randomização de MAC e logs em RAM são ferramentas de privacidade. Seu uso não garante anonimato.",
   },
   {
     n: "03",
-    t: "Não é um produto com garantia",
-    d: "É GPL-3.0, sem garantia, e o código diz isso. O que oferecemos no lugar é o contrário do silêncio: as decisões estão escritas ao lado do código, e os defeitos corrigidos ficam registrados com o motivo.",
+    t: "Licença e garantia",
+    d: "O sistema é distribuído sob a GPL-3.0, sem garantia. O código-fonte, as decisões técnicas e o histórico de correções estão disponíveis no repositório.",
   },
   {
     n: "04",
-    t: "Não guarda nada seu",
-    d: "Não há conta, servidor de sincronização nem telemetria. A consequência é que ninguém pode devolver o que você perder — perdeu a chave, perdeu a identidade. É a mesma propriedade vista dos dois lados.",
+    t: "Custódia das chaves",
+    d: "O projeto não mantém cópias das chaves nem oferece recuperação de identidade. Cabe ao usuário guardar a chave Nostr e seus backups.",
   },
 ];
 
@@ -53,38 +47,33 @@ export default function Sobre() {
         <div className="hero-copy">
           <span className="eyebrow">O projeto</span>
           <h1 className="h-xl">
-            Uma ideia fixa:
-            <br />a máquina é sua.
+            Sobre o
+            <br />Neovanguard OS
           </h1>
           <p className="lead">
-            Quase todo sistema operacional trata a identidade como algo que
-            pertence a outra pessoa: uma conta, num servidor, que pode ser
-            suspensa. O Neovanguard OS inverte isso. A sua chave é a conta, o
-            cofre de configurações é seu, e a infraestrutura que você usa roda na
-            sua mesa.
+            Distribuição baseada em Arch Linux para operar Bitcoin, Lightning e
+            Nostr. Integra ferramentas de linha de comando, identidade por
+            chave e serviços locais ao ambiente KDE Plasma.
           </p>
         </div>
       </section>
 
       <section className="panel" aria-labelledby="porque">
         <div className="sec-head">
-          <span className="eyebrow">Por que existe</span>
+          <span className="eyebrow">Objetivo</span>
           <h2 className="h-lg" id="porque">
-            Soberania costuma parar no <span className="h-accent">discurso</span>
+            Operação de <span className="h-accent">serviços locais</span>
           </h2>
         </div>
         <p className="lead">
-          É fácil dizer que a máquina é sua. É trabalhoso fazer com que isso
-          seja verdade quando você formata o disco, troca de computador ou
-          perde o notebook numa viagem. Foi esse o problema escolhido: não
-          &ldquo;instalar Bitcoin junto&rdquo;, e sim fazer com que a identidade
-          e o ambiente atravessem a máquina, sem passar por ninguém.
+          O projeto reúne os componentes necessários para administrar nós,
+          carteiras e relays no próprio computador. A integração com Nostr
+          permite usar uma chave para a identidade e restaurar configurações
+          entre instalações.
         </p>
         <p className="lead">
-          O resto decorre daí. Se a identidade é uma chave, o instalador precisa
-          entendê-la. Se o ambiente tem de voltar, precisa haver um cofre. Se
-          nada passa por um servidor nosso, o nó e o relay têm de ser seus — e
-          alguém precisa escrever os comandos que tornam isso operável.
+          O instalador, o cofre de configurações e os comandos neo-* dão suporte
+          a esse uso. Os componentes são distribuídos como pacotes para Arch Linux.
         </p>
       </section>
 
@@ -115,13 +104,13 @@ export default function Sobre() {
 
       <section className="panel panel--accent" aria-labelledby="naoe">
         <div className="sec-head">
-          <span className="eyebrow">Honestidade</span>
+          <span className="eyebrow">Escopo</span>
           <h2 className="h-lg" id="naoe">
-            O que ele <span className="h-accent">não</span> é
+            Requisitos e <span className="h-accent">limitações</span>
           </h2>
           <p className="lead">
-            Esta é a seção mais útil da página. Um sistema que promete tudo é um
-            sistema que ninguém consegue avaliar.
+            Considere os conhecimentos necessários, os limites de privacidade e
+            a responsabilidade sobre as chaves antes de instalar.
           </p>
         </div>
         <div className="cards">
@@ -137,21 +126,19 @@ export default function Sobre() {
 
       <section className="panel" aria-labelledby="como">
         <div className="sec-head">
-          <span className="eyebrow">Como é feito</span>
+          <span className="eyebrow">Desenvolvimento</span>
           <h2 className="h-lg" id="como">
-            Todo defeito vira uma <span className="h-accent">verificação</span>
+            Código e <span className="h-accent">testes</span>
           </h2>
         </div>
         <p className="lead">
-          É a regra da casa. Quando algo quebra de um jeito novo, a correção vem
-          acompanhada de um teste que reprova aquele defeito específico — e o
-          teste é conferido nos dois sentidos: com o defeito de volta, ele falha
-          com a mensagem certa; sem ele, passa.
+          As correções incluem testes de regressão para os defeitos identificados.
+          Esses testes verificam a falha na versão afetada e o resultado após
+          a correção.
         </p>
         <p className="lead">
-          O motivo é chato e concreto: num instalador, o erro que importa
-          aparece depois de o disco já ter sido apagado. Descobrir na hora de
-          usar é caro demais, então a build descobre antes.
+          As verificações de build buscam detectar problemas antes da instalação,
+          especialmente nas etapas que alteram o disco.
         </p>
         <div className="pill-row">
           <a
@@ -160,21 +147,21 @@ export default function Sobre() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Ver o código
+            Código-fonte
             <ArrowUpRight />
           </a>
         </div>
       </section>
 
       <section className="closer" aria-label="Começar">
-        <h2 className="h-xl">Versão {VERSAO}.</h2>
+        <h2 className="h-xl">Versão {VERSAO}</h2>
         <div className="pill-row">
           <Link href="/baixar" className="pill">
-            Baixar
+            Consultar imagens
             <ArrowUpRight />
           </Link>
           <Link href="/recursos" className="pill pill--ghost">
-            O que vem dentro
+            Recursos
           </Link>
         </div>
       </section>

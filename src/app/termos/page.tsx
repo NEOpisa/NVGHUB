@@ -31,8 +31,7 @@ export default function TermosPage() {
 
         <h2>Disponibilidade</h2>
         <p>
-          Trabalhamos para manter o site sempre no ar, mas ele pode passar por
-          manutenções sem aviso prévio.
+          O site pode ficar indisponível durante manutenções, sem aviso prévio.
         </p>
 
         <h2>Contato</h2>

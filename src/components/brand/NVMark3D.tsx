@@ -32,14 +32,17 @@ export default function NVMark3D() {
       setEnabled(!!gl);
       gl?.getExtension("WEBGL_lose_context")?.loseContext();
     };
-    try { choose(); } catch { setEnabled(false); }
+    const initialize = () => {
+      try { choose(); } catch { setEnabled(false); }
+      setPageVisible(!document.hidden);
+    };
+    const frame = requestAnimationFrame(initialize);
     preference.addEventListener("change", choose);
     const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .05 });
     if (ref.current) observer.observe(ref.current);
     const visibility = () => setPageVisible(!document.hidden);
-    visibility();
     document.addEventListener("visibilitychange", visibility);
-    return () => { observer.disconnect(); preference.removeEventListener("change", choose); document.removeEventListener("visibilitychange", visibility); };
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); preference.removeEventListener("change", choose); document.removeEventListener("visibilitychange", visibility); };
   }, []);
 
   return <div className="nv3d" ref={ref} aria-hidden="true">
