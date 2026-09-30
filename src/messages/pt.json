@@ -80,9 +80,9 @@
       "documentation": "Documentação",
       "about": "Sobre"
     },
-    "availability": "Disponibilidade",
+    "availability": "Imagem ISO",
     "download": "Baixar",
-    "menuAvailability": "Disponibilidade das imagens",
+    "menuAvailability": "Imagem ISO",
     "menuDownload": "Baixar as imagens",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu",
