@@ -1,15 +1,15 @@
 import Link from "next/link";
 import CodeBlock from "@/components/blocos/CodeBlock";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ArrowUpRight } from "@/components/icons";
 import { VERSAO, IMAGENS, CHAVE_FPR, REPO_PACOTES, DOCS_URL } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/baixar" },
+export const metadata = pageMetadata({
+  path: "/baixar",
   title: "Imagens ISO",
   description:
     "Imagens Live e Install do Neovanguard OS: disponibilidade, diferenças e verificação de integridade e assinatura.",
-};
+});
 
 export default function Baixar() {
   return (
@@ -39,13 +39,14 @@ export default function Baixar() {
           ou conhecer as diferenças entre as mídias abaixo.
         </p>
         <div className="pill-row">
+          <Link className="pill" href="/novidades">Acompanhar o desenvolvimento</Link>
           <a
             className="pill"
             href={`${DOCS_URL}/COMO-CONSTRUIR.md`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Construir a partir do código
+            Construir a partir do código (acesso restrito)
             <ArrowUpRight />
           </a>
           <a

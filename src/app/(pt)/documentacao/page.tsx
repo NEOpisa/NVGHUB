@@ -1,15 +1,15 @@
 import Link from "next/link";
 import CodeBlock from "@/components/blocos/CodeBlock";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ArrowUpRight } from "@/components/icons";
 import { REPO_URL, REPO_PACOTES, CHAVE_FPR, DOCS_URL, VERSAO } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/documentacao" },
+export const metadata = pageMetadata({
+  path: "/documentacao",
   title: "Documentação",
   description:
     "Documentação do Neovanguard OS: instalação, uso, construção de imagens, arquitetura e repositório de pacotes.",
-};
+});
 
 const DOCS = [
   {
@@ -62,11 +62,19 @@ export default function Documentacao() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Abrir o repositório
+              Repositório de desenvolvimento (acesso restrito)
               <ArrowUpRight />
             </a>
           </div>
         </div>
+      </section>
+
+      <section className="panel prose" aria-labelledby="construir">
+        <h2 id="construir">Construir a partir do código</h2>
+        <p>O repositório de desenvolvimento é privado. Os links técnicos desta página exigem acesso autorizado no GitHub. As ISOs ainda não estão disponíveis para download público.</p>
+        <p>Quem já tem acesso deve consultar o guia de construção da revisão que pretende testar. Ele descreve o ambiente Arch Linux, dependências, geração de recursos, validações e testes em máquina virtual.</p>
+        <p><a href={`${DOCS_URL}/COMO-CONSTRUIR.md`}>Guia de construção (acesso restrito)</a> · <Link href="/novidades">Estado do desenvolvimento</Link> · <a href="mailto:mizael.neovanguard@gmail.com">Conversar sobre contribuição</a></p>
+        <p><Link href="/guias">Consulte os guias públicos</Link> para conhecer os componentes antes de preparar uma instalação.</p>
       </section>
 
       <section className="panel" aria-labelledby="comecar">
@@ -90,8 +98,8 @@ export default function Documentacao() {
 
       <section className="panel" aria-labelledby="problemas">
         <div className="sec-head"><span className="eyebrow">Resolver problemas</span><h2 className="h-lg" id="problemas">Diagnóstico e relato de falhas</h2></div>
-        <p className="lead">Comece pelas <Link href="/faq">perguntas frequentes</Link>. Se o problema continuar, abra uma issue com a versão do sistema, a mídia usada, os passos para reproduzir e a mensagem de erro. Remova chaves privadas, senhas e outras informações pessoais antes de compartilhar a saída de um comando.</p>
-        <div className="pill-row"><a className="pill pill--ghost" href={`${REPO_URL}/issues`}>Relatar um problema <ArrowUpRight /></a></div>
+        <p className="lead">Comece pelas <Link href="/guias">guias do sistema</Link>. Se o problema continuar, abra uma issue com a versão do sistema, a mídia usada, os passos para reproduzir e a mensagem de erro. Remova chaves privadas, senhas e outras informações pessoais antes de compartilhar a saída de um comando.</p>
+        <div className="pill-row"><a className="pill pill--ghost" href="mailto:mizael.neovanguard@gmail.com">Relatar um problema por e-mail <ArrowUpRight /></a></div>
       </section>
 
       <section className="panel" aria-labelledby="indice">
@@ -160,15 +168,15 @@ nvginstall --help`}</CodeBlock>
         <div className="pill-row">
           <a
             className="pill"
-            href={`${REPO_URL}/issues`}
+            href="mailto:mizael.neovanguard@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Abrir uma issue
+            Enviar relato por e-mail
             <ArrowUpRight />
           </a>
-          <Link href="/faq" className="pill pill--ghost">
-            Perguntas frequentes
+          <Link href="/guias" className="pill pill--ghost">
+            Guias do sistema
           </Link>
         </div>
       </section>

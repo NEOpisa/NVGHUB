@@ -49,7 +49,7 @@ for (const [name, width, height] of [['desktop',1440,1000],['tablet',820,1180],[
   writeFileSync('.qa-shots/redesign-report.json',JSON.stringify(report,null,2));
   await page.close();
 }
-const routes = ['/baixar','/recursos','/instalacao','/documentacao','/faq','/sobre','/privacidade','/termos'];
+const routes = ['/baixar','/recursos','/instalacao','/documentacao','/sobre','/privacidade','/termos'];
 for (const route of routes) {
   const page = await browser.newPage({viewport:{width:320,height:780},reducedMotion:'reduce'});
   const response = await page.goto(base + route,{waitUntil:'networkidle'});

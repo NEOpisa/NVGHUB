@@ -20,7 +20,7 @@ const OUT = ".qa-shots";
 
 const ROUTES = [
   "/", "/baixar", "/recursos", "/instalacao", "/documentacao",
-  "/sobre", "/faq", "/privacidade", "/termos",
+  "/sobre", "/privacidade", "/termos",
 ];
 const BREAKPOINTS = [
   ["desktop", 1440, 900],

@@ -53,7 +53,7 @@ valida essas interações.
 
 ## Atualizar o conteúdo
 
-A documentação técnica do sistema fica no [repositório da distro](https://github.com/NEOpisa/neovanguard/tree/main/documentation).
+A documentação técnica do sistema fica no [repositório privado de desenvolvimento](https://github.com/NEOpisa/neovanguard-os-dev/tree/main/documentation).
 O site oferece guias de entrada e links para essa referência; comandos devem
 ser conferidos no código da distro antes de alterar seus exemplos.
 
@@ -61,7 +61,28 @@ Ao publicar uma versão, atualize `VERSAO` e `IMAGENS` em `constants.ts`, confir
 os nomes dos arquivos e o estado de publicação em `/baixar`. Só adicione links
 de download depois de verificar que as imagens e assinaturas estão disponíveis.
 Não publique uma impressão de chave diferente sem verificar sua origem.
-Ao alterar uma página indexável, atualize também sua data em `src/app/sitemap.ts`.
+Ao alterar conteúdo significativo, atualize a data editorial em `src/lib/pages.ts`,
+`src/lib/guides.ts` ou `src/lib/routes.ts`. O sitemap usa esse cadastro, com pares
+pt-BR/en/x-default, e não inventa uma data nova a cada build.
+
+As páginas em português ficam em `src/app/(pt)/`, sem mudar suas URLs. O grupo
+possui layout com `lang=pt-BR`; `src/app/en/` usa `lang=en`. Canonical, Open Graph
+e hreflang são gerados por `pageMetadata`. Os guias compartilham conteúdo e
+metadados tipados. `/faq` redireciona com 301 para `/documentacao`.
+
+Após o build, inicie `npm start -- --port 3100` e execute
+`node scripts/seo-qa.mjs`: todas as URLs do sitemap precisam responder 200,
+ter idioma, canonical e alternates coerentes e dados estruturados válidos.
+`QA_URL` permite verificar outro servidor. Esse teste não mede ranking.
+
+As fontes locais WOFF2 em `src/assets/fonts/` vêm do repositório google/fonts,
+com suas licenças OFL incluídas. Elas evitam downloads externos durante o build.
+Os arquivos de verificação de Google/Bing devem entrar em `public/`, com o
+nome e conteúdo originais fornecidos pela conta do responsável.
+
+O desenvolvimento do OS permanece privado e as ISOs não estão publicadas.
+Os guias públicos são introduções ao estado documentado, não validação de
+uma instalação completa. Notas da versão distinguem preparação e release.
 
 As rotas do QA visual e do Lighthouse precisam acompanhar as páginas atuais.
 O CI executa lint, tipos, testes, build e um limite de tamanho do bundle da home.

@@ -1,17 +1,17 @@
 import Link from "next/link";
 import CodeBlock from "@/components/blocos/CodeBlock";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ArrowUpRight } from "@/components/icons";
 import { VERSAO } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/instalacao" },
+export const metadata = pageMetadata({
+  path: "/instalacao",
   title: "Instalação",
   description:
-    "Guia de instalação do Neovanguard OS: preparação do pendrive, inicialização e configuração com a imagem MBN Install.",
-};
+    "Guia de instalação do Neovanguard OS: preparação do pendrive, inicialização e configuração com a imagem NVG Install.",
+});
 
-/** Preparação da mídia e etapas do instalador MBN Install. */
+/** Preparação da mídia e etapas do instalador NVG Install. */
 
 const GRAVAR = [
   {
@@ -31,7 +31,7 @@ const GRAVAR = [
   },
 ];
 
-const MBN = [
+const NVG = [
   ["Início", "Apresentação do instalador e da instalação sem internet."],
   ["Rede", "Conexão opcional para recuperar dados da identidade Nostr."],
   ["Identidade", "Configuração opcional da chave Nostr."],
@@ -50,7 +50,7 @@ export default function Instalacao() {
           <span className="eyebrow">Guia · versão {VERSAO}</span>
           <h1 className="h-xl">Instalação</h1>
           <p className="lead">
-            Use a imagem MBN Install para instalar o sistema sem internet.
+            Use a imagem NVG Install para instalar o sistema sem internet.
             Depois de iniciar pelo pendrive, abra o instalador no terminal.
             A imagem Live serve para experimentar e não inclui o instalador.
           </p>
@@ -86,18 +86,19 @@ export default function Instalacao() {
       </section>
       <section className="panel" aria-labelledby="mbn">
         <div className="sec-head">
-          <span className="eyebrow">MBN Install</span>
+          <span className="eyebrow">NVG Install</span>
           <h2 className="h-lg" id="mbn">
-            Sete etapas, <span className="h-accent">sem internet</span>
+            Instalação básica <span className="h-accent">offline</span>
           </h2>
           <p className="lead">
             O sistema incluído na mídia é copiado para o disco. A rede é
             opcional e permite trazer sua identidade Nostr. Antes de gravar,
             a etapa de revisão apresenta o disco escolhido e as alterações.
+            O resumo abaixo agrupa as decisões; o número de telas depende da mídia e do perfil recuperado.
           </p>
         </div>
         <ol className="steps">
-          {MBN.map(([t, d], i) => (
+          {NVG.map(([t, d], i) => (
             <li className="step" key={t}>
               <span className="step-code">{String(i + 1).padStart(2, "0")}</span>
               <div>
@@ -155,8 +156,8 @@ export default function Instalacao() {
             Documentação
             <ArrowUpRight />
           </Link>
-          <Link href="/faq" className="pill pill--ghost">
-            Perguntas frequentes
+          <Link href="/guias" className="pill pill--ghost">
+            Guias do sistema
           </Link>
         </div>
       </section>

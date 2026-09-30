@@ -42,11 +42,11 @@ const nextConfig: NextConfig = {
       "/ouro",
       "/platina",
     ];
-    return idos.map((source) => ({
+    return [{ source: "/faq", destination: "/documentacao", statusCode: 301 }, ...idos.map((source) => ({
       source,
       destination: "/",
       permanent: false,
-    }));
+    }))];
   },
 };
 

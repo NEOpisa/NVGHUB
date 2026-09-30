@@ -16,6 +16,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npx next typegen
       - run: npx tsc --noEmit
       - run: npm run test
       - run: npm run build
@@ -23,6 +24,16 @@ jobs:
       # Compatível com o build do App Router usando Turbopack.
       - name: Bundle budget (home)
         run: node scripts/check-bundle-budget.mjs
+      - name: Sitemap and multilingual SEO
+        run: |
+          npm start -- --port 3100 &
+          seo_server_pid=$!
+          trap 'kill "$seo_server_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl -fsS http://localhost:3100/sitemap.xml > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/seo-qa.mjs
 
   # #099 · Lighthouse nas páginas-chave (informativo, não bloqueia)
   lighthouse:

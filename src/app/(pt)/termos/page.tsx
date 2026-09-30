@@ -1,4 +1,4 @@
-import { REPO_URL } from "@/lib/constants";
+import { CONTACT_EMAIL } from "@/lib/constants";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -37,7 +37,7 @@ export default function TermosPage() {
         <h2>Contato</h2>
         <p>
           Dúvidas sobre estes termos ou sobre privacidade: use o canal de
-          contato no <a href={`${REPO_URL}/issues`}>repositório do projeto</a>. Veja também a <a href="/privacidade">política de privacidade</a>.
+          contato por <a href={`mailto:${CONTACT_EMAIL}`}>e-mail</a>. Veja também a <a href="/privacidade">política de privacidade</a>.
         </p>
       </article>
 

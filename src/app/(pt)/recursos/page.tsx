@@ -1,13 +1,13 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ArrowUpRight } from "@/components/icons";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/recursos" },
+export const metadata = pageMetadata({
+  path: "/recursos",
   title: "Recursos",
   description:
     "Recursos do Neovanguard OS: identidade Nostr, Bitcoin, Lightning, segurança e ferramentas de linha de comando sobre Arch Linux.",
-};
+});
 
 /** Recursos incluídos e resumo dos comandos disponíveis no sistema. */
 
@@ -106,17 +106,17 @@ export default function Recursos() {
         <div className="sec-head">
           <span className="eyebrow">Linha de comando</span>
           <h2 className="h-lg" id="comandos">
-            55 comandos <span className="h-accent">neo-*</span>
+            Comandos <span className="h-accent">neo-*</span>
           </h2>
           <p className="lead">
             Os comandos <code>neo-*</code> auxiliam na administração de nós,
             carteiras, rede e segurança. Consulte <code>--help</code> para
-            ver as opções de cada comando. Abaixo, 22 dos 55 disponíveis.
+            ver as opções de cada comando. Confira alguns exemplos abaixo.
           </p>
         </div>
         <div className="scan">
           <div className="scan-nota">
-            <strong>55</strong>
+            <strong>neo-*</strong>
             <span>comandos com ajuda via --help</span>
           </div>
           <ul className="scan-lista">

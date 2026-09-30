@@ -2,25 +2,18 @@
 
 import { usePathname } from "next/navigation";
 import { SITE_URL } from "@/lib/constants";
+import { ROUTES } from "@/lib/routes";
 
-const PAGE_NAMES: Record<string, string> = {
-  "/baixar": "Baixar",
-  "/recursos": "Recursos",
-  "/instalacao": "Instalação",
-  "/documentacao": "Documentação",
-  "/faq": "Perguntas frequentes",
-  "/sobre": "Sobre",
-  "/privacidade": "Privacidade",
-  "/termos": "Termos de uso",
-};
 
 /** Breadcrumbs das páginas internas para buscadores. A navegação visual do
  * site continua no cabeçalho e no sumário lateral. */
 export default function BreadcrumbJsonLd() {
   const pathname = usePathname();
-  const pageName = PAGE_NAMES[pathname];
+  const route = ROUTES.find(r => r.pt === pathname || r.en === pathname);
+  const english = pathname.startsWith("/en");
+  const pageName = english ? route?.english : route?.label;
 
-  if (!pageName) return null;
+  if (!pageName || pathname === "/" || pathname === "/en") return null;
 
   const data = {
     "@context": "https://schema.org",
@@ -29,8 +22,8 @@ export default function BreadcrumbJsonLd() {
       {
         "@type": "ListItem",
         position: 1,
-        name: "Início",
-        item: SITE_URL,
+        name: english ? "Home" : "Início",
+        item: SITE_URL + (english ? "/en" : ""),
       },
       {
         "@type": "ListItem",

@@ -3,13 +3,15 @@ import NVMark3D from "@/components/brand/NVMark3D";
 import Showcase from "@/components/blocos/Showcase";
 import { ArrowUpRight } from "@/components/icons";
 import { VERSAO, IMAGENS } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
+export const metadata = pageMetadata({ title: "Linux para Bitcoin, Lightning e Nostr", description: "Neovanguard OS: distribuição baseada em Arch Linux com KDE Plasma, serviços locais e identidade Nostr opcional. Conheça o desenvolvimento e os guias.", path: "/" });
 
 
 const PILARES = [
   {
     n: "01",
     t: "Identidade Nostr",
-    d: "Integração com chaves Nostr para criar a conta local e restaurar perfil e configurações.",
+    d: "Identidade opcional com chaves Nostr para associar a conta local e recuperar preferências. Também é possível usar uma conta local comum.",
   },
   {
     n: "02",
@@ -28,19 +30,12 @@ const PILARES = [
   },
 ];
 
-const NUMEROS = [
-  ["2", "imagens ISO"],
-  ["55", "comandos neo-*"],
-  ["0", "cadastros obrigatórios"],
-  ["GPL-3.0", "código aberto"],
-] as const;
-
 export default function Home() {
   return (
     <>
       <section className="hero hero--home" aria-label="Apresentação do Neovanguard OS">
         <div className="hero-copy">
-          <span className="eyebrow">Sistema operacional · Arch Linux · v{VERSAO}</span>
+          <span className="eyebrow">Arch Linux · v{VERSAO} em preparação</span>
           <h1 className="h-xl">
             <span className="hero-line"><span>Linux para Bitcoin,</span></span>
             <span className="hero-line"><span>Lightning e Nostr</span></span>
@@ -50,8 +45,8 @@ export default function Home() {
             e ferramentas para operar nós, carteiras e identidade Nostr.
           </p>
           <div className="pill-row">
-            <Link href="/baixar" className="pill">
-              Imagens da versão {VERSAO}
+            <Link href="/documentacao#construir" className="pill">
+              Construir a partir do código
               <ArrowUpRight />
             </Link>
             <Link href="/instalacao" className="pill pill--ghost">
@@ -75,10 +70,6 @@ export default function Home() {
         <a className="scroll-cue" href="#pilares" aria-label="Ver recursos do sistema"><span aria-hidden="true">↓</span> Recursos</a>
       </section>
 
-      <div className="brand-edge" aria-hidden="true">
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0 0H689L720 86L751 0H1440V100H0Z" /><path className="brand-edge-line" d="M0 1H689L720 87L751 1H1440" /></svg>
-      </div>
-
       <section className="panel pillars" aria-labelledby="pilares">
         <div className="sec-head">
           <span className="eyebrow">Recursos</span>
@@ -99,17 +90,6 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="panel panel--accent workbench" aria-label="Números">
-        <dl className="nums">
-          {NUMEROS.map(([n, d]) => (
-            <div className="num" key={d}>
-              <dt>{/^\d+$/.test(n) ? <><span className="sr-only">{n}</span><span aria-hidden="true" data-count>{n}</span></> : n}</dt>
-              <dd>{d}</dd>
-            </div>
-          ))}
-        </dl>
       </section>
 
       <Showcase />
@@ -155,7 +135,6 @@ export default function Home() {
             Guia de instalação
           </Link>
         </div>
-        <span className="closer-wordmark" aria-hidden="true">neovanguard.</span>
       </section>
     </>
   );

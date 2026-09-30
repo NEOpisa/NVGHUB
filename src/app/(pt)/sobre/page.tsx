@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ArrowUpRight } from "@/components/icons";
 import {
   JOAO_LINKEDIN,
@@ -8,12 +8,12 @@ import {
   VERSAO,
 } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/sobre" },
+export const metadata = pageMetadata({
+  path: "/sobre",
   title: "Sobre",
   description:
     "Objetivos, requisitos e desenvolvimento do Neovanguard OS, uma distribuição baseada em Arch Linux para Bitcoin, Lightning e Nostr.",
-};
+});
 
 /** Objetivos, limitações e desenvolvimento do projeto. */
 
@@ -31,7 +31,7 @@ const NAO_E = [
   {
     n: "03",
     t: "Licença e garantia",
-    d: "O sistema é distribuído sob a GPL-3.0, sem garantia. O código-fonte, as decisões técnicas e o histórico de correções estão disponíveis no repositório.",
+    d: "O projeto declara a licença GPL-3.0, sem garantia. O desenvolvimento permanece em repositório privado; os guias e as notas públicas descrevem o estado atual, sem anunciar ISOs disponíveis.",
   },
   {
     n: "04",

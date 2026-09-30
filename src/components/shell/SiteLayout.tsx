@@ -1,9 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Plus_Jakarta_Sans,
-  Space_Grotesk,
-  IBM_Plex_Mono,
-} from "next/font/google";
+import localFont from "next/font/local";
 import Motion from "@/components/shell/Motion";
 import Header from "@/components/shell/Header";
 import TableOfContents from "@/components/shell/TableOfContents";
@@ -13,31 +9,30 @@ import { Analytics } from "@vercel/analytics/next";
 import {
   JOAO_LINKEDIN,
   MIZAEL_LINKEDIN,
-  REPO_URL,
   SITE_URL,
   SITE_TITLE,
   SITE_DESCRIPTION,
   VERSAO,
 } from "@/lib/constants";
-import "./shell.css";
+import "@/app/shell.css";
 
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const jakarta = localFont({
+  src: "../../assets/fonts/PlusJakartaSans.woff2",
+  weight: "200 800",
   variable: "--ff-jakarta",
   display: "swap",
 });
 
-const grotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+const grotesk = localFont({
+  src: "../../assets/fonts/SpaceGrotesk.woff2",
+  weight: "300 700",
   variable: "--ff-grotesk",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const plexMono = localFont({
+  src: "../../assets/fonts/IBMPlexMono.woff2",
+  weight: "400",
   variable: "--ff-mono-var",
   display: "swap",
 });
@@ -110,7 +105,7 @@ const JSON_LD = {
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "Neovanguard",
-      inLanguage: "pt-BR",
+      inLanguage: ["pt-BR", "en"],
       publisher: { "@id": `${SITE_URL}/#org` },
     },
     {
@@ -119,18 +114,19 @@ const JSON_LD = {
       name: "Neovanguard",
       url: SITE_URL,
       logo: `${SITE_URL}/logo.png`,
-      sameAs: [REPO_URL, MIZAEL_LINKEDIN, JOAO_LINKEDIN],
       founder: [
         {
           "@type": "Person",
           name: "Mizael Ribeiro",
           url: MIZAEL_LINKEDIN,
+          sameAs: [MIZAEL_LINKEDIN, "https://github.com/NEOpisa"],
           jobTitle: "Cofundador e CEO",
         },
         {
           "@type": "Person",
           name: "João Antônio Rodrigues",
           url: JOAO_LINKEDIN,
+          sameAs: [JOAO_LINKEDIN, "https://github.com/joaoinky"],
           jobTitle: "Cofundador e COO",
         },
       ],
@@ -146,6 +142,7 @@ const JSON_LD = {
       applicationCategory: "OperatingSystem",
       operatingSystem: "Linux",
       softwareVersion: VERSAO,
+      releaseNotes: `${SITE_URL}/novidades`,
       image: `${SITE_URL}/opengraph-image`,
       description:
         SITE_DESCRIPTION,
@@ -163,17 +160,19 @@ const JSON_LD = {
 
 export default function RootLayout({
   children,
+  lang = "pt-BR",
 }: {
   children: React.ReactNode;
+  lang?: "pt-BR" | "en";
 }) {
   return (
     <html
-      lang="pt-BR"
+      lang={lang}
       className={`${jakarta.variable} ${grotesk.variable} ${plexMono.variable}`}
     >
       <body>
         <a href="#main" className="skip-link">
-          Pular para o conteúdo
+          {lang === "en" ? "Skip to content" : "Pular para o conteúdo"}
         </a>
         <script
           type="application/ld+json"
@@ -188,7 +187,7 @@ export default function RootLayout({
             </main>
             <TableOfContents />
           </div>
-          <Foot />
+          <Foot english={lang === "en"} />
         </div>
         <Motion />
         <Analytics />
