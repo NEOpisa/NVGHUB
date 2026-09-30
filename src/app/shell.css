@@ -442,7 +442,24 @@ h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 500; letter-spacin
 .closer .h-xl { font-size: var(--text-display); line-height: 1.05; max-width: 22ch; }
 .closer .eyebrow { color: var(--nv-corn-soft); }
 .closer .pill--ghost { background: var(--nivel-1); border-color: var(--tx-3); }
-.closer-wordmark { position: absolute; bottom: -.27em; left: -.035em; font: 600 clamp(5rem, 15.8vw, 15rem)/1 var(--ff-display); letter-spacing: -.07em; color: var(--nv-blue); opacity: .25; white-space: nowrap; pointer-events: none; }
+.closer--home { padding-bottom: 0; background: #080e1c; }
+.closer--home::before {
+  transform: none;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(91, 177, 255, .32), transparent 55%),
+    radial-gradient(ellipse at 12% 35%, rgba(36, 59, 136, .45), transparent 65%);
+}
+.closer--home::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .65; mix-blend-mode: normal;
+  background:
+    radial-gradient(circle at 72% 18%, #b6daff 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 38%, #6495ed 0 1px, transparent 2px),
+    radial-gradient(circle at 60% 10%, #6495ed 0 1px, transparent 2px),
+    linear-gradient(90deg, transparent, rgba(140, 202, 255, .6), transparent) bottom / 100% 1px no-repeat;
+}
+.closer-orbit { position: absolute; z-index: -1; top: 32px; right: calc(-1 * var(--gutter)); width: clamp(180px, 28vw, 400px); aspect-ratio: 1; border: 1px solid rgba(154, 200, 255, .18); border-radius: 50%; pointer-events: none; }
+.closer-orbit::before { content: ""; position: absolute; top: -32px; bottom: -100%; left: 50%; width: 1px; background: linear-gradient(transparent, rgba(154, 200, 255, .3), transparent); }
+.closer-wordmark { display: block; margin-top: clamp(36px, 5vw, 72px); padding-bottom: .12em; font: 600 clamp(2rem, 12.5vw, 15rem)/1 var(--ff-display); letter-spacing: -.07em; color: #85b9f5; opacity: .38; white-space: nowrap; pointer-events: none; }
 @media (max-width: 900px) {
   .hero--home { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); min-height: auto; padding-top: 64px; column-gap: 24px; }
   .hero--home .h-xl { font-size: clamp(2.5rem, 5.5vw, 3.25rem); max-width: none; }

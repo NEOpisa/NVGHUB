@@ -96,7 +96,8 @@ export default function Home({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="closer" aria-label={c.start}>
+      <section className="closer closer--home" aria-label={c.start}>
+        <span className="closer-orbit" aria-hidden="true" />
         <span className="eyebrow">{t.closer.eyebrow}</span>
         <h2 className="h-xl">{rich(t.closer.title)}</h2>
         <div className="pill-row">
@@ -108,6 +109,7 @@ export default function Home({ locale }: { locale: Locale }) {
             {c.installGuide}
           </Link>
         </div>
+        <span className="closer-wordmark" aria-hidden="true">neovanguard</span>
       </section>
     </>
   );
