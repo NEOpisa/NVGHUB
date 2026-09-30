@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
-import { SITE_DESCRIPTION } from "@/lib/constants";
+import { getMessages } from "@/lib/i18n";
 
 // manifest PWA básico : instala como app, nas cores do site.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Neovanguard OS",
     short_name: "Neovanguard OS",
-    description:
-      SITE_DESCRIPTION,
+    description: getMessages("pt").meta.siteDescription,
+    lang: "pt-BR",
     start_url: "/",
     display: "standalone",
     background_color: "#0c1422",

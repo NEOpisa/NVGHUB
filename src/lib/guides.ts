@@ -1,4 +1,5 @@
-export type Locale = "pt" | "en";
+import type { Locale } from "./i18n";
+export type { Locale };
 export type Section = { title: string; text: string };
 export type Guide = { slug: string; title: Record<Locale, string>; description: Record<Locale, string>; source: string; updated: string; sections: Record<Locale, Section[]>; code: string };
 export const GUIDES: Guide[] = [

@@ -1,16 +1,51 @@
-import { PAGES } from "./pages";
 import { GUIDES } from "./guides";
 import { SITE_URL } from "./constants";
-export const ROUTES = [
-  ...PAGES.map(p => ({ pt: p.pt as string, en: p.en as string, label: p.label as string, english: p.title as string, updated: p.updated as string })),
-  { pt: "/guias", en: "/en/guides", label: "Guias", english: "Guides", updated: "2026-09-30" },
-  ...GUIDES.map(g => ({ pt: "/guias/" + g.slug, en: "/en/guides/" + g.slug, label: g.title.pt, english: g.title.en, updated: g.updated })),
-  { pt: "/novidades", en: "/en/news", label: "Novidades", english: "Development notes", updated: "2026-09-30" },
-  { pt: "/novidades/1-2-1", en: "/en/news/1-2-1", label: "1.2.1 em preparação", english: "1.2.1 in preparation", updated: "2026-09-30" },
+import { getMessages, HTML_LANG, type Locale, type Messages } from "./i18n";
+
+export type PageKey = keyof Messages["meta"]["pages"];
+type Route = { pt: string; en: string; updated: string; page?: PageKey; guide?: string };
+
+/** Cadastro único das páginas: par pt/en e data editorial. Alimenta hreflang,
+ * sitemap, seletor de idioma e breadcrumbs. Atualize `updated` ao alterar
+ * conteúdo significativo; o sitemap não inventa uma data a cada build. */
+export const ROUTES: Route[] = [
+  { page: "home", pt: "/", en: "/en", updated: "2026-09-30" },
+  { page: "download", pt: "/baixar", en: "/en/download", updated: "2026-09-30" },
+  { page: "features", pt: "/recursos", en: "/en/features", updated: "2026-09-30" },
+  { page: "installation", pt: "/instalacao", en: "/en/installation", updated: "2026-09-30" },
+  { page: "documentation", pt: "/documentacao", en: "/en/documentation", updated: "2026-09-30" },
+  { page: "about", pt: "/sobre", en: "/en/about", updated: "2026-09-30" },
+  { page: "privacy", pt: "/privacidade", en: "/en/privacy", updated: "2026-09-30" },
+  { page: "terms", pt: "/termos", en: "/en/terms", updated: "2026-09-30" },
+  { page: "guides", pt: "/guias", en: "/en/guides", updated: "2026-09-30" },
+  ...GUIDES.map(g => ({ guide: g.slug, pt: "/guias/" + g.slug, en: "/en/guides/" + g.slug, updated: g.updated })),
+  { page: "news", pt: "/novidades", en: "/en/news", updated: "2026-09-30" },
+  { page: "news121", pt: "/novidades/1-2-1", en: "/en/news/1-2-1", updated: "2026-09-30" },
 ];
+
 export const absoluteUrl = (path: string) => SITE_URL + (path === "/" ? "" : path);
+export const findRoute = (path: string) => ROUTES.find(r => r.pt === path || r.en === path);
+
 export function languageAlternates(path: string) {
-  const route = ROUTES.find(r => r.pt === path || r.en === path);
-  return route ? { "pt-BR": absoluteUrl(route.pt), en: absoluteUrl(route.en), "x-default": absoluteUrl(route.pt) } : undefined;
+  const route = findRoute(path);
+  return route ? { [HTML_LANG.pt]: absoluteUrl(route.pt), [HTML_LANG.en]: absoluteUrl(route.en), "x-default": absoluteUrl(route.pt) } : undefined;
 }
 
+/** Endereço, no idioma pedido, de uma rota escrita como na versão em
+ * português (`/baixar`, `/documentacao#construir`). A âncora é preservada. */
+export function localePath(locale: Locale, ptPath: string) {
+  const [path, hash] = ptPath.split("#");
+  const route = ROUTES.find(r => r.pt === path);
+  if (!route) throw new Error("Rota sem cadastro: " + ptPath);
+  return route[locale] + (hash ? "#" + hash : "");
+}
+
+export function routeTitle(route: Route, locale: Locale) {
+  if (route.guide) return GUIDES.find(g => g.slug === route.guide)!.title[locale];
+  return getMessages(locale).meta.pages[route.page!].title;
+}
+
+export function routeDescription(route: Route, locale: Locale) {
+  if (route.guide) return GUIDES.find(g => g.slug === route.guide)!.description[locale];
+  return getMessages(locale).meta.pages[route.page!].description;
+}

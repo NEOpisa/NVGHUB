@@ -52,6 +52,8 @@ jobs:
           npm start & sleep 8
           npx --yes @lhci/cli autorun \
             --collect.url=http://localhost:3000/ \
+            --collect.url=http://localhost:3000/en \
+            --collect.url=http://localhost:3000/en/features \
             --collect.url=http://localhost:3000/baixar \
             --collect.url=http://localhost:3000/documentacao \
             --collect.numberOfRuns=1 \

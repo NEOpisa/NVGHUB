@@ -33,8 +33,8 @@ npm test
 npm run build
 ```
 
-Com o servidor rodando, `node scripts/visual-qa.mjs` captura as nove páginas
-em desktop, tablet e celular. Requer Chromium instalado no cache do Playwright
+Com o servidor rodando, `node scripts/visual-qa.mjs` captura as páginas dos
+dois idiomas em desktop, tablet e celular. Requer Chromium instalado no cache do Playwright
 (`npx playwright install chromium`). Capturas ficam em `.qa-shots/`, ignorada
 pelo Git. Confira também navegação por teclado, menu, links do sumário, cópia
 de comandos e a preferência de movimento reduzido. A captura sozinha não
@@ -46,7 +46,9 @@ valida essas interações.
 - `src/components/shell/`: cabeçalho, sumário contextual e rodapé globais.
 - `src/components/blocos/`: acordeão e blocos de comandos copiáveis.
 - `src/components/brand/`: carregamento progressivo, geometria e cena 3D.
-- `src/lib/constants.ts`: versão, navegação, mídias, links e chave pública.
+- `src/components/pages/`: as páginas, compartilhadas pelos dois idiomas.
+- `src/messages/`: textos em português e inglês.
+- `src/lib/constants.ts`: versão, estado de publicação, links e chave pública.
 - `src/lib/v-malha.json`: geometria compartilhada entre SVG, ícones e 3D.
 - `public/repo/`: arquivos do repositório de pacotes.
 - `public/templates/`: conteúdo legado; não participa do shell atual.
@@ -61,18 +63,43 @@ Ao publicar uma versão, atualize `VERSAO` e `IMAGENS` em `constants.ts`, confir
 os nomes dos arquivos e o estado de publicação em `/baixar`. Só adicione links
 de download depois de verificar que as imagens e assinaturas estão disponíveis.
 Não publique uma impressão de chave diferente sem verificar sua origem.
-Ao alterar conteúdo significativo, atualize a data editorial em `src/lib/pages.ts`,
-`src/lib/guides.ts` ou `src/lib/routes.ts`. O sitemap usa esse cadastro, com pares
-pt-BR/en/x-default, e não inventa uma data nova a cada build.
+Ao alterar conteúdo significativo, atualize a data editorial em `src/lib/routes.ts`
+ou `src/lib/guides.ts`. O sitemap usa esse cadastro, com pares pt-BR/en/x-default,
+e não inventa uma data nova a cada build.
 
-As páginas em português ficam em `src/app/(pt)/`, sem mudar suas URLs. O grupo
-possui layout com `lang=pt-BR`; `src/app/en/` usa `lang=en`. Canonical, Open Graph
-e hreflang são gerados por `pageMetadata`. Os guias compartilham conteúdo e
-metadados tipados. `/faq` redireciona com 301 para `/documentacao`.
+## Idiomas
+
+O inglês é tradução, não outro site. Cada página existe uma vez, em
+`src/components/pages/`, e recebe `locale`; `src/app/(pt)/` e `src/app/en/`
+só escolhem o idioma. Os textos ficam em `src/messages/pt.json` e
+`src/messages/en.json`, lidos com `getMessages(locale)`.
+
+- Texto novo entra nos dois arquivos, com a mesma chave. `npm test` falha se
+  as chaves, o tamanho das listas ou a marcação (`<code>`, `<em>`, `<a:chave>`,
+  `{version}`) divergirem entre os idiomas.
+- Página nova entra em `ROUTES` (`src/lib/routes.ts`) com o par de endereços.
+  Esse cadastro alimenta canonical, hreflang, sitemap, breadcrumbs e o seletor
+  de idioma, que sempre leva à página equivalente e mantém a âncora.
+- Links internos são escritos como na versão em português e convertidos por
+  `localePath(locale, "/baixar")`. Os `id` das seções são iguais nos dois
+  idiomas, para que `#secao` sobreviva à troca.
+- Componentes cliente não importam os dicionários: recebem por props o recorte
+  de que precisam, para os textos não irem ao bundle. A exceção é o limite de
+  erro, com o pequeno `src/messages/error.json`.
+- Termos técnicos não se traduzem: NVG Live, NVG Install, Nostr, NIP-49,
+  Core Lightning, pacman, neo-status, KDE Plasma.
+- O seletor guarda a escolha em `localStorage`, mas o site nunca redireciona
+  pelo idioma do navegador: buscadores precisam rastrear as duas versões.
+
+O botão do cabeçalho diz "Disponibilidade" enquanto `ISOS_PUBLICADAS` for
+`false` em `constants.ts` e "Baixar" depois. Canonical, Open Graph e hreflang
+são gerados por `pageMetadata(caminho)`. `/faq` redireciona com 301 para
+`/documentacao`.
 
 Após o build, inicie `npm start -- --port 3100` e execute
 `node scripts/seo-qa.mjs`: todas as URLs do sitemap precisam responder 200,
-ter idioma, canonical e alternates coerentes e dados estruturados válidos.
+ter idioma, canonical, alternates, `og:locale` e `inLanguage` coerentes, e o
+seletor apontando para a página equivalente.
 `QA_URL` permite verificar outro servidor. Esse teste não mede ranking.
 
 As fontes locais WOFF2 em `src/assets/fonts/` vêm do repositório google/fonts,

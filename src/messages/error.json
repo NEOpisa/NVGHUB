@@ -1,0 +1,16 @@
+{
+  "pt": {
+    "eyebrow": "Erro ao carregar a página",
+    "text": "Não foi possível carregar esta página. Tente novamente.",
+    "reference": "Referência do erro: {digest}.",
+    "retry": "Tentar novamente",
+    "home": "Voltar ao início"
+  },
+  "en": {
+    "eyebrow": "Error loading the page",
+    "text": "This page could not be loaded. Please try again.",
+    "reference": "Error reference: {digest}.",
+    "retry": "Try again",
+    "home": "Back to home"
+  }
+}

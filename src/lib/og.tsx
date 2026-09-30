@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { HALF_OUTLINE, HALF_FACETS, bothHalves, wallPaths } from "@/lib/vShape";
 import { VERSAO } from "@/lib/constants";
+import { getMessages, type Locale } from "@/lib/i18n";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -71,13 +72,14 @@ function VMark({ t }: { t: Tema }) {
   );
 }
 
-export function ogAlt() {
-  return "Neovanguard OS. Linux para Bitcoin, Lightning e Nostr. Arch Linux, KDE Plasma e software livre.";
+export function ogAlt(locale: Locale) {
+  return getMessages(locale).meta.ogAlt;
 }
 
 /** The social card shares the site's dark frame and cornflower palette.
  * Local fonts and vector geometry keep builds independent of remote assets. */
-export async function renderOg() {
+export async function renderOg(locale: Locale) {
+  const t = getMessages(locale);
   const dir = join(process.cwd(), "src/app/og-assets");
   const [semibold, regular, mono] = await Promise.all([
     readFile(join(dir, "grotesk-600.ttf")),
@@ -93,10 +95,10 @@ export async function renderOg() {
         </div>
         <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "space-between", gap: 32 }}>
           <div style={{ display: "flex", flexDirection: "column", width: 640 }}>
-            <span style={{ color: "#6495ED", fontFamily: "Mono", fontSize: 14, letterSpacing: 2, marginBottom: 22 }}>DISTRIBUIÇÃO LINUX</span>
+            <span style={{ color: "#6495ED", fontFamily: "Mono", fontSize: 14, letterSpacing: 2, marginBottom: 22 }}>{t.og.kicker}</span>
             <div style={{ display: "flex", flexDirection: "column", fontSize: 56, fontWeight: 600, lineHeight: 1.13, letterSpacing: -2 }}>
-              <span>Linux para Bitcoin,</span>
-              <span style={{ color: "#a2c1f5" }}>Lightning e Nostr</span>
+              <span>{t.home.hero.line1}</span>
+              <span style={{ color: "#a2c1f5" }}>{t.home.hero.line2}</span>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 348, height: 310, flexShrink: 0, borderRadius: 18, border: "1px solid #354e70", backgroundImage: "radial-gradient(ellipse at 50% 40%, #233e65, #101c2e)" }}>
@@ -104,7 +106,7 @@ export async function renderOg() {
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #213149", paddingTop: 24, fontSize: 17, color: "#a9b8d0" }}>
-          <span>Arch Linux · KDE Plasma · Código aberto</span>
+          <span>{t.og.footer}</span>
           <span style={{ color: "#6495ED" }}>neovanguard.com.br</span>
         </div>
       </div>

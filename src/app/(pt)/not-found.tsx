@@ -1,6 +1,5 @@
 import NotFound from "@/components/pages/NotFound";
 
-/** Endereços fora de qualquer rota. Dentro de /en vale `en/not-found.tsx`. */
 export default function Page() {
   return <NotFound locale="pt" />;
 }

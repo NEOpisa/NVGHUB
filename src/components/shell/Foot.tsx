@@ -1,19 +1,32 @@
 import Link from "next/link";
-import { CONTACT_EMAIL, MIZAEL_LINKEDIN, JOAO_LINKEDIN } from "@/lib/constants";
+import { CONTACT_EMAIL, MIZAEL_LINKEDIN, JOAO_LINKEDIN, SITE_REPO_URL } from "@/lib/constants";
+import { getMessages, type Locale } from "@/lib/i18n";
+import { localePath } from "@/lib/routes";
 
-export default function Foot({ english = false }: { english?: boolean }) {
-  const links = english ? [["/en/features", "Features"], ["/en/documentation", "Documentation"], ["/en/installation", "Installation"], ["/en/guides", "Guides"], ["/en/news", "Development notes"], ["/en/about", "About"], ["/en/privacy", "Privacy"], ["/en/terms", "Terms"]] : [["/recursos", "Recursos"], ["/documentacao", "Documentação"], ["/instalacao", "Instalação"], ["/guias", "Guias"], ["/novidades", "Novidades"], ["/sobre", "Sobre"], ["/privacidade", "Privacidade"], ["/termos", "Termos"]];
+const LINKS = [
+  ["features", "/recursos"],
+  ["documentation", "/documentacao"],
+  ["installation", "/instalacao"],
+  ["guides", "/guias"],
+  ["news", "/novidades"],
+  ["about", "/sobre"],
+  ["privacy", "/privacidade"],
+  ["terms", "/termos"],
+] as const;
+
+export default function Foot({ locale }: { locale: Locale }) {
+  const t = getMessages(locale).shell;
   return (
     <footer className="foot">
       <span>© {new Date().getFullYear()} Neovanguard · Neovanguard OS</span>
-      <nav aria-label={english ? "Footer" : "Rodapé"}>
-        {links.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
-        <a href="https://github.com/NEOpisa/NVGHUB">GitHub · {english ? "website" : "site"}</a>
+      <nav aria-label={t.footerLabel}>
+        {LINKS.map(([key, path]) => <Link key={key} href={localePath(locale, path)}>{t.footer[key]}</Link>)}
+        <a href={SITE_REPO_URL}>{t.githubSite}</a>
         <a href={MIZAEL_LINKEDIN}>LinkedIn · Mizael</a>
         <a href={JOAO_LINKEDIN}>LinkedIn · João</a>
         <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </nav>
-      <span>{english ? "Free software" : "Software livre"} · GPL-3.0</span>
+      <span>{t.freeSoftware} · GPL-3.0</span>
     </footer>
   );
 }

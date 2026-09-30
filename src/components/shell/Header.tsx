@@ -3,16 +3,25 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { NAV, VERSAO } from "@/lib/constants";
-import { ROUTES } from "@/lib/routes";
+import LanguageSwitch from "@/components/shell/LanguageSwitch";
 import { ArrowUpRight, CloseIcon } from "@/components/icons";
+import type { Locale, Messages } from "@/lib/i18n";
 
-export default function Header() {
+type HeaderProps = {
+  locale: Locale;
+  t: Messages["shell"];
+  /** Destinos do menu, já no idioma da página. */
+  links: Record<"home" | "features" | "documentation" | "about" | "download", string>;
+  /** Caminho de cada página deste idioma → página equivalente no outro. */
+  alternates: Record<string, string>;
+  published: boolean;
+  version: string;
+};
+
+export default function Header({ locale, t, links, alternates, published, version }: HeaderProps) {
   const path = usePathname();
-  const english = path === "/en" || path.startsWith("/en/");
-  const route = ROUTES.find(r => r.pt === path || r.en === path);
-  const languageUrl = english ? route?.pt ?? "/" : route?.en ?? "/en";
-  const navigation = english ? [{label: "Features", href: "/en/features"}, {label: "Documentation", href: "/en/documentation"}, {label: "About", href: "/en/about"}] : NAV;
+  const languageUrl = alternates[path] ?? alternates[links.home];
+  const navigation = (["home", "features", "documentation", "about"] as const).map(key => ({ label: t.nav[key], href: links[key] }));
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const close = () => dialog.current?.close();
@@ -28,20 +37,20 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link href={english ? "/en" : "/"} className="brand" aria-label={english ? "Neovanguard OS: home" : "Neovanguard OS: início"}>
+        <Link href={links.home} className="brand" aria-label={t.brandLabel}>
           <span className="brand-symbol"><img src="/logo.svg" width={32} height={24} alt="" /></span>
           <span>Neovanguard OS</span>
         </Link>
-        <nav className="desktop-nav" aria-label={english ? "Main navigation" : "Navegação principal"}>
+        <nav className="desktop-nav" aria-label={t.navLabel}>
           {navigation.map(r => (
             <Link key={r.href} href={r.href} aria-current={path === r.href ? "page" : undefined}>
               {r.label}
             </Link>
           ))}
         </nav>
-        <a href={languageUrl} hrefLang={english ? "pt-BR" : "en"} className="language-switch" aria-label={english ? "Ler em português" : "Read in English"}>{english ? "PT" : "EN"}</a>
-        <Link href={english ? "/en/download" : "/baixar"} className="header-download"><span>Status</span> <ArrowUpRight /></Link>
-        <button ref={trigger} className="menu-trigger" type="button" aria-label={english ? "Open menu" : "Abrir menu"} aria-haspopup="dialog" aria-controls="site-menu"
+        <LanguageSwitch locale={locale} href={languageUrl} className="lang-switch--header" />
+        <Link href={links.download} className="header-download"><span>{published ? t.download : t.availability}</span> <ArrowUpRight /></Link>
+        <button ref={trigger} className="menu-trigger" type="button" aria-label={t.openMenu} aria-haspopup="dialog" aria-controls="site-menu"
           onClick={() => { dialog.current?.showModal(); document.body.style.overflow = "hidden"; }}>
           <span /> <span />
         </button>
@@ -56,12 +65,15 @@ export default function Header() {
           else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
         }}
         onClose={() => { document.body.style.overflow = ""; trigger.current?.focus(); }}>
-        <div className="menu-heading"><span id="menu-title">{english ? "Main menu" : "Menu principal"}</span><button type="button" onClick={close} autoFocus aria-label={english ? "Close menu" : "Fechar menu"}><CloseIcon /></button></div>
-        <nav aria-label="Navegação para dispositivos móveis">
+        <div className="menu-heading"><span id="menu-title">{t.menuTitle}</span><button type="button" onClick={close} autoFocus aria-label={t.closeMenu}><CloseIcon /></button></div>
+        <nav aria-label={t.mobileNavLabel}>
           {navigation.map(r => <Link key={r.href} href={r.href} onClick={close} aria-current={path === r.href ? "page" : undefined}>{r.label}<ArrowUpRight /></Link>)}
-          <Link href={english ? "/en/download" : "/baixar"} onClick={close}>{english ? "Image availability" : "Disponibilidade das imagens"}<ArrowUpRight /></Link>
+          <Link href={links.download} onClick={close} aria-current={path === links.download ? "page" : undefined}>{published ? t.menuDownload : t.menuAvailability}<ArrowUpRight /></Link>
         </nav>
-        <p className="menu-note">Neovanguard OS {VERSAO}<br />{english ? "Arch Linux · free and open source" : "Arch Linux · livre e de código aberto"}</p>
+        <div className="menu-language">
+          <LanguageSwitch locale={locale} href={languageUrl} />
+        </div>
+        <p className="menu-note">Neovanguard OS {version}<br />{t.menuNote}</p>
       </dialog>
     </header>
   );

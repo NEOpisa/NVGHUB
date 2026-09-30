@@ -21,6 +21,9 @@ const OUT = ".qa-shots";
 const ROUTES = [
   "/", "/baixar", "/recursos", "/instalacao", "/documentacao",
   "/sobre", "/privacidade", "/termos",
+  // As páginas em inglês usam os mesmos componentes: compare lado a lado.
+  "/en", "/en/download", "/en/features", "/en/installation", "/en/documentation",
+  "/en/about", "/en/privacy", "/en/terms",
 ];
 const BREAKPOINTS = [
   ["desktop", 1440, 900],
@@ -40,7 +43,7 @@ if (process.env.PLAYWRIGHT_PATH) {
   try {
     for (const route of ROUTES) {
       for (const [bp, width, height] of BREAKPOINTS) {
-        const slug = route === "/" ? "home" : route.slice(1);
+        const slug = route === "/" ? "home" : route.slice(1).replace(/\//g, "-");
         const page = await browser.newPage({ viewport: { width, height }, reducedMotion: "reduce" });
         try {
           const response = await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" });

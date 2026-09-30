@@ -1,0 +1,640 @@
+{
+  "meta": {
+    "siteTitle": "Neovanguard OS · Linux para Bitcoin, Lightning e Nostr",
+    "siteDescription": "Distribuição baseada em Arch Linux, com KDE Plasma e ferramentas para Bitcoin, Lightning e Nostr. Software livre sob a GPL-3.0.",
+    "ogAlt": "Neovanguard OS. Linux para Bitcoin, Lightning e Nostr. Arch Linux, KDE Plasma e software livre.",
+    "keywords": [
+      "Neovanguard OS",
+      "distribuição Linux",
+      "Arch Linux",
+      "Linux Bitcoin",
+      "Linux Nostr",
+      "sistema operacional de código aberto",
+      "nó Bitcoin",
+      "Lightning Network",
+      "relay Nostr",
+      "distro brasileira"
+    ],
+    "pages": {
+      "home": {
+        "title": "Início",
+        "description": "Neovanguard OS: distribuição baseada em Arch Linux com KDE Plasma, serviços locais e identidade Nostr opcional. Conheça o desenvolvimento e os guias."
+      },
+      "download": {
+        "title": "Imagens ISO",
+        "description": "Imagens Live e Install do Neovanguard OS: disponibilidade, diferenças e verificação de integridade e assinatura."
+      },
+      "features": {
+        "title": "Recursos",
+        "description": "Recursos do Neovanguard OS: identidade Nostr, Bitcoin, Lightning, segurança e ferramentas de linha de comando sobre Arch Linux."
+      },
+      "installation": {
+        "title": "Instalação",
+        "description": "Guia de instalação do Neovanguard OS: preparação do pendrive, inicialização e configuração com a imagem NVG Install."
+      },
+      "documentation": {
+        "title": "Documentação",
+        "description": "Documentação do Neovanguard OS: instalação, uso, construção de imagens, arquitetura e repositório de pacotes."
+      },
+      "about": {
+        "title": "Sobre",
+        "description": "Objetivos, requisitos e desenvolvimento do Neovanguard OS, uma distribuição baseada em Arch Linux para Bitcoin, Lightning e Nostr."
+      },
+      "privacy": {
+        "title": "Privacidade",
+        "description": "Política de privacidade da Neovanguard: quais dados coletamos, por quê, e seus direitos sob a LGPD."
+      },
+      "terms": {
+        "title": "Termos de uso",
+        "description": "Consulte os termos de uso do site da Neovanguard, as condições sobre conteúdo, informações do Neovanguard OS e disponibilidade."
+      },
+      "guides": {
+        "title": "Guias de Linux, Bitcoin e Nostr",
+        "description": "Guias do Neovanguard OS sobre Bitcoin, Lightning, Nostr, Liquid, Tor, VPN, LUKS, Btrfs e instalação."
+      },
+      "news": {
+        "title": "Novidades e estado do desenvolvimento",
+        "description": "Notas do desenvolvimento do Neovanguard OS, validações e estado da publicação das imagens NVG Live e NVG Install."
+      },
+      "news121": {
+        "title": "1.2.1 em preparação",
+        "description": "Mudanças documentadas da versão 1.2.1 do Neovanguard OS, limites da validação e status das ISOs ainda não publicadas."
+      }
+    }
+  },
+  "jsonLd": {
+    "ceo": "Cofundador e CEO",
+    "coo": "Cofundador e COO"
+  },
+  "og": {
+    "kicker": "DISTRIBUIÇÃO LINUX",
+    "footer": "Arch Linux · KDE Plasma · Código aberto"
+  },
+  "shell": {
+    "skip": "Pular para o conteúdo",
+    "brandLabel": "Neovanguard OS: início",
+    "navLabel": "Navegação principal",
+    "nav": {
+      "home": "Início",
+      "features": "Recursos",
+      "documentation": "Documentação",
+      "about": "Sobre"
+    },
+    "availability": "Disponibilidade",
+    "download": "Baixar",
+    "menuAvailability": "Disponibilidade das imagens",
+    "menuDownload": "Baixar as imagens",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "menuTitle": "Menu principal",
+    "mobileNavLabel": "Navegação para dispositivos móveis",
+    "menuNote": "Arch Linux · livre e de código aberto",
+    "toc": "Nesta página",
+    "tocSections": "Seções desta página",
+    "footerLabel": "Rodapé",
+    "footer": {
+      "features": "Recursos",
+      "documentation": "Documentação",
+      "installation": "Instalação",
+      "guides": "Guias",
+      "news": "Novidades",
+      "about": "Sobre",
+      "privacy": "Privacidade",
+      "terms": "Termos"
+    },
+    "githubSite": "GitHub · site",
+    "freeSoftware": "Software livre"
+  },
+  "code": {
+    "terminal": "Terminal",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "select": "Selecione o texto para copiar",
+    "keyFingerprint": "Impressão digital da chave"
+  },
+  "common": {
+    "viewImages": "Consultar imagens",
+    "installGuide": "Guia de instalação",
+    "features": "Recursos",
+    "systemGuides": "Guias do sistema",
+    "nextStep": "Próximo passo",
+    "start": "Começar"
+  },
+  "images": {
+    "live": {
+      "purpose": "Experimentar sem instalar",
+      "size": "A confirmar na publicação",
+      "boot": "Plasma",
+      "network": "opcional",
+      "description": "Executa o sistema pelo pendrive, com KDE Plasma. Não inclui instalador e não exige conexão com a internet."
+    },
+    "install": {
+      "purpose": "Instalar no disco",
+      "size": "A confirmar na publicação",
+      "boot": "terminal",
+      "network": "opcional",
+      "description": "Inclui o payload da Live e um instalador em Rust no terminal. A instalação básica é offline; recuperar um perfil remoto exige conexão."
+    }
+  },
+  "home": {
+    "hero": {
+      "label": "Apresentação do Neovanguard OS",
+      "eyebrow": "Arch Linux · v{version} em preparação",
+      "line1": "Linux para Bitcoin,",
+      "line2": "Lightning e Nostr",
+      "lead": "Neovanguard OS é uma distribuição baseada em Arch Linux, com KDE Plasma e ferramentas para operar nós, carteiras e identidade Nostr.",
+      "build": "Construir a partir do código",
+      "notes": ["Arch Linux", "KDE Plasma", "Código aberto", "Duas imagens"],
+      "cueLabel": "Ver recursos do sistema",
+      "cue": "Recursos"
+    },
+    "pillars": {
+      "eyebrow": "Recursos",
+      "title": "Ferramentas do <em>sistema</em>",
+      "cards": [
+        {
+          "title": "Identidade Nostr",
+          "text": "Identidade opcional com chaves Nostr para associar a conta local e recuperar preferências. Também é possível usar uma conta local comum."
+        },
+        {
+          "title": "Bitcoin e Lightning",
+          "text": "Ferramentas para operar um nó Bitcoin, canais Lightning e um relay Nostr na própria máquina."
+        },
+        {
+          "title": "Logs em memória",
+          "text": "Logs do sistema armazenados em RAM por padrão e descartados ao desligar."
+        },
+        {
+          "title": "Base Arch Linux",
+          "text": "Pacotes gerenciados pelo pacman, com repositório próprio para os componentes do Neovanguard."
+        }
+      ],
+      "signature": "Nostr · identidade local",
+      "diagramLabel": "Bitcoin, Lightning e relay Nostr conectados na sua máquina",
+      "diagramRelay": "RELAY NOSTR",
+      "diagramLocal": "LOCAL",
+      "logs": "Registro em memória",
+      "packages": "Pacotes instalados"
+    },
+    "showcase": {
+      "eyebrow": "Interface",
+      "title": "Capturas do <em>sistema</em>",
+      "lead": "Área de trabalho, instalador, diagnóstico e configuração de identidade.",
+      "regionLabel": "Capturas do sistema",
+      "captures": {
+        "plasma-desktop": {
+          "title": "Ambiente KDE Plasma",
+          "detail": "NVG Live · KDE Plasma",
+          "alt": "Área de trabalho KDE Plasma"
+        },
+        "instalador": {
+          "title": "Instalador NVG Install",
+          "detail": "NVG Install · interface em Rust",
+          "alt": "Etapa do instalador NVG Install"
+        },
+        "neo-status": {
+          "title": "Diagnóstico com neo-status",
+          "detail": "Terminal · neo-status",
+          "alt": "Saída do comando neo-status"
+        },
+        "identidade-nostr": {
+          "title": "Identidade Nostr",
+          "detail": "Nostr · identidade local",
+          "alt": "Configuração da identidade Nostr"
+        }
+      }
+    },
+    "images": {
+      "eyebrow": "Imagens ISO",
+      "title": "Live e <em>Install</em>",
+      "lead": "Use a Live para testar o sistema pelo pendrive. Use a Install para instalar no disco sem conexão com a internet. As duas imagens contêm o mesmo sistema.",
+      "specImage": "Imagem",
+      "specBoot": "Inicialização",
+      "specNetwork": "Rede",
+      "details": "Detalhes da {name}"
+    },
+    "closer": {
+      "eyebrow": "Instalação",
+      "title": "Consulte as imagens<br>e o guia de instalação"
+    }
+  },
+  "features": {
+    "hero": {
+      "label": "Recursos do Neovanguard OS",
+      "eyebrow": "Recursos",
+      "title": "Recursos e<br>ferramentas",
+      "lead": "O Neovanguard reúne ferramentas de identidade, pagamentos e segurança em pacotes gerenciados pelo pacman. Os serviços são executados na própria máquina."
+    },
+    "layerEyebrow": "Recurso {n}",
+    "layers": [
+      {
+        "title": "Identidade Nostr",
+        "text": "O instalador permite criar a conta local a partir de uma chave Nostr, criptografada com senha pelo NIP-49. Um cofre criptografado armazena o perfil e as configurações para restauração em outra instalação.",
+        "items": ["conta local com chave Nostr", "cofre de configurações", "assinador remoto NIP-46", "relay Nostr local"]
+      },
+      {
+        "title": "Bitcoin e Lightning",
+        "text": "Inclui Bitcoin Core para operar um nó completo, Core Lightning para canais de pagamento e Sparrow para gestão de carteiras e UTXOs. Também oferece Elements para Liquid e ferramentas Cashu.",
+        "items": ["bitcoind", "Core Lightning", "Sparrow", "Elements (Liquid)", "eCash (Cashu)"]
+      },
+      {
+        "title": "Segurança do sistema",
+        "text": "A configuração padrão mantém logs em RAM, aplica noexec em /dev/shm e /var/tmp e utiliza regras restritivas no nftables. Processos que manipulam chaves usam hardened_malloc.",
+        "items": ["/var/log em tmpfs", "noexec em /dev/shm e /var/tmp", "nftables restritivo", "hardened_malloc", "Tor sob demanda"]
+      },
+      {
+        "title": "Modo cofre",
+        "text": "Sessão acessível pelo menu de inicialização para operações de assinatura. A carteira usa um diretório em RAM, descartado ao desligar, com ferramentas para isolar a rede e assinar PSBTs.",
+        "items": ["Cold Vault na inicialização", "carteira em RAM", "airgap por comando", "assinatura de PSBT"]
+      }
+    ],
+    "commands": {
+      "eyebrow": "Linha de comando",
+      "title": "Comandos <em>neo-*</em>",
+      "lead": "Os comandos <code>neo-*</code> auxiliam na administração de nós, carteiras, rede e segurança. Consulte <code>--help</code> para ver as opções de cada comando. Confira alguns exemplos abaixo.",
+      "note": "comandos com ajuda via --help",
+      "list": {
+        "neo-status": "Exibe o estado do nó, Lightning, relay, rede e memória.",
+        "neo-zap": "Envia sats via Lightning para uma npub, endereço ou fatura.",
+        "neo-utxo": "Analisa UTXOs e sugere consolidações.",
+        "neo-ln": "Consulta o estado e a liquidez dos canais Lightning.",
+        "neo-mempool": "Consulta taxas e o estado da mempool local.",
+        "neo-sign": "Assina uma PSBT em ambiente isolado.",
+        "neo-vault": "Abre uma carteira em um diretório na RAM.",
+        "neo-shamir": "Divide e recompõe a seed com compartilhamento de segredo.",
+        "neo-paper": "Gera um modelo para backup físico da seed.",
+        "neo-qr": "Transfere dados entre máquinas por QR code.",
+        "neo-airgap": "Desativa a rede no nível do kernel.",
+        "neo-killswitch": "Bloqueia tráfego fora do túnel configurado.",
+        "neo-tor": "Configura o roteamento de tráfego pelo Tor.",
+        "neo-mac": "Randomiza o endereço MAC das interfaces de rede.",
+        "neo-screenguard": "Bloqueia capturas de tela durante a exibição de uma seed.",
+        "neo-entropy": "Verifica a disponibilidade de entropia no sistema.",
+        "neo-integrity": "Verifica a integridade dos binários instalados.",
+        "neo-audit": "Verifica as configurações de segurança do sistema.",
+        "neo-relays": "Mede a latência dos relays e ordena a lista.",
+        "neo-mesh": "Localiza máquinas Neovanguard na rede e troca notas.",
+        "neo-nuke": "Executa a limpeza de emergência da RAM e desliga a máquina.",
+        "neo-wipe": "Executa a limpeza de dados da sessão."
+      },
+      "more": "Os demais comandos incluem gestão de energia, rede, memória e limpeza de dados da sessão."
+    },
+    "desktop": {
+      "eyebrow": "Ambiente gráfico",
+      "title": "Plasma, com o tema <em>Birfree</em>",
+      "text1": "O KDE Plasma é o ambiente gráfico padrão, configurado pelo aplicativo de ajustes do KDE. O tema Birfree reúne as cores, os ícones e a tela de inicialização do Neovanguard.",
+      "text2": "Outros ambientes gráficos podem ser instalados com <code>pacman -S</code>, usando os pacotes disponíveis para Arch Linux."
+    },
+    "closer": {
+      "title": "Teste com a imagem Live"
+    }
+  },
+  "download": {
+    "hero": {
+      "label": "Baixar o Neovanguard OS",
+      "eyebrow": "Versão {version}",
+      "title": "Imagens ISO",
+      "lead": "A Live executa o sistema pelo pendrive. A Install permite instalá-lo no disco. Consulte a disponibilidade e as instruções de verificação antes de preparar a mídia."
+    },
+    "status": {
+      "label": "Estado das imagens",
+      "eyebrow": "Disponibilidade",
+      "title": "Versão {version}: <em>ISOs não publicadas</em>",
+      "lead": "O repositório de pacotes está disponível. As ISOs ainda aguardam publicação; por enquanto, você pode consultar o guia de construção ou conhecer as diferenças entre as mídias abaixo.",
+      "follow": "Acompanhar o desenvolvimento",
+      "build": "Construir a partir do código (acesso restrito)",
+      "packages": "Repositório de pacotes"
+    },
+    "compare": {
+      "eyebrow": "Comparação",
+      "title": "Live e <em>Install</em>",
+      "tagBoot": "inicialização: {value}",
+      "tagNetwork": "internet: {value}",
+      "note": "A <strong>Live</strong> permite testar o ambiente e a compatibilidade do hardware. Para instalar, prepare um pendrive com a imagem <strong>Install</strong>."
+    },
+    "verify": {
+      "eyebrow": "Depois de baixar",
+      "title": "Verificação da <em>imagem</em>",
+      "lead": "Antes de gravar a ISO, verifique a soma SHA-256 e a assinatura GPG. Os exemplos abaixo usam a imagem Live; para a Install, use os arquivos correspondentes.",
+      "step1Code": "1 · SHA-256",
+      "step1Title": "Verificar integridade",
+      "step1Text": "A soma detecta diferenças entre o arquivo baixado e o valor publicado. Ela não comprova a origem da imagem.",
+      "step1Result": "O resultado esperado é o nome do arquivo seguido de OK. Isso confirma a integridade; confira também a assinatura.",
+      "step2Code": "2 · assinatura",
+      "step2Title": "Verificar assinatura",
+      "step2Text": "A assinatura vincula a imagem à chave de lançamento. Para verificá-la, a chave pública correspondente deve estar importada no GPG.",
+      "step2Result": "Confira a impressão digital completa da chave usada na assinatura. O valor esperado é:"
+    },
+    "closer": {
+      "title": "Guia de instalação",
+      "cta": "Consultar o guia"
+    }
+  },
+  "installation": {
+    "hero": {
+      "label": "Instalar o Neovanguard OS",
+      "eyebrow": "Guia · versão {version}",
+      "title": "Instalação",
+      "lead": "Use a imagem NVG Install para instalar o sistema sem internet. Depois de iniciar pelo pendrive, abra o instalador no terminal. A imagem Live serve para experimentar e não inclui o instalador."
+    },
+    "prepare": {
+      "eyebrow": "Preparação",
+      "title": "Antes de começar",
+      "lead": "Confira a disponibilidade da imagem na <a:download>página de download</a> e faça uma cópia dos arquivos que deseja manter. A instalação padrão apaga o disco escolhido. O instalador informa o espaço necessário antes de continuar."
+    },
+    "media": {
+      "eyebrow": "Mídia de instalação",
+      "title": "Preparação do <em>pendrive</em>",
+      "cards": [
+        {
+          "title": "Confira a imagem",
+          "text": "Verifique a soma SHA-256 e a assinatura GPG seguindo as instruções da página de imagens."
+        },
+        {
+          "title": "Grave no pendrive",
+          "text": "Use uma ferramenta compatível com imagens ISO híbridas, como dd, Ventoy, Gravador de imagens USB do GNOME ou Etcher. Não descompacte a ISO."
+        },
+        {
+          "title": "Inicie pelo pendrive",
+          "text": "Selecione o pendrive no menu de inicialização do computador. Desative o Secure Boot em sistemas UEFI, pois as imagens ainda não têm assinatura compatível."
+        }
+      ]
+    },
+    "launch": {
+      "eyebrow": "Na mídia Install",
+      "title": "Abra o instalador",
+      "result": "O resultado esperado é a tela de início do instalador no terminal. Se o comando não for encontrado, confira se você iniciou pela imagem Install."
+    },
+    "flow": {
+      "eyebrow": "NVG Install",
+      "title": "Instalação básica <em>offline</em>",
+      "lead": "O sistema incluído na mídia é copiado para o disco. A rede é opcional e permite trazer sua identidade Nostr. Antes de gravar, a etapa de revisão apresenta o disco escolhido e as alterações. O resumo abaixo agrupa as decisões; o número de telas depende da mídia e do perfil recuperado.",
+      "steps": [
+        { "title": "Início", "text": "Apresentação do instalador e da instalação sem internet." },
+        { "title": "Rede", "text": "Conexão opcional para recuperar dados da identidade Nostr." },
+        { "title": "Identidade", "text": "Configuração opcional da chave Nostr." },
+        { "title": "Disco", "text": "Seleção do disco e verificação do espaço necessário." },
+        { "title": "Conta", "text": "Definição de usuário, senha, teclado e fuso horário." },
+        { "title": "Revisão", "text": "Conferência das alterações antes de gravar no disco." },
+        { "title": "Instalação", "text": "Cópia do sistema da mídia para o disco." }
+      ]
+    },
+    "care": {
+      "eyebrow": "Cuidados",
+      "title": "Disco, identidade e conclusão",
+      "cards": [
+        {
+          "title": "Apagamento do disco",
+          "text": "A instalação padrão apaga todo o disco selecionado. O modo manual permite usar partições existentes. Confira o disco e as alterações na tela de revisão antes de confirmar."
+        },
+        {
+          "title": "A chave Nostr é opcional",
+          "text": "É possível criar uma conta local sem chave Nostr. A instalação pode continuar sem rede ou quando o relay está indisponível."
+        },
+        {
+          "title": "Avisos de conclusão",
+          "text": "Falhas nas etapas finais são registradas como avisos quando o sistema já foi gravado. O assistente da primeira inicialização reapresenta essas pendências."
+        }
+      ]
+    },
+    "closer": {
+      "title": "Primeiros passos",
+      "cta": "Documentação"
+    }
+  },
+  "documentation": {
+    "hero": {
+      "label": "Documentação",
+      "eyebrow": "Documentação · versão {version}",
+      "title": "Documentação",
+      "lead": "Guias para instalar, conhecer o sistema e contribuir. A referência técnica é mantida junto ao código, no repositório do projeto.",
+      "repo": "Repositório de desenvolvimento (acesso restrito)"
+    },
+    "build": {
+      "title": "Construir a partir do código",
+      "text1": "O repositório de desenvolvimento é privado. Os links técnicos desta página exigem acesso autorizado no GitHub. As ISOs ainda não estão disponíveis para download público.",
+      "text2": "Quem já tem acesso deve consultar o guia de construção da revisão que pretende testar. Ele descreve o ambiente Arch Linux, dependências, geração de recursos, validações e testes em máquina virtual.",
+      "links": "<a:buildGuide>Guia de construção (acesso restrito)</a> · <a:news>Estado do desenvolvimento</a> · <a:mail>Conversar sobre contribuição</a>",
+      "guides": "<a:guides>Consulte os guias públicos</a> para conhecer os componentes antes de preparar uma instalação."
+    },
+    "start": {
+      "eyebrow": "Guias",
+      "title": "Instalação e uso",
+      "paths": [
+        { "title": "Experimentar", "text": "Compare Live e Install e confira o estado das imagens." },
+        { "title": "Instalar", "text": "Prepare a mídia e acompanhe as etapas do instalador." },
+        { "title": "Usar o sistema", "text": "Consulte o estado dos serviços e encontre ajuda." }
+      ]
+    },
+    "firstSteps": {
+      "eyebrow": "Depois da instalação",
+      "title": "Estado dos serviços",
+      "lead1": "No terminal do Neovanguard OS, execute o painel de diagnóstico. Ele mostra rede, Bitcoin, Lightning, Nostr e memória.",
+      "result": "O resultado indica quais serviços estão ativos ou parados. Um serviço parado não significa, por si só, que a instalação falhou. Antes de ativá-lo, consulte sua configuração e os recursos necessários.",
+      "lead2": "Para consultar as opções disponíveis, abra a ajuda. O comando abaixo exibe instruções de uso.",
+      "note": "Esses comandos pertencem ao sistema operacional; não são comandos de desenvolvimento deste site."
+    },
+    "problems": {
+      "eyebrow": "Resolver problemas",
+      "title": "Diagnóstico e relato de falhas",
+      "lead": "Comece pelos <a:guides>guias do sistema</a>. Se o problema continuar, abra uma issue com a versão do sistema, a mídia usada, os passos para reproduzir e a mensagem de erro. Remova chaves privadas, senhas e outras informações pessoais antes de compartilhar a saída de um comando.",
+      "cta": "Relatar um problema por e-mail"
+    },
+    "index": {
+      "eyebrow": "Índice",
+      "title": "Referência para <em>contribuir</em>",
+      "docs": {
+        "as-isos.md": {
+          "title": "Imagens ISO",
+          "text": "Como funcionam as imagens Live e Install, o sistema incluído na mídia e a detecção do pendrive."
+        },
+        "COMO-CONSTRUIR.md": {
+          "title": "Construção das imagens",
+          "text": "Dependências, construção de pacotes, geração da ISO e verificações com --check."
+        },
+        "briefing-tecnico.md": {
+          "title": "Briefing técnico",
+          "text": "Arquitetura, decisões de implementação, validações e limitações conhecidas."
+        },
+        "estrutura.md": {
+          "title": "Estrutura do repositório",
+          "text": "Organização dos diretórios, código-fonte e arquivos gerados."
+        },
+        "heranca-do-live.md": {
+          "title": "Componentes da sessão Live",
+          "text": "Componentes exclusivos da sessão Live, remoção durante a instalação e verificações de build."
+        },
+        "security-review-scope.md": {
+          "title": "Escopo de revisão de segurança",
+          "text": "Componentes e verificações prioritários para revisão de segurança."
+        }
+      }
+    },
+    "repo": {
+      "eyebrow": "Para o sistema instalado",
+      "title": "O repositório de <em>pacotes</em>",
+      "lead": "Os pacotes do Neovanguard são distribuídos por este repositório, com verificação de assinatura. O sistema já inclui a chave pública e a seguinte configuração em <code>/etc/pacman.conf</code>.",
+      "fingerprint": "Impressão digital da chave de lançamento usada para assinar pacotes e imagens:"
+    },
+    "help": {
+      "eyebrow": "No próprio sistema",
+      "title": "Ajuda dos <em>comandos</em>",
+      "lead": "Use <code>--help</code> para consultar a sintaxe e as opções dos comandos <code>neo-*</code> e do instalador."
+    },
+    "closer": {
+      "title": "Relate um problema",
+      "cta": "Enviar relato por e-mail"
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Sobre o Neovanguard OS",
+      "eyebrow": "O projeto",
+      "title": "Sobre o<br>Neovanguard OS",
+      "lead": "Distribuição baseada em Arch Linux para operar Bitcoin, Lightning e Nostr. Integra ferramentas de linha de comando, identidade por chave e serviços locais ao ambiente KDE Plasma."
+    },
+    "goal": {
+      "eyebrow": "Objetivo",
+      "title": "Operação de <em>serviços locais</em>",
+      "text1": "O projeto reúne os componentes necessários para administrar nós, carteiras e relays no próprio computador. A integração com Nostr permite usar uma chave para a identidade e restaurar configurações entre instalações.",
+      "text2": "O instalador, o cofre de configurações e os comandos neo-* dão suporte a esse uso. Os componentes são distribuídos como pacotes para Arch Linux."
+    },
+    "team": {
+      "eyebrow": "Quem faz",
+      "title": "Empresa e produto, cada um com seu <em>nome</em>",
+      "text": "A Neovanguard é a empresa. O Neovanguard OS é o produto de código aberto que ela desenvolve. Mizael Ribeiro, cofundador e CEO, lidera produto e desenvolvimento. João Antônio Rodrigues, cofundador e COO, lidera operação, qualidade e segurança."
+    },
+    "scope": {
+      "eyebrow": "Escopo",
+      "title": "Requisitos e <em>limitações</em>",
+      "lead": "Considere os conhecimentos necessários, os limites de privacidade e a responsabilidade sobre as chaves antes de instalar.",
+      "cards": [
+        {
+          "title": "Conhecimento de Linux",
+          "text": "A administração de nós, relays e carteiras exige familiaridade com Linux, terminal e redes. O projeto é voltado a quem pretende operar esses serviços."
+        },
+        {
+          "title": "Limites de privacidade",
+          "text": "Tor, bloqueio de tráfego fora do túnel, randomização de MAC e logs em RAM são ferramentas de privacidade. Seu uso não garante anonimato."
+        },
+        {
+          "title": "Licença e garantia",
+          "text": "O projeto declara a licença GPL-3.0, sem garantia. O desenvolvimento permanece em repositório privado; os guias e as notas públicas descrevem o estado atual, sem anunciar ISOs disponíveis."
+        },
+        {
+          "title": "Custódia das chaves",
+          "text": "O projeto não mantém cópias das chaves nem oferece recuperação de identidade. Cabe ao usuário guardar a chave Nostr e seus backups."
+        }
+      ]
+    },
+    "development": {
+      "eyebrow": "Desenvolvimento",
+      "title": "Código e <em>testes</em>",
+      "text1": "As correções incluem testes de regressão para os defeitos identificados. Esses testes verificam a falha na versão afetada e o resultado após a correção.",
+      "text2": "As verificações de build buscam detectar problemas antes da instalação, especialmente nas etapas que alteram o disco.",
+      "source": "Código-fonte"
+    },
+    "closer": {
+      "title": "Versão {version}"
+    }
+  },
+  "privacy": {
+    "eyebrow": "Privacidade · LGPD",
+    "title": "Política de privacidade",
+    "sections": [
+      {
+        "title": "O que coletamos",
+        "items": [
+          "<strong>Medição de audiência:</strong> estatísticas anônimas de navegação, sem cookies de identificação individual.",
+          "<strong>Formulários:</strong> o site não possui formulários para envio de nome, e-mail ou telefone.",
+          "<strong>Preferência de idioma:</strong> o idioma escolhido no seletor fica salvo apenas no seu navegador e não é enviado ao servidor."
+        ]
+      },
+      {
+        "title": "O repositório de pacotes",
+        "text": "O endereço <code>/repo</code> distribui pacotes assinados sem exigir login ou identificador da instalação. O acesso aos arquivos pode gerar registros na hospedagem, como em outros serviços web."
+      },
+      {
+        "title": "Sistema operacional",
+        "text": "O Neovanguard OS não envia telemetria. Por padrão, os logs do sistema ficam em RAM e são descartados ao desligar. Os relays usados pela identidade Nostr são definidos pelo usuário, independentemente deste site."
+      },
+      {
+        "title": "Uso dos dados",
+        "items": [
+          "Não vendemos nem compartilhamos seus dados com terceiros para marketing.",
+          "Não enviamos e-mail em massa: você só recebe resposta ao que pediu."
+        ]
+      },
+      {
+        "title": "Seus direitos (LGPD)",
+        "text": "Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento pelo nosso canal de contato. Atendemos no prazo legal."
+      },
+      {
+        "title": "Retenção",
+        "text": "Mensagens de contato ficam guardadas apenas pelo tempo necessário ao atendimento e a obrigações legais."
+      }
+    ]
+  },
+  "terms": {
+    "eyebrow": "Termos de uso",
+    "title": "Termos de uso do site",
+    "sections": [
+      {
+        "title": "Conteúdo",
+        "text": "Textos, marca e material visual deste site pertencem à Neovanguard e não podem ser reproduzidos sem autorização."
+      },
+      {
+        "title": "Informações sobre o sistema",
+        "text": "As informações do site descrevem o Neovanguard OS. Consulte o repositório para o código-fonte, a licença do sistema e as condições de distribuição."
+      },
+      {
+        "title": "Disponibilidade",
+        "text": "O site pode ficar indisponível durante manutenções, sem aviso prévio."
+      },
+      {
+        "title": "Contato",
+        "text": "Dúvidas sobre estes termos ou sobre privacidade: use o canal de contato por <a:mail>e-mail</a>. Veja também a <a:privacy>política de privacidade</a>."
+      }
+    ]
+  },
+  "guides": {
+    "indexTitle": "Guias de infraestrutura local",
+    "indexLead": "Introduções práticas ao estado documentado do desenvolvimento. As ISOs ainda não estão disponíveis; configuração e validação dependem da revisão utilizada.",
+    "eyebrow": "Guia · revisado em {date}",
+    "disclaimer": "Documentação de desenvolvimento; não representa uma ISO pública nem validação em hardware.",
+    "commandsTitle": "Comandos de consulta",
+    "commandsText": "Execute em uma instalação compatível do Neovanguard OS. Confira a ajuda da ferramenta instalada; estes comandos consultam estado ou listam opções.",
+    "source": "Fonte técnica (repositório privado; exige acesso autorizado): ",
+    "continueLabel": "Continue lendo",
+    "all": "Todos os guias",
+    "availability": "Disponibilidade das imagens",
+    "documentation": "Documentação"
+  },
+  "news": {
+    "title": "Novidades do desenvolvimento",
+    "lead": "Acompanhe as mudanças documentadas e o estado da publicação. As ISOs NVG Live e NVG Install ainda não estão disponíveis e não há data de publicação confirmada.",
+    "entryTitle": "1.2.1 em preparação",
+    "entryText": "Verificações do instalador, correções de rede e validação de empacotamento. Consulte o escopo e os limites dos testes registrados.",
+    "follow": "Acompanhe os cofundadores: ",
+    "detail": {
+      "eyebrow": "Desenvolvimento · não é anúncio de download",
+      "title": "Neovanguard OS 1.2.1 em preparação",
+      "intro": "O changelog do código registra a versão 1.2.1 em preparação, autorizada em 12 de setembro de 2026. As ISOs Live e Install não estão disponíveis publicamente. Não há data de publicação confirmada.",
+      "changedTitle": "O que mudou no código",
+      "changed": [
+        "Validação do instalador antes de comandos destrutivos.",
+        "Estado do firewall, verificações de DNS e endpoint de VPN e validação de conjuntos Shamir.",
+        "Verificações de empacotamento e build, com relato explícito de falhas."
+      ],
+      "validationTitle": "Validação e publicação são etapas diferentes",
+      "validation1": "As notas registram verificações locais. Isso não comprova build completa de liberação, boot em hardware, instalação offline ou revisão criptográfica independente. Os pacotes só chegam a instalações depois de publicados no repositório de atualizações configurado.",
+      "validation2": "O CI documentado guarda checksums temporariamente e não distribui ISOs. Um checksum não é um download da imagem.",
+      "source": "Fonte (acesso restrito): "
+    }
+  },
+  "notFound": {
+    "eyebrow": "Página não encontrada",
+    "text": "A página solicitada não foi encontrada. Verifique o endereço ou volte à página inicial.",
+    "home": "Voltar ao início"
+  }
+}

@@ -3,11 +3,11 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function TableOfContents() {
+export default function TableOfContents({ paths, label, sectionsLabel }: { paths: string[]; label: string; sectionsLabel: string }) {
   const path = usePathname();
   const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
   const [active, setActive] = useState("");
-  const enabled = ["/documentacao", "/instalacao", "/recursos", "/baixar"].includes(path);
+  const enabled = paths.includes(path);
 
   useEffect(() => {
     if (!enabled) return;
@@ -36,8 +36,8 @@ export default function TableOfContents() {
   ));
   return (
     <aside className="page-toc">
-      <nav className="toc-desktop" aria-label="Nesta página"><span className="eyebrow">Nesta página</span>{links}</nav>
-      <details className="toc-mobile"><summary>Nesta página</summary><nav aria-label="Seções desta página">{links}</nav></details>
+      <nav className="toc-desktop" aria-label={label}><span className="eyebrow">{label}</span>{links}</nav>
+      <details className="toc-mobile"><summary>{label}</summary><nav aria-label={sectionsLabel}>{links}</nav></details>
     </aside>
   );
 }
