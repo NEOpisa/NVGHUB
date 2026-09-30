@@ -358,7 +358,7 @@ h1, h2, h3, h4 { font-family: var(--ff-display); font-weight: 500; letter-spacin
 .hero--home .hero-art::before { content: ""; position: absolute; inset: -8%; z-index: -1; background: radial-gradient(ellipse, var(--hero-halo), transparent 68%); pointer-events: none; }
 .hero--home .hero-art::after { content: ""; position: absolute; inset: 15%; z-index: -1; border: 1px solid var(--glow); transform: rotate(45deg); mask-image: linear-gradient(135deg, #000, transparent 42%, transparent 58%, #000); pointer-events: none; }
 .hero-mark-filter { position: absolute; pointer-events: none; }
-.hero-celestial { position: absolute; inset: -5%; width: 110%; height: 110%; z-index: -1; stroke: var(--nv-corn-soft); stroke-width: .7; opacity: .24; pointer-events: none; }
+.hero-celestial { position: absolute; top: 50%; left: 50%; width: 110%; max-width: none; height: 110%; transform: translate(-50%, -50%); z-index: -1; stroke: var(--nv-corn-soft); stroke-width: .7; opacity: .24; pointer-events: none; }
 .hero-stars { fill: var(--nv-corn-soft); stroke: none; }
 .hero--home .nv3d-flat img { width: 72%; max-width: none; filter: url(#hero-mark-tone) drop-shadow(0 18px 28px var(--glow)); }
 .hero--home .hero-note { grid-area: note; position: relative; margin-top: 0; padding-top: 22px; padding-right: 110px; font-size: .8rem; color: var(--tx); }

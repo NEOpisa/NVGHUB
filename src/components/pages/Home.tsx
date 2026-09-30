@@ -36,8 +36,7 @@ export default function Home({ locale }: { locale: Locale }) {
         <div className="hero-art">
           <svg className="hero-celestial" viewBox="0 0 500 500" fill="none" aria-hidden="true" focusable="false">
             <circle cx="250" cy="250" r="224" />
-            <path d="M34 0v500M466 0v500M18 140h32M450 360h32M90 440h320" />
-            <path d="m90 440 52-30 34 16 58-54 43 36 35-20 46 36 52 16" />
+            <path d="M34 0v500M466 0v500M18 140h32M450 360h32" />
             <g className="hero-stars"><circle cx="104" cy="110" r="2" /><circle cx="364" cy="62" r="2" /><circle cx="428" cy="202" r="1.5" /><circle cx="70" cy="316" r="1.5" /><circle cx="334" cy="450" r="2" /></g>
           </svg>
           <svg className="hero-mark-filter" width="0" height="0" aria-hidden="true" focusable="false">
