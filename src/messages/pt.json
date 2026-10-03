@@ -37,8 +37,8 @@
         "description": "Documentação do Neovanguard OS: instalação, uso, construção de imagens, arquitetura e repositório de pacotes."
       },
       "about": {
-        "title": "Sobre",
-        "description": "Objetivos, requisitos e desenvolvimento do Neovanguard OS, uma distribuição baseada em Arch Linux para Bitcoin, Lightning e Nostr."
+        "title": "Sobre o projeto e a equipe",
+        "description": "Quem desenvolve o Neovanguard OS: a Neovanguard, de Mizael Ribeiro (CEO) e João Antônio Rodrigues (COO). Objetivos, requisitos e desenvolvimento da distro."
       },
       "privacy": {
         "title": "Privacidade",
