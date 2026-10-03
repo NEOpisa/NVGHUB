@@ -10,12 +10,12 @@ type Route = { pt: string; en: string; updated: string; page?: PageKey; guide?: 
  * sitemap, seletor de idioma e breadcrumbs. Atualize `updated` ao alterar
  * conteúdo significativo; o sitemap não inventa uma data a cada build. */
 export const ROUTES: Route[] = [
-  { page: "home", pt: "/", en: "/en", updated: "2026-09-30" },
+  { page: "home", pt: "/", en: "/en", updated: "2026-10-03" },
   { page: "download", pt: "/baixar", en: "/en/download", updated: "2026-09-30" },
   { page: "features", pt: "/recursos", en: "/en/features", updated: "2026-09-30" },
   { page: "installation", pt: "/instalacao", en: "/en/installation", updated: "2026-09-30" },
   { page: "documentation", pt: "/documentacao", en: "/en/documentation", updated: "2026-09-30" },
-  { page: "about", pt: "/sobre", en: "/en/about", updated: "2026-09-30" },
+  { page: "about", pt: "/sobre", en: "/en/about", updated: "2026-10-03" },
   ...TEAM.map(p => ({ person: p.slug, pt: "/sobre/" + p.slug, en: "/en/about/" + p.slug, updated: p.updated })),
   { page: "privacy", pt: "/privacidade", en: "/en/privacy", updated: "2026-09-30" },
   { page: "terms", pt: "/termos", en: "/en/terms", updated: "2026-09-30" },
