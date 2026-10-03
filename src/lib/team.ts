@@ -27,7 +27,7 @@ export const TEAM: Person[] = [
     givenName: "Mizael",
     familyName: "Ribeiro",
     jobTitle: { pt: "Cofundador e CEO da Neovanguard", en: "Co-founder and CEO of Neovanguard" },
-    title: { pt: "Mizael Ribeiro, cofundador e CEO", en: "Mizael Ribeiro, co-founder and CEO" },
+    title: { pt: "Mizael Ribeiro, cofundador e CEO da Neovanguard", en: "Mizael Ribeiro, co-founder and CEO of Neovanguard" },
     description: {
       pt: "Mizael Ribeiro é cofundador e CEO da Neovanguard e lidera o produto e o desenvolvimento do Neovanguard OS, Linux para Bitcoin, Lightning e Nostr.",
       en: "Mizael Ribeiro is co-founder and CEO of Neovanguard and leads product and development of Neovanguard OS, Linux for Bitcoin, Lightning and Nostr.",
@@ -63,7 +63,7 @@ export const TEAM: Person[] = [
     givenName: "João Antônio",
     familyName: "Rodrigues",
     jobTitle: { pt: "Cofundador e COO da Neovanguard", en: "Co-founder and COO of Neovanguard" },
-    title: { pt: "João Antônio Rodrigues, cofundador e COO", en: "João Antônio Rodrigues, co-founder and COO" },
+    title: { pt: "João Antônio Rodrigues, cofundador e COO da Neovanguard", en: "João Antônio Rodrigues, co-founder and COO of Neovanguard" },
     description: {
       pt: "João Antônio Rodrigues é cofundador e COO da Neovanguard e lidera operação, qualidade e segurança do Neovanguard OS, com foco em segurança ofensiva e Linux.",
       en: "João Antônio Rodrigues is co-founder and COO of Neovanguard and leads operations, quality and security of Neovanguard OS, focused on offensive security and Linux.",
