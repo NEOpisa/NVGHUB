@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/icons";
 import {
-  JOAO_LINKEDIN,
-  MIZAEL_LINKEDIN,
   REPO_URL,
   VERSAO,
 } from "@/lib/constants";
 import { fmt, getMessages, type Locale } from "@/lib/i18n";
 import { rich } from "@/lib/rich";
 import { localePath } from "@/lib/routes";
+import { TEAM, personPath } from "@/lib/team";
 
 /** Objetivos, limitações e desenvolvimento do projeto. */
 export default function About({ locale }: { locale: Locale }) {
@@ -41,14 +40,12 @@ export default function About({ locale }: { locale: Locale }) {
         </div>
         <p className="lead">{t.team.text}</p>
         <div className="pill-row">
-          <a className="pill pill--ghost" href={MIZAEL_LINKEDIN} target="_blank" rel="noopener noreferrer">
-            Mizael Ribeiro
-            <ArrowUpRight />
-          </a>
-          <a className="pill pill--ghost" href={JOAO_LINKEDIN} target="_blank" rel="noopener noreferrer">
-            João Antônio Rodrigues
-            <ArrowUpRight />
-          </a>
+          {TEAM.map(p => (
+            <Link key={p.slug} className="pill pill--ghost" href={personPath(locale, p.slug)}>
+              {p.name}
+              <ArrowUpRight />
+            </Link>
+          ))}
         </div>
       </section>
 
