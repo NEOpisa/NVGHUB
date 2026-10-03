@@ -7,7 +7,9 @@ import Foot from "@/components/shell/Foot";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { Analytics } from "@vercel/analytics/next";
 import {
+  CONTACT_EMAIL,
   ISOS_PUBLICADAS,
+  SITE_REPO_URL,
   SITE_URL,
   VERSAO,
 } from "@/lib/constants";
@@ -98,6 +100,7 @@ function jsonLd(locale: Locale) {
         "@id": `${home}${locale === "pt" ? "/" : ""}#website`,
         url: home,
         name: "Neovanguard OS",
+        alternateName: ["Neovanguard", "NVG OS"],
         description: t.meta.siteDescription,
         inLanguage: HTML_LANG[locale],
         publisher: { "@id": `${SITE_URL}/#org` },
@@ -108,6 +111,9 @@ function jsonLd(locale: Locale) {
         name: "Neovanguard",
         url: SITE_URL,
         logo: `${SITE_URL}/logo.png`,
+        email: CONTACT_EMAIL,
+        address: { "@type": "PostalAddress", addressLocality: "Patos", addressRegion: "PB", addressCountry: "BR" },
+        sameAs: [SITE_REPO_URL],
         founder: TEAM.map(p => ({
           "@type": "Person",
           "@id": personId(SITE_URL, p.slug),
@@ -124,6 +130,7 @@ function jsonLd(locale: Locale) {
         "@type": "SoftwareApplication",
         "@id": `${SITE_URL}/#os`,
         name: "Neovanguard OS",
+        alternateName: "NVG OS",
         url: home,
         applicationCategory: "OperatingSystem",
         operatingSystem: "Linux",
