@@ -7,7 +7,7 @@ export const CONTACT_EMAIL = "mizael.neovanguard@gmail.com";
 export const DOCS_URL = `${REPO_URL}/blob/main/documentation`;
 export const REPO_PACOTES = "https://neovanguard.com.br/repo/x86_64";
 export const MIZAEL_LINKEDIN =
-  "https://www.linkedin.com/in/mizael-ribeiro-8a3b42385";
+  "https://www.linkedin.com/in/mizael-ribeiro-neovanguard";
 export const JOAO_LINKEDIN =
   "https://www.linkedin.com/in/jo%C3%A3o-ant%C3%B4nio-rodrigues-884093303";
 
