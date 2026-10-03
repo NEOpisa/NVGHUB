@@ -5,6 +5,7 @@ import Download from "@/components/pages/Download";
 import Features from "@/components/pages/Features";
 import Installation from "@/components/pages/Installation";
 import Legal from "@/components/pages/Legal";
+import PersonPage from "@/components/pages/Person";
 import { GuideIndex, GuideArticle, DevelopmentNotes } from "@/components/seo/Editorial";
 import { ROUTES } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
@@ -23,6 +24,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
   const route = ROUTES.find(r => r.en === "/en/" + slug.join("/"));
   if (!route) notFound();
   if (route.guide) return <GuideArticle slug={route.guide} locale="en" />;
+  if (route.person) return <PersonPage slug={route.person} locale="en" />;
   switch (route.page) {
     case "download": return <Download locale="en" />;
     case "features": return <Features locale="en" />;
