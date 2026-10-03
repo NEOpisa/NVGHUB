@@ -1,9 +1,10 @@
 import { GUIDES } from "./guides";
+import { TEAM } from "./team";
 import { SITE_URL } from "./constants";
 import { getMessages, HTML_LANG, type Locale, type Messages } from "./i18n";
 
 export type PageKey = keyof Messages["meta"]["pages"];
-type Route = { pt: string; en: string; updated: string; page?: PageKey; guide?: string };
+type Route = { pt: string; en: string; updated: string; page?: PageKey; guide?: string; person?: string };
 
 /** Cadastro único das páginas: par pt/en e data editorial. Alimenta hreflang,
  * sitemap, seletor de idioma e breadcrumbs. Atualize `updated` ao alterar
@@ -15,6 +16,7 @@ export const ROUTES: Route[] = [
   { page: "installation", pt: "/instalacao", en: "/en/installation", updated: "2026-09-30" },
   { page: "documentation", pt: "/documentacao", en: "/en/documentation", updated: "2026-09-30" },
   { page: "about", pt: "/sobre", en: "/en/about", updated: "2026-09-30" },
+  ...TEAM.map(p => ({ person: p.slug, pt: "/sobre/" + p.slug, en: "/en/about/" + p.slug, updated: p.updated })),
   { page: "privacy", pt: "/privacidade", en: "/en/privacy", updated: "2026-09-30" },
   { page: "terms", pt: "/termos", en: "/en/terms", updated: "2026-09-30" },
   { page: "guides", pt: "/guias", en: "/en/guides", updated: "2026-09-30" },
@@ -41,11 +43,13 @@ export function localePath(locale: Locale, ptPath: string) {
 }
 
 export function routeTitle(route: Route, locale: Locale) {
+  if (route.person) return TEAM.find(p => p.slug === route.person)!.title[locale];
   if (route.guide) return GUIDES.find(g => g.slug === route.guide)!.title[locale];
   return getMessages(locale).meta.pages[route.page!].title;
 }
 
 export function routeDescription(route: Route, locale: Locale) {
+  if (route.person) return TEAM.find(p => p.slug === route.person)!.description[locale];
   if (route.guide) return GUIDES.find(g => g.slug === route.guide)!.description[locale];
   return getMessages(locale).meta.pages[route.page!].description;
 }
