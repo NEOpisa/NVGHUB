@@ -52,7 +52,7 @@ export const TEAM: Person[] = [
     },
     knowsAbout: ["Linux", "Arch Linux", "Rust", "Bitcoin", "Lightning Network", "Nostr", "Software livre"],
     links: [
-      { label: "LinkedIn", url: "https://www.linkedin.com/in/mizael-ribeiro-8a3b42385" },
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/mizael-ribeiro-neovanguard" },
       { label: "GitHub", url: "https://github.com/NEOpisa" },
     ],
     updated: "2026-10-03",
