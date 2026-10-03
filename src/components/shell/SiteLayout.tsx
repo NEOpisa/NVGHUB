@@ -8,13 +8,12 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { Analytics } from "@vercel/analytics/next";
 import {
   ISOS_PUBLICADAS,
-  JOAO_LINKEDIN,
-  MIZAEL_LINKEDIN,
   SITE_URL,
   VERSAO,
 } from "@/lib/constants";
 import { getMessages, HTML_LANG, OG_LOCALE, type Locale } from "@/lib/i18n";
 import { ROUTES, absoluteUrl, localePath, routeTitle } from "@/lib/routes";
+import { TEAM, personId, personPath } from "@/lib/team";
 import "@/app/shell.css";
 
 const jakarta = localFont({
@@ -109,22 +108,14 @@ function jsonLd(locale: Locale) {
         name: "Neovanguard",
         url: SITE_URL,
         logo: `${SITE_URL}/logo.png`,
-        founder: [
-          {
-            "@type": "Person",
-            name: "Mizael Ribeiro",
-            url: MIZAEL_LINKEDIN,
-            sameAs: [MIZAEL_LINKEDIN, "https://github.com/NEOpisa"],
-            jobTitle: t.jsonLd.ceo,
-          },
-          {
-            "@type": "Person",
-            name: "João Antônio Rodrigues",
-            url: JOAO_LINKEDIN,
-            sameAs: [JOAO_LINKEDIN, "https://github.com/joaoinky"],
-            jobTitle: t.jsonLd.coo,
-          },
-        ],
+        founder: TEAM.map(p => ({
+          "@type": "Person",
+          "@id": personId(SITE_URL, p.slug),
+          name: p.name,
+          url: absoluteUrl(personPath(locale, p.slug)),
+          sameAs: p.links.map(l => l.url),
+          jobTitle: p.jobTitle[locale],
+        })),
       },
       {
         // O que este site descreve é um sistema operacional, e o schema tem de
