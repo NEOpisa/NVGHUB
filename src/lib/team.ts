@@ -34,13 +34,13 @@ export const TEAM: Person[] = [
     },
     bio: {
       pt: [
-        "Mizael Ribeiro é cofundador e CEO da Neovanguard, empresa brasileira de Patos, na Paraíba, que trabalha de forma remota. Ele lidera a visão, o produto e o desenvolvimento do Neovanguard OS, a distribuição baseada em Arch Linux para Bitcoin, Lightning e Nostr.",
+        "Mizael Ribeiro, de Patos, na Paraíba, é cofundador e CEO da Neovanguard, empresa brasileira 100% remota. Ele lidera a visão, o produto e o desenvolvimento do Neovanguard OS, a distribuição baseada em Arch Linux para Bitcoin, Lightning e Nostr.",
         "No Neovanguard OS, Mizael trabalha principalmente com Rust e Linux e com as integrações de Bitcoin e Nostr do sistema: identidade por chave Nostr, relay local e as ferramentas para operar Bitcoin Core, Core Lightning e Elements/Liquid no próprio computador.",
         "Até 2026, a Neovanguard atuou como agência de desenvolvimento para pequenas e médias empresas, com sites sob medida, automações e integrações de IA. Mizael conduziu a mudança da empresa para um produto próprio, de código aberto, para que chaves, serviços e dados fiquem sob o controle de quem usa a máquina.",
         "Ele fundou a Neovanguard com João Antônio Rodrigues, cofundador e COO, que lidera operação, qualidade, auditorias técnicas e segurança.",
       ],
       en: [
-        "Mizael Ribeiro is co-founder and CEO of Neovanguard, a Brazilian company based in Patos, Paraíba, that works remotely. He leads the vision, product and development of Neovanguard OS, the Arch Linux-based distribution for Bitcoin, Lightning and Nostr.",
+        "Mizael Ribeiro, from Patos, Paraíba, is co-founder and CEO of Neovanguard, a fully remote Brazilian company. He leads the vision, product and development of Neovanguard OS, the Arch Linux-based distribution for Bitcoin, Lightning and Nostr.",
         "On Neovanguard OS, Mizael works mainly with Rust and Linux and with the system's Bitcoin and Nostr integrations: Nostr key identity, a local relay, and the tools to run Bitcoin Core, Core Lightning and Elements/Liquid on your own computer.",
         "Until 2026, Neovanguard operated as a development agency for small and medium-sized businesses, building custom websites, automations and AI integrations. Mizael led the company's shift to its own open-source product, so that keys, services and data stay under the control of whoever uses the machine.",
         "He founded Neovanguard with João Antônio Rodrigues, co-founder and COO, who leads operations, quality, technical audits and security.",
