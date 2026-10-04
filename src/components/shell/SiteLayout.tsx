@@ -112,7 +112,6 @@ function jsonLd(locale: Locale) {
         url: SITE_URL,
         logo: `${SITE_URL}/logo.png`,
         email: CONTACT_EMAIL,
-        address: { "@type": "PostalAddress", addressLocality: "Patos", addressRegion: "PB", addressCountry: "BR" },
         sameAs: [SITE_REPO_URL],
         founder: TEAM.map(p => ({
           "@type": "Person",
