@@ -107,7 +107,7 @@ export async function renderOg(locale: Locale) {
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #213149", paddingTop: 24, fontSize: 17, color: "#a9b8d0" }}>
           <span>{t.og.footer}</span>
-          <span style={{ color: "#6495ED" }}>neovanguard.com.br</span>
+          <span style={{ color: "#6495ED" }}>nvgsec.com</span>
         </div>
       </div>
     </div>,

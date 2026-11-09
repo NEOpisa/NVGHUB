@@ -1,7 +1,10 @@
 # Repositório de pacotes do Neovanguard OS
 
 Isto não é conteúdo do site. É o repositório pacman da distro, servido como
-arquivo estático em `https://neovanguard.com.br/repo/x86_64/`.
+arquivo estático em `https://nvgsec.com/repo/x86_64/` (o endereço antigo,
+`https://neovanguard.com.br/repo/x86_64/`, redireciona para cá com 301 e o
+pacman segue o redirecionamento; por isso o `neovanguard.com.br` não pode expirar
+enquanto houver ISOs que apontam para ele).
 
 O `/etc/pacman.conf` das três ISOs declara `[neovanguard]` e aponta para cá. Sem
 estes arquivos, um `pacman -Syu` numa máquina com Neovanguard OS instalado não
@@ -11,7 +14,7 @@ pacotes, um repositório ausente aqui era uma **instalação que não completava
 
 ## Por que dentro do site
 
-O `neovanguard.com.br` está na Vercel, que não tem SSH nem rsync — que é tudo o
+O site está na Vercel, que não tem SSH nem rsync — que é tudo o
 que o `publish-repo.sh` da distro falava. São 5,2 MB, então a saída mais curta é
 servi-los como arquivo estático daqui mesmo, sem infraestrutura nova.
 

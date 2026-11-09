@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 const base = process.env.QA_URL ?? "http://localhost:3100";
-const canonicalBase = "https://neovanguard.com.br";
+const canonicalBase = "https://nvgsec.com";
 const xmlResponse = await fetch(base + "/sitemap.xml");
 assert.equal(xmlResponse.status, 200);
 const xml = await xmlResponse.text();
