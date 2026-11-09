@@ -1,11 +1,11 @@
-export const SITE_URL = "https://neovanguard.com.br";
+export const SITE_URL = "https://nvgsec.com";
 
 /** Repositório do sistema operacional e da documentação. */
 export const REPO_URL = "https://github.com/NEOpisa/neovanguard-os-dev";
 export const SITE_REPO_URL = "https://github.com/NEOpisa/NVGHUB";
 export const CONTACT_EMAIL = "mizael.neovanguard@gmail.com";
 export const DOCS_URL = `${REPO_URL}/blob/main/documentation`;
-export const REPO_PACOTES = "https://neovanguard.com.br/repo/x86_64";
+export const REPO_PACOTES = `${SITE_URL}/repo/x86_64`;
 export const MIZAEL_LINKEDIN =
   "https://www.linkedin.com/in/mizael-ribeiro-neovanguard";
 export const JOAO_LINKEDIN =
